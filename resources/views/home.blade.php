@@ -21,3 +21,12 @@
     </div>
 </div>
 @endsection
+
+@section('custom')
+    <!-- ChartJS -->
+<script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+<!-- Sparkline -->
+<script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+@endsection
