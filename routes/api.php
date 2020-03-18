@@ -21,7 +21,8 @@ Route::get('products', function (){
                   <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
                   <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="fas fa-eye" style="color: white"></i></a>
                   </div>')
-      ->rawColumns(['actions'])
+      ->addColumn('photo', '<img class="img-round" src="{{ asset("$image") }}" style="max-height:50px; max-width:70px;"/>')
+      ->rawColumns(['actions', 'photo'])
       ->toJson();
 });
 

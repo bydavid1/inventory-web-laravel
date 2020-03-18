@@ -38,7 +38,7 @@
 			<table class="table" id="items">
 					<thead>
 						<tr>
-							<!-- <th style="width:10%;">Imagen</th>	-->						
+							<th style="width:10%;">Imagen</th>						
 							<th>Codigo</th>
 							<th>Nombre del producto</th>							
 							<th>Precio principal</th>
@@ -71,6 +71,9 @@
 	        "serverSide": true,
 	        "ajax": "{{ url('api/products') }}",
 	        "columns": [
+				{
+	                data: 'photo'
+	            },
 			    {
 	                data: 'code'
 	            },

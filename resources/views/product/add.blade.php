@@ -35,6 +35,16 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+            @if ( session('mensaje') )
+                <div class="alert alert-success">{{ session('mensaje') }}</div>
+            @endif
+            @if($errors->has(['code', 'name', 'purchase', 'quantity', 'price1']))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Faltan datos importantes
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span></button>
+            </div>
+            @endif
             <form class="form-horizontal" id="submitProductForm" action="{{ route('makeProduct') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -63,7 +73,7 @@
                                         <label for="codProduct" class="col-sm-3 control-label">Codigo: </label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="code"
-                                                placeholder="Codigo del producto" name="code" autocomplete="off">
+                                                placeholder="Codigo del producto" name="code" autocomplete="off" value="{{ old('code') }}">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -72,7 +82,7 @@
                                         <label for="productName" class="col-sm-3 control-label">Nombre: </label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="name"
-                                                placeholder="Nombre del producto" name="name" autocomplete="off">
+                                                placeholder="Nombre del producto" name="name" autocomplete="off" value="{{ old('name') }}">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -124,7 +134,7 @@
                                         <label for="quantity" class="col-sm-3 control-label">Stock: </label>
                                         <div class="col-sm-12">
                                             <input type="number" class="form-control" id="quantity" placeholder="Stock"
-                                                name="quantity" autocomplete="off">
+                                                name="quantity" autocomplete="off" value="{{ old('quantity') }}">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -141,7 +151,7 @@
                                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
                                     <input type="decimal" class="form-control" id="purchase"
-                                        placeholder="Precio de compra" name="purchase" autocomplete="off" />
+                                        placeholder="Precio de compra" name="purchase" autocomplete="off" value="{{ old('purchase') }}"/>
                                 </div>
                             </div>
                             <br>
@@ -155,7 +165,7 @@
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="price1" placeholder="Precio 1"
-                                                name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off" />
+                                                name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off" value="{{ old('price1') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -165,7 +175,7 @@
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="price2" placeholder="Precio 2"
-                                                name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off" />
+                                                name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off" value="{{ old('price2') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -175,7 +185,7 @@
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="price3" placeholder="Precio 3"
-                                                name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off" />
+                                                name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off" value="{{ old('price3') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -185,7 +195,7 @@
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="price4" placeholder="Precio 4"
-                                                name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off" />
+                                                name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off" value="{{ old('price4') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -199,7 +209,7 @@
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="utility1" placeholder="Utilidad 1"
-                                                name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off" />
+                                                name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off" value="{{ old('utility1') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -209,7 +219,7 @@
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="utility2" placeholder="Utilidad 2"
-                                                name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off" />
+                                                name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off" value="{{ old('utility2') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -219,7 +229,7 @@
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="utility3" placeholder="Utilidad 3"
-                                                name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off" />
+                                                name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off" value="{{ old('utility3') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -229,7 +239,7 @@
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
                                             <input type="decimal" class="form-control" id="utility4" placeholder="Utilidad 4"
-                                                name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off" />
+                                                name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off" value="{{ old('utility4') }}"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
