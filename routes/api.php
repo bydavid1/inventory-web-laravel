@@ -24,3 +24,23 @@ Route::get('products', function (){
       ->rawColumns(['actions'])
       ->toJson();
 });
+
+Route::get('categories', function (){
+   return datatables()->eloquent(App\Categories::query())
+      ->addColumn('actions', '<div class="btn-group float-right">
+                  <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
+                  </div>')
+      ->rawColumns(['actions'])
+      ->toJson();
+});
+
+Route::get('providers', function (){
+   return datatables()->eloquent(App\Providers::query())
+      ->addColumn('actions', '<div class="btn-group float-right">
+                  <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
+                  </div>')
+      ->rawColumns(['actions'])
+      ->toJson();
+});

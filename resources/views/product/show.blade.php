@@ -1,3 +1,4 @@
+@extends('layouts.app')
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
@@ -28,7 +29,7 @@
                         <img src="" class="product-image" alt="Product Image">
                     </div>
                     <div class="col-12 product-image-thumbs">
-                        <div class="product-image-thumb active"><img src="<?php echo '../assets/images/'. $row[3];?>"
+                        <div class="product-image-thumb active"><img src=""
                                 alt="Product Image"></div>
                         <div class="product-image-thumb"><img src="../assets/images/placeholder.png"
                                 alt="Product Image"></div>
@@ -63,7 +64,7 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Categoría</span>
-                                    <span class="info-box-number"></span>
+                                    <span class="info-box-number">{{ $product->category_id }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -74,7 +75,7 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">En Stock</span>
-                                    <span class="info-box-number"></span>
+                                    <span class="info-box-number">{{ $product->quantity }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -113,10 +114,7 @@
                                     <span class="info-box-text">Tipo</span>
                                     <span class="info-box-number">No especificado</span>
                                 </div>
-                                <!-- /.info-box-content -->
-                                <?php
-                                    }
-                                ?>
+                                   @endif
                             </div>
                             <!-- /.info-box -->
 
@@ -139,9 +137,7 @@
                                     <span class="info-box-number">No disponible</span>
                                 </div>
                                 <!-- /.info-box-content -->
-                                <?php
-                                    }
-                            ?>
+                                   @endif
                             </div>
                             <!-- /.info-box -->
 
