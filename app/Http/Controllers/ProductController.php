@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use App\Products;
 use App\Categories;
 use App\Providers;
@@ -41,9 +42,44 @@ class ProductController extends Controller
      */
     public function make(Request $request)
     {
+        $path = '';
+
+        $request->validate([
+            'code' => 'required',
+            'name' => 'required',
+            'purchase' => 'required',
+            'quantity' => 'required',
+            'price1' => 'required'
+        ]);
+
+
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $path = Storage::disk('public')->put('uploads', $file);
+        }else{
+            $path = "media/photo_default.png";
+        }
+
+        if ($request->price2 == '') {
+            $request->price2 = 0.00;
+            $request->utility2 = 0.00;
+        }
+        if ($request->price3 == '') {
+            $request->price3 = 0.00;
+            $request->utility3 = 0.00;
+        }
+        if ($request->price4 == '') {
+            $request->price4 = 0.00;
+            $request->utility4 = 0.00;
+        }
+        if ($request->description == '') {
+            $request->description = 'No hay descripción';
+        }
+        
         $new = new Products;
         $new->code = $request->code;
         $new->name = $request->name;
+        $new->image = $path;
         $new->description = $request->description;
         $new->provider_id = $request->provider_id;
         $new->category_id = $request->category_id;
@@ -60,6 +96,10 @@ class ProductController extends Controller
         $new->utility4 = $request->utility4;
         $new->is_available = $request->is_available;
         $new->is_deleted = 0;
+
+        $new->save();
+
+        return back()->with('mensaje', 'Guardado');
     }
 
     /**
