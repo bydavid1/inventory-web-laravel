@@ -35,8 +35,9 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <form class="form-horizontal" id="submitProductForm" action="../processes/php/createProduct.php" method="POST"
+            <form class="form-horizontal" id="submitProductForm" action="{{ route('makeProduct') }}" method="POST"
                 enctype="multipart/form-data">
+                @csrf
                 <div id="add-product-messages"></div>
 
                 <div class="col-12 col-md-10 container">
@@ -47,8 +48,8 @@
                                 <div class="col-12">
                                     <div id="kv-avatar-errors-1" class="center-block" style="display:none;"></div>
                                     <div class="kv-avatar center-block">
-                                        <input type="file" class="form-control" id="productImage"
-                                            placeholder="Imagen del producto" name="productImage" class="file-loading"
+                                        <input type="file" class="form-control" id="image"
+                                            placeholder="Imagen del producto" name="image" class="file-loading"
                                             style="width:auto;" />
                                     </div>
 
@@ -61,8 +62,8 @@
                                     <div class="form-group">
                                         <label for="codProduct" class="col-sm-3 control-label">Codigo: </label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="codProduct"
-                                                placeholder="Codigo del producto" name="codProduct" autocomplete="off">
+                                            <input type="text" class="form-control" id="code"
+                                                placeholder="Codigo del producto" name="code" autocomplete="off">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -70,24 +71,28 @@
                                     <div class="form-group">
                                         <label for="productName" class="col-sm-3 control-label">Nombre: </label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="productName"
-                                                placeholder="Nombre del producto" name="productName" autocomplete="off">
+                                            <input type="text" class="form-control" id="name"
+                                                placeholder="Nombre del producto" name="name" autocomplete="off">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
 
                                     <div class="form-group col-sm-12">
                                         <label>Fabricante:</label>
-                                        <select data-placeholder="Seleciona un fabricante" style="width: 100%;" class="select2bs4" id="provName" name="provName">
-                                           //loop
+                                        <select data-placeholder="Seleciona un fabricante" style="width: 100%;" class="select2bs4" id="provider_id" name="provider_id">
+                                            @foreach ($providers as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <!-- /form-group-->
 
                                     <div class="form-group col-sm-12">
                                         <label>Categoría:</label>
-                                        <select data-placeholder="Seleciona una categoría" style="width: 100%;" class="select2bs4" id="categoryName" name="categoryName">
-                                            //loop
+                                        <select data-placeholder="Seleciona una categoría" style="width: 100%;" class="select2bs4" id="category_id" name="category_id">
+                                            @foreach ($categories as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <!-- /form-group-->
@@ -96,9 +101,9 @@
                                     <div class="form-group">
                                         <label for="productStatus" class="col-sm-3 control-label">Estado: </label>
                                         <div class="col-sm-12">
-                                            <select class="form-control" id="productStatus" name="productStatus">
+                                            <select class="form-control" id="is_available" name="is_available">
                                                 <option value="1">Disponible</option>
-                                                <option value="2">No disponible</option>
+                                                <option value="0">No disponible</option>
                                             </select>
                                         </div>
                                     </div>
@@ -127,107 +132,122 @@
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="col-sm-8">
-                        <div class="input-group" id="message">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                            </div>
-                            <input type="decimal" class="form-control" id="purchase_price"
-                                placeholder="Precio de compra" name="purchase_price" autocomplete="off" />
-                        </div>
-                    </div>
-                    <!-- /form-group-->
-
-                    <br>
+                    <!-- Bottom content-->
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
+                        <div class="col-sm-6">
+                            <div class="col-sm-12">
+                                <div class="input-group" id="message">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
-                                    <input type="decimal" class="form-control" id="price1" placeholder="Precio 1"
-                                        name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off" />
+                                    <input type="decimal" class="form-control" id="purchase"
+                                        placeholder="Precio de compra" name="purchase" autocomplete="off" />
                                 </div>
                             </div>
+                            <br>
                             <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                            <div class="row">
+                                <!-- Left Bottom group-->
+                                <div class="col-sm-6">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="price1" placeholder="Precio 1"
+                                                name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off" />
+                                        </div>
                                     </div>
-                                    <input type="decimal" class="form-control" id="price2" placeholder="Precio 2"
-                                        name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off" />
-                                </div>
-                            </div>
-                            <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="price2" placeholder="Precio 2"
+                                                name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off" />
+                                        </div>
                                     </div>
-                                    <input type="decimal" class="form-control" id="price3" placeholder="Precio 3"
-                                        name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off" />
-                                </div>
-                            </div>
-                            <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group" id="alert">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="price3" placeholder="Precio 3"
+                                                name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off" />
+                                        </div>
                                     </div>
-                                    <input type="decimal" class="form-control" id="price4" placeholder="Precio 4"
-                                        name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off" />
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group" id="alert">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="price4" placeholder="Precio 4"
+                                                name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <!-- /form-group-->
+        
+                                </div>
+                                <div class="col-sm-6">
+        
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="utility1" placeholder="Utilidad 1"
+                                                name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="utility2" placeholder="Utilidad 2"
+                                                name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="utility3" placeholder="Utilidad 3"
+                                                name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <!-- /form-group-->
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="utility4" placeholder="Utilidad 4"
+                                                name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <!-- /form-group-->
                                 </div>
                             </div>
-                            <!-- /form-group-->
-
                         </div>
-                        <div class="col-sm-4">
-
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
-                                    </div>
-                                    <input type="decimal" class="form-control" id="utility1" placeholder="Utilidad 1"
-                                        name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off" />
+                        <!-- /left bottom group-->
+                        <!-- Right bottom group-->
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
                                 </div>
+                                <textarea class="form-control" id="description" placeholder="Ingrese una descripción"
+                                    name="description"></textarea>
                             </div>
-                            <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
-                                    </div>
-                                    <input type="decimal" class="form-control" id="utility2" placeholder="Utilidad 2"
-                                        name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off" />
-                                </div>
-                            </div>
-                            <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
-                                    </div>
-                                    <input type="decimal" class="form-control" id="utility3" placeholder="Utilidad 3"
-                                        name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off" />
-                                </div>
-                            </div>
-                            <!-- /form-group-->
-                            <div class="col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
-                                    </div>
-                                    <input type="decimal" class="form-control" id="utility4" placeholder="Utilidad 4"
-                                        name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off" />
-                                </div>
-                            </div>
-                            <!-- /form-group-->
-
                         </div>
+                         <!--/ Right bottom group-->
                     </div>
                 </div>
     <!-- /modal-body -->
@@ -268,7 +288,7 @@
         })
      });
 
-     $("#productImage").fileinput({
+     $("#image").fileinput({
         overwriteInitial: true,
         maxFileSize: 2500,
         showClose: false,
@@ -280,7 +300,7 @@
         removeTitle: 'Cancel or reset changes',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: '<img src="../assets/images/photo_default.png" alt="Profile Image" style="width:100%;">',
+        defaultPreviewContent: '<img src="{{ asset("media/placeholder.png") }}" alt="Profile Image" style="width:100%;">',
         layoutTemplates: {
             main2: '{preview} {remove} {browse}'
         },
