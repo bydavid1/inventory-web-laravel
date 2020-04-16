@@ -31,6 +31,10 @@ Route::get('product/delete/{id}', 'ProductController@destroy')->name('deleteProd
 
 //Categories Routes
 Route::get('/categories', 'CategoriesController@index')->name('categories');
+Route::get('categories/create', 'CategoriesController@create')->name('addCategory');
+Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory');
 
 //Providers Routes
 Route::get('/providers', 'ProviderController@index')->name('providers');
+Route::get('providers/create', 'ProviderController@create')->name('addProvider');
+Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider');

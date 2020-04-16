@@ -93,10 +93,10 @@
 	                data: 'type'
 	            },
 	            {
-	                data: 'provider_id'
+	                data: 'name_prov'
 	            },
 	            {
-	                data: 'category_id'
+	                data: 'name_categ'
 	            },
 	            {
 	               data: 'actions'

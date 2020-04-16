@@ -32,7 +32,7 @@
 		<!-- /.card-header -->
 		<div class="card-body">
 			<div class="text-right" style="margin-bottom: 15px"> 
-			<a type="button" class="btn btn-success" href="{{ route('addProduct') }}"> <i class="fas fa-plus"></i> Agregar categoria </a>
+			<a type="button" class="btn btn-success" href="{{ route('addCategory') }}"> <i class="fas fa-plus"></i> Agregar categoria </a>
 			</div>
 			<table class="table" id="items">
 					<thead>

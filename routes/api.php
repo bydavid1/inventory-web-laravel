@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('products', function (){
-   return datatables()->eloquent(App\Products::query())
+   return datatables()->eloquent(App\Products::select('products.id','products.image','products.code','products.name','products.price1','products.is_available','products.type','products.quantity', 'providers.name as name_prov', 'categories.name as name_categ')->join('providers', 'products.provider_id', '=', 'providers.id')->join('categories', 'products.category_id', '=', 'categories.id')->where('products.is_deleted', 0))
       ->addColumn('actions', '<div class="btn-group float-right">
                   <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
                   <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
