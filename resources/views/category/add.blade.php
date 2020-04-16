@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Agregar producto</h1>
+                <h1 class="m-0 text-dark">Agregar categoría</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -29,7 +29,7 @@
      @endif
     <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">Agregar Producto</h3>
+            <h3 class="card-title">Agregar Categoría</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -40,7 +40,7 @@
                         <label for="name" class="col-sm-3 control-label">Nombre de la categoría: </label>
                         <div class="col-sm-12">
                             <input type="text" class="form-control" id="name" placeholder="Nombre" name="name"
-                                autocomplete="off" value="{{ old('name') }}">
+                                autocomplete="off" value="{{ old('name') }}" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" data-loading-text="Loading..."
