@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Categories;
 
 class CategoriesController extends Controller
 {
@@ -23,7 +24,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.add');
     }
 
     /**
@@ -32,9 +33,18 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function make(Request $request)
     {
-        //
+        $request->validate(['name' => 'required']);
+        $category = new Categories;
+        $category->name = $request->name;
+        $category->is_available = 1;
+        $category->is_deleted =0;
+
+        $category->save();
+
+        return back()->with('mensaje', 'Guardado');
+
     }
 
     /**

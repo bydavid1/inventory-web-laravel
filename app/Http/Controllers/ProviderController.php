@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Providers;
 
 class ProviderController extends Controller
 {
@@ -23,7 +24,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+        return view('provider.add');
     }
 
     /**
@@ -32,9 +33,22 @@ class ProviderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function make(Request $request)
     {
-        //
+        $request->validate(['code' => 'required', 'name' => 'required', 'nit' => 'required', 'phone' => 'required']);
+
+        $provider = new Providers;
+        $provider->code = $request->code;
+        $provider->name = $request->name;
+        $provider->nit = $request->nit;
+        $provider->phone = $request->phone;
+        $provider->address = $request->address;
+        $provider->is_available = 1;
+        $provider->is_deleted = 0;
+
+        $provider->save();
+
+        return back()->with('mensaje', 'Guardado');
     }
 
     /**
