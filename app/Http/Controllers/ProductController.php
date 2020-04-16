@@ -123,7 +123,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
+        $providers = Providers::select(['id','name'])->where('is_available', 1)->get();;
+        $product = Products::findOrfail($id);
+        return view('product.edit', compact(['product', 'categories', 'providers']));
     }
 
     /**
@@ -133,9 +136,38 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){ 
+        $product = Products::find($id);
+        //Salvo el path de la imagen por si luego es necesario eliminarlo
+        $savedImage = $product->image;
+        $product->code = $request->code;
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->provider_id = $request->provider_id;
+        $product->category_id = $request->category_id;
+        $product->purchase = $request->purchase;
+        $product->quantity = $request->quantity;
+        $product->type = $request->type;
+        $product->price1 = $request->price1;
+        $product->price2 = $request->price2;
+        $product->price3 = $request->price3;
+        $product->price4 = $request->price4;
+        $product->utility1 = $request->utility1;
+        $product->utility2 = $request->utility2;
+        $product->utility3 = $request->utility3;
+        $product->utility4 = $request->utility4;
+        $product->is_available = $request->is_available;
+        $product->is_deleted = 0;
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $path = Storage::disk('public')->put('uploads', $file);
+            $product->image = $path;
+        }
+        $product->save();
+        if ($request->file('image')) {
+            unlink($savedImage);
+        }
+        return back()->with('mensaje', 'Registro actualizado exitosamente');
     }
 
     /**

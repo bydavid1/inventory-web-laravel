@@ -35,7 +35,6 @@ class CategoriesController extends Controller
      */
     public function make(Request $request)
     {
-        $request->validate(['name' => 'required']);
         $category = new Categories;
         $category->name = $request->name;
         $category->is_available = 1;
