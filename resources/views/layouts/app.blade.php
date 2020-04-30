@@ -122,6 +122,12 @@
               <p>Proveedores</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('costumers') }}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>Clientes</p>
+            </a>
+          </li>
           <li class="nav-header">Facturas</li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
