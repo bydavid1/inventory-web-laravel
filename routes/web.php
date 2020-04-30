@@ -28,7 +28,7 @@ Route::post('/makeProduct', 'ProductController@make')->name('makeProduct');
 Route::get('product/{id}/edit', 'ProductController@edit')->name('editProduct');
 Route::put('updateProduct/{id}', 'ProductController@update')->name('updateProduct');
 Route::get('product/show/{id}', 'ProductController@show')->name('showProduct');
-Route::get('product/delete/{id}', 'ProductController@destroy')->name('deleteProduct');
+Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct');
 
 //Categories Routes
 Route::get('/categories', 'CategoriesController@index')->name('categories');
@@ -39,3 +39,8 @@ Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory');
 Route::get('/providers', 'ProviderController@index')->name('providers');
 Route::get('providers/create', 'ProviderController@create')->name('addProvider');
 Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider');
+
+//Costumer routes´
+Route::get('/costumers', 'CostumerController@index')->name('costumers');
+Route::get('/costumers/create', 'CostumerController@create')->name('addCostumers');
+route::post('/makeCostumer', 'CostumerController@store')->name('makeCostumer');

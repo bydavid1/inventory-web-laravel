@@ -56,6 +56,36 @@
 	</div>
 	<!-- /.card -->
 </div>
+
+<!-------------------------------------Remove Product ------------------------------------------->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeProductModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Eliminar producto</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('deleteProduct')}}" method="POST">
+					@method('delete')
+					@csrf
+					<p id="message">¿Realmente deseas eliminar el producto? Se movera a la palera</p>
+					<input type="hidden" id="id_product">
+				<div class="modal-footer removeProductFooter">
+					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
+							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
+							class="glyphicon glyphicon-ok-sign"></i> Eliminar</button>
+				</div>
+				</form>
+			</div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @endsection
 
 
@@ -93,16 +123,28 @@
 	                data: 'type'
 	            },
 	            {
+					"searchable" : false,
 	                data: 'name_prov'
 	            },
 	            {
+					"searchable" : false,
 	                data: 'name_categ'
 	            },
 	            {
+					"searchable" : false,
 	               data: 'actions'
 	            },
 	        ]
 	    })
-	})
+	});
 </script>
+
+<script>
+$(document).on('click','#removeProductModalBtn',function(){
+    var id=$(this).attr('data-id');
+    $('#id_product').val(id); 
+    $('#removeProductModal').modal('show'); 
+});
+</script>
+
 @endsection
