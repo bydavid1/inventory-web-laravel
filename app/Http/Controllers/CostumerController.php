@@ -84,7 +84,14 @@ class CostumerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $costumer = Costumers::find($id);
+        $costumer->email = $request->email;
+        $costumer->address = $request->address;
+        $costumer->phone = $request->phone;
+
+        if ($costumer->save()) {
+            return back()->with('mensaje', 'Cliente editado');
+        }
     }
 
     /**
@@ -95,6 +102,9 @@ class CostumerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $costumer = Costumers::find($id);
+        if ($costumer->delete()) {
+            return back()->with('mensaje', 'Cliente editado');
+        }
     }
 }

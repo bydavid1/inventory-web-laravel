@@ -23,7 +23,9 @@
 	</div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-
+@if ( session('mensaje') )
+<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
+@endif
 <!-- /.col -->
 <div class="col-md-12">
 	<div class="card card-info">
@@ -54,6 +56,85 @@
 	</div>
 	<!-- /.card -->
 </div>
+
+<!-- Delete modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeCostumer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Eliminar cliente</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="destroyform">
+					@method('delete')
+					@csrf
+					<p id="message">¿Realmente deseas eliminar el cliente? Se movera a la palera</p>
+					<input type="hidden" id="id-item">
+				<div class="modal-footer removeProductFooter">
+					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
+							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
+							class="glyphicon glyphicon-ok-sign"></i> Eliminar</button>
+				</div>
+				</form>
+			</div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Edit modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="editCostumer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Editar información del cliente</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editform" action="" method="POST">
+					@method('PUT')
+					@csrf
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Email: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Email" name="email" id="email"
+                                autocomplete="off" value="{{ old('email') }}">
+                        </div>
+					</div>
+					<div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Telefono: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Telefono" name="phone" id="phone"
+                                autocomplete="off" value="{{ old('phone') }}">
+                        </div>
+					</div>
+					<div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Dirección: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Dirección" name="address" id="address"
+                                autocomplete="off" value="{{ old('address') }}">
+                        </div>
+                    </div>
+				    <div class="modal-footer removeProductFooter">
+					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
+							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
+							class="glyphicon glyphicon-ok-sign"></i> Editar</button>
+				</div>
+				</form>
+			</div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 @endsection
 
@@ -99,11 +180,39 @@
 </script>
 
 <script>
-$(document).on('click','#removeProductModalBtn',function(){
-    var id=$(this).attr('data-id');
-    $('#id_product').val(id); 
-    $('#removeProductModal').modal('show'); 
+$(document).on('click','#editCostumerModalBtn',function(){
+
+     //Get Id from data-id property
+    var id = $(this).attr('data-id');
+	var action = "{{ route('updateCostumer', ':id') }}";
+	action = action.replace(":id", id);
+	$("#editform").attr("action", action);
+
+    var url = "{{ url('api/costumers', 'id') }}";
+     url = url.replace("id", id);
+	 console.log(url);
+	$.ajax({
+		url: url,
+		type: 'get',
+		dataType: 'json',
+		serverSide : true,
+        success : function(response){
+			var data = response.data;
+		    	$('#email').val(data[0].email);
+				$('#phone').val(data[0].phone);
+				$('#address').val(data[0].address);
+		}
+	})
 });
+
+$(document).on('click', '#destroyCostumerModalBtn', function(){
+
+   //Get Id from data-destroy-id property
+    var id = $(this).attr('data-destroy-id');
+	var action = "{{ route('deleteCostumer', ':id') }}";
+	action = action.replace(":id", id);
+	$("#destroyform").attr("action", action);
+})
 </script>
 
 @endsection
