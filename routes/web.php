@@ -42,5 +42,7 @@ Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider');
 
 //Costumer routes´
 Route::get('/costumers', 'CostumerController@index')->name('costumers');
-Route::get('/costumers/create', 'CostumerController@create')->name('addCostumers');
+Route::get('/costumer/create', 'CostumerController@create')->name('addCostumers');
 route::post('/makeCostumer', 'CostumerController@store')->name('makeCostumer');
+route::put('updateCostumer/{id}', 'CostumerController@update')->name('updateCostumer');
+Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('deleteCostumer');
