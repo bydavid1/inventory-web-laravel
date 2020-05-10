@@ -83,7 +83,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('media/user8-128x128.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('media/user.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->username }} </a>
@@ -140,13 +140,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ route('sales') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Lista de ventas</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="{{ route('addSale') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Agregar venta</p>
                 </a>
