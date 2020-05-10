@@ -89,6 +89,11 @@ Route::get('products/order/{id}', function ($id){
       ->toJson();
 });
 
+Route::get('products/order/code/{code}', function ($code){
+   return datatables()->eloquent(App\Products::where('code', $code))
+      ->toJson();
+});
+
 Route::get('sales', function(){
    return datatables()->eloquent(App\Sales::query())
       ->addColumn('actions', '<div class="btn-group float-right">
