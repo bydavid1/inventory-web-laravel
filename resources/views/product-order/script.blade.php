@@ -10,8 +10,12 @@ const PRODUCTNAMEVALUE = "#pnamevalue";
 const PRODUCTCODEVALUE = "#pcodevalue";
 const QUANTITYVALUE = "#quantityvalue";
 const TOTALVALUE = "#totalvalue";
-
-
+const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      showConfirmButton: true,
+      timer: 3000
+    });
 
 //----------------------------------------------------------------------
 //-------------------------Add to table---------------------------------
@@ -127,6 +131,53 @@ function add(id) {
         }
     })
 
+}
+
+//----------------------------------------------------------------------
+//-------------------------Code info product---------------------------------
+//----------------------------------------------------------------------
+
+function getProductData(row){
+    var url = "{{ url('api/products/order/code', 'identify') }}";
+    var code = $(PRODUCTCODE + row).val();
+    console.log(code);
+    url = url.replace("identify", code);
+
+    $.ajax({
+        type: 'get',
+        url: url,
+        dataType: 'json',
+        beforeSend: function (objeto) {
+
+        },
+        statusCode: {
+            200: function (response) {
+                var data = response.data;
+
+                    $(PRODUCTNAME + row).val(data[0].name);
+                    $(PRICE + row).val(data[0].price);
+                    $(PRODUCTNAMEVALUE + row).val(data[0].name);
+                    $(PRICEVALUE + row).val(data[0].price);
+                    $(PRICE + row).prop('disabled', false);
+                    $(QUANTITY + row).prop('disabled', false);
+
+                subAmount();
+                countRow();
+            },
+            404: function () {
+                Toast.fire({
+        type: 'error',
+        title: 'Producto no encontrado.'
+         })
+            },
+            500: function () {
+                Toast.fire({
+        type: 'warning',
+        title: ' Error en el servidor.'
+         })
+            }
+        }
+    })
 }
 
 //----------------------------------------------------------------------
