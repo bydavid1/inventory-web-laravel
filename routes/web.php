@@ -46,3 +46,8 @@ Route::get('/costumer/create', 'CostumerController@create')->name('addCostumers'
 route::post('/makeCostumer', 'CostumerController@store')->name('makeCostumer');
 route::put('updateCostumer/{id}', 'CostumerController@update')->name('updateCostumer');
 Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('deleteCostumer');
+
+//Sales Routes
+Route::get('/sales', 'SaleController@index')->name('sales');
+Route::get('sales/create', 'SaleController@create')->name('addSale');
+Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice');

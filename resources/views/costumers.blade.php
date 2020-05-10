@@ -190,7 +190,6 @@ $(document).on('click','#editCostumerModalBtn',function(){
 
     var url = "{{ url('api/costumers', 'id') }}";
      url = url.replace("id", id);
-	 console.log(url);
 	$.ajax({
 		url: url,
 		type: 'get',
