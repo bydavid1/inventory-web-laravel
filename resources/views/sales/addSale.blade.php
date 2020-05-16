@@ -87,7 +87,7 @@
             <div class="form-group submitButtonFooter">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" id="createSale" data-loading-text="Cargando..." class="btn btn-success"><i
-                            class="glyphicon glyphicon-ok-sign"></i> Agregar venta</button>
+                            class="glyphicon glyphicon-ok-sign"></i>Crear</button>
         
                     <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn"
                         data-loading-text="cargando..."> <i class="glyphicon glyphicon-plus-sign"></i> Añadir fila

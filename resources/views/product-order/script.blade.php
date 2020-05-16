@@ -314,12 +314,13 @@ function removeProductRow(row = null) {
 function totalValue(row = null) {
     var rate = Number($(PRICE + row).val());
     var quantity = Number($(QUANTITY + row).val());
+    $(QUANTITYVALUE).val(quantity);
 
     total = rate * quantity;
     total = total.toFixed(2);
 
-    $("#total" + row).val(total);
-    $("#totalValue" + row).val(total);
+    $(TOTAL + row).val(total);
+    $(TOTALVALUE + row).val(total);
 
     subAmount();
 }
@@ -334,4 +335,5 @@ function countRow(){
     console.log(tableLength);
     $("#trCount").val(tableLength);
 }
+
 </script>

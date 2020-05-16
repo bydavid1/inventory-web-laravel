@@ -21,7 +21,7 @@
                 <div class="form-group col-sm-12">
                     <input type="text" name="pcode<?php echo $x; ?>" id="pcode<?php echo $x; ?>"
                         autocomplete="off" class="form-control"
-                        onchange='getProductData(<?php echo $x; ?>)' placeholder="Ingrese un codigo"
+                        onchange='getProductData(<?php echo $x; ?>)' placeholder="Ingrese un codigo"/>
                         <input type="hidden" name="pcodevalue<?php echo $x; ?>" id="pcodevalue<?php echo $x; ?>">
                 </div>
             </td>
