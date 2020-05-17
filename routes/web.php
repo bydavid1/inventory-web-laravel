@@ -51,3 +51,8 @@ Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('delet
 Route::get('/sales', 'SaleController@index')->name('sales');
 Route::get('sales/create', 'SaleController@create')->name('addSale');
 Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice');
+
+//Kardex
+Route::get('/kardex', 'KardexController@index')->name('kardex');
+Route::get('kardex/records/{id}', 'KardexController@records')->name('records');
+Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get_records');
