@@ -73,13 +73,13 @@ function add(id) {
                     '<td>' +
                     ' <div class="input-group col-sm-12">' +
                     '<div class="input-group-prepend"><span class="input-group-text">$</span></div>' +
-                    '<input type="number" name="price' + count + '" id="price' + count + '" autocomplete="off" value="' + pricevalue + '" disabled class="form-control" step="0.01"  min="0" onchange="totalValue(' + count + ')" />' +
+                    '<input type="number" name="price' + count + '" id="price' + count + '" autocomplete="off" value="' + pricevalue + '"  class="form-control" step="0.01"  min="0" onchange="totalValue(' + count + ')" />' +
                     '<input type="hidden" name="pricevalue' + count + '" id="pricevalue' + count + '" value="' + pricevalue + '"/>' +
                     '</div>' +
                     '</td>' +
                     '<td>' +
                     '<div class="form-group col-sm-12">' +
-                    '<input type="number" name="quantity' + count + '" id="quantity' + count + '" autocomplete="off" value="' + quantityvalue + '" disabled class="form-control" min="1" onchange="totalValue(' + count + ')" />' +
+                    '<input type="number" name="quantity' + count + '" id="quantity' + count + '" autocomplete="off" value="' + quantityvalue + '" class="form-control" min="1" onchange="totalValue(' + count + ')" />' +
                     '<input type="hidden" name="quantityvalue' + count + '" id="quantityvalue' + count + '" value="' + quantityvalue + '"/>' +
                     '</div>' +
                     '</td>' +

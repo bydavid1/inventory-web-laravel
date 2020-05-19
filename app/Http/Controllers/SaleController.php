@@ -1,12 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
 
+//error reporting
+error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Sales;
 use App\Sales_item;
 use App\Products;
 use App\Kardex;
+use PDF;
 
 class SaleController extends Controller
 {
@@ -36,68 +41,9 @@ class SaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {            
-        //invoice headers info
-        $sale = new Sales;
-        $sale->name = $request->name;
-        $sale->quantity = $request->grandquantityvalue;
-        $sale->total = $request->grandtotalvalue;
-        $sale->is_deleted = 0;
-
-        if ($sale->save()) {
-        $id = $sale->id;
-        $invoice = ['name' => $sale->name, 'quantity' => $sale->quantity, 'total' => $sale->total, 'date' => $sale->created_at];
-        $invoice_products = array();
-        $counter = $request->trCount;
-        for ($i=1; $i <= $counter; $i++) { 
-            $saleitem = new Sales_item;
-            //database and request handlers
-            $data = ['pnamevalue', 'pcodevalue', 'quantityvalue', 'pricevalue', 'totalvalue'];
-            $db = ['product_name', 'product_code', 'quantity', 'price', 'total'];
-            for ($j=0; $j < 5; $j++) { 
-                //Packing item data to -> $saleitem
-                $modifier = $data[$j] ."". $i;
-                $dbmodifier = $db[$j];
-                $saleitem->$dbmodifier = $request->$modifier;
-            }
-            $saleitem->sale_id = $id;
-            if ($saleitem->save()) {
-            //Update quantity 
-            $product = Products::select('quantity', 'id')->where('code', $saleitem->product_code)->first();
-            $product->quantity = $product->quantity - $saleitem->quantity;
-            $product->save();
-            //Adding to Kardex
-            $kardex = new Kardex;
-            $kardex->tag = "Ingreso por producto";
-            $kardex->tag_code = "IN";
-            $kardex->id_product = $product->id;
-            $kardex->quantity = $saleitem->quantity;
-            $kardex->value = "+" . $saleitem->total;
-            $kardex->unit_price = $saleitem->price;
-            $kardex->invoice_id = $id;
-            $kardex->save();
-            //Adding $saleitems to -> $invoice_products array
-            array_push($invoice_products, $saleitem);
-            }else{
-                $sale->destroy();
-                return back()->with('mensaje', 'No se terminó de crear la factura');
-                }
-            }
-                return view('product-order.invoice', compact(['invoice', 'invoice_products']));
-        }
-            return back()->with('mensaje', 'Ocurrió un error al registrar la información');
-    }
-
-
-      /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function save(Request $request)
     {            
+        try {
         //invoice headers info
         $sale = new Sales;
         $sale->name = $request->name;
@@ -107,8 +53,7 @@ class SaleController extends Controller
 
         if ($sale->save()) {
         $id = $sale->id;
-        $invoice = ['name' => $sale->name, 'quantity' => $sale->quantity, 'total' => $sale->total, 'date' => $sale->created_at];
-        $invoice_products = array();
+        $invoice_products = "";
         $counter = $request->trCount;
         for ($i=1; $i <= $counter; $i++) { 
             $saleitem = new Sales_item;
@@ -137,17 +82,142 @@ class SaleController extends Controller
             $kardex->unit_price = $saleitem->price;
             $kardex->invoice_id = $id;
             $kardex->save();
+
+            $invoice_products .= "<tr><td>".$saleitem->product_code."</td><td>".$saleitem->product_name."</td><td>".$saleitem->quantity."</td><td>".$saleitem->price."</td><td>".$saleitem->total."</td></tr>";
             //Adding $saleitems to -> $invoice_products array
-            array_push($invoice_products, $saleitem);
             }else{
                 $sale->destroy();
                 return response()->json(['message'=>'No se terminó de crear la factura']);
                 }
-            }
-            return response()->json(['message'=>'Factura guardada', 'data' => compact(['invoice', 'invoice_products'])]);
+            } 
+            //Design invoice
+            $invoice = $this->designInvoice($invoice_products, $sale);
+
+            $pdf = PDF::loadHTML($invoice);
+            $pdf->save(Storage::disk('public')->put('invoices', $id . '.pdf'));
+            //send invoice
+            return response()->json(['message'=>'Factura guardada', 'data' => compact('invoice')]);
         }
         return response()->json(['message'=>'Ocurrió un error al registrar la información']);
+        } catch (Exception $e) {
+            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
+        }
     }
+
+    function designInvoice($products, $sale){
+        $invoice = '<html>
+        <head>
+            <title>Imprimir</title>
+            <link rel="stylesheet" href="{{ asset("css/adminlte.min.css") }}">
+            <div class="wrapper" id="print">
+                <!-- Main content -->
+                <section class="invoice">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="page-header">
+                                <i class="fas fa-globe"></i> AdminLTE, Inc.
+                                <small class="float-right">Date: '. $sale->created_at .'</small>
+                            </h2>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            From
+                            <address>
+                                <strong>Admin, Inc.</strong><br>
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107<br>
+                                Phone: (804) 123-5432<br>
+                                Email: info@almasaeedstudio.com
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            To
+                            <address>
+                                <strong>'. $sale->name .'</strong><br>
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107<br>
+                                Phone: (555) 539-1037<br>
+                                Email: john.doe@example.com
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            <b>Invoice #007612</b><br>
+                            <br>
+                            <b>Order ID:</b> 4F3S8J<br>
+                            <b>Payment Due:</b> 2/22/2014<br>
+                            <b>Account:</b> 968-34567
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Table row -->
+                    <div class="row">
+                        <div class="col-12 table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Producto</th>
+                                        <th>Cant</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    '. $products.'
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-6">
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-6">
+                            <p class="lead">Amount Due 2/22/2014</p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width:50%">Subtotal:</th>
+                                        <td>'. $sale->total .'</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tax (9.3%)</th>
+                                        <td>$10.34</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cantidad:</th>
+                                        <td>'. $sale->quantity .'</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td>'. $sale->total .'</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </section>
+                <!-- /.content -->
+            </div>
+            <!-- ./wrapper -->
+            </body>
+        </html>';
+
+        return $invoice;
+    }
+
     /**
      * Display the specified resource.
      *
