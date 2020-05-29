@@ -93,22 +93,26 @@ class SaleController extends Controller
             //Design invoice
             $invoice = $this->designInvoice($invoice_products, $sale);
 
-            $pdf = PDF::loadHTML($invoice);
-            $pdf->save(Storage::disk('public')->put('invoices', $id . '.pdf'));
+            $pdf = PDF::loadHTML($invoice)->save(public_path('invoices/') . $id . '.pdf');
             //send invoice
             return response()->json(['message'=>'Factura guardada', 'data' => compact('invoice')]);
         }
+
         return response()->json(['message'=>'Ocurrió un error al registrar la información']);
+        
         } catch (Exception $e) {
+
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
+
         }
     }
 
     function designInvoice($products, $sale){
+
         $invoice = '<html>
         <head>
             <title>Imprimir</title>
-            <link rel="stylesheet" href="{{ asset("css/adminlte.min.css") }}">
+            <link rel="stylesheet" href="'. public_path('css/adminlte.min.css') .'>
             <div class="wrapper" id="print">
                 <!-- Main content -->
                 <section class="invoice">
@@ -222,11 +226,21 @@ class SaleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response  
      */
-    public function show($id)
+    public function invoice($id)
     {
-        //
+        try {
+            
+            $path = public_path() . "\invoices\\$id.pdf"; 
+            if (file_exists($path)) {
+                return response()->file($path);
+            }else{
+                return redirect()->back()->with('alert', 'La factura no esta guardada');
+            }
+        } catch (Exception $th) {
+            //throw $th;
+        }
     }
 
     /**

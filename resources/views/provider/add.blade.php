@@ -60,14 +60,14 @@
                     <div class="form-group">
                         <label for="name" class="col-sm-3 control-label">Contacto: </label>
                         <div class="col-sm-12">
-                            <input type="number" class="form-control" placeholder="Nombre" name="phone"
+                            <input type="number" class="form-control" placeholder="Telefono" name="phone"
                                 autocomplete="off" value="{{ old('phone') }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Contacto: </label>
+                        <label for="name" class="col-sm-3 control-label">Direccion: </label>
                         <div class="col-sm-12">
-                            <input type="tel" class="form-control" placeholder="Nombre" name="address"
+                            <input type="tel" class="form-control" placeholder="Direccion" name="address"
                                 autocomplete="off" value="{{ old('address') }}">
                         </div>
                     </div>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Products;
 use App\Categories;
 use App\Providers;
+use App\Kardex;
 
 class ProductController extends Controller
 {
@@ -97,9 +98,19 @@ class ProductController extends Controller
         $new->is_available = $request->is_available;
         $new->is_deleted = 0;
 
-        $new->save();
+        if ($new->save()) {
+            $kardex = new Kardex;
+            $kardex->tag = "Ingreso al inventario";
+            $kardex->tag_code = "MK";
+            $kardex->id_product = $new->id;
+            $kardex->quantity =  $new->quantity;
+            $kardex->value = $new->purchase * $new->quantity;
+            $kardex->unit_price = $new->purchase;
+            $kardex->invoice_id = 0;
+            $kardex->save();
 
-        return back()->with('mensaje', 'Guardado');
+            return back()->with('mensaje', 'Guardado');
+        }
     }
 
     /**
