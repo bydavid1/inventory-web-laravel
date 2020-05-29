@@ -52,6 +52,7 @@ Route::get('/sales', 'SaleController@index')->name('sales');
 Route::get('sales/create', 'SaleController@create')->name('addSale');
 Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice');
 Route::post('/save', 'SaleController@save')->name('save');
+Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice');
 
 //Kardex
 Route::get('/kardex', 'KardexController@index')->name('kardex');
