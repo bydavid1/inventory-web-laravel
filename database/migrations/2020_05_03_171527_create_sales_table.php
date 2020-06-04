@@ -18,9 +18,12 @@ class CreateSalesTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->integer('quantity');
+            $table->integer('subtotal');
             $table->float('total');
             $table->integer('is_deleted');
         });
+
+        DB::statement("ALTER TABLE sales AUTO_INCREMENT = 14000;");
     }
 
     /**

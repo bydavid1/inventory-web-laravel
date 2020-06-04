@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKardexTable extends Migration
+class CreatePurchasesItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateKardexTable extends Migration
      */
     public function up()
     {
-        Schema::create('kardex', function (Blueprint $table) {
+        Schema::create('purchases_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('tag');
-            $table->string('tag_code');
-            $table->unsignedBigInteger('id_product');
-            $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedBigInteger('purchase_id');
+            $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('status');
             $table->integer('quantity');
-            $table->float('value_diff');
             $table->float('unit_price');
             $table->float('total');
         });
@@ -34,6 +34,6 @@ class CreateKardexTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kardex');
+        Schema::dropIfExists('purchases_items');
     }
 }

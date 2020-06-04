@@ -19,7 +19,7 @@ class CreateProvidersTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('nit');
-            $table->string('address');
+            $table->string('address')->default('No registrado');
             $table->integer('is_available');
             $table->integer('is_deleted');
             $table->timestamps();

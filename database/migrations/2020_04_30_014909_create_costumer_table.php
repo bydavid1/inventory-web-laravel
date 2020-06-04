@@ -16,11 +16,11 @@ class CreateCostumerTable extends Migration
         Schema::create('costumers', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('name');
             $table->string('phone');
             $table->string('nit');
-            $table->string('address');
+            $table->string('address')->default('No registrado');
             $table->timestamps();
         });
     }

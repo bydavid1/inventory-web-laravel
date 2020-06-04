@@ -19,22 +19,24 @@ class CreateProductsTable extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->text('image');
-            $table->text('description');
-            $table->integer('provider_id');
-            $table->integer('category_id');
+            $table->text('description')->default('No hay descripción');
+            $table->unsignedBigInteger('provider_id');
+            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->float('price1');
-            $table->float('price2');
-            $table->float('price3');
-            $table->float('price4');
+            $table->float('price2')->default('0.00');
+            $table->float('price3')->default('0.00');
+            $table->float('price4')->default('0.00');
             $table->float('utility1');
-            $table->float('utility2');
-            $table->float('utility3');
-            $table->float('utility4');
+            $table->float('utility2')->default('0.00');
+            $table->float('utility3')->default('0.00');
+            $table->float('utility4')->default('0.00');
             $table->float('purchase');
             $table->integer('quantity');
-            $table->integer('type');
+            $table->integer('type')->default('1');
             $table->integer('is_available');
-            $table->integer('is_deleted');
+            $table->integer('is_deleted')->default('0');;
         });
     }
 
