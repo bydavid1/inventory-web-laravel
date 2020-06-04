@@ -54,6 +54,12 @@ Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice');
 Route::post('/save', 'SaleController@save')->name('save');
 Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice');
 
+//Purchases
+Route::get('/purchases', 'PurchaseController@index')->name('purchases');
+Route::get('purchases/create', 'PurchaseController@create')->name('addPurchase');
+Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('createPurchase');
+Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getList');
+
 //Kardex
 Route::get('/kardex', 'KardexController@index')->name('kardex');
 Route::get('kardex/records/{id}', 'KardexController@records')->name('records');
