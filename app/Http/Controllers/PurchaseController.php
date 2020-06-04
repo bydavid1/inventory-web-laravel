@@ -66,9 +66,10 @@ class PurchaseController extends Controller
         try {
             //invoice headers info
             $purchase = new Purchases;
-            $purchase->provider = $request->provider;
+            $purchase->provider_id = $request->provider;
             $purchase->quantity = $request->grandquantityvalue;
             $purchase->total = $request->grandtotalvalue;
+            $purchase->subtotal = $request->grandtotalvalue;
             $purchase->is_deleted = 0;
     
             if ($purchase->save()) {
@@ -79,8 +80,8 @@ class PurchaseController extends Controller
             for ($i=1; $i <= $counter; $i++) { 
                 $purchaseitem = new Purchases_item;
                 //database and request handlers
-                $data = ['pnamevalue', 'pcodevalue', 'status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
-                $db = ['product_name', 'product_code', 'status', 'quantity', 'price', 'total'];
+                $data = ['id', 'status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
+                $db = ['product_id', 'status', 'quantity', 'unit_price', 'total'];
 
                 for ($j=0; $j < 6; $j++) { 
                     //Packing item data to -> $purchaseitem
@@ -99,20 +100,13 @@ class PurchaseController extends Controller
                         $newProduct->code = $purchaseitem->product_code;
                         $newProduct->name = $purchaseitem->product_name;
                         $newProduct->image = "media/photo_default.png";
-                        $newProduct->description = "Sin descripción";
                         $newProduct->provider_id = $request->provider . "" . $i;
                         $newProduct->category_id = $request->category . "" . $i;
                         $newProduct->purchase = $purchaseitem->price . "" . $i;
                         $newProduct->quantity = $purchaseitem->quantity . "" . $i;
                         $newProduct->type = 1;
                         $newProduct->price1 = $request->price . "" . $i;
-                        $newProduct->price2 = 0.00;
-                        $newProduct->price3 = 0.00;
-                        $newProduct->price4 = 0.00;
                         $newProduct->utility1 = $utility1;
-                        $newProduct->utility2 = 0.00;
-                        $newProduct->utility3 = 0.00;
-                        $newProduct->utility4 = 0.00;
                         $newProduct->is_available = 0;
                         $newProduct->is_deleted = 0;
                         $newProduct->save();

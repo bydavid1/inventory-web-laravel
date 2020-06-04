@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSalesTable extends Migration
+class CreateCostumersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('costumers', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('code')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('name');
-            $table->integer('quantity');
-            $table->integer('subtotal');
-            $table->float('total');
-            $table->integer('is_deleted');
+            $table->string('phone');
+            $table->string('nit');
+            $table->string('address')->default('No registrado');
+            $table->timestamps();
         });
-
-        DB::statement("ALTER TABLE sales AUTO_INCREMENT = 14000;");
     }
 
     /**
@@ -33,6 +32,6 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('costumers');
     }
 }
