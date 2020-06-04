@@ -21,7 +21,7 @@ class CreateKardexTable extends Migration
             $table->unsignedBigInteger('id_product');
             $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity');
-            $table->float('value_diff');
+            $table->string('value_diff');
             $table->float('unit_price');
             $table->float('total');
         });

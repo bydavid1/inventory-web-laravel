@@ -20,6 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/register', function(){
+    return view('auth.register');
+})->name('register');
 
 //Product Routes
 Route::get('/product', 'ProductController@index')->name('products');
@@ -32,12 +35,10 @@ Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduc
 
 //Categories Routes
 Route::get('/categories', 'CategoriesController@index')->name('categories');
-Route::get('categories/create', 'CategoriesController@create')->name('addCategory');
 Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory');
 
 //Providers Routes
 Route::get('/providers', 'ProviderController@index')->name('providers');
-Route::get('providers/create', 'ProviderController@create')->name('addProvider');
 Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider');
 
 //Costumer routes´

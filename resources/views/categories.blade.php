@@ -7,48 +7,79 @@
 
 @section('content')
 <div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Categorias</h1>
-			</div><!-- /.col -->
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Categorias</li>
-				</ol>
-			</div><!-- /.col -->
-		</div><!-- /.row -->
-	</div><!-- /.container-fluid -->
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Categorias</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Categorias</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
+<div class="container">
+    @if ( session('mensaje') )
+    <div class="alert alert-success">{{ session('mensaje') }}</div>
+    @endif
 
-<!-- /.col -->
-<div class="col-md-12">
-	<div class="card card-info">
-		<div class="card-header">
-			<h3 class="card-title">Categorias</h3>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			<div class="text-right" style="margin-bottom: 15px"> 
-			<a type="button" class="btn btn-success" href="{{ route('addCategory') }}"> <i class="fas fa-plus"></i> Agregar categoria </a>
-			</div>
-			<table class="table" id="items">
-					<thead>
-						<tr>
-							<!-- <th style="width:10%;">Imagen</th>	-->						
-							<th>Codigo</th>
-                            <th>Nombre</th>		
-                            <th>Status</th>						
-							<th style="width:15%;" class="text-right">Opciones</th>
-						</tr>
-					</thead>
-				</table>
-		</div>
-		<!-- /.card-body -->
-	</div>
-	<!-- /.card -->
+    <!-- /.col -->
+    <div class="col-md-12">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Categorias</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="text-right" style="margin-bottom: 15px">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCategoryModal">
+                        <i class="fas fa-plus"></i> Agregar categoria </button>
+                </div>
+                <table class="table" id="items">
+                    <thead>
+                        <tr>
+                            <!-- <th style="width:10%;">Imagen</th>	-->
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Status</th>
+                            <th style="width:15%;" class="text-right">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="addCategoryModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar una nueva categoría</h3>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('makeCategory') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Nombre de la categoría: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="name" placeholder="Nombre" name="name"
+                                autocomplete="off" value="{{ old('name') }}" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off"> <i
+                            class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
