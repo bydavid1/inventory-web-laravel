@@ -16,11 +16,12 @@ class CreateSalesItemsTable extends Migration
         Schema::create('sales_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer('sale_id');
-            $table->string('product_code');
-            $table->string('product_name');
+            $table->unsignedBigInteger('sale_id');
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity');
-            $table->float('price');
+            $table->float('unit_price');
             $table->float('total');
         });
     }
