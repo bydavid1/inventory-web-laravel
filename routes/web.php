@@ -25,43 +25,43 @@ Route::get('/register', function(){
 })->name('register');
 
 //Product Routes
-Route::get('/product', 'ProductController@index')->name('products');
-Route::get('product/create', 'ProductController@create')->name('addProduct');
-Route::post('/makeProduct', 'ProductController@make')->name('makeProduct');
-Route::get('product/{id}/edit', 'ProductController@edit')->name('editProduct');
-Route::put('updateProduct/{id}', 'ProductController@update')->name('updateProduct');
-Route::get('product/show/{id}', 'ProductController@show')->name('showProduct');
-Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct');
+Route::get('/product', 'ProductController@index')->name('products')->middleware('auth');
+Route::get('product/create', 'ProductController@create')->name('addProduct')->middleware('auth');
+Route::post('/makeProduct', 'ProductController@make')->name('makeProduct')->middleware('auth');
+Route::get('product/{id}/edit', 'ProductController@edit')->name('editProduct')->middleware('auth');
+Route::put('updateProduct/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
+Route::get('product/show/{id}', 'ProductController@show')->name('showProduct')->middleware('auth');
+Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
 
 //Categories Routes
-Route::get('/categories', 'CategoriesController@index')->name('categories');
-Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory');
+Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth');
+Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory')->middleware('auth');
 
 //Providers Routes
-Route::get('/providers', 'ProviderController@index')->name('providers');
-Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider');
+Route::get('/providers', 'ProviderController@index')->name('providers')->middleware('auth');
+Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider')->middleware('auth');
 
 //Costumer routes´
-Route::get('/costumers', 'CostumerController@index')->name('costumers');
-Route::get('/costumer/create', 'CostumerController@create')->name('addCostumers');
-route::post('/makeCostumer', 'CostumerController@store')->name('makeCostumer');
-route::put('updateCostumer/{id}', 'CostumerController@update')->name('updateCostumer');
-Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('deleteCostumer');
+Route::get('/costumers', 'CostumerController@index')->name('costumers')->middleware('auth');
+Route::get('/costumer/create', 'CostumerController@create')->name('addCostumers')->middleware('auth');
+route::post('/makeCostumer', 'CostumerController@store')->name('makeCostumer')->middleware('auth');
+route::put('updateCostumer/{id}', 'CostumerController@update')->name('updateCostumer')->middleware('auth');
+Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('deleteCostumer')->middleware('auth');
 
 //Sales Routes
-Route::get('/sales', 'SaleController@index')->name('sales');
-Route::get('sales/create', 'SaleController@create')->name('addSale');
-Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice');
+Route::get('/sales', 'SaleController@index')->name('sales')->middleware('auth');
+Route::get('sales/create', 'SaleController@create')->name('addSale')->middleware('auth');
+Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice')->middleware('auth');
 Route::post('/save', 'SaleController@save')->name('save');
-Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice');
+Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice')->middleware('auth');
 
 //Purchases
-Route::get('/purchases', 'PurchaseController@index')->name('purchases');
-Route::get('purchases/create', 'PurchaseController@create')->name('addPurchase');
-Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('createPurchase');
-Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getList');
+Route::get('/purchases', 'PurchaseController@index')->name('purchases')->middleware('auth');
+Route::get('purchases/create', 'PurchaseController@create')->name('addPurchase')->middleware('auth');
+Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('createPurchase')->middleware('auth');
+Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getList')->middleware('auth');
 
 //Kardex
-Route::get('/kardex', 'KardexController@index')->name('kardex');
-Route::get('kardex/records/{id}', 'KardexController@records')->name('records');
-Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get_records');
+Route::get('/kardex', 'KardexController@index')->name('kardex')->middleware('auth');
+Route::get('kardex/records/{id}', 'KardexController@records')->name('records')->middleware('auth');
+Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get_records')->middleware('auth');

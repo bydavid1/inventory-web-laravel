@@ -36,7 +36,7 @@ class CreateProductsTable extends Migration
             $table->integer('quantity');
             $table->integer('type')->nullable()->default('1');
             $table->integer('is_available');
-            $table->integer('is_deleted')->nullable()->default('0');;
+            $table->integer('is_deleted')->nullable()->default('0');
         });
     }
 
