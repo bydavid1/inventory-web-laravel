@@ -164,13 +164,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ route('purchases') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Lista de compras</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="{{ route('addPurchase') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Agregar compra</p>
                 </a>

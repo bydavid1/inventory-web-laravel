@@ -88,8 +88,8 @@
                                     <!-- /form-group-->
 
                                     <div class="form-group col-sm-12">
-                                        <label>Fabricante:</label>
-                                        <select data-placeholder="Seleciona un fabricante" style="width: 100%;" class="select2bs4" id="provider_id" name="provider_id">
+                                        <label>Proveedor:</label>
+                                        <select data-placeholder="Seleciona un proveedor" style="width: 100%;" class="select2bs4" id="provider_id" name="provider_id">
                                             @foreach ($providers as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
