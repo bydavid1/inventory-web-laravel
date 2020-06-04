@@ -23,6 +23,12 @@
 </div>
 <!-- /.content-header -->
 
+<div class="container">
+	@if ( session('mensaje') )
+    <div class="alert alert-success">{{ session('mensaje') }}</div>
+     @endif
+</div>
+
 <!-- /.col -->
 <div class="col-md-12">
 	<div class="card card-info">
@@ -32,7 +38,7 @@
 		<!-- /.card-header -->
 		<div class="card-body">
 			<div class="text-right" style="margin-bottom: 15px"> 
-			<a type="button" class="btn btn-success" href="{{ route('addProvider') }}"> <i class="fas fa-plus"></i> Agregar proveedores </a>
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProviderModal"> <i class="fas fa-plus"></i> Agregar proveedores </button>
 			</div>
 			<table class="table" id="items">
 					<thead>
@@ -51,6 +57,59 @@
 		<!-- /.card-body -->
 	</div>
 	<!-- /.card -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="addProviderModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar un nuevo proveedor</h3>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('makeProvider') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Codigo: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Nombre" name="code"
+                                autocomplete="off" value="{{ old('code') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Nombre: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Nombre" name="name"
+                                autocomplete="off" value="{{ old('name') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">NIT: </label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" placeholder="Nombre" name="nit"
+                                autocomplete="off" value="{{ old('nit') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Contacto: </label>
+                        <div class="col-sm-12">
+                            <input type="number" class="form-control" placeholder="Telefono" name="phone"
+                                autocomplete="off" value="{{ old('phone') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Direccion: </label>
+                        <div class="col-sm-12">
+                            <input type="tel" class="form-control" placeholder="Direccion" name="address"
+                                autocomplete="off" value="{{ old('address') }}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-loading-text="Loading..."
+                    autocomplete="off"> <i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 

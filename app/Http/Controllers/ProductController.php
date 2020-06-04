@@ -12,6 +12,9 @@ use App\Kardex;
 
 class ProductController extends Controller
 {
+
+    private $photo_default = "media/photo_default.png";
+
     /**
      * Display a listing of the resource.
      *
@@ -58,23 +61,7 @@ class ProductController extends Controller
             $file = $request->file('image');
             $path = Storage::disk('public')->put('uploads', $file);
         }else{
-            $path = "media/photo_default.png";
-        }
-
-        if ($request->price2 == '') {
-            $request->price2 = 0.00;
-            $request->utility2 = 0.00;
-        }
-        if ($request->price3 == '') {
-            $request->price3 = 0.00;
-            $request->utility3 = 0.00;
-        }
-        if ($request->price4 == '') {
-            $request->price4 = 0.00;
-            $request->utility4 = 0.00;
-        }
-        if ($request->description == '') {
-            $request->description = 'No hay descripción';
+            $path = $this->photo_default;
         }
         
         $new = new Products;
@@ -104,9 +91,9 @@ class ProductController extends Controller
             $kardex->tag_code = "MK";
             $kardex->id_product = $new->id;
             $kardex->quantity =  $new->quantity;
-            $kardex->value = $new->purchase * $new->quantity;
+            $kardex->value_diff = "- $" . $new->purchase * $new->quantity;
             $kardex->unit_price = $new->purchase;
-            $kardex->invoice_id = 0;
+            $kardex->total = $new->purchase * $new->quantity;
             $kardex->save();
 
             return back()->with('mensaje', 'Guardado');
@@ -176,8 +163,11 @@ class ProductController extends Controller
         }
         $product->save();
         if ($request->file('image')) {
-            unlink($savedImage);
+            if ($savedImage != $this->photo_default) {
+                unlink($savedImage);
+            }
         }
+
         return back()->with('mensaje', 'Registro actualizado exitosamente');
     }
 
