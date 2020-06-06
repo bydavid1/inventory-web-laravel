@@ -59,44 +59,50 @@ class SaleController extends Controller
         for ($i=1; $i <= $counter; $i++) { 
             $saleitem = new Sales_item;
             //database and request handlers
-            $data = ['id', 'quantityvalue', 'pricevalue', 'totalvalue'];
+            $data = ['idvalue', 'quantityvalue', 'pricevalue', 'totalvalue'];
             $db = ['product_id', 'quantity', 'unit_price', 'total'];
-            for ($j=0; $j < 5; $j++) { 
+            for ($j=0; $j < 4; $j++) { 
                 //Packing item data to -> $saleitem
                 $modifier = $data[$j] ."". $i;
                 $dbmodifier = $db[$j];
                 $saleitem->$dbmodifier = $request->$modifier;
-            }
+            }//for $j
+
             //Add Sale ID
             $saleitem->sale_id = $id;
 
             if ($saleitem->save()) {
+                
             //Update quantity 
-            $product = Products::select('quantity')->where('id', $saleitem->product_id)->first();
-            $product->quantity = $product->quantity - $saleitem->quantity;
-            $product->save();
+            $product = Products::find($saleitem->product_id);
+            // Make sure we've got the Products model
+            if($product) {
+                $product->quantity = ($product->quantity - $saleitem->quantity);
+                $product->save();
+            }
 
             //Adding to Kardex
             $kardex = new Kardex;
-            $kardex->tag = "Ingreso por producto";
-            $kardex->tag_code = "IN";
+            $kardex->tag = "Compra de producto";
+            $kardex->tag_code = "CN";
             $kardex->id_product = $saleitem->product_id;
             $kardex->quantity = $saleitem->quantity;
             $kardex->value_diff = "+ $" . $saleitem->total;
-            $kardex->unit_price = $saleitem->price;
+            $kardex->unit_price = $saleitem->unit_price;
             $kardex->total = $saleitem->total;
             $kardex->save();
 
-            $product_name = $request->product_name . "" . $i;
-            $product_code = $request->product_code . "" . $i;
-
-            $invoice_products .= "<tr><td>". $product_code ."</td><td>". $product_name ."</td><td>".$saleitem->quantity."</td><td>".$saleitem->price."</td><td>".$saleitem->total."</td></tr>";
             //Adding $saleitems to -> $invoice_products array
+            $invoice_products .= "<tr><td>". $request->{'pcodevalue' . $i} ."</td><td>". $request->{'pnamevalue' . $i} ."</td><td>".$saleitem->quantity."</td><td>".$saleitem->unit_price."</td><td>".$saleitem->total."</td></tr>";
+
             }else{
+
                 $sale->destroy();
                 return response()->json(['message'=>'No se terminó de crear la factura']);
                 }
-            } 
+
+            } //for $i
+
             //Design invoice
             $invoice = $this->designInvoice($invoice_products, $sale);
 

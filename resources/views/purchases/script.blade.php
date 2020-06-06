@@ -124,6 +124,7 @@ function add(id) {
                     var data = response.data;
             //Row
             tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
+                <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
                 <td>
                 ` + data[0].code + `
                 <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `" value="` + data[0].code + `"/>
