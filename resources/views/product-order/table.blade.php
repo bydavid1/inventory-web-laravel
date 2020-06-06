@@ -16,7 +16,7 @@
                   for($x = 1; $x < 2; $x++) {
     ?>
         <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
-
+            <input type="hidden" name="idvalue<?php echo $x; ?>" id="idvalue<?php echo $x; ?>"/>
             <td>
                 <div class="form-group col-sm-12">
                     <input type="text" name="pcode<?php echo $x; ?>" id="pcode<?php echo $x; ?>"

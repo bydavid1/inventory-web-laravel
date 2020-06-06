@@ -70,7 +70,7 @@
 						data: 'created_at'
 					},
 					{
-						data: 'name'
+						data: 'costumer'
 					},
 					{
 						data: 'quantity'

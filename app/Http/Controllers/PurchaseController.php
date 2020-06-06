@@ -80,10 +80,10 @@ class PurchaseController extends Controller
             for ($i=1; $i <= $counter; $i++) { 
                 $purchaseitem = new Purchases_item;
                 //database and request handlers
-                $data = ['id', 'status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
+                $data = ['idvalue', 'status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
                 $db = ['product_id', 'status', 'quantity', 'unit_price', 'total'];
 
-                for ($j=0; $j < 6; $j++) { 
+                for ($j=0; $j < 5; $j++) { 
                     //Packing item data to -> $purchaseitem
                     $modifier = $data[$j] ."". $i;
                     $dbmodifier = $db[$j];

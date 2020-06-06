@@ -11,138 +11,27 @@
 @endsection
 
 @section('content')
-
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Agregar compra</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Compras</a></li>
-                    <li class="breadcrumb-item active">Agregar compra</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-@if ( session('mensaje') )
-<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
-@endif
-
 <div class="mx-5">
-    <div class="row">
-        <div class="col-lg-6">
-            <!--/Card-->
-            <div class="card card-primary ">
-                <!--/Header-->
-                <div class="card-header">
-                    <i class='glyphicon glyphicon-circle-arrow-right'></i>Agregar productos existentes
-                </div>
-                <!--/Body-->
-                <div class="card-body">
-                    <table class="table table-bordered table-condensed" id="items">
-                        <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Producto</th>
-                                <th>Disponible</th>
-                                <th>Precio</th>
-                                <th>Compra</th>
-                                <th style="width: 15%">Acciones</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- right column -->
-        <div class="col-md-6">
-            <!-- card -->
-            <div class="card card-warning">
-                <div class="card-header">
-                    <h3 class="card-title">Agregar producto nuevo</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                        </button>
-                      </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <form role="form" id="newProductForm">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control" id="pname" placeholder="Enter ...">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Codigo</label>
-                                    <input type="text" class="form-control" id="pcode" placeholder="Enter ...">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <!-- select -->
-                                <div class="form-group">
-                                    <label>Proveedor</label>
-                                    <select class="form-control" id="pprovider">
-                                        @foreach ($providers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Categoría</label>
-                                    <select class="form-control" id="category">
-                                        @foreach ($categories as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Cantidad</label>
-                                    <input type="number" class="form-control" placeholder="Enter ..." id="pquantity">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label" for="ppurchase"><i
-                                            class="fas fa-dollar-sign"></i>Precio de compra</label>
-                                    <input type="text" class="form-control" id="ppurchase" placeholder="Enter ...">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label" for="price"><i
-                                            class="fas fa-dollar-sign"></i>Precio principal</label>
-                                    <input type="text" class="form-control" id="price" placeholder="Enter ...">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="button" onclick="addNewProduct()" class="btn btn-primary">Agregar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Agregar compra</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Compras</a></li>
+                        <li class="breadcrumb-item active">Agregar compra</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
-    <!-- /.row -->
-
+    <!-- /.content-header -->
+    @if ( session('mensaje') )
+    <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
+    @endif
     <!-- card-->
     <div class="card card-outline card-danger">
         <div class="card-header">
@@ -159,16 +48,22 @@
                             <div class="form-group row">
                                 <label for="provider" class="col-sm-2 control-label">Proveedor</label>
                                 <div class="col-sm-8">
-                                    <select data-placeholder="Seleciona un proveedor" class="select2bs4 col-sm-10" name="provider" placeholder="Enter..." autocomplete="off">
+                                    <select data-placeholder="Seleciona un proveedor" class="select2bs4 col-sm-10"
+                                        name="provider" placeholder="Enter..." autocomplete="off">
                                         @foreach ($providers as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
-                                    </select>    
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            
+                            <div class="form-group row">
+                                <label for="provider" class="col-sm-2 control-label">Fecha</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,7 +80,7 @@
                         </tr>
                     </thead>
                     <tbody>
-    
+
                     </tbody>
                 </table>
                 <div class="row mt-2">
@@ -193,23 +88,31 @@
                     <div class="col-md-6">
                         <div>
                             <label class="control-label">Cantidad total</label>
-                            <p id="grandquantity"></p>
+                            <p id="grandquantity">0</p>
                             <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
                         </div>
                         <div>
                             <label class="control-label">Total</label>
-                            <p id="grandtotal"></p>
+                            <p id="grandtotal">$0.00</p>
                             <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
                         </div>
+                        <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
                     </div>
                 </div>
                 <!--Num tr value-->
                 <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-    
-                <div class="form-group submitButtonFooter">
-                    <div class="col-sm-offset-2 col-sm-10">
+
+                <div class="form-group row mt-5">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                            data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
+                            producto</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar existentes</button>
+                    </div>
+                    <div class="col-sm-4">
                         <button type="submit" id="createSale" data-loading-text="Cargando..." class="btn btn-success"><i
-                                class="glyphicon glyphicon-ok-sign"></i>Registrar compra</button>   
+                            class="fa fa-save"></i>Registrar compra</button>
                     </div>
                 </div>
             </form>
@@ -219,34 +122,144 @@
     <!-- /.card -->
 </div>
 
-    <!-- ---------------------------------------------------------------------------------- -->
-        <!-- --------------------Modal-------------------- -->
-            <!-- ---------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------- -->
+<!-- --------------------Modal-------------------- -->
+<!-- ---------------------------------------------------------------------------------- -->
 
-            <div class="modal fade" tabindex="-1" role="dialog" id="setInfo">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Actualizar información</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="quantity" class="col-sm-4 control-label">Cantidad comprada</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="quantity" placeholder="Enter..." autocomplete="off" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="purchase" class="col-sm-4 control-label">Precio de compra</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="purchase" placeholder="Enter..." autocomplete="off" />
-                                </div>
-                            </div>
-                            <button type="button" id="AddProduct" class="btn btn-primary"><i class="fa fa-save"></i>Agregar</button>
-                        </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="setInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Actualizar información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="quantity" class="col-sm-4 control-label">Cantidad comprada</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="quantity" placeholder="Enter..."
+                            autocomplete="off" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="purchase" class="col-sm-4 control-label">Precio de compra</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="purchase" placeholder="Enter..."
+                            autocomplete="off" />
+                    </div>
+                </div>
+                <button type="button" id="AddProduct" class="btn btn-primary"><i class="fa fa-save"></i>Agregar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------- -->
+<!-- --------------------Modal-------------------- -->
+<!-- ---------------------------------------------------------------------------------- -->
+<div class="modal fade" role="dialog" tabindex="-1" id="AddNewProductModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Crear un nuevo producto</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="newProductForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="pname" placeholder="Enter ...">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Codigo</label>
+                                <input type="text" class="form-control" id="pcode" placeholder="Enter ...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- select -->
+                            <div class="form-group">
+                                <label>Proveedor</label>
+                                <select class="form-control" id="pprovider">
+                                    @foreach ($providers as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Categoría</label>
+                                <select class="form-control" id="category">
+                                    @foreach ($categories as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control" placeholder="Enter ..." id="pquantity">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
+                                    de compra</label>
+                                <input type="text" class="form-control" id="ppurchase" placeholder="Enter ...">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
+                                    principal</label>
+                                <input type="text" class="form-control" id="price" placeholder="Enter ...">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" onclick="addNewProduct()" class="btn btn-primary">Agregar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p><i class="fa fa-exclamation-circle"></i>El producto se agregará hasta que se registre la compra</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------- -->
+<!-- --------------------Modal-------------------- -->
+<!-- ---------------------------------------------------------------------------------- -->
+<div class="modal fade" role="dialog" tabindex="-1" id="SearchProducts">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Inventario</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-condensed" id="items">
+                    <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Producto</th>
+                            <th>Disponible</th>
+                            <th>Precio</th>
+                            <th>Compra</th>
+                            <th style="width: 15%">Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

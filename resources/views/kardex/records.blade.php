@@ -72,7 +72,7 @@
                         <th>Cantidad</th>
                         <th>Diferencia</th>
                         <th>Precio</th>
-                        <th>Identificador</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
             </table>
@@ -178,13 +178,13 @@
                     data: 'quantity'
                 },
                 {
-                    data: 'value'
+                    data: 'value_diff'
                 },
                 {
                     data: 'unit_price'
                 },
                 {
-                    data: 'invoice_id'
+                    data: 'total'
                 },
             ]
         });

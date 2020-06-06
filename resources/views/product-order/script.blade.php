@@ -10,6 +10,7 @@ const PRODUCTNAMEVALUE = "#pnamevalue";
 const PRODUCTCODEVALUE = "#pcodevalue";
 const QUANTITYVALUE = "#quantityvalue";
 const TOTALVALUE = "#totalvalue";
+const IDVALUE = "#idvalue";
 const Toast = Swal.mixin({
       toast: true,
       position: 'center',
@@ -57,48 +58,49 @@ function add(id) {
                 var data = response.data;
                 pricevalue = parseFloat(pricevalue);
                 pricevalue = pricevalue.toFixed(2);
-                tr = '<tr id="row' + count + '" class="' + arrayNumber + '">' +
-                    '<td>' +
-                    '<div class="form-group col-sm-12">' +
-                    '<input type="text" name="pcode' + count + '" id="pcode' + count + '" autocomplete="off" value="' + data[0].code + '" class="form-control" onchange="getProductData(' + count + ')"/>' +
-                    '<input type="hidden" name="pcodevalue' + count + '" id="pcodevalue'  + count + '" value="' + data[0].code + '"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<div class="form-group col-sm-12">' +
-                    '<input type="text" name="pname' + count + '" id="pname' + count + '" value="' + data[0].name + '" autocomplete="off" class="form-control" disabled />' +
-                    '<input type="hidden" name="pnamevalue' + count + '" id="pnamevalue' + count + '" value="' + data[0].name + '"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    ' <div class="input-group col-sm-12">' +
-                    '<div class="input-group-prepend"><span class="input-group-text">$</span></div>' +
-                    '<input type="number" name="price' + count + '" id="price' + count + '" autocomplete="off" value="' + pricevalue + '"  class="form-control" step="0.01"  min="0" onchange="totalValue(' + count + ')" />' +
-                    '<input type="hidden" name="pricevalue' + count + '" id="pricevalue' + count + '" value="' + pricevalue + '"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<div class="form-group col-sm-12">' +
-                    '<input type="number" name="quantity' + count + '" id="quantity' + count + '" autocomplete="off" value="' + quantityvalue + '" class="form-control" min="1" onchange="totalValue(' + count + ')" />' +
-                    '<input type="hidden" name="quantityvalue' + count + '" id="quantityvalue' + count + '" value="' + quantityvalue + '"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<div class="form-group col-sm-12">' +
-                    '<input type="text" value="13%" class ="form-control" disabled="true"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    ' <div class="input-group col-sm-12">' +
-                    '<div class="input-group-prepend"><span class="input-group-text">$</span></div>' +
-                    '<input type="text" name="total' + count + '" id="total' + count + '" autocomplete="off" value="' + pricevalue + '" class="form-control" step="0.01"  min="0" disabled="true" />' +
-                    '<input type="hidden" name="totalvalue' + count + '" id="totalvalue' + count + '" value="' + pricevalue + '"/>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<button class="btn btn-primary" type="button" onclick="removeProductRow(' + count + ')"><i class="fa fa-trash"></i></button>' +
-                    '</td>' +
-                    '</tr>';
+                tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
+                   <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
+                   <td>
+                   <div class="form-group col-sm-12">
+                   <input type="text" name="pcode` + count + `" id="pcode` + count + `" autocomplete="off" value="` + data[0].code + `" class="form-control" onchange="getProductData(` + count + `)"/>
+                   <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `" value="` + data[0].code + `"/>
+                   </div>
+                   </td>
+                   <td>
+                   <div class="form-group col-sm-12">
+                   <input type="text" name="pname` + count + `" id="pname` + count + `" value="` + data[0].name + `" autocomplete="off" class="form-control" disabled />
+                   <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
+                   </div>
+                   </td>
+                   <td>
+                    ' <div class="input-group col-sm-12">
+                   <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                   <input type="number" name="price` + count + `" id="price` + count + `" autocomplete="off" value="` + pricevalue + `"  class="form-control" step="0.01"  min="0" onchange="totalValue(` + count + `)" />
+                   <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `" value="` + pricevalue + `"/>
+                   </div>
+                   </td>
+                   <td>
+                   <div class="form-group col-sm-12">
+                   <input type="number" name="quantity` + count + `" id="quantity` + count + `" autocomplete="off" value="` + quantityvalue + `" class="form-control" min="1" onchange="totalValue(` + count + `)" />
+                   <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
+                   </div>
+                   </td>
+                   <td>
+                   <div class="form-group col-sm-12">
+                   <input type="text" value="13%" class ="form-control" disabled="true"/>
+                   </div>
+                   </td>
+                   <td>
+                    ' <div class="input-group col-sm-12">
+                   <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                   <input type="text" name="total` + count + `" id="total` + count + `" autocomplete="off" value="` + pricevalue + `" class="form-control" step="0.01"  min="0" disabled="true" />
+                   <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + pricevalue + `"/>
+                   </div>
+                   </td>
+                   <td>
+                   <button class="btn btn-primary" type="button" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></button>
+                   </td>
+                   </tr>`;
 
                 if (tableLength > 1) {
                     $(Table + " tbody tr:last").after(tr);
@@ -113,6 +115,7 @@ function add(id) {
                     $(PRICEVALUE + 1).val(pricevalue);
                     $(QUANTITYVALUE + 1).val(quantityvalue);
                     $(TOTALVALUE + 1).val(pricevalue);
+                    $(IDVALUE + 1).val(data[0].id );
                     $(PRICE + 1).prop('disabled', false);
                     $(QUANTITY + 1).prop('disabled', false);
                 } else {
@@ -244,48 +247,49 @@ function addRow() {
 
     $("#addRowBtn").button("reset");
 
-    var tr = '<tr id="row' + count + '" class="' + arrayNumber + '">' +
-        '<td>' +
-        '<div class="form-group col-sm-12">' +
-        '<input type="text" name="pcode' + count + '" id="pcode' + count + '" autocomplete="off" class="form-control" onchange="getProductData(' + count + ')"/>' +
-        '<input type="hidden" name="pcodevalue' + count + '" id="pcodevalue' + count + '"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        '<div class="form-group col-sm-12">' +
-        '<input type="text" name="pname' + count + '" id="pname' + count + '" autocomplete="off" class="form-control" disabled />' +
-        '<input type="hidden" name="pnamevalue' + count + '" id="pnamevalue' + count + '"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        ' <div class="input-group col-sm-12">' +
-        '<div class="input-group-prepend"><span class="input-group-text">$</span></div>' +
-        '<input type="number" name="price' + count + '" id="price' + count + '" autocomplete="off" disabled class="form-control" step="0.01"  min="0" onchange="totalValue(' + count + ')" />' +
-        '<input type="hidden" name="pricevalue' + count + '" id="pricevalue' + count + '"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        '<div class="form-group col-sm-12">' +
-        '<input type="number" name="quantity' + count + '" id="quantity' + count + '" autocomplete="off" disabled class="form-control" min="1" onchange="totalValue(' + count + ')" />' +
-        '<input type="hidden" name="quantityvalue' + count + '" id="quantityvalue' + count + '"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        '<div class="form-group col-sm-12">' +
-        '<input type="text" value="13%" class ="form-control" disabled="true"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        ' <div class="input-group col-sm-12">' +
-        '<div class="input-group-prepend"><span class="input-group-text">$</span></div>' +
-        '<input type="text" name="total' + count + '" id="total' + count + '" autocomplete="off" class="form-control" step="0.01"  min="0" disabled="true" />' +
-        '<input type="hidden" name="totalvalue' + count + '" id="totalvalue' + count + '"/>' +
-        '</div>' +
-        '</td>' +
-        '<td>' +
-        '<button class="btn btn-primary" type="button" onclick="removeProductRow(' + count + ')"><i class="fa fa-trash"></i></button>' +
-        '</td>' +
-        '</tr>';
+    var tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
+        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `"/>
+       <td>
+       <div class="form-group col-sm-12">
+       <input type="text" name="pcode` + count + `" id="pcode` + count + `" autocomplete="off" class="form-control" onchange="getProductData(` + count + `)"/>
+       <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `"/>
+       </div>
+       </td>
+       <td>
+       <div class="form-group col-sm-12">
+       <input type="text" name="pname` + count + `" id="pname` + count + `" autocomplete="off" class="form-control" disabled />
+       <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `"/>
+       </div>
+       </td>
+       <td>
+       <div class="input-group col-sm-12">
+       <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+       <input type="number" name="price` + count + `" id="price` + count + `" autocomplete="off" disabled class="form-control" step="0.01"  min="0" onchange="totalValue(` + count + `)" />
+       <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `"/>
+       </div>
+       </td>
+       <td>
+       <div class="form-group col-sm-12">
+       <input type="number" name="quantity` + count + `" id="quantity` + count + `" autocomplete="off" disabled class="form-control" min="1" onchange="totalValue(` + count + `)" />
+       <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `"/>
+       </div>
+       </td>
+       <td>
+       <div class="form-group col-sm-12">
+       <input type="text" value="13%" class ="form-control" disabled="true"/>
+       </div>
+       </td>
+       <td>
+       <div class="input-group col-sm-12">
+       <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+       <input type="text" name="total` + count + `" id="total` + count + `" autocomplete="off" class="form-control" step="0.01"  min="0" disabled="true" />
+       <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `"/>
+       </div>
+       </td>
+       <td>
+       <button class="btn btn-primary" type="button" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></button>
+       </td>
+       </tr>`;
     if (tableLength > 0) {
         $(Table + " tbody tr:last").after(tr);
     } else {
