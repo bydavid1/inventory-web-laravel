@@ -12,7 +12,7 @@ use App\Kardex;
 trait KardexTrait
 {
     
-    public function storedata($status, $productid, $quantity, $price, $total, $invoiceid){
+    public function storedata($status, $productid, $quantity, $price, $total){
         if ($status == "new") {
 
             for ($i=1; $i < 3; $i++) { 
@@ -21,9 +21,9 @@ trait KardexTrait
                 $kardex->tag_code = "MK";
                 $kardex->id_product = $productid;
                 $kardex->quantity =  $quantity;
-                $kardex->value = $total;
+                $kardex->value_diff = "$ -". $total;
                 $kardex->unit_price = $price;
-                $kardex->invoice_id = $invoiceid;
+                $kardex->total = $total;
                 $kardex->save();
 
                 $kardex->tag = "Compra de producto";
@@ -36,9 +36,9 @@ trait KardexTrait
                 $kardex->tag_code = "CN";
                 $kardex->id_product = $productid;
                 $kardex->quantity =  $quantity;
-                $kardex->value = $total;
+                $kardex->value_diff = "$ -". $total;
                 $kardex->unit_price = $price;
-                $kardex->invoice_id = $invoiceid;
+                $kardex->total = $total;
                 $kardex->save();
         }
     }
