@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Traits\KardexTrait;
+use App\Categories;
+use App\Products;
+use App\Providers;
 use App\Purchases;
 use App\Purchases_item;
-use App\Products;
-use App\Categories;
-use App\Providers;
+use App\Traits\KardexTrait;
+use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class PurchaseController extends Controller
@@ -32,20 +32,20 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
-        $providers = Providers::select(['id','name'])->where('is_available', 1)->get();;
+        $categories = Categories::select(['id', 'name'])->where('is_available', 1)->get();
+        $providers = Providers::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('purchases.add', compact(['categories','providers']));
+        return view('purchases.add', compact(['categories', 'providers']));
     }
 
-        /**
+    /**
      * Get product List
      *
      * @return \Illuminate\Http\Response
      */
     public function GetList()
     {
-        $list = Products::select(['id','name','quantity','purchase','price1'])->get();
+        $list = Products::select(['id', 'name', 'quantity', 'purchase', 'price1'])->get();
 
         return Datatables::of($list)
             ->addColumn('action', '<div style="display: inline-flex">
@@ -71,78 +71,77 @@ class PurchaseController extends Controller
             $purchase->total = $request->grandtotalvalue;
             $purchase->subtotal = $request->grandtotalvalue;
             $purchase->is_deleted = 0;
-    
+
             if ($purchase->save()) {
 
-            $id = $purchase->id;
-            $counter = $request->trCount;
+                $id = $purchase->id;
+                $counter = $request->trCount;
 
-            for ($i=1; $i <= $counter; $i++) { 
-                $purchaseitem = new Purchases_item;
-                //database and request handlers
-                $data = ['idvalue', 'status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
-                $db = ['product_id', 'status', 'quantity', 'unit_price', 'total'];
+                for ($i = 1; $i <= $counter; $i++) {
 
-                for ($j=0; $j < 5; $j++) { 
-                    //Packing item data to -> $purchaseitem
-                    $modifier = $data[$j] ."". $i;
-                    $dbmodifier = $db[$j];
-                    $purchaseitem->$dbmodifier = $request->$modifier;
-                }
-                $purchaseitem->purchase_id = $id;
+                    $purchaseitem = new Purchases_item;
+                    //database and request handlers
+                    $data = ['status', 'quantityvalue', 'purchasevalue', 'totalvalue'];
+                    $db = ['status', 'quantity', 'unit_price', 'total'];
 
-                if ($purchaseitem->save()) {
+                    for ($j = 0; $j < 4; $j++) {
+                        //Packing item data to -> $purchaseitem
+                        $modifier = $data[$j] . "" . $i;
+                        $dbmodifier = $db[$j];
+                        $purchaseitem->$dbmodifier = $request->$modifier;
+                    }
 
-                        //if product == new then save in storage
+                    $purchaseitem->purchase_id = $id;
+
                     if ($purchaseitem->status == "nuevo") {
-                        $utility1 = ($request->purchasevalue . "" . $i) - ($request->price . "" . $i);
+
                         $newProduct = new Products;
-                        $newProduct->code = $purchaseitem->product_code;
-                        $newProduct->name = $purchaseitem->product_name;
+                        $newProduct->code = $request->{'pcodevalue' . $i};
+                        $newProduct->name = $request->{'pnamevalue' . $i};
                         $newProduct->image = "media/photo_default.png";
-                        $newProduct->provider_id = $request->provider . "" . $i;
-                        $newProduct->category_id = $request->category . "" . $i;
-                        $newProduct->purchase = $purchaseitem->price . "" . $i;
-                        $newProduct->quantity = $purchaseitem->quantity . "" . $i;
+                        $newProduct->provider_id = $request->{'provider' . $i};
+                        $newProduct->category_id = $request->{'category' . $i};
+                        $newProduct->purchase = $request->{'purchasevalue' . $i};
+                        $newProduct->quantity = $request->{'quantityvalue' . $i};
                         $newProduct->type = 1;
-                        $newProduct->price1 = $request->price . "" . $i;
-                        $newProduct->utility1 = $utility1;
+                        $newProduct->price1 = $request->{'price' . $i};
+                        $newProduct->utility1 = $request->{'price' . $i}-$request->{'purchasevalue' . $i};
                         $newProduct->is_available = 0;
                         $newProduct->is_deleted = 0;
                         $newProduct->save();
 
-                        //Adding to Kardex
-
-                        $this->storedata("new", $newProduct->id, $purchaseitem->quantity, $purchaseitem->price, $purchaseitem->total, $id);
-
-                    }else {
-                        //Update quantity 
-                        $product = Products::select('quantity', 'id')->where('code', $purchaseitem->product_code)->first();
-                        $product->quantity = $product->quantity + $purchaseitem->quantity;
-                        $product->save();
+                        $purchaseitem->product_id = $newProduct->id;
 
                         //Adding to Kardex
+                        $this->storedata("new", $newProduct->id, $purchaseitem->quantity, $purchaseitem->unit_price, $purchaseitem->total);
+                    } else {
+                        $purchaseitem->product_id = $request->{'idvalue' . $i};
+                        //Adding to Kardex
+                        $this->storedata("add", $purchaseitem->product_id, $purchaseitem->quantity, $purchaseitem->unit_price, $purchaseitem->total);
 
-                        $this->storedata("add", $product->id, $purchaseitem->quantity, $purchaseitem->price, $purchaseitem->total, $id);
+                        //Update quantity
+                        $product = Products::find($purchaseitem->product_id);
+                        // Make sure we've got the Products model
+                        if ($product) {
+                            $product->quantity = ($product->quantity + $purchaseitem->quantity);
+                            $product->save();
+                        }
                     }
 
-                //Adding $purchaseitems to -> $invoice_products array
-                }else{
-                    $purchase->destroy();
-                    return response()->json(['message'=>'No se terminó de crear la factura']);
-                    }
-                } 
+                    $purchaseitem->save();
+                }
 
-                return response()->json(['message'=>'Factura guardada']);
+                return response()->json(['message' => 'Factura guardada']);
+
             }
-    
-            return response()->json(['message'=>'Ocurrió un error al registrar la información']);
-            
-            } catch (Exception $e) {
-    
-                return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
-    
-            }
+
+            return response()->json(['message' => 'Ocurrió un error al registrar la información']);
+
+        } catch (Exception $e) {
+
+            return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
+
+        }
     }
 
     /**
