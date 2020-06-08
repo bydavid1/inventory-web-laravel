@@ -32,102 +32,125 @@
     @if ( session('mensaje') )
     <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
     @endif
-    <!-- card-->
-    <div class="card card-outline card-danger">
-        <div class="card-header">
-            <h3 class="card-title">Información de la compra</h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <form id="createPurchaseForm">
-                @csrf
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label for="provider" class="col-sm-2 control-label">Proveedor</label>
-                                <div class="col-sm-8">
-                                    <select data-placeholder="Seleciona un proveedor" class="select2bs4 col-sm-10"
-                                        name="provider" placeholder="Enter..." autocomplete="off">
-                                        @foreach ($providers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
+
+    <form id="createPurchaseForm">
+        @csrf
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- card-->
+                <div class="card card-outline card-danger">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label for="provider" class="col-sm-4 control-label">Proveedor</label>
+                                        <div class="col-sm-8">
+                                            <select data-placeholder="Seleciona un proveedor"
+                                                class="select2bs4 col-sm-10" name="provider" placeholder="Enter..."
+                                                autocomplete="off">
+                                                @foreach ($providers as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label for="provider" class="col-sm-2 control-label">Fecha</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label for="provider" class="col-sm-2 control-label">Fecha</label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control">
-                                </div>
+                        <table class="table table-condensed" id="productTable">
+                            <thead>
+                                <tr class="info">
+                                    <th style="width:10%;">Codigo</th>
+                                    <th style="width:20%;">Producto</th>
+                                    <th style="width:10%;">Condición</th>
+                                    <th style="width:10%;">Precio</th>
+                                    <th style="width:10%;">Cantidad</th>
+                                    <th style="width:10%;">Total</th>
+                                    <th style="width:10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <div class="row mt-2">
+                            <div class="col-sm-6"></div>
+                            <div class="col-md-6">
+                                <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                            </div>
+                        </div>
+                        <!--Num tr value-->
+                        <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
+
+                        <div class="form-group row mt-5">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                    data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
+                                    producto</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
+                                    existentes</button>
+                            </div>
+                            <div class="col-sm-4">
+
                             </div>
                         </div>
                     </div>
+                    <!-- /.card-body -->
                 </div>
-                <table class="table table-condensed" id="productTable">
-                    <thead>
-                        <tr class="info">
-                            <th style="width:10%;">Codigo</th>
-                            <th style="width:20%;">Producto</th>
-                            <th style="width:10%;">Condición</th>
-                            <th style="width:10%;">Precio</th>
-                            <th style="width:10%;">Cantidad</th>
-                            <th style="width:10%;">Total</th>
-                            <th style="width:10%;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-                <div class="row mt-2">
-                    <div class="col-sm-6"></div>
-                    <div class="col-md-6">
-                        <div>
-                            <label class="control-label">Cantidad total</label>
-                            <p id="grandquantity">0</p>
-                            <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
-                        </div>
-                        <div>
-                            <label class="control-label">Total</label>
-                            <p id="grandtotal">$0.00</p>
-                            <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
-                        </div>
-                        <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                <!-- /.card -->
+            </div>
+            <div class="col-sm-4">
+                <!-- card-->
+                <div class="card card-outline card-danger">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <h4 class="mb-3">Resumen</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Cantidad total
+                                <strong id="grandquantity">0</strong>
+                                <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Sub total
+                                <strong id="">$0.00</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Total
+                                <strong id="grandtotal">$0.00</strong>
+                                <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                            </li>
+                        </ul>
+                        <button type="submit" id="createSale" data-loading-text="Cargando..."
+                            class="btn btn-success btn-block mt-2">Registrar compra</button>
                     </div>
+                    <!-- /.card-body -->
                 </div>
-                <!--Num tr value-->
-                <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-
-                <div class="form-group row mt-5">
-                    <div class="col-sm-offset-2 col-sm-8">
-                        <button type="button" class="btn btn-secondary" data-toggle="modal"
-                            data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
-                            producto</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar existentes</button>
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="submit" id="createSale" data-loading-text="Cargando..." class="btn btn-success"><i
-                            class="fa fa-save"></i>Registrar compra</button>
-                    </div>
-                </div>
-            </form>
+                <!-- /.card -->
+            </div>
         </div>
-        <!-- /.card-body -->
-    </div>
-    <!-- /.card -->
+    </form>
 </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
 <!-- --------------------Modal-------------------- -->
 <!-- ---------------------------------------------------------------------------------- -->
 
-<div class="modal fade" tabindex="-1" role="dialog" id="setInfo">
-    <div class="modal-dialog">
+<div class="modal fade right" tabindex="-1" role="dialog" id="setInfo">
+    <div class="modal-dialog modal-full-height modal-right">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Actualizar información</h4>
@@ -156,79 +179,64 @@
 <!-- ---------------------------------------------------------------------------------- -->
 <!-- --------------------Modal-------------------- -->
 <!-- ---------------------------------------------------------------------------------- -->
-<div class="modal fade" role="dialog" tabindex="-1" id="AddNewProductModal">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade right" role="dialog" tabindex="-1" id="AddNewProductModal">
+    <div class="modal-dialog modal-full-height modal-right">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>Crear un nuevo producto</h4>
+                <h4 class="mx-auto">Crear un nuevo producto</h4>
+                <button class="close ml-2" data-dismiss="modal" arial-label="close"><span
+                        aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
+                <div class="text-center">
+                    <i class="far fa-file fa-4x text-primary fa-rotate-right mb-1"></i>
+                    <p><i class="fa fa-exclamation-circle text-primary mr-1"></i>El producto se guardará hasta que se
+                        registre la compra</p>
+                </div>
                 <form role="form" id="newProductForm">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" id="pname" placeholder="Enter ...">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Codigo</label>
-                                <input type="text" class="form-control" id="pcode" placeholder="Enter ...">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" id="pname" placeholder="Enter ...">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <!-- select -->
-                            <div class="form-group">
-                                <label>Proveedor</label>
-                                <select class="form-control" id="pprovider">
-                                    @foreach ($providers as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Categoría</label>
-                                <select class="form-control" id="category">
-                                    @foreach ($categories as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Cantidad</label>
-                                <input type="number" class="form-control" placeholder="Enter ..." id="pquantity">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
-                                    de compra</label>
-                                <input type="text" class="form-control" id="ppurchase" placeholder="Enter ...">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
-                                    principal</label>
-                                <input type="text" class="form-control" id="price" placeholder="Enter ...">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <button type="button" onclick="addNewProduct()" class="btn btn-primary">Agregar</button>
-                        </div>
+                    <div class="form-group">
+                        <label>Codigo</label>
+                        <input type="text" class="form-control" id="pcode" placeholder="Enter ...">
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <select class="form-control" id="pprovider">
+                            @foreach ($providers as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select class="form-control" id="category">
+                            @foreach ($categories as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" class="form-control" placeholder="Enter ..." id="pquantity">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
+                            de compra</label>
+                        <input type="text" class="form-control" id="ppurchase" placeholder="Enter ...">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
+                            principal</label>
+                        <input type="text" class="form-control" id="price" placeholder="Enter ...">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <p><i class="fa fa-exclamation-circle"></i>El producto se agregará hasta que se registre la compra</p>
+                <button type="button" onclick="addNewProduct()" class="btn btn-primary btn-block">Agregar</button>
             </div>
         </div>
     </div>
@@ -241,21 +249,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>Inventario</h4>
+                <h4 class="modal-title mx-auto">Busqueda en inventario</h4>
+                <button class="close ml-2" data-dismiss="modal" arial-label="close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-condensed" id="items">
-                    <thead>
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Producto</th>
-                            <th>Disponible</th>
-                            <th>Precio</th>
-                            <th>Compra</th>
-                            <th style="width: 15%">Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
+                 <input class="form-control form-control-lg form-control-borderless" id="searchInput" type="search" placeholder="Buscar en el inventario">
+                 <div id="results" class="pt-3 px-2">
+
+                 </div>
             </div>
         </div>
     </div>
@@ -273,42 +274,7 @@
     <!-- Select2 -->
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     @include('purchases.script')
-    <script>
-        $(document).ready(function () {          
-            $('#items').DataTable({
-                "serverSide": true,
-                "ajax": "{{ route('getList') }}",
-                "columns": [{
-                        data: 'id'
-                    },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'quantity'
-                    },
-                    {
-                        data: 'price1'
-                    },
-                    {
-                        data: 'purchase'
-                    },
-                    {
-                        data: 'action'
-                    },
-                ]
-            });
-
-                    //Initialize Select2 Elements
-        $('.select2').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        });
-
-        });
-    </script>
- <script>
+   <script>
     $('#createPurchaseForm').unbind('submit').bind('submit', function (stay) {
         stay.preventDefault();
         var formdata = $(this).serialize();
