@@ -6,6 +6,25 @@ const PRODUCTCODEVALUE = "#pcodevalue";
 const QUANTITYVALUE = "#quantityvalue";
 const TOTALVALUE = "#totalvalue";
 
+$(document).ready(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    });
+
+    //setup before functions
+    var typingTimer; //timer identifier
+    var doneTypingInterval = 500;
+
+    //on keyup, start the countdown
+    $('#searchInput').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(searchProduct, doneTypingInterval);
+    });
+
+});
+
 function addNewProduct() {
     let name = $('#pname').val();
     let code = $('#pcode').val();
@@ -16,10 +35,10 @@ function addNewProduct() {
     let provider = $('#pprovider').val();
     if (name == "" || code == "" || quantity == "" || purchase == "" || price == "") {
         Swal.fire({
-			type: 'error',
-			title: 'Faltan datos importantes',
-		   });
-    }else{
+            type: 'error',
+            title: 'Faltan datos importantes',
+        });
+    } else {
         let tableLength = $(Table + " tbody tr").length;
         let tableRow;
         let arrayNumber;
@@ -71,15 +90,15 @@ function addNewProduct() {
                 </td>
                 </tr>`;
 
-                    if (tableLength > 1) {
-                        $(Table + " tbody tr:last").after(tr);
-                    } else {
-                        $(Table + " tbody").append(tr);
-                    }
+        if (tableLength > 1) {
+            $(Table + " tbody tr:last").after(tr);
+        } else {
+            $(Table + " tbody").append(tr);
+        }
 
-                    subAmount();
-                    countRow();
-                    $('#newProductForm').trigger("reset");
+        subAmount();
+        countRow();
+        $('#newProductForm').trigger("reset");
     }
 }
 
@@ -95,8 +114,8 @@ function add(id) {
         var quantityvalue = $("#quantity").val();
         var pricevalue = $("#purchase").val();
         var total = pricevalue * quantityvalue;
-                    pricevalue = parseFloat(pricevalue);
-                    pricevalue = pricevalue.toFixed(2);
+        pricevalue = parseFloat(pricevalue);
+        pricevalue = pricevalue.toFixed(2);
 
         if (tableLength > 0) {
             tableRow = $(Table + " tbody tr:last").attr('id');
@@ -122,37 +141,37 @@ function add(id) {
             statusCode: {
                 200: function (response) {
                     var data = response.data;
-            //Row
-            tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-                <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
-                <td>
-                ` + data[0].code + `
-                <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `" value="` + data[0].code + `"/>
-                </td>
-                <td>
-                ` + data[0].name + `
-                <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
-                </td>
-                <td>
-                <small class="badge badge-danger">Existente</small>
-                <input type="hidden" name="status` + count + `" id="status` + count + `" value="existente"/>
-                </td>
-                <td>
-                $` + pricevalue + `
-                <input type="hidden" name="purchasevalue` + count + `" id="purchasevalue` + count + `" value="` + pricevalue + `"/>
-                </td>
-                <td>
-                ` + quantityvalue + `
-                <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
-                </td>
-                <td>
-                $` + total + `
-                <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + total + `"/>
-                </td>
-                <td>
-                <a onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></a>
-                </td>
-                </tr>`;
+                    //Row
+                    tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
+                        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
+                        <td>
+                        ` + data[0].code + `
+                        <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `" value="` + data[0].code + `"/>
+                        </td>
+                        <td>
+                        ` + data[0].name + `
+                        <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
+                        </td>
+                        <td>
+                        <small class="badge badge-danger">Existente</small>
+                        <input type="hidden" name="status` + count + `" id="status` + count + `" value="existente"/>
+                        </td>
+                        <td>
+                        $` + pricevalue + `
+                        <input type="hidden" name="purchasevalue` + count + `" id="purchasevalue` + count + `" value="` + pricevalue + `"/>
+                        </td>
+                        <td>
+                        ` + quantityvalue + `
+                        <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
+                        </td>
+                        <td>
+                        $` + total + `
+                        <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + total + `"/>
+                        </td>
+                        <td>
+                        <a onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></a>
+                        </td>
+                        </tr>`;
 
                     if (tableLength > 1) {
                         $(Table + " tbody tr:last").after(tr);
@@ -219,10 +238,60 @@ function removeProductRow(row = null) {
     subAmount();
 }
 
+//----------------------------------------------------------------------
+//-------------------------Count rows table---------------------------------
+//----------------------------------------------------------------------
 
 function countRow() {
     var tableLength = $(Table + " tbody tr").length;
     console.log(tableLength);
     $("#trCount").val(tableLength);
+}
+
+
+//----------------------------------------------------------------------
+//-------------------------Search Product---------------------------------
+//----------------------------------------------------------------------
+
+function searchProduct() {
+
+    let query = $("#searchInput").val();
+    let url = "{{ url('api/products/order/search', 'query') }}";
+    url = url.replace("query", query);
+    $.ajax({
+        type: 'get',
+        url: url,
+        dataType: 'json',
+        beforeSend: function (objeto) {
+            $("#results").html(`<div class="d-flex justify-content-center mt-4"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>`);
+        },
+        statusCode: {
+            200: function (response) {
+                if (response.success == true) {
+                    let data = response.products;
+                    let output = "";
+                    for (let i = 0; i < data.length; i++) {
+                        output += `<div class="row mb-2">
+                        <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}" style="max-height:50px; max-width:70px;"/></div>
+                        <div class="col-sm-2 my-auto">` + data[i].code + `</div>
+                        <div class="col-sm-3 my-auto">` + data[i].name + `</div>
+                        <div class="col-sm-2 my-auto">` + data[i].quantity + `</div>
+                        <div class="col-sm-2 my-auto">` + data[i].price1 + `</div>
+                        <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i class="fas fa-plus"></i>Agregar</button></div>
+                        </div>`;
+                    }
+                    $("#results").html(output);
+                }else{
+                    $("#results").html(`No hay productos que coincidan`);
+                }
+            },
+            404: function () {
+                $("#results").html(`Recurso no encontrado`);
+            },
+            500: function () {
+                $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`);
+            }
+        }
+    })
 }
 </script>

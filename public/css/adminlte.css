@@ -5807,6 +5807,16 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   transform: translate(0, -50px);
 }
 
+.modal.fade .modal-right {
+  transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+  -webkit-transform: translate(-25px, 0);
+  transform: translate(-25px, 0);
+}
+
+
+
 @media (prefers-reduced-motion: reduce) {
   .modal.fade .modal-dialog {
     transition: none;
@@ -5984,6 +5994,23 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   }
   .modal-sm {
     max-width: 300px;
+  }
+
+  .modal-full-height{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 400px;
+    height: auto;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  .modal .modal-dialog.modal-right {
+    right: 0;
   }
 }
 

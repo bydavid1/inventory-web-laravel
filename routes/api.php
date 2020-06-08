@@ -94,6 +94,16 @@ Route::get('products/order/code/{code}', function ($code){
       ->toJson();
 });
 
+Route::get('products/order/search/{query}', function ($query){
+   $products = App\Products::where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
+   if ($products->count() > 0) {
+      return response()->json(['success' => true, 'products' => $products], 200);
+   }else{
+      return response()->json(['success' => false, 'products' => null], 200);
+   }
+});
+
+
 Route::get('sales', function(){
    return datatables()->eloquent(App\Sales::query())
       ->addColumn('actions', '<div class="btn-group float-right">
