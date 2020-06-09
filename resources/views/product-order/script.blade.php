@@ -18,6 +18,19 @@ const Toast = Swal.mixin({
       timer: 3000
     });
 
+$(document).ready(function () {
+    //setup before functions
+    var typingTimer; //timer identifier
+    var doneTypingInterval = 500;
+
+    //on keyup, start the countdown
+    $('#searchInput').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(searchProduct, doneTypingInterval);
+    });
+
+});
+
 //----------------------------------------------------------------------
 //-------------------------Add to table---------------------------------
 //----------------------------------------------------------------------
@@ -338,6 +351,52 @@ function countRow(){
     var tableLength = $(Table + " tbody tr").length;
     console.log(tableLength);
     $("#trCount").val(tableLength);
+}
+
+//----------------------------------------------------------------------
+//-------------------------Search Product---------------------------------
+//----------------------------------------------------------------------
+
+function searchProduct() {
+
+let query = $("#searchInput").val();
+let url = "{{ url('api/products/order/search', 'query') }}";
+url = url.replace("query", query);
+$.ajax({
+    type: 'get',
+    url: url,
+    dataType: 'json',
+    beforeSend: function (objeto) {
+        $("#results").html(`<div class="d-flex justify-content-center mt-4"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>`);
+    },
+    statusCode: {
+        200: function (response) {
+            if (response.success == true) {
+                let data = response.products;
+                let output = "";
+                for (let i = 0; i < data.length; i++) {
+                    output += `<div class="row mb-2">
+                    <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}" style="max-height:50px; max-width:70px;"/></div>
+                    <div class="col-sm-2 my-auto">` + data[i].code + `</div>
+                    <div class="col-sm-3 my-auto">` + data[i].name + `</div>
+                    <div class="col-sm-2 my-auto">` + data[i].quantity + `</div>
+                    <div class="col-sm-2 my-auto">` + data[i].price1 + `</div>
+                    <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i class="fas fa-plus"></i>Agregar</button></div>
+                    </div>`;
+                }
+                $("#results").html(output);
+            }else{
+                $("#results").html(`No hay productos que coincidan`);
+            }
+        },
+        404: function () {
+            $("#results").html(`Recurso no encontrado`);
+        },
+        500: function () {
+            $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`);
+        }
+    }
+})
 }
 
 </script>

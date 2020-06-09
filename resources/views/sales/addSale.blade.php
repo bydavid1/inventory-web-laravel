@@ -30,83 +30,90 @@
     @if ( session('mensaje') )
     <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
     @endif
-        <!--/Card-->
-        <div class="card card-primary ">
-            <!--/Header-->
-            <div class="card-header">
-                <i class='glyphicon glyphicon-circle-arrow-right'></i> Agregar venta
-            </div>
-            <!--/Body-->
-            <div class="card-body">
-                <form class="form-horizontal" id="createOrderForm">
-                    @csrf
-                    <div class="row">
-                        <!--/form-group-->
-                        <div class="form-group col-lg-6">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <label for="clientName" class="col-sm-4 control-label">Nombre del cliente</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" placeholder="Cliente"
-                                    autocomplete="off" />
-                            </div>
-                        </div>
-                        <!--/form-group-->
+    <form class="form-horizontal" id="createOrderForm">
+        @csrf
+        <div class="row">
+            <div class="col-sm-8">
+                <!--/Card-->
+                <div class="card card-primary ">
+                    <!--/Header-->
+                    <div class="card-header">
+                        <i class='glyphicon glyphicon-circle-arrow-right'></i> Agregar venta
                     </div>
+                    <!--/Body-->
+                    <div class="card-body">
 
-                    @include('product-order.table')
-
-                    <div class="row">
-                        <div class="col-sm-8">
-
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="input-group mb-3">
-                                <label for="vat" class="col-sm-3 control-label">Cantidad total</label>
-                                <div class="col-sm-5 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">$</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="grandquantity" name="grandquantity"
-                                        disabled="true" />
-                                    <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
-                                </div>
-                            </div>
+                        <div class="row">
                             <!--/form-group-->
-                            <div class="input-group mb-5">
-                                <label for="grandTotal" class="col-sm-3 control-label">Total</label>
-                                <div class="col-sm-5 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">$</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="grandtotal" name="grandtotal"
-                                        disabled="true" />
-                                    <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                            <div class="form-group col-lg-6">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <label for="clientName" class="col-sm-4 control-label">Nombre del cliente</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" placeholder="Cliente"
+                                        autocomplete="off" />
                                 </div>
                             </div>
                             <!--/form-group-->
                         </div>
-                    </div>
 
-                    <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
+                        @include('product-order.table')
 
+                        <div class="row mt-2">
+                            <div class="col-sm-6"></div>
+                            <div class="col-md-6">
+                                <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                            </div>
+                        </div>
+                        <!--Num tr value-->
+                        <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
 
-                    <div class="form-group submitButtonFooter">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" id="createSale" data-loading-text="Cargando..."
-                                class="btn btn-success"><i class="fa fa-save"></i>Crear Factura</button>
-
-                            <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn"
+                        <div class="form-group row mt-5">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn"
                                 data-loading-text="cargando..."> <i class="fa fa-plus-circle"></i> Añadir fila
-                            </button>
+                                </button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
+                                    existentes</button>
+                            </div>
+                            <div class="col-sm-4">
 
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#addProductsModal"><span class="fa fa-search"></span> Agregar
-                                productos</button>
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <!-- card-->
+                <div class="card card-outline card-danger">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <h4 class="mb-3">Resumen</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Cantidad total
+                                <strong id="grandquantity">0</strong>
+                                <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Sub total
+                                <strong id="">$0.00</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Total
+                                <strong id="grandtotal">$0.00</strong>
+                                <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                            </li>
+                        </ul>
+                        <button type="submit" id="createSale" data-loading-text="Cargando..."
+                            class="btn btn-success btn-block mt-2">Registrar factura</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
             </div>
         </div>
+    </form>
 </div>
 
 @include('product-order.modal')
@@ -120,41 +127,6 @@
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            $('#items').DataTable({
-                "serverSide": true,
-                "ajax": "{{ url('api/products/order') }}",
-                "columns": [{
-                        data: 'photo'
-                    },
-                    {
-                        data: 'code'
-                    },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'price'
-                    },
-                    {
-                        data: 'custom_quantity'
-                    },
-                    {
-                        "searchable": false,
-                        data: 'name_prov'
-                    },
-                    {
-                        "searchable": false,
-                        data: 'name_categ'
-                    },
-                    {
-                        data: 'actions'
-                    },
-                ]
-            })
-        });
-    </script>
     
     @include('product-order.script')
 
