@@ -1,31 +1,19 @@
-<!-- Add products modal-->
-<div class="modal fade" tabindex="-1" role="dialog" id="addProductsModal">
-    <div class="modal-dialog modal-xl">
+<!-- ---------------------------------------------------------------------------------- -->
+<!-- --------------------Modal-------------------- -->
+<!-- ---------------------------------------------------------------------------------- -->
+<div class="modal fade" role="dialog" tabindex="-1" id="SearchProducts">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i>Lista de productos</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title mx-auto">Busqueda en inventario</h4>
+                <button class="close ml-2" data-dismiss="modal" arial-label="close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <table class="table" id="items">
-					<thead>
-						<tr>
-							<th style="width:10%;">Imagen</th>						
-							<th>Codigo</th>
-							<th>Producto</th>							
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-							<th>Proveedor</th>
-							<th>Categoria</th>
-							<th style="width:15%;" class="text-right">Agregar</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
+                 <input class="form-control form-control-lg form-control-borderless" id="searchInput" type="search" placeholder="Buscar en el inventario">
+                 <div id="results" class="pt-3 px-2">
+
+                 </div>
+            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
