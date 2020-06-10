@@ -42,21 +42,27 @@
                     </div>
                     <!--/Body-->
                     <div class="card-body">
-
-                        <div class="row">
-                            <!--/form-group-->
-                            <div class="form-group col-lg-6">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <label for="clientName" class="col-sm-4 control-label">Nombre del cliente</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="name" placeholder="Cliente"
-                                        autocomplete="off" />
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <label for="clientName" class="col-sm-4 control-label">Nombre del cliente</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" placeholder="Cliente"
+                                            autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="clientName" class="col-sm-4 control-label">Fecha</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" placeholder="Fecha"
+                                            autocomplete="off" />
+                                    </div>
                                 </div>
                             </div>
-                            <!--/form-group-->
                         </div>
 
-                        @include('product-order.table')
+                         @include('product-order.table')
 
                         <div class="row mt-2">
                             <div class="col-sm-6"></div>

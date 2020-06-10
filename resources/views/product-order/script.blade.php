@@ -72,48 +72,39 @@ function add(id) {
                 pricevalue = parseFloat(pricevalue);
                 pricevalue = pricevalue.toFixed(2);
                 tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-                   <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
-                   <td>
-                   <div class="form-group col-sm-12">
-                   <input type="text" name="pcode` + count + `" id="pcode` + count + `" autocomplete="off" value="` + data[0].code + `" class="form-control" onchange="getProductData(` + count + `)"/>
-                   <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `" value="` + data[0].code + `"/>
-                   </div>
-                   </td>
-                   <td>
-                   <div class="form-group col-sm-12">
-                   <input type="text" name="pname` + count + `" id="pname` + count + `" value="` + data[0].name + `" autocomplete="off" class="form-control" disabled />
-                   <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
-                   </div>
-                   </td>
-                   <td>
-                    ' <div class="input-group col-sm-12">
-                   <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                   <input type="number" name="price` + count + `" id="price` + count + `" autocomplete="off" value="` + pricevalue + `"  class="form-control" step="0.01"  min="0" onchange="totalValue(` + count + `)" />
-                   <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `" value="` + pricevalue + `"/>
-                   </div>
-                   </td>
-                   <td>
-                   <div class="form-group col-sm-12">
-                   <input type="number" name="quantity` + count + `" id="quantity` + count + `" autocomplete="off" value="` + quantityvalue + `" class="form-control" min="1" onchange="totalValue(` + count + `)" />
-                   <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
-                   </div>
-                   </td>
-                   <td>
-                   <div class="form-group col-sm-12">
-                   <input type="text" value="13%" class ="form-control" disabled="true"/>
-                   </div>
-                   </td>
-                   <td>
-                    ' <div class="input-group col-sm-12">
-                   <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                   <input type="text" name="total` + count + `" id="total` + count + `" autocomplete="off" value="` + pricevalue + `" class="form-control" step="0.01"  min="0" disabled="true" />
-                   <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + pricevalue + `"/>
-                   </div>
-                   </td>
-                   <td>
-                   <button class="btn btn-primary" type="button" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></button>
-                   </td>
-                   </tr>`;
+                        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
+                        <td>
+                            <input type="text" name="pcode` + count + `" id="pcode` + count + `" value="` + data[0].code + `" class="invoice-control"
+                                autocomplete="off" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                            <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `" value="` + data[0].code + `"/>
+                        </td>
+                        <td>
+                            <input type="text" name="pname` + count + `" id="pname` + count + `" value="` + data[0].name + `" class="invoice-control"
+                                autocomplete="off" disabled />
+                            <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
+                        </td>
+                        <td>
+                            <input type="number" name="price` + count + `" id="price` + count + `" value="` + pricevalue + `" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' onchange="totalValue(` + count + `)" disabled />
+                            <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `" value="` + pricevalue + `"/>
+                        </td>
+                        <td>
+                            <input type="number" name="quantity` + count + `" id="quantity` + count + `" value="` + quantityvalue + `" class="invoice-control"
+                            autocomplete="off" min='1' onchange="totalValue(` + count + `)" disabled />
+                            <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
+                        </td>
+                        <td>
+                            <input type="text" value="13%" disabled="true" class="invoice-control" />
+                        </td>
+                        <td>
+                            <input type="text" name="total` + count + `" id="total` + count + `" value="` + pricevalue + `" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' disabled="true" />
+                            <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + pricevalue + `"/>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash text-primary"></i></a>
+                        </td>
+                    </tr>`;
 
                 if (tableLength > 1) {
                     $(Table + " tbody tr:last").after(tr);
@@ -225,11 +216,11 @@ function subAmount() {
 
 
     total = total.toFixed(2);
-    $("#grandtotal").val(total);
+    $("#grandtotal").text(total);
     $("#grandtotalvalue").val(total);
 
 
-    $("#grandquantity").val(quantity);
+    $("#grandquantity").text(quantity);
     $("#grandquantityvalue").val(quantity);
 }
 
@@ -261,48 +252,39 @@ function addRow() {
     $("#addRowBtn").button("reset");
 
     var tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `"/>
-       <td>
-       <div class="form-group col-sm-12">
-       <input type="text" name="pcode` + count + `" id="pcode` + count + `" autocomplete="off" class="form-control" onchange="getProductData(` + count + `)"/>
-       <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `"/>
-       </div>
-       </td>
-       <td>
-       <div class="form-group col-sm-12">
-       <input type="text" name="pname` + count + `" id="pname` + count + `" autocomplete="off" class="form-control" disabled />
-       <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `"/>
-       </div>
-       </td>
-       <td>
-       <div class="input-group col-sm-12">
-       <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-       <input type="number" name="price` + count + `" id="price` + count + `" autocomplete="off" disabled class="form-control" step="0.01"  min="0" onchange="totalValue(` + count + `)" />
-       <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `"/>
-       </div>
-       </td>
-       <td>
-       <div class="form-group col-sm-12">
-       <input type="number" name="quantity` + count + `" id="quantity` + count + `" autocomplete="off" disabled class="form-control" min="1" onchange="totalValue(` + count + `)" />
-       <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `"/>
-       </div>
-       </td>
-       <td>
-       <div class="form-group col-sm-12">
-       <input type="text" value="13%" class ="form-control" disabled="true"/>
-       </div>
-       </td>
-       <td>
-       <div class="input-group col-sm-12">
-       <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-       <input type="text" name="total` + count + `" id="total` + count + `" autocomplete="off" class="form-control" step="0.01"  min="0" disabled="true" />
-       <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `"/>
-       </div>
-       </td>
-       <td>
-       <button class="btn btn-primary" type="button" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></button>
-       </td>
-       </tr>`;
+                <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `"/>
+                <td>
+                    <input type="text" name="pcode` + count + `" id="pcode` + count + `" class="invoice-control"
+                        autocomplete="off" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                    <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `"/>
+                </td>
+                <td>
+                    <input type="text" name="pname` + count + `" id="pname` + count + `" class="invoice-control"
+                        autocomplete="off" disabled />
+                    <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `"/>
+                </td>
+                <td>
+                    <input type="number" name="price` + count + `" id="price` + count + `" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' onchange="totalValue(` + count + `)" disabled />
+                    <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `"/>
+                </td>
+                <td>
+                    <input type="number" name="quantity` + count + `" id="quantity` + count + `" class="invoice-control"
+                    autocomplete="off" min='1' onchange="totalValue(` + count + `)" disabled />
+                    <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `"/>
+                </td>
+                <td>
+                    <input type="text" value="13%" disabled="true" class="invoice-control" />
+                </td>
+                <td>
+                    <input type="text" name="total` + count + `" id="total` + count + `" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' disabled="true" />
+                    <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `"/>
+                </td>
+                <td class="text-center">
+                    <a class="btn" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash text-primary"></i></a>
+                </td>
+             </tr>`;
     if (tableLength > 0) {
         $(Table + " tbody tr:last").after(tr);
     } else {
@@ -376,12 +358,43 @@ $.ajax({
                 let output = "";
                 for (let i = 0; i < data.length; i++) {
                     output += `<div class="row mb-2">
-                    <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}" style="max-height:50px; max-width:70px;"/></div>
-                    <div class="col-sm-2 my-auto">` + data[i].code + `</div>
-                    <div class="col-sm-3 my-auto">` + data[i].name + `</div>
-                    <div class="col-sm-2 my-auto">` + data[i].quantity + `</div>
-                    <div class="col-sm-2 my-auto">` + data[i].price1 + `</div>
-                    <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i class="fas fa-plus"></i>Agregar</button></div>
+                        <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}"
+                                style="max-height:50px; max-width:70px;" /></div>
+                        <div class="col-sm-2 my-auto">` + data[i].code + `</div>
+                        <div class="col-sm-3 my-auto">` + data[i].name + `</div>
+                        <div class="col-sm-2 my-auto">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">` + data[i].quantity + `</span></div>
+                                    <input type="text" class="form-control" value="1" id="cantidad_` + data[i].id + `"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 my-auto">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown">
+                                        ` + data[i].price1 + `
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price1 + `)">
+                                            ` + data[i].price1 + `</li>
+                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price2 + `)">
+                                            ` + data[i].price2 + `</li>
+                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price3 + `)">
+                                            ` + data[i].price3 + `</li>
+                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price4 + `)">
+                                            ` + data[i].price4 + `</li>
+                                    </ul>
+                                </div><input type="text" class="form-control" value="` + data[i].price1 + `"
+                                    id="precio_venta_` + data[i].id + `" />
+                            </div>
+                        </div>
+                        <div class="col-sm-1 my-auto btn-group float-center">
+                            <button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i
+                                    class="fas fa-plus"></i></button>
+                            <button class="btn btn-secondary btn-sm mr-1" onclick="view(` + data[i].id + `)"><i
+                                    class="fas fa-external-link-alt"></i></button>
+                        </div>
                     </div>`;
                 }
                 $("#results").html(output);
