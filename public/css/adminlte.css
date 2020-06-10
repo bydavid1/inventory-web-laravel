@@ -30591,3 +30591,45 @@ a.text-muted:hover {
   color: #ffffff;
 }
 /*# sourceMappingURL=adminlte.css.map */
+
+/*# Custom */
+
+.invoice-table{
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  background-color: transparent;
+}
+
+.invoice-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.invoice-table td{
+  padding: 0px;
+  border-bottom: 1px dashed #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.invoice-table input:focus{
+  outline: rgba(0,121,193,.6) solid 1px;
+  outline-offset: 0;
+}
+
+.invoice-table input{
+  height: 35px; 
+  border: 0; 
+  box-shadow: none;
+}
+
+.invoice-control{
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+}
