@@ -21,7 +21,7 @@ const Toast = Swal.mixin({
 $(document).ready(function () {
     //setup before functions
     var typingTimer; //timer identifier
-    var doneTypingInterval = 500;
+    var doneTypingInterval = 400;
 
     //on keyup, start the countdown
     $('#searchInput').on('keyup', function () {
@@ -29,6 +29,10 @@ $(document).ready(function () {
         typingTimer = setTimeout(searchProduct, doneTypingInterval);
     });
 
+    $('#costumer').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(searchCostumer, doneTypingInterval);
+    });
 });
 
 //----------------------------------------------------------------------
@@ -410,6 +414,64 @@ $.ajax({
         }
     }
 })
+}
+
+//----------------------------------------------------------------------
+//-------------------------Search Costumer---------------------------------
+//----------------------------------------------------------------------
+
+function searchCostumer() {
+    closeAllLists();
+    let input = document.getElementById('costumer');
+    let container, items;
+        container = document.createElement("DIV");
+        container.setAttribute("class", "autocomplete-items");
+        input.parentNode.appendChild(container);
+
+    let url = "{{ url('api/costumers/search', 'query') }}";
+    url = url.replace("query", input.value);
+    $.ajax({
+        type: 'get',
+        url: url,
+        dataType: 'json',
+        beforeSend: function (objeto) {
+            container.innerHTML = `<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>`;
+        },
+        statusCode: {
+            200: function (response) {
+                container.innerHTML = "";
+                if (response.success == true) {
+                    let data = response.data;
+                    for (let i = 0; i < data.length; i++) {
+                        items = document.createElement("DIV");
+                        items.innerHTML = data[i].name;
+                        items.addEventListener("click", function(e){
+                            input.value = data[i].name;
+                            document.getElementById('idcostumer').value = data[i].id;
+                            closeAllLists();
+                        });
+                        container.appendChild(items);
+                    }
+         
+                }else{
+                    container.innerHTML = `<div>No hay clientes que coincidan</div>`;
+                }
+            },
+            404: function () {
+                container.innerHTML = `Recurso no encontrado`;
+            },
+            500: function () {
+                container.innerHTML = `Ocurrió un problema en el servidor`;
+            }
+        }
+    })
+}
+
+function closeAllLists(elmnt) {
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+        x[i].parentNode.removeChild(x[i]);
+    }
 }
 
 </script>

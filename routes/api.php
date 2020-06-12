@@ -57,6 +57,16 @@ Route::get('costumers', function(){
       ->toJson();
 });
 
+Route::get('costumers/search/{query}', function($query){
+      $result = App\Costumers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
+
+      if ($result->count() > 0) {
+         return response()->json(['success' => true, 'data' => $result], 200);
+      }else{
+         return response()->json(['success' => false, 'data' => null], 200);
+      }
+});
+
 Route::get('costumers/{id}', function($id){
    return datatables()->eloquent(App\Costumers::where('id', $id))
       ->toJson();
