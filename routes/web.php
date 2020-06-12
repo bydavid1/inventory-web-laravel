@@ -65,3 +65,7 @@ Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getLi
 Route::get('/kardex', 'KardexController@index')->name('kardex')->middleware('auth');
 Route::get('kardex/records/{id}', 'KardexController@records')->name('records')->middleware('auth');
 Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get_records')->middleware('auth');
+
+//Credits
+Route::get('credits/create', 'CreditController@create')->name('addCredit');
+Route::post('credits/create/buildCredit', 'CreditController@store')->name('createCredit');
