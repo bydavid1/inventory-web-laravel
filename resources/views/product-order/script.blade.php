@@ -11,6 +11,8 @@ const PRODUCTCODEVALUE = "#pcodevalue";
 const QUANTITYVALUE = "#quantityvalue";
 const TOTALVALUE = "#totalvalue";
 const IDVALUE = "#idvalue";
+
+//Alert
 const Toast = Swal.mixin({
       toast: true,
       position: 'center',
@@ -19,11 +21,10 @@ const Toast = Swal.mixin({
     });
 
 $(document).ready(function () {
-    //setup before functions
-    var typingTimer; //timer identifier
+
+    var typingTimer; 
     var doneTypingInterval = 400;
 
-    //on keyup, start the countdown
     $('#searchInput').on('keyup', function () {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(searchProduct, doneTypingInterval);
@@ -130,7 +131,7 @@ function add(id) {
                     $(Table + " tbody").append(tr);
                 }
 
-                subAmount();
+                calculateProductsValues();
                 countRow();
             },
             204: function () {
@@ -171,8 +172,10 @@ function getProductData(row){
                     $(PRICEVALUE + row).val(data[0].price);
                     $(PRICE + row).prop('disabled', false);
                     $(QUANTITY + row).prop('disabled', false);
+                    $(QUANTITY + row).val(1);
+                    $(QUANTITYVALUE + row).val(1);
 
-                subAmount();
+                calculateProductsValues();
                 countRow();
             },
             404: function () {
@@ -199,33 +202,6 @@ function view(id) {
     var url = "{{ route('showProduct', 'id') }}";
     url = url.replace('id', id);
     window.open(url, '_blank');
-}
-
-//----------------------------------------------------------------------
-//-------------------------Calc total values---------------------------------
-//----------------------------------------------------------------------
-
-function subAmount() {
-    var tableProductLength = $(Table + " tbody tr").length;
-    var total = 0;
-    var quantity = 0;
-    for (x = 0; x < tableProductLength; x++) {
-        var tr = $(Table + " tbody tr")[x];
-        var count = $(tr).attr('id');
-        count = count.substring(3);
-
-        total = Number(total) + Number($(TOTALVALUE + count).val());
-        quantity = Number(quantity) + Number($(QUANTITYVALUE + count).val());
-    }
-
-
-    total = total.toFixed(2);
-    $("#grandtotal").text(total);
-    $("#grandtotalvalue").val(total);
-
-
-    $("#grandquantity").text(quantity);
-    $("#grandquantityvalue").val(quantity);
 }
 
 //----------------------------------------------------------------------
@@ -311,12 +287,22 @@ function removeProductRow(row = null) {
     countRow();
 }
 
+
+//----------------------------------------------------------------------
+//-------------------------Triggers---------------------------------
+//----------------------------------------------------------------------
+document.getElementById('discount').addEventListener('input', function(){
+    document.getElementById('discounts').textContent = "$" + Number(this.value).toFixed(2);
+    document.getElementById('discountsvalue').value = Number(this.value).toFixed(2);
+    calculateTotals();
+});
+
 //----------------------------------------------------------------------
 //-------------------------Calc values on change data---------------------------------
 //----------------------------------------------------------------------
 function totalValue(row = null) {
-    var rate = Number($(PRICE + row).val());
-    var quantity = Number($(QUANTITY + row).val());
+    let rate = Number($(PRICE + row).val());
+    let quantity = Number($(QUANTITY + row).val());
     $(QUANTITYVALUE).val(quantity);
 
     total = rate * quantity;
@@ -325,7 +311,49 @@ function totalValue(row = null) {
     $(TOTAL + row).val(total);
     $(TOTALVALUE + row).val(total);
 
-    subAmount();
+    calculateProductsValues();
+}
+
+function calculateProductsValues(){
+    let tableProductLength = $(Table + " tbody tr").length;
+    let grandsubtotal = 0;
+    let grandquantity = 0;
+    for (x = 0; x < tableProductLength; x++) {
+        let tr = $(Table + " tbody tr")[x];
+        let count = $(tr).attr('id');
+        count = count.substring(3);
+
+        grandsubtotal = Number(grandsubtotal) + Number($(TOTALVALUE + count).val());
+        grandquantity = Number(grandquantity) + Number($(QUANTITYVALUE + count).val());
+    }
+
+    grandsubtotal = grandsubtotal.toFixed(2);
+    document.getElementById('subtotal').textContent = "$" + grandsubtotal;
+    document.getElementById('subtotalvalue').value = grandsubtotal;
+    document.getElementById('grandquantity').textContent = grandquantity + " items";
+    document.getElementById('grandquantityvalue').value = grandquantity;
+
+    calculateTotals()
+}
+
+//----------------------------------------------------------------------
+//-------------------------Calc total values---------------------------------
+//----------------------------------------------------------------------
+
+function calculateTotals() {
+    let subtotalvalueInput = document.getElementById('subtotalvalue');
+    let discountvalueInput = document.getElementById('discountsvalue');
+
+    let tax = subtotalvalueInput.value * 0.13;
+    let taxvalueInput = document.getElementById('taxvalue');
+    let taxInput = document.getElementById('tax');
+    taxInput.textContent = "$" + tax.toFixed(2);
+    taxvalueInput.value = tax.toFixed(2);
+
+    let total = Number(subtotalvalueInput.value) - Number(discountvalueInput.value)  + tax;
+    total = total.toFixed(2);
+    document.getElementById('grandtotal').textContent = "$" + total;
+    document.getElementById('grandtotalvalue').value = total;
 }
 
 
@@ -428,6 +456,10 @@ function searchCostumer() {
         container.setAttribute("class", "autocomplete-items");
         input.parentNode.appendChild(container);
 
+        document.addEventListener('click', function(){
+            closeAllLists();
+        });
+
     let url = "{{ url('api/costumers/search', 'query') }}";
     url = url.replace("query", input.value);
     $.ajax({
@@ -447,7 +479,7 @@ function searchCostumer() {
                         items.innerHTML = data[i].name;
                         items.addEventListener("click", function(e){
                             input.value = data[i].name;
-                            document.getElementById('idcostumer').value = data[i].id;
+                            document.getElementById('costumerid').value = data[i].id;
                             closeAllLists();
                         });
                         container.appendChild(items);
@@ -469,7 +501,7 @@ function searchCostumer() {
 
 function closeAllLists(elmnt) {
     var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
+        for (var i = 0; i < x.length; i++) {
         x[i].parentNode.removeChild(x[i]);
     }
 }

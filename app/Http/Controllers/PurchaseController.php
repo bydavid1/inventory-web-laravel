@@ -7,14 +7,14 @@ use App\Products;
 use App\Providers;
 use App\Purchases;
 use App\Purchases_item;
-use App\Traits\KardexTrait;
+use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class PurchaseController extends Controller
 {
 
-    use KardexTrait;
+    use Helpers;
     /**
      * Display a listing of the resource.
      *
