@@ -11,10 +11,12 @@ use App\Sales;
 use App\Sales_item;
 use App\Products;
 use App\Kardex;
-use PDF;
+use App\Traits\Helpers;
 
 class SaleController extends Controller
 {
+    use Helpers;
+
     /**
      * Display a listing of the resource.
      *
@@ -83,7 +85,7 @@ class SaleController extends Controller
 
             //Adding to Kardex
             $kardex = new Kardex;
-            $kardex->tag = "Compra de producto";
+            $kardex->tag = "Venta de producto";
             $kardex->tag_code = "CN";
             $kardex->id_product = $saleitem->product_id;
             $kardex->quantity = $saleitem->quantity;
@@ -98,20 +100,19 @@ class SaleController extends Controller
             }else{
 
                 $sale->destroy();
-                return response()->json(['message'=>'No se terminó de crear la factura']);
+                return response()->json(['message'=>'No se terminó de crear la factura'], 500);
                 }
 
             } //for $i
 
             //Design invoice
-            $invoice = $this->designInvoice($invoice_products, $sale);
+            $invoice = $this->designInvoice($invoice_products, $sale, "invoices/");
 
-            $pdf = PDF::loadHTML($invoice)->save(public_path('invoices/') . $id . '.pdf');
             //send invoice
             return response()->json(['message'=>'Factura guardada', 'data' => compact('invoice')]);
         }
 
-        return response()->json(['message'=>'Ocurrió un error al registrar la información']);
+        return response()->json(['message'=>'Ocurrió un error al registrar la información'], 500);
         
         } catch (Exception $e) {
 
@@ -119,122 +120,7 @@ class SaleController extends Controller
 
         }
     }
-
-    function designInvoice($products, $sale){
-
-        $invoice = '<html>
-        <head>
-            <title>Imprimir</title>
-            <link rel="stylesheet" href="'. public_path('css/adminlte.min.css') .'>
-            <div class="wrapper" id="print">
-                <!-- Main content -->
-                <section class="invoice">
-                    <!-- title row -->
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="page-header">
-                                <i class="fas fa-globe"></i> AdminLTE, Inc.
-                                <small class="float-right">Date: '. $sale->created_at .'</small>
-                            </h2>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- info row -->
-                    <div class="row invoice-info">
-                        <div class="col-sm-4 invoice-col">
-                            From
-                            <address>
-                                <strong>Admin, Inc.</strong><br>
-                                795 Folsom Ave, Suite 600<br>
-                                San Francisco, CA 94107<br>
-                                Phone: (804) 123-5432<br>
-                                Email: info@almasaeedstudio.com
-                            </address>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
-                            To
-                            <address>
-                                <strong>'. $sale->name .'</strong><br>
-                                795 Folsom Ave, Suite 600<br>
-                                San Francisco, CA 94107<br>
-                                Phone: (555) 539-1037<br>
-                                Email: john.doe@example.com
-                            </address>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
-                            <b>Invoice #007612</b><br>
-                            <br>
-                            <b>Order ID:</b> 4F3S8J<br>
-                            <b>Payment Due:</b> 2/22/2014<br>
-                            <b>Account:</b> 968-34567
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                    <!-- Table row -->
-                    <div class="row">
-                        <div class="col-12 table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Codigo</th>
-                                        <th>Producto</th>
-                                        <th>Cant</th>
-                                        <th>Precio</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    '. $products.'
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                    <div class="row">
-                        <!-- accepted payments column -->
-                        <div class="col-6">
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-6">
-                            <p class="lead">Amount Due 2/22/2014</p>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                        <th style="width:50%">Subtotal:</th>
-                                        <td>'. $sale->total .'</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tax (9.3%)</th>
-                                        <td>$10.34</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Cantidad:</th>
-                                        <td>'. $sale->quantity .'</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total:</th>
-                                        <td>'. $sale->total .'</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </section>
-                <!-- /.content -->
-            </div>
-            <!-- ./wrapper -->
-            </body>
-        </html>';
-
-        return $invoice;
-    }
-
+        
     /**
      * Display the specified resource.
      *

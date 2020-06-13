@@ -30,7 +30,7 @@
     @if ( session('mensaje') )
     <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
     @endif
-    <form class="form-horizontal" id="createOrderForm">
+    <form class="form-horizontal" id="createForm">
         @csrf
         <div class="row">
             <div class="col-sm-8">
@@ -46,9 +46,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
                                     </div>
-                                    <input type="hidden" id="idcostumer"/>
+                                    <input type="hidden" id="costumerid" name="costumerid"/>
                                     <input type="text" class="form-control" placeholder="Buscar" id="costumer"
-                                         name="costumer" aria-label="Enter..." aria-describedby="button-add"/>
+                                         name="costumer" aria-label="Enter..." aria-describedby="button-add" autocomplete="off"/>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" id="button-add" data-toggle="modal"
                                         data-target="#addCostumer"><i
@@ -59,7 +59,7 @@
                             <div class="form-group col-lg-3">
                                 <label for="payment" class="control-label">Estado de pago</label>
                                 <div>
-                                    <select class="form-control" placeholder="Fecha">
+                                    <select class="form-control" placeholder="Fecha" id="payment" name="payment">
                                         <option value="1">Completo</option>
                                         <option value="2">2 pagos</option>
                                         <option value="3">3 pagos</option>
@@ -71,7 +71,7 @@
                                 <label for="date" class="control-label">Fecha de factura</label>
                                 <div>
                                     <input type="text" class="form-control" placeholder="Fecha"
-                                        autocomplete="off" />
+                                        autocomplete="off" id="date" name="date"  />
                                 </div>
                             </div>
                         </div>
@@ -80,9 +80,9 @@
 
                         <div class="row mt-4">
                             <div class="col-md-4">
-                                <label class="col-sm-8  control-label">Estado de entrega</label>
+                                <label for="delivery" class="col-sm-8  control-label">Estado de entrega</label>
                                 <div class="col-sm-12">
-                                    <select class="form-control" placeholder="Fecha">
+                                    <select class="form-control" placeholder="Fecha" id="delivery" name="delivery">
                                         <option value="completo">Completo</option>
                                         <option value="parcial">Parcial</option>
                                         <option value="pendiente">Pendiente</option>
@@ -92,16 +92,16 @@
                             <div class="col-md-3">
                                 <label for="name" class="col-sm-8  control-label">Descuento</label>
                                 <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="discounts" placeholder="Desc.." autocomplete="off" />
+                                    <input type="number" class="form-control" name="discount" id="discount" placeholder="Desc.." autocomplete="off" />
                                 </div>
                                 <label for="name" class="col-sm-8 mt-2 control-label">Cobros adcionales</label>
                                 <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="mpayments" placeholder="Adicional.." autocomplete="off" />
+                                    <input type="number" class="form-control" name="mpayments" id="mpayments" placeholder="Adicional.." autocomplete="off" />
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <label class="col-sm-8 control-label">Terminos o comentarios</label>
-                                <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                                <textarea class="form-control" placeholder="Comentarios adicionales" name="comments"></textarea>
                             </div>
                         </div>
                         <!--Num tr value-->
@@ -137,11 +137,18 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Sub total
-                                <strong id="">$0.00</strong>
+                                <strong id="subtotal">$0.00</strong>
+                                <input type="hidden" id="subtotalvalue" name="subtotalvalue">
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Descuentos
-                                <strong id="">$0.00</strong>
+                                <strong id="discounts">$0.00</strong>
+                                <input type="hidden" id="discountsvalue" name="discountsvalue">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Impuestos
+                                <strong id="tax">$0.00</strong>
+                                <input type="hidden" id="taxvalue" name="taxesvalue">
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Total
@@ -245,7 +252,7 @@
     @include('product-order.script')
 
     <script>
-        $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
+        $('#createForm').unbind('submit').bind('submit', function (stay) {
             stay.preventDefault();
             var formdata = $(this).serialize();
             var url = "{{ route('createCredit') }}";
@@ -254,7 +261,13 @@
                 url: url,
                 data: formdata,
                 beforeSend: function () {
-                    //Loader
+                    Swal.fire({
+                        title: 'Registrando',
+                        html: 'Por favor espere...',
+                        onBeforeOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
                 },
                 success: function (response) {
                     console.log(response);
@@ -265,8 +278,9 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    //Clear all fields
-                    $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
+
+                    document.getElementById('createForm').reset();
+
                     print(response.data);
                 },
                 error: function (xhr, textStatus, errorMessage) {
