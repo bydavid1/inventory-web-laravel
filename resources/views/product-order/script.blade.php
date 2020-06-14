@@ -23,7 +23,7 @@ const Toast = Swal.mixin({
 $(document).ready(function () {
 
     var typingTimer; 
-    var doneTypingInterval = 400;
+    var doneTypingInterval = 250;
 
     $('#searchInput').on('keyup', function () {
         clearTimeout(typingTimer);
@@ -287,6 +287,17 @@ function removeProductRow(row = null) {
     countRow();
 }
 
+function changeprice(id, value) {
+    $("#precio_venta_" + id).val(value);
+}
+
+function countRow(){
+    var tableLength = $(Table + " tbody tr").length;
+    console.log(tableLength);
+    $("#trCount").val(tableLength);
+}
+
+
 
 //----------------------------------------------------------------------
 //-------------------------Triggers---------------------------------
@@ -350,21 +361,50 @@ function calculateTotals() {
     taxInput.textContent = "$" + tax.toFixed(2);
     taxvalueInput.value = tax.toFixed(2);
 
-    let total = Number(subtotalvalueInput.value) - Number(discountvalueInput.value)  + tax;
+    let total = Number(subtotalvalueInput.value) - Number(discountvalueInput.value)  + tax + Number(document.getElementById('interestvalue').value);
     total = total.toFixed(2);
     document.getElementById('grandtotal').textContent = "$" + total;
     document.getElementById('grandtotalvalue').value = total;
 }
 
+//----------------------------------------------------------------------
+//-------------------------Hide/Show Additional Options---------------------------------
+//----------------------------------------------------------------------
 
-function changeprice(id, value) {
-    $("#precio_venta_" + id).val(value);
+function moptions(){
+    let value = document.getElementById('payment').value;
+
+    if (value == 2) {
+        document.getElementById('creditinfo').classList.add('d-block');
+        document.getElementById('grandinterest').classList.add('d-flex');
+
+        document.getElementById('interestper').addEventListener('input', calculateInterest);
+
+        document.getElementById('numfees').addEventListener('input', calculateInterest);
+
+    }else{
+        document.getElementById('creditinfo').classList.remove('d-block');
+        document.getElementById('grandinterest').classList.remove('d-flex');
+    }
 }
 
-function countRow(){
-    var tableLength = $(Table + " tbody tr").length;
-    console.log(tableLength);
-    $("#trCount").val(tableLength);
+//----------------------------------------------------------------------
+//-------------------------Calculate Interest---------------------------------
+//----------------------------------------------------------------------
+
+function calculateInterest(){
+   let interest = Number(document.getElementById('interestper').value);
+   let numfees = Number(document.getElementById('numfees').value);
+   let total = Number(document.getElementById('grandtotalvalue').value);
+   let percent = interest / 100;
+
+   let result = total * percent * numfees;
+   result = result.toFixed(2);
+
+   document.getElementById('interest').textContent = "$" + result;
+   document.getElementById('interestvalue').value = result;
+
+   calculateTotals();
 }
 
 //----------------------------------------------------------------------
@@ -505,5 +545,6 @@ function closeAllLists(elmnt) {
         x[i].parentNode.removeChild(x[i]);
     }
 }
+
 
 </script>

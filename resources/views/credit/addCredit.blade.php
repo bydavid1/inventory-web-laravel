@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
 @section('custom_header')
-	  <!-- DataTables -->
-	  <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-      <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
       <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+      <link rel="stylesheet" href="{{ asset('plugins/datepicker/css/bootstrap-datepicker.min.css') }}">
 @endsection
 
 @section('content')
@@ -50,28 +48,31 @@
                                     <input type="text" class="form-control" placeholder="Buscar" id="costumer"
                                          name="costumer" aria-label="Enter..." aria-describedby="button-add" autocomplete="off"/>
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="button-add" data-toggle="modal"
+                                        <button class="btn btn-secondary" type="button" id="button-add" data-toggle="modal"
                                         data-target="#addCostumer"><i
-                                                class="fas fa-plus"></i>Nuevo cliente</button>
+                                                class="fas fa-plus mr-1"></i>Nuevo cliente</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="payment" class="control-label">Estado de pago</label>
-                                <div>
-                                    <select class="form-control" placeholder="Fecha" id="payment" name="payment">
+                                <div> 
+                                    <select class="form-control" placeholder="Fecha" id="payment" name="payment" onchange="moptions()">
                                         <option value="1">Completo</option>
-                                        <option value="2">2 pagos</option>
-                                        <option value="3">3 pagos</option>
-                                        <option value="4">4 pagos</option>
+                                        <option value="2">Crédito</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="date" class="control-label">Fecha de factura</label>
                                 <div>
-                                    <input type="text" class="form-control" placeholder="Fecha"
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Fecha"
                                         autocomplete="off" id="date" name="date"  />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-th"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,21 +81,23 @@
 
                         <div class="row mt-4">
                             <div class="col-md-4">
-                                <label for="delivery" class="col-sm-8  control-label">Estado de entrega</label>
-                                <div class="col-sm-12">
-                                    <select class="form-control" placeholder="Fecha" id="delivery" name="delivery">
-                                        <option value="completo">Completo</option>
-                                        <option value="parcial">Parcial</option>
-                                        <option value="pendiente">Pendiente</option>
-                                    </select>
+                                <div class="form-group col-md-12">
+                                    <label for="delivery" class="control-label">Estado de entrega</label>
+                                    <div class="col-md-12">
+                                        <select class="form-control" placeholder="Fecha" id="delivery" name="delivery">
+                                            <option value="completo">Completo</option>
+                                            <option value="parcial">Parcial</option>
+                                            <option value="pendiente">Pendiente</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="name" class="col-sm-8  control-label">Descuento</label>
+                                <label for="name" class="control-label">Descuento</label>
                                 <div class="col-sm-12">
                                     <input type="number" class="form-control" name="discount" id="discount" placeholder="Desc.." autocomplete="off" />
                                 </div>
-                                <label for="name" class="col-sm-8 mt-2 control-label">Cobros adcionales</label>
+                                <label for="name" class="mt-2 control-label">Cobros adcionales</label>
                                 <div class="col-sm-12">
                                     <input type="number" class="form-control" name="mpayments" id="mpayments" placeholder="Adicional.." autocomplete="off" />
                                 </div>
@@ -150,6 +153,11 @@
                                 <strong id="tax">$0.00</strong>
                                 <input type="hidden" id="taxvalue" name="taxesvalue">
                             </li>
+                            <li class="list-group-item d-none justify-content-between align-items-center" id="grandinterest">
+                                Interés
+                                <strong id="interest">$0.00</strong>
+                                <input type="hidden" id="interestvalue" name="interestvalue">
+                            </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Total
                                 <strong id="grandtotal">$0.00</strong>
@@ -158,6 +166,44 @@
                         </ul>
                         <button type="submit" id="createSale" data-loading-text="Cargando..."
                             class="btn btn-success btn-block mt-2">Registrar factura</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <!-- card-->
+                <div class="card card-outline card-danger d-none" id="creditinfo">
+                    <div class="card-body">
+                        <h5 class="mb-3">Información del crédito</h5>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="delivery" class="control-label">Numero de cuotas</label>
+                                    <input type="number" name="numfees" id="numfees" class="form-control"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="delivery" class="control-label">Fecha de inicio</label>
+                                    <input type="date" name="startdate" class="form-control"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="delivery" class="control-label">Rango entre cuotas</label>
+                                    <select name="rangefees" id="rangefees" class="form-control">
+                                        <option value="1D">1 día</option>
+                                        <option value="1D">10 día</option>
+                                        <option value="15D" selected>15 días</option>
+                                        <option value="1M">1 mes</option>
+                                        <option value="2M">2 mes</option>
+                                        <option value="6M">6M</option>
+                                    </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="delivery" class="control-label">Porcentaje de interés</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                                    </div>
+                                    <input type="decimal" name="interestper" id="interestper" class="form-control" max="100" min="0" value="3.0"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -242,16 +288,18 @@
 @endsection
 
 @section('custom_footer')
-    <!-- DataTables -->
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     
     @include('product-order.script')
 
     <script>
+        $('#date').datepicker({
+            orientation: "bottom auto",
+            language: "es",
+            format: "yyyy-mm-dd",
+        });
+
         $('#createForm').unbind('submit').bind('submit', function (stay) {
             stay.preventDefault();
             var formdata = $(this).serialize();
