@@ -21,9 +21,9 @@ class CreateCreditsItemsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity');
-            $table->float('discount');
+            $table->float('discount')->nullable('0.00');
             $table->float('unit_price');
-            $table->float('unit_tax');
+            $table->float('unit_tax')->nullable('0.00');
             $table->float('total');
         });
     }

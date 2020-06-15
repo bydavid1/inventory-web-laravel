@@ -62,7 +62,7 @@ class CreditController extends Controller
             
             $invoice_products = "";
             $lastid = $credit->id;
-            $counter = $request->trcount;
+            $counter = $request->trCount;
 
             for ($i = 0; $i < $counter; $i++) {
 
@@ -89,7 +89,7 @@ class CreditController extends Controller
                     //Adding to Kardex
                     $kardex = new Kardex;
                     $kardex->tag = "Venta de producto";
-                    $kardex->tag_code = "VN";
+                    $kardex->tag_code = "VNC";
                     $kardex->id_product = $credititem->product_id;
                     $kardex->quantity = $credititem->quantity;
                     $kardex->value_diff = "+ $" . $saleitem->total;

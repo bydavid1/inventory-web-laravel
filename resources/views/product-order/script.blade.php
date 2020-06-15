@@ -73,14 +73,21 @@ function add(id) {
         },
         statusCode: {
             200: function (response) {
-                var data = response.data;
+
+                let data = response.data;
                 pricevalue = parseFloat(pricevalue);
                 pricevalue = pricevalue.toFixed(2);
+                let totalvalue = pricevalue * quantityvalue;
+                totalvalue = totalvalue.toFixed(2);
+
                 tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
                         <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
                         <td>
                             <input type="text" name="pcode` + count + `" id="pcode` + count + `" value="` + data[0].code + `" class="invoice-control"
-                                autocomplete="off" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                                autocomplete="ñokiero:v" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                                <div class="icon-container d-none" id="loader` + count + `">
+                                    <i class="loader"></i>
+                                </div>
                             <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `" value="` + data[0].code + `"/>
                         </td>
                         <td>
@@ -89,22 +96,22 @@ function add(id) {
                             <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
                         </td>
                         <td>
-                            <input type="number" name="price` + count + `" id="price` + count + `" value="` + pricevalue + `" class="invoice-control"
-                                autocomplete="off" step='0.01' min='0' onchange="totalValue(` + count + `)" disabled />
+                            <input type="decimal" name="price` + count + `" id="price` + count + `" value="` + pricevalue + `" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' onchange="setToValues(` + count + `)" disabled />
                             <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `" value="` + pricevalue + `"/>
                         </td>
                         <td>
                             <input type="number" name="quantity` + count + `" id="quantity` + count + `" value="` + quantityvalue + `" class="invoice-control"
-                            autocomplete="off" min='1' onchange="totalValue(` + count + `)" disabled />
+                            autocomplete="off" min='1' onchange="setToValues(` + count + `)"/>
                             <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
                         </td>
                         <td>
                             <input type="text" value="13%" disabled="true" class="invoice-control" />
                         </td>
                         <td>
-                            <input type="text" name="total` + count + `" id="total` + count + `" value="` + pricevalue + `" class="invoice-control"
-                                autocomplete="off" step='0.01' min='0' disabled="true" />
-                            <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + pricevalue + `"/>
+                            <input type="decimal" name="total` + count + `" id="total` + count + `" value="` + totalvalue + `" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0'/>
+                            <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + totalvalue + `"/>
                         </td>
                         <td class="text-center">
                             <a class="btn" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash text-primary"></i></a>
@@ -118,12 +125,12 @@ function add(id) {
                     $(PRODUCTNAME + 1).val(data[0].name);
                     $(PRICE + 1).val(pricevalue);
                     $(QUANTITY + 1).val(quantityvalue);
-                    $(TOTAL + 1).val(pricevalue);
                     $(PRODUCTCODEVALUE + 1).val(data[0].code);
                     $(PRODUCTNAMEVALUE + 1).val(data[0].name);
                     $(PRICEVALUE + 1).val(pricevalue);
                     $(QUANTITYVALUE + 1).val(quantityvalue);
-                    $(TOTALVALUE + 1).val(pricevalue);
+                    $(TOTAL + 1).val(totalvalue);
+                    $(TOTALVALUE + 1).val(totalvalue);
                     $(IDVALUE + 1).val(data[0].id );
                     $(PRICE + 1).prop('disabled', false);
                     $(QUANTITY + 1).prop('disabled', false);
@@ -152,7 +159,6 @@ function add(id) {
 function getProductData(row){
     var url = "{{ url('api/products/order/code', 'identify') }}";
     var code = $(PRODUCTCODE + row).val();
-    console.log(code);
     url = url.replace("identify", code);
 
     $.ajax({
@@ -160,35 +166,49 @@ function getProductData(row){
         url: url,
         dataType: 'json',
         beforeSend: function (objeto) {
-
+            document.getElementById('loader' + row).classList.add('d-block');
         },
         statusCode: {
             200: function (response) {
-                var data = response.data;
-
-                    $(PRODUCTNAME + row).val(data[0].name);
-                    $(PRICE + row).val(data[0].price);
-                    $(PRODUCTNAMEVALUE + row).val(data[0].name);
-                    $(PRICEVALUE + row).val(data[0].price);
+                if (response.success == true) {
+                    var data = response.product;
+                    //Hide Loader
+                    document.getElementById('loader' + row).classList.remove('d-block');
+                    //Decimal format
+                    let price1 = Number(data.price1);
+                    price1 = price1.toFixed(2);
+                    $(PRODUCTNAME + row).val(data.name);
+                    $(PRICE + row).val(price1);
+                    $(PRODUCTNAMEVALUE + row).val(data.name);
+                    $(PRICEVALUE + row).val(price1);
                     $(PRICE + row).prop('disabled', false);
                     $(QUANTITY + row).prop('disabled', false);
                     $(QUANTITY + row).val(1);
                     $(QUANTITYVALUE + row).val(1);
+                    $(IDVALUE + 1).val(data.id );
 
-                calculateProductsValues();
-                countRow();
+                    totalValues(row);
+                    countRow();
+                }else{
+                    Toast.fire({
+                    type: 'warning',
+                    title: 'No existe un producto con ese codigo'
+                })
+                }
             },
             404: function () {
+                document.getElementById('loader' + row).classList.remove('d-block');
                 Toast.fire({
-        type: 'error',
-        title: 'Producto no encontrado.'
-         })
+                    type: 'error',
+                    title: 'Recurso no encontrado'
+                })
             },
             500: function () {
+                document.getElementById('loader' + row).classList.remove('d-block');
                 Toast.fire({
-        type: 'warning',
-        title: ' Error en el servidor.'
-         })
+                    type: 'warning',
+                    title: ' Error en el servidor.'
+               })
             }
         }
     })
@@ -235,7 +255,10 @@ function addRow() {
                 <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `"/>
                 <td>
                     <input type="text" name="pcode` + count + `" id="pcode` + count + `" class="invoice-control"
-                        autocomplete="off" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                        autocomplete="ñokiero:v" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
+                        <div class="icon-container d-none" id="loader` + count + `">
+                            <i class="loader"></i>
+                         </div>
                     <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `"/>
                 </td>
                 <td>
@@ -244,20 +267,20 @@ function addRow() {
                     <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `"/>
                 </td>
                 <td>
-                    <input type="number" name="price` + count + `" id="price` + count + `" class="invoice-control"
-                        autocomplete="off" step='0.01' min='0' onchange="totalValue(` + count + `)" disabled />
+                    <input type="decimal" name="price` + count + `" id="price` + count + `" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' onchange="setToValues(` + count + `)" disabled />
                     <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `"/>
                 </td>
                 <td>
                     <input type="number" name="quantity` + count + `" id="quantity` + count + `" class="invoice-control"
-                    autocomplete="off" min='1' onchange="totalValue(` + count + `)" disabled />
+                    autocomplete="off" min='1' onchange="setToValues(` + count + `)" disabled />
                     <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `"/>
                 </td>
                 <td>
                     <input type="text" value="13%" disabled="true" class="invoice-control" />
                 </td>
                 <td>
-                    <input type="text" name="total` + count + `" id="total` + count + `" class="invoice-control"
+                    <input type="decimal" name="total` + count + `" id="total` + count + `" class="invoice-control"
                         autocomplete="off" step='0.01' min='0' disabled="true" />
                     <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `"/>
                 </td>
@@ -309,14 +332,24 @@ document.getElementById('discount').addEventListener('input', function(){
 });
 
 //----------------------------------------------------------------------
-//-------------------------Calc values on change data---------------------------------
+//-------------------------Set data to values---------------------------------
 //----------------------------------------------------------------------
-function totalValue(row = null) {
-    let rate = Number($(PRICE + row).val());
+function setToValues(row) {
+    let price = Number($(PRICE + row).val());
     let quantity = Number($(QUANTITY + row).val());
+    $(PRICEVALUE).val(price);
     $(QUANTITYVALUE).val(quantity);
 
-    total = rate * quantity;
+    totalValues(row);
+}
+
+//----------------------------------------------------------------------
+//-------------------------Calc values on change data---------------------------------
+//----------------------------------------------------------------------
+function totalValues(row) {
+    let price = Number($(PRICEVALUE + row).val());
+    let quantity = Number($(QUANTITYVALUE + row).val());
+    let total = price * quantity;
     total = total.toFixed(2);
 
     $(TOTAL + row).val(total);
@@ -365,6 +398,10 @@ function calculateTotals() {
     total = total.toFixed(2);
     document.getElementById('grandtotal').textContent = "$" + total;
     document.getElementById('grandtotalvalue').value = total;
+
+    if (document.getElementById('payment').value == 2) {
+        calculateInterest();
+    }
 }
 
 //----------------------------------------------------------------------
@@ -378,9 +415,9 @@ function moptions(){
         document.getElementById('creditinfo').classList.add('d-block');
         document.getElementById('grandinterest').classList.add('d-flex');
 
-        document.getElementById('interestper').addEventListener('input', calculateInterest);
+        document.getElementById('interestper').addEventListener('input', calculateTotals);
 
-        document.getElementById('numfees').addEventListener('input', calculateInterest);
+        document.getElementById('numfees').addEventListener('input', calculateTotals);
 
     }else{
         document.getElementById('creditinfo').classList.remove('d-block');
@@ -399,12 +436,16 @@ function calculateInterest(){
    let percent = interest / 100;
 
    let result = total * percent * numfees;
+   let grandtotal = total + result;
+
+   grandtotal = grandtotal.toFixed(2);
    result = result.toFixed(2);
 
    document.getElementById('interest').textContent = "$" + result;
    document.getElementById('interestvalue').value = result;
 
-   calculateTotals();
+   document.getElementById('grandtotalvalue').value = grandtotal;
+   document.getElementById('grandtotal').textContent = "$" + grandtotal;
 }
 
 //----------------------------------------------------------------------
