@@ -19,7 +19,10 @@
              <input type="hidden" name="idvalue<?php echo $x; ?>" id="idvalue<?php echo $x; ?>" />
              <td>
                  <input type="text" name="pcode<?php echo $x; ?>" id="pcode<?php echo $x; ?>" class="invoice-control"
-                     autocomplete="off" onchange='getProductData(<?php echo $x; ?>)' placeholder="Ingrese un codigo" />
+                     autocomplete="ñokiero:v" onchange='getProductData(<?php echo $x; ?>)' placeholder="Ingrese un codigo"/>
+                     <div class="icon-container d-none" id="loader<?php echo $x; ?>">
+                        <i class="loader"></i>
+                      </div>
                  <input type="hidden" name="pcodevalue<?php echo $x; ?>" id="pcodevalue<?php echo $x; ?>"/>
              </td>
              <td>
@@ -28,20 +31,20 @@
                  <input type="hidden" name="pnamevalue<?php echo $x; ?>" id="pnamevalue<?php echo $x; ?>"/>
              </td>
              <td>
-                 <input type="number" name="price<?php echo $x; ?>" id="price<?php echo $x; ?>" class="invoice-control"
-                     autocomplete="off" step='0.01' min='0' onchange='totalValue(<?php echo $x; ?>)' disabled />
+                 <input type="decimal" name="price<?php echo $x; ?>" id="price<?php echo $x; ?>" class="invoice-control"
+                     autocomplete="off" step='0.01' min='0' onkeyup='setToValues(<?php echo $x; ?>)' disabled />
                  <input type="hidden" name="pricevalue<?php echo $x; ?>" id="pricevalue<?php echo $x; ?>"/>
              </td>
              <td>
                  <input type="number" name="quantity<?php echo $x; ?>" id="quantity<?php echo $x; ?>" class="invoice-control"
-                      autocomplete="off" min='1' onchange='totalValue(<?php echo $x; ?>)' disabled />
+                      autocomplete="off" min='1' onkeyup='setToValues(<?php echo $x; ?>)' disabled />
                  <input type="hidden" name="quantityvalue<?php echo $x; ?>" id="quantityvalue<?php echo $x; ?>"/>
              </td>
              <td>
                  <input type="text" value="13%" disabled="true" class="invoice-control" />
              </td>
              <td>
-                 <input type="text" name="total<?php echo $x; ?>" id="total<?php echo $x; ?>" class="invoice-control"
+                 <input type="decimal" name="total<?php echo $x; ?>" id="total<?php echo $x; ?>" class="invoice-control"
                      autocomplete="off" step='0.01' min='0' disabled="true" />
                  <input type="hidden" name="totalvalue<?php echo $x; ?>" id="totalvalue<?php echo $x; ?>"/>
              </td>

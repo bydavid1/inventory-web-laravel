@@ -28,7 +28,7 @@
     @if ( session('mensaje') )
     <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
     @endif
-    <form class="form-horizontal" id="createForm">
+    <form class="form-horizontal" id="createForm" autocomplete="off"> 
         @csrf
         <div class="row">
             <div class="col-sm-8">
@@ -312,6 +312,7 @@
                     Swal.fire({
                         title: 'Registrando',
                         html: 'Por favor espere...',
+                        allowOutsideClick: false,
                         onBeforeOpen: () => {
                             Swal.showLoading()
                         },

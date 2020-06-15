@@ -78,8 +78,12 @@ Route::get('products/order/{id}', function ($id){
 });
 
 Route::get('products/order/code/{code}', function ($code){
-   return datatables()->eloquent(App\Products::where('code', $code))
-      ->toJson();
+      $products = App\Products::where('code', $code)->first();
+      if ($products->count() > 0) {
+         return response()->json(['success' => true, 'product' => $products], 200);
+      }else{
+         return response()->json(['success' => false, 'product' => null], 200);
+      }
 });
 
 Route::get('products/order/search/{query}', function ($query){
