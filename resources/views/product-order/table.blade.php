@@ -32,12 +32,12 @@
              </td>
              <td>
                  <input type="decimal" name="price<?php echo $x; ?>" id="price<?php echo $x; ?>" class="invoice-control"
-                     autocomplete="off" step='0.01' min='0' onkeyup='setToValues(<?php echo $x; ?>)' disabled />
+                     autocomplete="off" step='0.01' min='0' onchange='setToValues(<?php echo $x; ?>)' disabled />
                  <input type="hidden" name="pricevalue<?php echo $x; ?>" id="pricevalue<?php echo $x; ?>"/>
              </td>
              <td>
                  <input type="number" name="quantity<?php echo $x; ?>" id="quantity<?php echo $x; ?>" class="invoice-control"
-                      autocomplete="off" min='1' onkeyup='setToValues(<?php echo $x; ?>)' disabled />
+                      autocomplete="off" min='1' onchange='setToValues(<?php echo $x; ?>)' disabled />
                  <input type="hidden" name="quantityvalue<?php echo $x; ?>" id="quantityvalue<?php echo $x; ?>"/>
              </td>
              <td>

@@ -55,9 +55,11 @@ class SaleController extends Controller
         $sale->is_deleted = 0;
 
         if ($sale->save()) {
+
         $id = $sale->id;
-        $invoice_products = "";
+        $product_list = array();
         $counter = $request->trCount;
+
         for ($i=1; $i <= $counter; $i++) { 
             $saleitem = new Sales_item;
             //database and request handlers
@@ -95,7 +97,15 @@ class SaleController extends Controller
             $kardex->save();
 
             //Adding $saleitems to -> $invoice_products array
-            $invoice_products .= "<tr><td>". $request->{'pcodevalue' . $i} ."</td><td>". $request->{'pnamevalue' . $i} ."</td><td>".$saleitem->quantity."</td><td>".$saleitem->unit_price."</td><td>".$saleitem->total."</td></tr>";
+            $product_items = array(
+                'code' => $request->{'pcodevalue' . $i},
+                'name' => $request->{'pnamevalue' . $i},
+                'quantity' => $saleitem->quantity,
+                'price' => $saleitem->unit_price,
+                'total' => $saleitem->total
+            );
+
+            array_push($product_list, $product_items);
 
             }else{
 
@@ -106,7 +116,7 @@ class SaleController extends Controller
             } //for $i
 
             //Design invoice
-            $invoice = $this->designInvoice($invoice_products, $sale, "invoices/");
+            $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");
 
             //send invoice
             return response()->json(['message'=>'Factura guardada', 'data' => compact('invoice')]);

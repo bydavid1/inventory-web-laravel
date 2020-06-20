@@ -11,6 +11,8 @@ use App\Credits;
 use App\Credits_item;
 use Illuminate\Http\Request;
 use App\Traits\Helpers;
+use App\Products;
+use App\Kardex;
 
 class CreditController extends Controller
 {
@@ -58,62 +60,76 @@ class CreditController extends Controller
             $credit->tax = $request->taxesvalue;
             $credit->total = $request->grandtotalvalue;
 
-        if ($credit->save()) {
-            
-            $invoice_products = "";
-            $lastid = $credit->id;
-            $counter = $request->trCount;
+            if ($credit->save()) {
+                
+                $product_list = array();
+                $lastid = $credit->id;
+                $counter = $request->trCount;
 
-            for ($i = 0; $i < $counter; $i++) {
+                for ($i = 1; $i <= $counter; $i++) {
 
-                $credititem = new Credits_item;
-                $credititem->credit_id = $lastid;
-                $credititem->unit_tax = 0.00;
+                    $credititem = new Credits_item;
+                    $credititem->credit_id = $lastid;
+                    $credititem->unit_tax = 0.00;
+                    $credititem->discount = 0.00;
 
-                //database and request handlers
-                $data = ['idvalue', 'quantityvalue', 'pricevalue', 'totalvalue'];
-                $db = ['product_id', 'quantity', 'unit_price', 'total'];
-                for ($j = 0; $j < 4; $j++) {
-                    //Packing item data to -> $saleitem
-                    $modifier = $data[$j] . "" . $i;
-                    $dbmodifier = $db[$j];
-                    $credititem->$dbmodifier = $request->$modifier;
-                } //for $j
+                    //database and request handlers
+                    $data = ['idvalue', 'quantityvalue', 'pricevalue', 'totalvalue'];
+                    $db = ['product_id', 'quantity', 'unit_price', 'total'];
+                    for ($j = 0; $j < 4; $j++) {
+                        //Packing item data to -> $saleitem
+                        $modifier = $data[$j] . "" . $i;
+                        $dbmodifier = $db[$j];
+                        $credititem->$dbmodifier = $request->$modifier;
+                    } //for $j
 
-                if ($credititem->save()) {
-                    //Update quantity
-                    $product = Products::find($credititem->product_id);
-                    $product->quantity = ($product->quantity - $saleitem->quantity);
-                    $product->save();
+                    if ($credititem->save()) {
+                        //Update quantity
+                        $product = Products::find($credititem->product_id);
+                        $product->quantity = ($product->quantity - $credititem->quantity);
+                        $product->save();
 
-                    //Adding to Kardex
-                    $kardex = new Kardex;
-                    $kardex->tag = "Venta de producto";
-                    $kardex->tag_code = "VNC";
-                    $kardex->id_product = $credititem->product_id;
-                    $kardex->quantity = $credititem->quantity;
-                    $kardex->value_diff = "+ $" . $saleitem->total;
-                    $kardex->unit_price = $credititem->unit_price;
-                    $kardex->total = $credititem->total;
-                    $kardex->save();
+                        //Adding to Kardex
+                        $kardex = new Kardex;
+                        $kardex->tag = "Venta de producto";
+                        $kardex->tag_code = "VNC";
+                        $kardex->id_product = $credititem->product_id;
+                        $kardex->quantity = $credititem->quantity;
+                        $kardex->value_diff = "+ $" . $credititem->total;
+                        $kardex->unit_price = $credititem->unit_price;
+                        $kardex->total = $credititem->total;
+                        $kardex->save();
 
-                    //Adding $saleitems to -> $invoice_products array
-                    $invoice_products .= "<tr><td>" . $request->{'pcodevalue' . $i} . "</td><td>" . $request->{'pnamevalue' . $i} . "</td><td>" . $saleitem->quantity . "</td><td>" . $saleitem->unit_price . "</td><td>" . $saleitem->total . "</td></tr>";
+                        //Adding $saleitems to -> $invoice_products array
+                        $product_items = array(
+                            'code' => $request->{'pcodevalue' . $i},
+                            'name' => $request->{'pnamevalue' . $i},
+                            'quantity' => $credititem->quantity,
+                            'price' => $credititem->unit_price,
+                            'total' => $credititem->total
+                        );
 
-                } else {
-                    $sale->destroy();
-                    return response()->json(['message' => 'No se terminó de crear la factura'], 500);
+                        array_push($product_list, $product_items);
+                        
+
+                    } else {
+                        $sale->destroy();
+                        return response()->json(['message' => 'No se terminó de crear la factura'], 500);
+                    }
+                } // for $i
+                
+                if ($request->payment == 2) {
+                    $this->createCredit();
                 }
-            } // for $i
+                
+                //Design invoice
+                $invoice = $this->designInvoice($product_list, $request->costumer, $credit, 'invoices/credit');
 
-            //Design invoice
-            $invoice = $this->designInvoice($invoice_products, $credit, 'invoices/credit');
-
-            //send invoice
-            return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);
-        } else {
-            return response()->json(['message' => 'Ocurrió un error al registrar la información'], 500);
-        }
+                //send invoice
+                return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);
+            } else {
+                return response()->json(['message' => 'Ocurrió un error al registrar la información'], 500);
+            }
         } catch (\Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
         }

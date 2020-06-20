@@ -186,6 +186,7 @@ function getProductData(row){
                     $(QUANTITY + row).val(1);
                     $(QUANTITYVALUE + row).val(1);
                     $(IDVALUE + 1).val(data.id );
+                    $(PRODUCTCODEVALUE + 1).val(data.code );
 
                     totalValues(row);
                     countRow();
@@ -200,7 +201,7 @@ function getProductData(row){
                 document.getElementById('loader' + row).classList.remove('d-block');
                 Toast.fire({
                     type: 'error',
-                    title: 'Recurso no encontrado'
+                    title: 'No encontrado'
                 })
             },
             500: function () {
@@ -335,11 +336,9 @@ document.getElementById('discount').addEventListener('input', function(){
 //-------------------------Set data to values---------------------------------
 //----------------------------------------------------------------------
 function setToValues(row) {
-    let price = Number($(PRICE + row).val());
-    let quantity = Number($(QUANTITY + row).val());
-    $(PRICEVALUE).val(price);
-    $(QUANTITYVALUE).val(quantity);
-
+    //Change to JS Vanilla
+    $(PRICEVALUE + row).val($(PRICE + row).val());
+    $(QUANTITYVALUE + row).val($(QUANTITY + row).val());
     totalValues(row);
 }
 
@@ -347,6 +346,7 @@ function setToValues(row) {
 //-------------------------Calc values on change data---------------------------------
 //----------------------------------------------------------------------
 function totalValues(row) {
+    //Change to JS Vanilla
     let price = Number($(PRICEVALUE + row).val());
     let quantity = Number($(QUANTITYVALUE + row).val());
     let total = price * quantity;
