@@ -266,7 +266,14 @@
             url: url,
             data: formdata,
             beforeSend: function () {
-                //Loader
+                Swal.fire({
+                    title: 'Registrando',
+                    html: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
             },
             success: function (response) {
                 console.log(response);
@@ -278,7 +285,7 @@
                     timer: 1500
                 });
 
-                print(response.data);
+                //print(response.data);
             },
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({

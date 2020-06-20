@@ -103,7 +103,23 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Sub total
-                                <strong id="">$0.00</strong>
+                                <strong id="subtotal">$0.00</strong>
+                                <input type="hidden" id="subtotalvalue" name="subtotalvalue">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Descuentos
+                                <strong id="discounts">$0.00</strong>
+                                <input type="hidden" id="discountsvalue" name="discountsvalue">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Impuestos
+                                <strong id="tax">$0.00</strong>
+                                <input type="hidden" id="taxvalue" name="taxesvalue">
+                            </li>
+                            <li class="list-group-item d-none justify-content-between align-items-center" id="grandinterest">
+                                Interés
+                                <strong id="interest">$0.00</strong>
+                                <input type="hidden" id="interestvalue" name="interestvalue">
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Total
@@ -146,7 +162,14 @@
                 url: url,
                 data: formdata,
                 beforeSend: function () {
-                    //Loader
+                    Swal.fire({
+                        title: 'Registrando',
+                        html: 'Por favor espere...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
                 },
                 success: function (response) {
                     console.log(response);

@@ -327,7 +327,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-
+                    console.log(response);
                     document.getElementById('createForm').reset();
 
                     print(response.data);
@@ -344,9 +344,8 @@
         });
 
         function print(data) {
-            var invoice = data.invoice;
             var target = window.open('', 'PRINT', 'height=800,width=800');
-            target.document.write(invoice);
+            target.document.write(data.invoice);
             target.print();
             target.close();
         }
