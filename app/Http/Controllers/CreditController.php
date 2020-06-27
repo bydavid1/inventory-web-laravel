@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
 
-use App\Credits;
-use App\Credits_item;
+use App\Tax_bill;
+use App\Tax_bill_items;
 use Illuminate\Http\Request;
 use App\Traits\Helpers;
 use App\Products;
@@ -46,10 +46,10 @@ class CreditController extends Controller
     public function store(Request $request)
     {
         try {
-            $credit = new Credits;
+            $credit = new Tax_bill;
             $credit->date = $request->date;
             $credit->costumer_id = $request->costumerid;
-            $credit->payment_status = $request->payment;
+            $credit->payment = $request->payment;
             $credit->delivery_status = $request->delivery;
             $credit->additional_discounts = $request->discounts;
             $credit->additional_payments = $request->mpayments;
@@ -68,8 +68,8 @@ class CreditController extends Controller
 
                 for ($i = 1; $i <= $counter; $i++) {
 
-                    $credititem = new Credits_item;
-                    $credititem->credit_id = $lastid;
+                    $credititem = new Tax_bill_items;
+                    $credititem->tax_bill_id = $lastid;
                     $credititem->unit_tax = 0.00;
                     $credititem->discount = 0.00;
 
@@ -119,7 +119,7 @@ class CreditController extends Controller
                 } // for $i
                 
                 if ($request->payment == 2) {
-                    $this->createCredit();
+                    $this->createCredit($request->numfees, $request->startdate, $request->rangefees, $request->interestper, $request->grandtotalvalue, $lastid);
                 }
                 
                 //Design invoice

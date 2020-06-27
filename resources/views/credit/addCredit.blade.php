@@ -67,7 +67,7 @@
                                 <label for="date" class="control-label">Fecha de factura</label>
                                 <div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Fecha"
+                                        <input type="text" class="form-control datefield" placeholder="Fecha"
                                         autocomplete="off" id="date" name="date"  />
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-th"></i></span>
@@ -181,7 +181,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="delivery" class="control-label">Fecha de inicio</label>
-                                    <input type="date" name="startdate" class="form-control"/>
+                                    <input type="text" name="startdate" class="form-control datefield"/>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="delivery" class="control-label">Rango entre cuotas</label>
@@ -294,16 +294,18 @@
     @include('product-order.script')
 
     <script>
-        $('#date').datepicker({
+        $('.datefield').datepicker({
             orientation: "bottom auto",
             language: "es",
             format: "yyyy-mm-dd",
+            todayBtn: "linked",
         });
 
         $('#createForm').unbind('submit').bind('submit', function (stay) {
             stay.preventDefault();
-            var formdata = $(this).serialize();
-            var url = "{{ route('createCredit') }}";
+            let formdata = $(this).serialize();
+            let url = "{{ route('createCredit') }}";
+            let ajaxTime= new Date().getTime();
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -319,7 +321,8 @@
                     })
                 },
                 success: function (response) {
-                    console.log(response);
+                    let totalTime = new Date().getTime()-ajaxTime;
+                    console.log("Response time:" + totalTime);
                     Swal.fire({
                         position: 'top-end',
                         type: 'success',
@@ -327,7 +330,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    console.log(response);
                     document.getElementById('createForm').reset();
 
                     print(response.data);
