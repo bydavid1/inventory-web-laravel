@@ -35,6 +35,6 @@ class CreateInvoice implements ShouldQueue
      */
     public function handle()
     {
-        $pdf = PDF::loadHTML($this->view)->save(public_path($this->path) . $this->id . '.pdf');
+        PDF::loadHTML($this->view)->save(public_path($this->path) . $this->id . '.pdf');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSalesTable extends Migration
+class CreateCreditInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('credit_invoices', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('costumer');
-            $table->integer('quantity');
-            $table->float('subtotal');
-            $table->float('total');
-            $table->integer('is_deleted');
+            $table->unsignedBigInteger('invoice_id');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->string('serial');
         });
-
-        DB::statement("ALTER TABLE sales AUTO_INCREMENT = 14000;");
     }
 
     /**
@@ -33,6 +29,6 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('credit_invoices');
     }
 }

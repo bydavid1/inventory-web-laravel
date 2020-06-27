@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kardex extends Model
+class Tax_rules extends Model
 {
     //
 }
