@@ -57,7 +57,7 @@ function addNewProduct() {
             arrayNumber = 0;
         }
 
-        tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
+        tr = /*html*/`<tr id="row` + count + `" class="` + arrayNumber + `">
                 <input type="hidden" name="provider` + count + `" id="provider` + count + `" value="` + provider + `"/>
                 <input type="hidden" name="category` + count + `" id="category` + count + `" value="` + category + `"/>
                 <input type="hidden" name="price` + count + `" id="price` + count + `" value="` + price + `"/>
@@ -272,12 +272,12 @@ function searchProduct() {
                     let output = "";
                     for (let i = 0; i < data.length; i++) {
                         output += `<div class="row mb-2">
-                        <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}" style="max-height:50px; max-width:70px;"/></div>
-                        <div class="col-sm-2 my-auto">` + data[i].code + `</div>
-                        <div class="col-sm-3 my-auto">` + data[i].name + `</div>
-                        <div class="col-sm-2 my-auto">` + data[i].quantity + `</div>
-                        <div class="col-sm-2 my-auto">` + data[i].price1 + `</div>
-                        <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i class="fas fa-plus"></i>Agregar</button></div>
+                        <div class="col-sm-2"><img class="img-round" src="{{ asset("${data[i].image}") }}" style="max-height:50px; max-width:70px;"/></div>
+                        <div class="col-sm-2 my-auto">${data[i].code}</div>
+                        <div class="col-sm-3 my-auto">${data[i].name}</div>
+                        <div class="col-sm-2 my-auto">${data[i].quantity}</div>
+                        <div class="col-sm-2 my-auto">${data[i].price}</div>
+                        <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(${data[i].id})"><i class="fas fa-plus"></i>Agregar</button></div>
                         </div>`;
                     }
                     $("#results").html(output);

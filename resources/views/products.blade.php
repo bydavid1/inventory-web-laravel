@@ -37,16 +37,14 @@
 			</div>
 			<table class="table" id="items">
 					<thead>
-						<tr>
-							<th style="width:10%;">Imagen</th>						
+						<tr>		
+							<th>Imagen</th>				
 							<th>Codigo</th>
 							<th>Nombre del producto</th>							
 							<th>Precio principal</th>
 							<th>Cantidad</th>
 							<th>Estado</th>
 							<th>Tipo</th>
-							<th>Proveedor</th>
-							<th>Categoria</th>
 							<th style="width:15%;" class="text-right">Opciones</th>
 						</tr>
 					</thead>
@@ -111,24 +109,16 @@
 	                data: 'name'
 	            },
 	            {
-	                data: 'price1'
+	                data: 'prices[, ].price_incl_tax'
 	            },
 	            {
-	                data: 'quantity'
+	                data: 'stock'
 	            },
 	            {
 	                data: 'is_available'
 	            },
 	            {
 	                data: 'type'
-	            },
-	            {
-					"searchable" : false,
-	                data: 'name_prov'
-	            },
-	            {
-					"searchable" : false,
-	                data: 'name_categ'
 	            },
 	            {
 					"searchable" : false,

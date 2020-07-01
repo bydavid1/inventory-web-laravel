@@ -2,18 +2,44 @@
 
 namespace App\Http\Controllers;
 
+//error reporting
+error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use App\Products;
+use App\Prices;
+use App\Images;
+use App\Purchase_prices;
 use App\Categories;
-use App\Providers;
+use App\Suppliers;
 use App\Kardex;
 
 class ProductController extends Controller
 {
 
     private $photo_default = "media/photo_default.png";
+
+     /**
+     * Api
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getRecords()
+    {
+        return datatables()->eloquent(Products::with(['Prices', 'Images'])->where('is_deleted', '0'))
+        ->addColumn('actions', '<div class="btn-group float-right">
+                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
+                    <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="fas fa-trash" style="color: white"></i></button>
+                    <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="fas fa-eye" style="color: white"></i></a>
+                    </div>')
+                    ->addColumn('photo', '<img class="img-round"  style="max-height:50px; max-width:70px;"/>')
+                    ->rawColumns(['actions', 'photo'])
+        ->toJson();
+    }
 
     /**
      * Display a listing of the resource.
@@ -33,7 +59,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
-        $providers = Providers::select(['id','name'])->where('is_available', 1)->get();;
+        $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();;
         //->where('is_available', 1);
         return view('product.add', compact(['categories','providers']));
     }
@@ -44,59 +70,77 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function make(Request $request)
+    public function store(Request $request)
     {
-        $path = '';
+        try {
+            $path = '';
 
-        $request->validate([
-            'code' => 'required',
-            'name' => 'required',
-            'purchase' => 'required',
-            'quantity' => 'required',
-            'price1' => 'required'
-        ]);
+            $request->validate([
+                'code' => 'required',
+                'name' => 'required',
+                'purchase' => 'required',
+                'quantity' => 'required',
+                'price1' => 'required'
+            ]);
 
 
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $path = Storage::disk('public')->put('uploads', $file);
-        }else{
-            $path = $this->photo_default;
-        }
+            if ($request->file('image')) {
+                $file = $request->file('image');
+                $path = Storage::disk('public')->put('uploads', $file);
+            }else{
+                $path = $this->photo_default;
+            }
+            
+            $new = new Products;
+            $new->code = $request->code;
+            $new->name = $request->name;
+            $new->description = $request->description;
+            $new->supplier_id = $request->provider_id;
+            $new->category_id = $request->category_id;
+            $new->manufacturer_id = $request->category_id;
+            $new->stock = $request->quantity;
+            $new->low_stock_alert = 1;
+            $new->type = $request->type;
+            $new->is_available = $request->is_available;
+            $new->is_deleted = 0;
+
+            if ($new->save()) {
+
+                for ($i=1; $i <= 4; $i++) { 
+                    $prices = new Prices;
+                    $prices->product_id = $new->id;
+                    $prices->price = $request->{'price'.$i};
+                    $prices->utility = $request->{'utility'.$i};
+                    $prices->id_tax = 1;
+                    $prices->price_incl_tax = $request->{'price'.$i};
+                    $prices->save();
+                }
         
-        $new = new Products;
-        $new->code = $request->code;
-        $new->name = $request->name;
-        $new->image = $path;
-        $new->description = $request->description;
-        $new->provider_id = $request->provider_id;
-        $new->category_id = $request->category_id;
-        $new->purchase = $request->purchase;
-        $new->quantity = $request->quantity;
-        $new->type = $request->type;
-        $new->price1 = $request->price1;
-        $new->price2 = $request->price2;
-        $new->price3 = $request->price3;
-        $new->price4 = $request->price4;
-        $new->utility1 = $request->utility1;
-        $new->utility2 = $request->utility2;
-        $new->utility3 = $request->utility3;
-        $new->utility4 = $request->utility4;
-        $new->is_available = $request->is_available;
-        $new->is_deleted = 0;
+                $images = new Images;
+                $images->src = $path;
+                $images->product_id = $new->id;
+                $images->type = 'principal';
+                $images->save();
 
-        if ($new->save()) {
-            $kardex = new Kardex;
-            $kardex->tag = "Ingreso al inventario";
-            $kardex->tag_code = "MK";
-            $kardex->id_product = $new->id;
-            $kardex->quantity =  $new->quantity;
-            $kardex->value_diff = "- $" . $new->purchase * $new->quantity;
-            $kardex->unit_price = $new->purchase;
-            $kardex->total = $new->purchase * $new->quantity;
-            $kardex->save();
+                $purchase = new Purchase_prices;
+                $purchase->product_id = $new->id;
+                $purchase->value = $request->purchase;
+                $purchase->save();
+        
+                $kardex = new Kardex;
+                $kardex->tag = "Ingreso al inventario";
+                $kardex->tag_code = "MK";
+                $kardex->id_product = $new->id;
+                $kardex->quantity =  $new->quantity;
+                $kardex->difference = "- $" . $new->purchase * $new->quantity;
+                $kardex->unit_price = $new->purchase;
+                $kardex->total = $new->purchase * $new->quantity;
+                $kardex->save();
 
-            return back()->with('mensaje', 'Guardado');
+                return response()->json(['success'=>'true', 'message'=>'Factura guardada']);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
         }
     }
 

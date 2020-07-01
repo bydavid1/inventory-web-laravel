@@ -27,7 +27,7 @@ Route::get('/register', function(){
 //Product Routes
 Route::get('/product', 'ProductController@index')->name('products')->middleware('auth');
 Route::get('product/create', 'ProductController@create')->name('addProduct')->middleware('auth');
-Route::post('/makeProduct', 'ProductController@make')->name('makeProduct')->middleware('auth');
+Route::post('/makeProduct', 'ProductController@store')->name('makeProduct')->middleware('auth');
 Route::get('product/{id}/edit', 'ProductController@edit')->name('editProduct')->middleware('auth');
 Route::put('updateProduct/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
 Route::get('product/show/{id}', 'ProductController@show')->name('showProduct')->middleware('auth');
@@ -35,11 +35,12 @@ Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduc
 
 //Categories Routes
 Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth');
-Route::post('/makeCategory', 'CategoriesController@make')->name('makeCategory')->middleware('auth');
+Route::post('/makeCategory', 'CategoriesController@store')->name('makeCategory')->middleware('auth');
 
-//Providers Routes
-Route::get('/providers', 'ProviderController@index')->name('providers')->middleware('auth');
-Route::post('/makeProvider', 'ProviderController@make')->name('makeProvider')->middleware('auth');
+//Supplier Routes
+Route::get('/suppliers', 'SupplierController@index')->name('providers')->middleware('auth');
+Route::post('/storeSupplier', 'SupplierController@store')->name('makesupplier')->middleware('auth');
+Route::post('/storeManufacturer', 'ManufacturersController@store')->name('makemanufacturer')->middleware('auth');
 
 //Costumer routes´
 Route::get('/costumers', 'CostumerController@index')->name('costumers')->middleware('auth');
