@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 <!-- Fileinput -->
 <link rel="stylesheet" href="{{ asset('plugins/fileinput/css/fileinput.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('content')
@@ -45,8 +46,7 @@
                <span aria-hidden="true">&times;</span></button>
             </div>
             @endif
-            <form class="form-horizontal" id="submitProductForm" action="{{ route('makeProduct') }}" method="POST"
-                enctype="multipart/form-data">
+            <form class="form-horizontal" id="submitProductForm" enctype="multipart/form-data">
                 @csrf
                 <div id="add-product-messages"></div>
 
@@ -288,6 +288,7 @@
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <!-- Fileinput -->
 <script src="{{ asset('plugins/fileinput/js/fileinput.min.js') }}"></script>
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script>
    $(function () {
         //Initialize Select2 Elements
@@ -296,7 +297,8 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
-     });
+
+     })
 
      $("#image").fileinput({
         overwriteInitial: true,
@@ -315,6 +317,49 @@
             main2: '{preview} {remove} {browse}'
         },
         allowedFileExtensions: ["jpg", "png", "gif", "JPG", "PNG", "GIF"]
+    })
+
+</script>
+<script>
+    $('#submitProductForm').unbind('submit').bind('submit', function (stay) {
+        stay.preventDefault();
+        var formdata = $(this).serialize();
+        var url = "{{ route('makeProduct') }}";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formdata,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Guardando',
+                    html: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            },
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                    position: 'top-end',
+                    type: 'success',
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                //Clear all fields
+                $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
+            },
+            error: function (xhr, textStatus, errorMessage) {
+                Swal.fire({
+                    position: 'top',
+                    type: 'error',
+                    html: 'Error crítico: ' + xhr.responseText,
+                    showConfirmButton: true,
+                });
+            }
+        });
     });
 </script>
 @endsection

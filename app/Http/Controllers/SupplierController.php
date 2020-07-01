@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Providers;
+use App\Suppliers;
 
-class ProviderController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,23 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        return view('providers');
+        return view('suppliers');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecords()
+    {
+        return datatables()->eloquent(Suppliers::query())
+        ->addColumn('actions', '<div class="btn-group float-right btn-group-sm">
+                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
+                    </div>')
+        ->rawColumns(['actions'])
+        ->toJson();
     }
 
     /**
@@ -24,7 +40,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-          
+        //
     }
 
     /**
@@ -33,20 +49,18 @@ class ProviderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function make(Request $request)
+    public function store(Request $request)
     {
-        $request->validate(['code' => 'required', 'name' => 'required', 'nit' => 'required', 'phone' => 'required']);
+        $supplier = new Suppliers;
+        $supplier->code = $request->code;
+        $supplier->name = $request->name;
+        $supplier->nit = $request->nit;
+        $supplier->phone = $request->phone;
+        $supplier->address = $request->address;
+        $supplier->is_available = 1;
+        $supplier->is_deleted = 0;
 
-        $provider = new Providers;
-        $provider->code = $request->code;
-        $provider->name = $request->name;
-        $provider->nit = $request->nit;
-        $provider->phone = $request->phone;
-        $provider->address = $request->address;
-        $provider->is_available = 1;
-        $provider->is_deleted = 0;
-
-        $provider->save();
+        $supplier->save();
 
         return back()->with('mensaje', 'Guardado');
     }
