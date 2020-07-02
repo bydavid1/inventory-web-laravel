@@ -5461,7 +5461,7 @@
         showBrowse: true,
         showPreview: true,
         showRemove: true,
-        showUpload: true,
+        showUpload: false,
         showUploadStats: true,
         showCancel: null,
         showPause: null,

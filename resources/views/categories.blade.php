@@ -74,6 +74,13 @@
                                 autocomplete="off" value="{{ old('name') }}" required>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Descripcion: </label>
+                        <div class="col-sm-12">
+                            <textarea name="description" class="form-control" placeholder="Ingrese una descripcion" value="{{ old('description') }}" cols="30" rows="10">
+                            </textarea>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off"> <i
                             class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
                 </form>

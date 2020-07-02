@@ -37,10 +37,12 @@ Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduc
 Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth');
 Route::post('/makeCategory', 'CategoriesController@store')->name('makeCategory')->middleware('auth');
 
-//Supplier Routes
-Route::get('/suppliers', 'SupplierController@index')->name('providers')->middleware('auth');
-Route::post('/storeSupplier', 'SupplierController@store')->name('makesupplier')->middleware('auth');
-Route::post('/storeManufacturer', 'ManufacturersController@store')->name('makemanufacturer')->middleware('auth');
+//Suppliers and manufacturers Routes
+Route::get('/suppliers', 'SupplierController@index')->name('suppliers')->middleware('auth');
+Route::get('/manufacturers', 'ManufacturersController@index')->name('manufacturers')->middleware('auth');
+Route::post('/storeSupplier', 'SupplierController@store')->name('storeSupplier')->middleware('auth');
+Route::post('/storeManufacturer', 'ManufacturersController@store')->name('storeManufacturer')->middleware('auth');
+Route::put('/editmanufacturer/{id}', 'ManufacturersController@update')->name('editManufacturer')->middleware('auth');
 
 //Costumer routes´
 Route::get('/costumers', 'CostumerController@index')->name('costumers')->middleware('auth');

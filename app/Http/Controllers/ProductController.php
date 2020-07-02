@@ -15,6 +15,7 @@ use App\Images;
 use App\Purchase_prices;
 use App\Categories;
 use App\Suppliers;
+use App\Manufacturers;
 use App\Kardex;
 
 class ProductController extends Controller
@@ -30,13 +31,18 @@ class ProductController extends Controller
 
     public function getRecords()
     {
-        return datatables()->eloquent(Products::with(['Prices', 'Images'])->where('is_deleted', '0'))
+        $query = Products::with(['Prices', 'Images'])->where('is_deleted', '0');
+        return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
                     <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
                     <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="fas fa-trash" style="color: white"></i></button>
                     <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="fas fa-eye" style="color: white"></i></a>
                     </div>')
-                    ->addColumn('photo', '<img class="img-round"  style="max-height:50px; max-width:70px;"/>')
+                    ->addColumn('photo', function($query){
+                        $image = $query->Images;
+                        $path = 
+                        return '<img class="img-rounded" src="{{ asset($src) }}" style="max-height:50px; max-width:70px;"/>';
+                    })
                     ->rawColumns(['actions', 'photo'])
         ->toJson();
     }
@@ -58,10 +64,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
-        $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();;
+        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();
+        $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();
+        $manufacturers = Manufacturers::select(['id','name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('product.add', compact(['categories','providers']));
+        return view('product.add', compact(['categories','providers', 'manufacturers']));
     }
 
     /**
@@ -74,15 +81,6 @@ class ProductController extends Controller
     {
         try {
             $path = '';
-
-            $request->validate([
-                'code' => 'required',
-                'name' => 'required',
-                'purchase' => 'required',
-                'quantity' => 'required',
-                'price1' => 'required'
-            ]);
-
 
             if ($request->file('image')) {
                 $file = $request->file('image');
@@ -97,7 +95,7 @@ class ProductController extends Controller
             $new->description = $request->description;
             $new->supplier_id = $request->provider_id;
             $new->category_id = $request->category_id;
-            $new->manufacturer_id = $request->category_id;
+            $new->manufacturer_id = $request->manufacturer_id;
             $new->stock = $request->quantity;
             $new->low_stock_alert = 1;
             $new->type = $request->type;
@@ -111,7 +109,7 @@ class ProductController extends Controller
                     $prices->product_id = $new->id;
                     $prices->price = $request->{'price'.$i};
                     $prices->utility = $request->{'utility'.$i};
-                    $prices->id_tax = 1;
+                    $prices->tax_id = 1;
                     $prices->price_incl_tax = $request->{'price'.$i};
                     $prices->save();
                 }
@@ -129,15 +127,14 @@ class ProductController extends Controller
         
                 $kardex = new Kardex;
                 $kardex->tag = "Ingreso al inventario";
-                $kardex->tag_code = "MK";
-                $kardex->id_product = $new->id;
-                $kardex->quantity =  $new->quantity;
-                $kardex->difference = "- $" . $new->purchase * $new->quantity;
-                $kardex->unit_price = $new->purchase;
-                $kardex->total = $new->purchase * $new->quantity;
+                $kardex->product_id = $new->id;
+                $kardex->quantity =  $new->stock;
+                $kardex->difference = "- $" . $request->purchase * $new->stock;
+                $kardex->unit_price = $request->purchase;
+                $kardex->total = $request->purchase * $new->stock;
                 $kardex->save();
 
-                return response()->json(['success'=>'true', 'message'=>'Factura guardada']);
+                return response()->json(['success'=>'true', 'message'=>'Producto guardado']);
             }
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);

@@ -41,7 +41,7 @@
 							<th>Imagen</th>				
 							<th>Codigo</th>
 							<th>Nombre del producto</th>							
-							<th>Precio principal</th>
+							<th>Precios</th>
 							<th>Cantidad</th>
 							<th>Estado</th>
 							<th>Tipo</th>

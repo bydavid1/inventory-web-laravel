@@ -8,11 +8,22 @@ ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
 use App\Manufacturers;
+use Illuminate\Support\Facades\Storage;
 
 class ManufacturersController extends Controller
 {
 
     private $photo_default = "media/photo_default.png";
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('manufacturers');
+    }
 
     /**
      * Display a listing of the resource.
@@ -40,16 +51,6 @@ class ManufacturersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -60,15 +61,15 @@ class ManufacturersController extends Controller
         try {
             $path = '';
 
-            if ($request->file('image')) {
-                $file = $request->file('image');
+            if ($request->file('imagepath')) {
+                $file = $request->file('imagepath');
                 $path = Storage::disk('public')->put('uploads', $file);
             }else{
                 $path = $this->photo_default;
             }
     
             $new = new Manufacturers;
-            $new->name = $request->name2;
+            $new->name = $request->name;
             $new->logo = $path;
             $new->is_available = 1;
             $new->is_deleted = 0;
@@ -96,17 +97,6 @@ class ManufacturersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,7 +105,26 @@ class ManufacturersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $find = Manufacturers::find($id);
+            $find->name = $request->brandname;
+
+            if ($request->file('brandlogo')) {
+                $file = $request->file('brandlogo');
+                $path = Storage::disk('public')->put('uploads', $file);
+                $find->logo = $path;
+            }
+            
+            if ($find->save() && $request->file('brandimage')) {
+                if ($savedImage != $this->photo_default) {
+                    unlink($savedImage);
+                }
+            }
+
+            return response()->json(['success' => 'true', 'message' => 'Actualizado']);
+        } catch (Exception $e) {
+            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
+        }
     }
 
     /**
