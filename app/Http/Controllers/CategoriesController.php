@@ -33,10 +33,11 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function make(Request $request)
+    public function store(Request $request)
     {
         $category = new Categories;
         $category->name = $request->name;
+        $category->description = $request->description;
         $category->is_available = 1;
         $category->is_deleted =0;
 

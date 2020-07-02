@@ -138,6 +138,15 @@
                                         </div>
                                     </div>
                                     <!-- /form-group-->
+                                    <div class="form-group col-sm-12">
+                                        <label>Fabricante:</label>
+                                        <select data-placeholder="Seleciona una categoría" style="width: 100%;" class="select2bs4" id="manufacturer_id" name="manufacturer_id">
+                                            @foreach ($manufacturers as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <!-- /form-group-->
                                 </div>
                             </div>
                         </div>
@@ -267,10 +276,10 @@
                 class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
 
         <button type="submit" class="btn btn-primary" id="createProductBtn" data-loading-text="Loading..."
-            autocomplete="off"> <i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+            autocomplete="off"> <i class="fas fa-ok-sign"></i> Guardar</button>
 
       <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
-            autocomplete="off"> <i class="glyphicon glyphicon-ok-sign"></i> Guardar y salir</button>
+            autocomplete="off"> <i class="fas fa-ok-sign"></i> Guardar y salir</button>
     </div>
     <!-- /modal-footer -->
     </form>
@@ -340,7 +349,6 @@
                 })
             },
             success: function (response) {
-                console.log(response);
                 Swal.fire({
                     position: 'top-end',
                     type: 'success',
@@ -349,7 +357,7 @@
                     timer: 1500
                 });
                 //Clear all fields
-                $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
+                $('#submitProductForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
             },
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({

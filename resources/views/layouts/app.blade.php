@@ -117,7 +117,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('providers') }}" class="nav-link">
+            <a href="{{ route('suppliers') }}" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>Proveedores</p>
             </a>
