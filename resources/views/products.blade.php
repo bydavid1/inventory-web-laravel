@@ -43,8 +43,9 @@
 							<th>Nombre del producto</th>							
 							<th>Precios</th>
 							<th>Cantidad</th>
+							<th>Categoria</th>
+							<th>Fabricante</th>
 							<th>Estado</th>
-							<th>Tipo</th>
 							<th style="width:15%;" class="text-right">Opciones</th>
 						</tr>
 					</thead>
@@ -109,16 +110,19 @@
 	                data: 'name'
 	            },
 	            {
-	                data: 'prices[, ].price_incl_tax'
+	                data: 'prices'
 	            },
 	            {
 	                data: 'stock'
 	            },
 	            {
+	                data: 'name_category'
+				},
+				{
+	                data: 'name_supplier'
+				},
+				{
 	                data: 'is_available'
-	            },
-	            {
-	                data: 'type'
 	            },
 	            {
 					"searchable" : false,
