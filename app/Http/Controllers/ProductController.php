@@ -31,19 +31,29 @@ class ProductController extends Controller
 
     public function getRecords()
     {
-        $query = Products::with(['Prices', 'Images'])->where('is_deleted', '0');
+        $query = Products::select('products.id','products.code','products.name','products.is_available','products.type','products.stock', 'suppliers.name as name_supplier', 'categories.name as name_category')->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')->join('categories', 'products.category_id', '=', 'categories.id')->with(['first_price', 'first_image'])->where('products.is_deleted', '0');
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
                     <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
                     <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="fas fa-trash" style="color: white"></i></button>
                     <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="fas fa-eye" style="color: white"></i></a>
                     </div>')
-                    ->addColumn('photo', function($query){
-                        $image = $query->Images;
-                        $path = 
-                        return '<img class="img-rounded" src="{{ asset($src) }}" style="max-height:50px; max-width:70px;"/>';
-                    })
-                    ->rawColumns(['actions', 'photo'])
+        ->addColumn('photo', function($products){
+                    $path = asset($products->first_image->src);
+                     return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
+        })
+        ->addColumn('prices', function($products){
+                     //Make sure there is at least one price registered
+                     return "$".$products->first_price->price_incl_tax;   
+        })
+        ->editColumn('is_available', function($products){
+                    if ($products->is_available == 1) {
+                        return '<i class="fas fa-check text-success"></i>';
+                    }else{
+                        return '<i class="fas fa-times text-danger"></i>';
+                    }
+        })
+        ->rawColumns(['actions', 'photo', 'is_available'])
         ->toJson();
     }
 
@@ -163,9 +173,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
-        $providers = Providers::select(['id','name'])->where('is_available', 1)->get();;
-        $product = Products::findOrfail($id);
-        return view('product.edit', compact(['product', 'categories', 'providers']));
+        $suppliers = Suppliers::select(['id','name'])->where('is_available', 1)->get();;
+        $product = Products::findOrfail($id)->with(['prices','images']);
+        return view('product.edit', compact(['product', 'categories', 'suppliers']));
     }
 
     /**

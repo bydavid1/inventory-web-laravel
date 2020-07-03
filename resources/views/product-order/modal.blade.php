@@ -9,7 +9,7 @@
                 <button class="close ml-2" data-dismiss="modal" arial-label="close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                 <input class="form-control form-control-lg form-control-borderless" id="searchInput" type="search" autocomplete="off" placeholder="Buscar en el inventario">
+                 <input class="form-control form-control-lg form-control-borderless" id="searchInput" type="search" autofocus autocomplete="off" placeholder="Buscar en el inventario">
                  <div id="results" class="pt-3 px-2">
 
                  </div>

@@ -80,41 +80,41 @@ function add(id) {
                 let totalvalue = pricevalue * quantityvalue;
                 totalvalue = totalvalue.toFixed(2);
 
-                tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-                        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
+                tr = `<tr id="row${count}" class="${arrayNumber}">
+                        <input type="hidden" name="idvalue${count}" id="idvalue${count}" value="` + data[0].id + `"/>
                         <td>
-                            <input type="text" name="pcode` + count + `" id="pcode` + count + `" value="` + data[0].code + `" class="invoice-control"
-                                autocomplete="ñokiero:v" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
-                                <div class="icon-container d-none" id="loader` + count + `">
+                            <input type="text" name="pcode${count}" id="pcode${count}" value="` + data[0].code + `" class="invoice-control"
+                                autocomplete="ñokiero:v" onchange="getProductData(${count})" placeholder="Ingrese un codigo" />
+                                <div class="icon-container d-none" id="loader${count}">
                                     <i class="loader"></i>
                                 </div>
-                            <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `" value="` + data[0].code + `"/>
+                            <input type="hidden" name="pcodevalue${count}" id="pcodevalue${count}" value="` + data[0].code + `"/>
                         </td>
                         <td>
-                            <input type="text" name="pname` + count + `" id="pname` + count + `" value="` + data[0].name + `" class="invoice-control"
+                            <input type="text" name="pname${count}" id="pname${count}" value="` + data[0].name + `" class="invoice-control"
                                 autocomplete="off" disabled />
-                            <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
+                            <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}" value="` + data[0].name + `"/>
                         </td>
                         <td>
-                            <input type="decimal" name="price` + count + `" id="price` + count + `" value="` + pricevalue + `" class="invoice-control"
-                                autocomplete="off" step='0.01' min='0' onchange="setToValues(` + count + `)" disabled />
-                            <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `" value="` + pricevalue + `"/>
+                            <input type="decimal" name="price${count}" id="price${count}" value="${pricevalue}" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})" disabled />
+                            <input type="hidden" name="pricevalue${count}" id="pricevalue${count}" value="${pricevalue}"/>
                         </td>
                         <td>
-                            <input type="number" name="quantity` + count + `" id="quantity` + count + `" value="` + quantityvalue + `" class="invoice-control"
-                            autocomplete="off" min='1' onchange="setToValues(` + count + `)"/>
-                            <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
+                            <input type="number" name="quantity${count}" id="quantity${count}" value="${pricevalue}" class="invoice-control"
+                            autocomplete="off" min='1' onchange="setToValues(${count})"/>
+                            <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}" value="${pricevalue}"/>
                         </td>
                         <td>
                             <input type="text" value="13%" disabled="true" class="invoice-control" />
                         </td>
                         <td>
-                            <input type="decimal" name="total` + count + `" id="total` + count + `" value="` + totalvalue + `" class="invoice-control"
+                            <input type="decimal" name="total${count}" id="total${count}" value="${totalvalue}" class="invoice-control"
                                 autocomplete="off" step='0.01' min='0'/>
-                            <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + totalvalue + `"/>
+                            <input type="hidden" name="totalvalue${count}" id="totalvalue${count}" value="${totalvalue}"/>
                         </td>
                         <td class="text-center">
-                            <a class="btn" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash text-primary"></i></a>
+                            <a class="btn" onclick="removeProductRow(${count})"><i class="fa fa-trash text-primary"></i></a>
                         </td>
                     </tr>`;
 
@@ -172,10 +172,11 @@ function getProductData(row){
             200: function (response) {
                 if (response.success == true) {
                     var data = response.product;
+                    console.log(data)
                     //Hide Loader
                     document.getElementById('loader' + row).classList.remove('d-block');
                     //Decimal format
-                    let price1 = Number(data.price1);
+                    let price1 = Number(data.first_price.price_incl_tax);
                     price1 = price1.toFixed(2);
                     $(PRODUCTNAME + row).val(data.name);
                     $(PRICE + row).val(price1);
@@ -252,41 +253,41 @@ function addRow() {
 
     $("#addRowBtn").button("reset");
 
-    var tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-                <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `"/>
+    var tr = `<tr id="row${count}" class="${arrayNumber}">
+                <input type="hidden" name="idvalue${count}" id="idvalue${count}"/>
                 <td>
-                    <input type="text" name="pcode` + count + `" id="pcode` + count + `" class="invoice-control"
-                        autocomplete="ñokiero:v" onchange="getProductData(` + count + `)" placeholder="Ingrese un codigo" />
-                        <div class="icon-container d-none" id="loader` + count + `">
+                    <input type="text" name="pcode${count}" id="pcode${count}" class="invoice-control"
+                        autocomplete="ñokiero:v" onchange="getProductData(${count})" placeholder="Ingrese un codigo" />
+                        <div class="icon-container d-none" id="loader${count}">
                             <i class="loader"></i>
                          </div>
-                    <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue`  + count + `"/>
+                    <input type="hidden" name="pcodevalue${count}" id="pcodevalue${count}"/>
                 </td>
                 <td>
-                    <input type="text" name="pname` + count + `" id="pname` + count + `" class="invoice-control"
+                    <input type="text" name="pname${count}" id="pname${count}" class="invoice-control"
                         autocomplete="off" disabled />
-                    <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `"/>
+                    <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}"/>
                 </td>
                 <td>
-                    <input type="decimal" name="price` + count + `" id="price` + count + `" class="invoice-control"
-                        autocomplete="off" step='0.01' min='0' onchange="setToValues(` + count + `)" disabled />
-                    <input type="hidden" name="pricevalue` + count + `" id="pricevalue` + count + `"/>
+                    <input type="decimal" name="price${count}" id="price${count}" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})" disabled />
+                    <input type="hidden" name="pricevalue${count}" id="pricevalue${count}"/>
                 </td>
                 <td>
-                    <input type="number" name="quantity` + count + `" id="quantity` + count + `" class="invoice-control"
-                    autocomplete="off" min='1' onchange="setToValues(` + count + `)" disabled />
-                    <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `"/>
+                    <input type="number" name="quantity${count}" id="quantity${count}" class="invoice-control"
+                    autocomplete="off" min='1' onchange="setToValues(${count})" disabled />
+                    <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}"/>
                 </td>
                 <td>
                     <input type="text" value="13%" disabled="true" class="invoice-control" />
                 </td>
                 <td>
-                    <input type="decimal" name="total` + count + `" id="total` + count + `" class="invoice-control"
+                    <input type="decimal" name="total${count}" id="total${count}" class="invoice-control"
                         autocomplete="off" step='0.01' min='0' disabled="true" />
-                    <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `"/>
+                    <input type="hidden" name="totalvalue${count}" id="totalvalue${count}"/>
                 </td>
                 <td class="text-center">
-                    <a class="btn" onclick="removeProductRow(` + count + `)"><i class="fa fa-trash text-primary"></i></a>
+                    <a class="btn" onclick="removeProductRow(${count})"><i class="fa fa-trash text-primary"></i></a>
                 </td>
              </tr>`;
     if (tableLength > 0) {
@@ -312,7 +313,7 @@ function removeProductRow(row = null) {
 }
 
 function changeprice(id, value) {
-    $("#precio_venta_" + id).val(value);
+    $("#precio_venta_" + id).val(value.toFixed(2));
 }
 
 function countRow(){
@@ -467,59 +468,58 @@ $.ajax({
     statusCode: {
         200: function (response) {
             if (response.success == true) {
-                let data = response.products;
-                let output = "";
+                const data = response.products
+                let output = ""
                 for (let i = 0; i < data.length; i++) {
+                    const id = data[i].id
+                    let prices = ""
+                    for (let j = 0; j < 4; j++) {
+                        const price = data[i].prices[j].price_incl_tax
+                        prices += `<li class="dropdown-item" onclick="changeprice(${id}, ${price})">$${price.toFixed(2)}</li>`
+                    }
+                    
                     output += `<div class="row mb-2">
-                        <div class="col-sm-2"><img class="img-round" src="{{ asset("` + data[i].image + `") }}"
+                        <div class="col-sm-2"><img class="img-round" src="{{ asset("`+data[i].images[0].src+`") }}"
                                 style="max-height:50px; max-width:70px;" /></div>
-                        <div class="col-sm-2 my-auto">` + data[i].code + `</div>
-                        <div class="col-sm-3 my-auto">` + data[i].name + `</div>
+                        <div class="col-sm-2 my-auto">${data[i].code}</div>
+                        <div class="col-sm-3 my-auto">${data[i].name}</div>
                         <div class="col-sm-2 my-auto">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text">` + data[i].quantity + `</span></div>
-                                    <input type="text" class="form-control" value="1" id="cantidad_` + data[i].id + `"/>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend"><span class="input-group-text">En stock: ${data[i].stock}</span></div>
+                                    <input type="text" class="form-control" value="1" id="cantidad_${id}"/>
                             </div>
                         </div>
                         <div class="col-sm-2 my-auto">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
                                     <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown">
-                                        ` + data[i].price1 + `
+                                        data-toggle="dropdown">  
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price1 + `)">
-                                            ` + data[i].price1 + `</li>
-                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price2 + `)">
-                                            ` + data[i].price2 + `</li>
-                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price3 + `)">
-                                            ` + data[i].price3 + `</li>
-                                        <li class="dropdown-item" onclick="changeprice(` + data[i].id + `,` + data[i].price4 + `)">
-                                            ` + data[i].price4 + `</li>
+                                        ${prices}
                                     </ul>
-                                </div><input type="text" class="form-control" value="` + data[i].price1 + `"
-                                    id="precio_venta_` + data[i].id + `" />
+                                </div><input type="text" class="form-control" value="${data[i].prices[0].price_incl_tax.toFixed(2)}"
+                                    id="precio_venta_${id}" />
                             </div>
                         </div>
                         <div class="col-sm-1 my-auto btn-group float-center">
-                            <button class="btn btn-primary btn-sm mr-1" onclick="add(` + data[i].id + `)"><i
+                            <button class="btn btn-primary btn-sm mr-1" onclick="add(${id})"><i
                                     class="fas fa-plus"></i></button>
-                            <button class="btn btn-secondary btn-sm mr-1" onclick="view(` + data[i].id + `)"><i
+                            <button class="btn btn-secondary btn-sm mr-1" onclick="view(${id})"><i
                                     class="fas fa-external-link-alt"></i></button>
                         </div>
-                    </div>`;
+                    </div>`
                 }
-                $("#results").html(output);
+                $("#results").html(output)
             }else{
-                $("#results").html(`No hay productos que coincidan`);
+                $("#results").html(`No hay productos que coincidan`)
             }
         },
         404: function () {
-            $("#results").html(`Recurso no encontrado`);
+            $("#results").html(`Recurso no encontrado`)
         },
         500: function () {
-            $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`);
+            $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`)
         }
     }
 })
