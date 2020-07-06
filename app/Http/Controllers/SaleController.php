@@ -8,8 +8,11 @@ ini_set('error_reporting', E_ALL);
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Sales;
-use App\Sales_item;
+use App\Sales_items;
 use App\Products;
+use App\Invoices;
+use App\Payments;
+use App\Credit_invoice;
 use App\Kardex;
 use App\Traits\Helpers;
 
@@ -48,11 +51,14 @@ class SaleController extends Controller
         try {
         //invoice headers info
         $sale = new Sales;
-        $sale->costumer = $request->name;
-        $sale->quantity = $request->grandquantityvalue;
-        $sale->subtotal = $request->grandtotalvalue;
+        $sale->delivery_status = $request->delivery;
+        $sale->additional_discounts = $request->grandtotalvalue;
+        $sale->additional_payments = $request->mpayments;
+        $sale->total_quantity = $request->grandquantityvalue;
+        $sale->subtotal = $request->subtotalvalue;
+        $sale->total_discounts = $request->discountsvalue;
+        $sale->total_tax = $request->taxesvalue;
         $sale->total = $request->grandtotalvalue;
-        $sale->is_deleted = 0;
 
         if ($sale->save()) {
 
@@ -61,7 +67,7 @@ class SaleController extends Controller
         $counter = $request->trCount;
 
         for ($i=1; $i <= $counter; $i++) { 
-            $saleitem = new Sales_item;
+            $saleitem = new Sales_items;
             //database and request handlers
             $data = ['idvalue', 'quantityvalue', 'pricevalue', 'totalvalue'];
             $db = ['product_id', 'quantity', 'unit_price', 'total'];
@@ -88,7 +94,6 @@ class SaleController extends Controller
             //Adding to Kardex
             $kardex = new Kardex;
             $kardex->tag = "Venta de producto";
-            $kardex->tag_code = "CN";
             $kardex->id_product = $saleitem->product_id;
             $kardex->quantity = $saleitem->quantity;
             $kardex->value_diff = "+ $" . $saleitem->total;

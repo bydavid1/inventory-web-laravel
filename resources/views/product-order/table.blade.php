@@ -3,18 +3,19 @@
          <tr>
              <th style="width:10%;">Codigo</th>
              <th style="width:20%;">Producto</th>
-             <th style="width:10%;">Precio</th>
              <th style="width:10%;">Cantidad</th>
-             <th style="width:8%;">Importe</th>
+             <th style="width:10%;">Precio</th>
+             <th style="width:8%;">Impuesto</th>
+             <th style="width:10%;">Importe</th>
              <th style="width:10%;">Total</th>
-             <th style="width:10%;"></th>
+             <th style="width:5%;"></th>
          </tr>
      </thead>
      <tbody>
          <?php
-                      $arrayNumber = 0;
-                      for($x = 1; $x < 2; $x++) {
-        ?>
+            $arrayNumber = 0;
+            for($x = 1; $x < 2; $x++) {
+          ?>
          <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
              <input type="hidden" name="idvalue<?php echo $x; ?>" id="idvalue<?php echo $x; ?>" />
              <td>
@@ -31,18 +32,23 @@
                  <input type="hidden" name="pnamevalue<?php echo $x; ?>" id="pnamevalue<?php echo $x; ?>"/>
              </td>
              <td>
+                <input type="number" name="quantity<?php echo $x; ?>" id="quantity<?php echo $x; ?>" class="invoice-control"
+                     autocomplete="off" min='1' onchange='setToValues(<?php echo $x; ?>)' disabled />
+                <input type="hidden" name="quantityvalue<?php echo $x; ?>" id="quantityvalue<?php echo $x; ?>"/>
+            </td>
+             <td>
                  <input type="decimal" name="price<?php echo $x; ?>" id="price<?php echo $x; ?>" class="invoice-control"
                      autocomplete="off" step='0.01' min='0' onchange='setToValues(<?php echo $x; ?>)' disabled />
                  <input type="hidden" name="pricevalue<?php echo $x; ?>" id="pricevalue<?php echo $x; ?>"/>
              </td>
              <td>
-                 <input type="number" name="quantity<?php echo $x; ?>" id="quantity<?php echo $x; ?>" class="invoice-control"
-                      autocomplete="off" min='1' onchange='setToValues(<?php echo $x; ?>)' disabled />
-                 <input type="hidden" name="quantityvalue<?php echo $x; ?>" id="quantityvalue<?php echo $x; ?>"/>
-             </td>
-             <td>
                  <input type="text" value="13%" disabled="true" class="invoice-control" />
              </td>
+             <td>
+                <input type="decimal" name="amount<?php echo $x; ?>" id="amount<?php echo $x; ?>" class="invoice-control"
+                    autocomplete="off" step='0.01' min='0' disabled />
+                <input type="hidden" name="amountvalue<?php echo $x; ?>" id="amountvalue<?php echo $x; ?>"/>
+            </td>
              <td>
                  <input type="decimal" name="total<?php echo $x; ?>" id="total<?php echo $x; ?>" class="invoice-control"
                      autocomplete="off" step='0.01' min='0' disabled="true" />

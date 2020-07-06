@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->timestamps();
             $table->string('code')->unique();
             $table->string('name');
-            $table->text('description')->nullable()->default('No hay descripción');
+            $table->string('description')->nullable()->default('No hay descripción');
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->unsignedBigInteger('category_id');
