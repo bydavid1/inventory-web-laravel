@@ -1,16 +1,18 @@
 <script>
-const Table = "#productTable";
-const PRICE = "#price";
-const PRODUCTNAME = "#pname";
-const PRODUCTCODE = "#pcode";
-const QUANTITY = "#quantity";
-const TOTAL = "#total";
-const PRICEVALUE = "#pricevalue";
-const PRODUCTNAMEVALUE = "#pnamevalue";
-const PRODUCTCODEVALUE = "#pcodevalue";
-const QUANTITYVALUE = "#quantityvalue";
-const TOTALVALUE = "#totalvalue";
-const IDVALUE = "#idvalue";
+const Table = "#productTable"
+const PRICE = "#price"
+const PRODUCTNAME = "#pname"
+const PRODUCTCODE = "#pcode"
+const QUANTITY = "#quantity"
+const AMOUNT = "#amount"
+const TOTAL = "#total"
+const PRICEVALUE = "#pricevalue"
+const PRODUCTNAMEVALUE = "#pnamevalue"
+const PRODUCTCODEVALUE = "#pcodevalue"
+const QUANTITYVALUE = "#quantityvalue"
+const AMOUNTVALUE = "#amountvalue"
+const TOTALVALUE = "#totalvalue"
+const IDVALUE = "#idvalue"
 
 //Alert
 const Toast = Swal.mixin({
@@ -41,28 +43,24 @@ $(document).ready(function () {
 //----------------------------------------------------------------------
 function add(id) {
 
-    var tableLength = $(Table + " tbody tr").length;
-    var tableRow;
-    var arrayNumber;
-    var count;
-    var tr = '';
-    var quantityvalue = $("#cantidad_" + id).val();
-    var pricevalue = $("#precio_venta_" + id).val();
-    console.log(pricevalue);
+    let tableLength = $(Table + " tbody tr").length;
+    let tableRow, arrayNumber, count;
+    let tr = '';
+    let quantity = document.querySelector("#cantidad_" + id).value
+    let price = document.querySelector("#precio_venta_" + id).value
 
     if (tableLength > 0) {
-        tableRow = $(Table + " tbody tr:last").attr('id');
-        arrayNumber = $(Table + " tbody tr:last").attr('class');
-        count = tableRow.substring(3);
-        count = Number(count) + 1;
-        arrayNumber = Number(arrayNumber) + 1;
+        tableRow = $(Table + " tbody tr:last").attr('id')
+        arrayNumber = $(Table + " tbody tr:last").attr('class')
+        count = tableRow.substring(3)
+        count = Number(count) + 1
+        arrayNumber = Number(arrayNumber) + 1
     } else {
-        count = 1;
-        arrayNumber = 0;
+        count = 1
+        arrayNumber = 0
     }
 
-    var url = "{{ url('api/products/order', 'id') }}";
-    url = url.replace("id", id);
+    let url = "{{ url('api/products/order', 'id') }}".replace("id", id)
 
     $.ajax({
         type: 'get',
@@ -73,12 +71,13 @@ function add(id) {
         },
         statusCode: {
             200: function (response) {
-
+                //get data object fron json
                 let data = response.data;
-                pricevalue = parseFloat(pricevalue);
-                pricevalue = pricevalue.toFixed(2);
-                let totalvalue = pricevalue * quantityvalue;
-                totalvalue = totalvalue.toFixed(2);
+
+                price = Number(price).toFixed(2)
+                let amount = price * 0.13
+                let total = ((Number(price) + amount) * Number(quantity)).toFixed(2);
+
 
                 tr = `<tr id="row${count}" class="${arrayNumber}">
                         <input type="hidden" name="idvalue${count}" id="idvalue${count}" value="` + data[0].id + `"/>
@@ -96,22 +95,27 @@ function add(id) {
                             <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}" value="` + data[0].name + `"/>
                         </td>
                         <td>
-                            <input type="decimal" name="price${count}" id="price${count}" value="${pricevalue}" class="invoice-control"
-                                autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})" disabled />
-                            <input type="hidden" name="pricevalue${count}" id="pricevalue${count}" value="${pricevalue}"/>
+                            <input type="number" name="quantity${count}" id="quantity${count}" value="${quantity}" class="invoice-control"
+                                autocomplete="off" min='1' onchange="setToValues(${count})"/>
+                            <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}" value="${quantity}"/>
                         </td>
                         <td>
-                            <input type="number" name="quantity${count}" id="quantity${count}" value="${pricevalue}" class="invoice-control"
-                            autocomplete="off" min='1' onchange="setToValues(${count})"/>
-                            <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}" value="${pricevalue}"/>
+                            <input type="decimal" name="price${count}" id="price${count}" value="${price}" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})"/>
+                            <input type="hidden" name="pricevalue${count}" id="pricevalue${count}" value="${price}"/>
                         </td>
                         <td>
                             <input type="text" value="13%" disabled="true" class="invoice-control" />
                         </td>
                         <td>
-                            <input type="decimal" name="total${count}" id="total${count}" value="${totalvalue}" class="invoice-control"
+                            <input type="decimal" name="amount${count}" id="amount${count}" class="invoice-control"
+                                autocomplete="off" step='0.01' min='0' disabled value="${amount}"/>
+                            <input type="hidden" name="amountvalue${count}" id="amountvalue${count}" value="${amount}"/>
+                        </td>
+                        <td>
+                            <input type="decimal" name="total${count}" id="total${count}" value="${total}" class="invoice-control"
                                 autocomplete="off" step='0.01' min='0'/>
-                            <input type="hidden" name="totalvalue${count}" id="totalvalue${count}" value="${totalvalue}"/>
+                            <input type="hidden" name="totalvalue${count}" id="totalvalue${count}" value="${total}"/>
                         </td>
                         <td class="text-center">
                             <a class="btn" onclick="removeProductRow(${count})"><i class="fa fa-trash text-primary"></i></a>
@@ -121,19 +125,21 @@ function add(id) {
                 if (tableLength > 1) {
                     $(Table + " tbody tr:last").after(tr);
                 } else if (tableLength == 1 && $(PRODUCTNAME + 1).val() == "") {
-                    $(PRODUCTCODE + 1).val(data[0].code);
-                    $(PRODUCTNAME + 1).val(data[0].name);
-                    $(PRICE + 1).val(pricevalue);
-                    $(QUANTITY + 1).val(quantityvalue);
-                    $(PRODUCTCODEVALUE + 1).val(data[0].code);
-                    $(PRODUCTNAMEVALUE + 1).val(data[0].name);
-                    $(PRICEVALUE + 1).val(pricevalue);
-                    $(QUANTITYVALUE + 1).val(quantityvalue);
-                    $(TOTAL + 1).val(totalvalue);
-                    $(TOTALVALUE + 1).val(totalvalue);
-                    $(IDVALUE + 1).val(data[0].id );
-                    $(PRICE + 1).prop('disabled', false);
-                    $(QUANTITY + 1).prop('disabled', false);
+                    document.querySelector(PRODUCTCODE + 1).value = data[0].code
+                    document.querySelector(PRODUCTCODEVALUE + 1).value = data[0].code
+                    document.querySelector(PRODUCTNAME + 1).value = data[0].name
+                    document.querySelector(PRODUCTNAMEVALUE + 1).value = data[0].name
+                    document.querySelector(PRICE + 1).value = price
+                    document.querySelector(PRICEVALUE + 1).value = price
+                    document.querySelector(QUANTITY + 1).value = quantity;
+                    document.querySelector(QUANTITYVALUE + 1).value = quantity
+                    document.querySelector(AMOUNT + 1).value = amount
+                    document.querySelector(AMOUNTVALUE + 1).value = amount
+                    document.querySelector(TOTAL + 1).value = total
+                    document.querySelector(TOTALVALUE + 1).value = total
+                    document.querySelector(IDVALUE + 1).value = data[0].id
+                    document.querySelector(PRICE + 1).disabled = false
+                    document.querySelector(QUANTITY + 1).disabled = false
                 } else {
                     $(Table + " tbody").append(tr);
                 }
@@ -175,21 +181,20 @@ function getProductData(row){
                     console.log(data)
                     //Hide Loader
                     document.getElementById('loader' + row).classList.remove('d-block');
-                    //Decimal format
-                    let price1 = Number(data.first_price.price_incl_tax);
-                    price1 = price1.toFixed(2);
-                    $(PRODUCTNAME + row).val(data.name);
-                    $(PRICE + row).val(price1);
-                    $(PRODUCTNAMEVALUE + row).val(data.name);
-                    $(PRICEVALUE + row).val(price1);
-                    $(PRICE + row).prop('disabled', false);
-                    $(QUANTITY + row).prop('disabled', false);
-                    $(QUANTITY + row).val(1);
-                    $(QUANTITYVALUE + row).val(1);
-                    $(IDVALUE + 1).val(data.id );
-                    $(PRODUCTCODEVALUE + 1).val(data.code );
 
-                    totalValues(row);
+                    //Set DOM
+                    document.querySelector(PRODUCTCODEVALUE + row).value = data.code
+                    document.querySelector(PRODUCTNAME + row).value = data.name
+                    document.querySelector(PRODUCTNAMEVALUE + row).value = data.name
+                    document.querySelector(PRICE + row).value = data.first_price.price
+                    document.querySelector(PRICEVALUE + row).value = data.first_price.price
+                    document.querySelector(QUANTITY + row).value = 1;
+                    document.querySelector(QUANTITYVALUE + row).value = 1
+                    document.querySelector(IDVALUE + row).value = data.id
+                    document.querySelector(PRICE + row).disabled = false
+                    document.querySelector(QUANTITY + row).disabled = false
+
+                    unitValues(row);
                     countRow();
                 }else{
                     Toast.fire({
@@ -269,17 +274,22 @@ function addRow() {
                     <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}"/>
                 </td>
                 <td>
-                    <input type="decimal" name="price${count}" id="price${count}" class="invoice-control"
-                        autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})" disabled />
-                    <input type="hidden" name="pricevalue${count}" id="pricevalue${count}"/>
-                </td>
-                <td>
                     <input type="number" name="quantity${count}" id="quantity${count}" class="invoice-control"
                     autocomplete="off" min='1' onchange="setToValues(${count})" disabled />
                     <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}"/>
                 </td>
                 <td>
+                    <input type="decimal" name="price${count}" id="price${count}" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' onchange="setToValues(${count})" disabled />
+                    <input type="hidden" name="pricevalue${count}" id="pricevalue${count}"/>
+                </td>
+                <td>
                     <input type="text" value="13%" disabled="true" class="invoice-control" />
+                </td>
+                <td>
+                    <input type="decimal" name="amount${count}" id="amount${count}" class="invoice-control"
+                        autocomplete="off" step='0.01' min='0' disabled />
+                    <input type="hidden" name="amountvalue${count}" id="amountvalue${count}"/>
                 </td>
                 <td>
                     <input type="decimal" name="total${count}" id="total${count}" class="invoice-control"
@@ -318,7 +328,6 @@ function changeprice(id, value) {
 
 function countRow(){
     var tableLength = $(Table + " tbody tr").length;
-    console.log(tableLength);
     $("#trCount").val(tableLength);
 }
 
@@ -340,43 +349,54 @@ function setToValues(row) {
     //Change to JS Vanilla
     $(PRICEVALUE + row).val($(PRICE + row).val());
     $(QUANTITYVALUE + row).val($(QUANTITY + row).val());
-    totalValues(row);
+
+    unitValues(row);
 }
 
 //----------------------------------------------------------------------
 //-------------------------Calc values on change data---------------------------------
 //----------------------------------------------------------------------
-function totalValues(row) {
+function unitValues(row) {
     //Change to JS Vanilla
-    let price = Number($(PRICEVALUE + row).val());
-    let quantity = Number($(QUANTITYVALUE + row).val());
-    let total = price * quantity;
-    total = total.toFixed(2);
+    let price = Number(document.querySelector(PRICEVALUE + row).value)
+    let quantity = Number(document.querySelector(QUANTITYVALUE + row).value)
 
-    $(TOTAL + row).val(total);
-    $(TOTALVALUE + row).val(total);
+    let amount = (price * 0.13).toFixed(2)
+    let total = ((price + Number(amount)) * quantity).toFixed(2)
 
-    calculateProductsValues();
+    document.querySelector(AMOUNTVALUE + row).value = amount
+    document.querySelector(AMOUNT + row).value = amount
+    document.querySelector(TOTALVALUE + row).value = total
+    document.querySelector(TOTAL + row).value = total
+
+    calculateProductsValues()
 }
 
+//----------------------------------------------------------------------
+//-------------------------Calc totals rows---------------------------------
+//----------------------------------------------------------------------
 function calculateProductsValues(){
     let tableProductLength = $(Table + " tbody tr").length;
-    let grandsubtotal = 0;
-    let grandquantity = 0;
-    for (x = 0; x < tableProductLength; x++) {
-        let tr = $(Table + " tbody tr")[x];
-        let count = $(tr).attr('id');
-        count = count.substring(3);
+    let grandsubtotal = 0
+    let grandquantity = 0
+    let taxvalue = 0
 
-        grandsubtotal = Number(grandsubtotal) + Number($(TOTALVALUE + count).val());
-        grandquantity = Number(grandquantity) + Number($(QUANTITYVALUE + count).val());
+    for (x = 0; x < tableProductLength; x++) {
+        let tr = $(Table + " tbody tr")[x]
+        let count = $(tr).attr('id').substring(3)
+
+        grandsubtotal += Number(document.querySelector(TOTALVALUE + count).value)
+        grandquantity += Number(document.querySelector(QUANTITYVALUE + count).value)
+        taxvalue += Number(document.querySelector(AMOUNTVALUE + count).value)
+
     }
 
-    grandsubtotal = grandsubtotal.toFixed(2);
-    document.getElementById('subtotal').textContent = "$" + grandsubtotal;
-    document.getElementById('subtotalvalue').value = grandsubtotal;
-    document.getElementById('grandquantity').textContent = grandquantity + " items";
-    document.getElementById('grandquantityvalue').value = grandquantity;
+    document.getElementById('subtotal').textContent = "$" + grandsubtotal.toFixed(2)
+    document.getElementById('subtotalvalue').value = grandsubtotal.toFixed(2)
+    document.getElementById('grandquantity').textContent = grandquantity + " items"
+    document.getElementById('grandquantityvalue').value = grandquantity
+    document.getElementById('taxvalue').value = taxvalue.toFixed(2)
+    document.getElementById('tax').textContent = "$" + taxvalue.toFixed(2)
 
     calculateTotals()
 }
@@ -389,14 +409,10 @@ function calculateTotals() {
     let subtotalvalueInput = document.getElementById('subtotalvalue');
     let discountvalueInput = document.getElementById('discountsvalue');
 
-    let tax = subtotalvalueInput.value * 0.13;
-    let taxvalueInput = document.getElementById('taxvalue');
-    let taxInput = document.getElementById('tax');
-    taxInput.textContent = "$" + tax.toFixed(2);
-    taxvalueInput.value = tax.toFixed(2);
+    //let taxvalueInput = document.getElementById('taxvalue'); --- don't add the value again
 
-    let total = Number(subtotalvalueInput.value) - Number(discountvalueInput.value)  + tax + Number(document.getElementById('interestvalue').value);
-    total = total.toFixed(2);
+    let total = (Number(subtotalvalueInput.value) - Number(discountvalueInput.value)  + Number(document.getElementById('interestvalue').value) ).toFixed(2);
+
     document.getElementById('grandtotal').textContent = "$" + total;
     document.getElementById('grandtotalvalue').value = total;
 
