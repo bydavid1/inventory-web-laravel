@@ -1,5 +1,5 @@
 <script>
-const Table = "#productTable"
+const TABLE = "#productTable"
 const PRICE = "#price"
 const PRODUCTNAME = "#pname"
 const PRODUCTCODE = "#pcode"
@@ -25,7 +25,7 @@ const Toast = Swal.mixin({
 $(document).ready(function () {
 
     var typingTimer; 
-    var doneTypingInterval = 250;
+    var doneTypingInterval = 200;
 
     $('#searchInput').on('keyup', function () {
         clearTimeout(typingTimer);
@@ -43,15 +43,15 @@ $(document).ready(function () {
 //----------------------------------------------------------------------
 function add(id) {
 
-    let tableLength = $(Table + " tbody tr").length;
+    let tableLength = $(TABLE + " tbody tr").length;
     let tableRow, arrayNumber, count;
     let tr = '';
     let quantity = document.querySelector("#cantidad_" + id).value
     let price = document.querySelector("#precio_venta_" + id).value
 
     if (tableLength > 0) {
-        tableRow = $(Table + " tbody tr:last").attr('id')
-        arrayNumber = $(Table + " tbody tr:last").attr('class')
+        tableRow = $(TABLE + " tbody tr:last").attr('id')
+        arrayNumber = $(TABLE + " tbody tr:last").attr('class')
         count = tableRow.substring(3)
         count = Number(count) + 1
         arrayNumber = Number(arrayNumber) + 1
@@ -123,7 +123,7 @@ function add(id) {
                     </tr>`;
 
                 if (tableLength > 1) {
-                    $(Table + " tbody tr:last").after(tr);
+                    $(TABLE + " tbody tr:last").after(tr);
                 } else if (tableLength == 1 && $(PRODUCTNAME + 1).val() == "") {
                     document.querySelector(PRODUCTCODE + 1).value = data[0].code
                     document.querySelector(PRODUCTCODEVALUE + 1).value = data[0].code
@@ -141,7 +141,7 @@ function add(id) {
                     document.querySelector(PRICE + 1).disabled = false
                     document.querySelector(QUANTITY + 1).disabled = false
                 } else {
-                    $(Table + " tbody").append(tr);
+                    $(TABLE + " tbody").append(tr);
                 }
 
                 calculateProductsValues();
@@ -177,7 +177,7 @@ function getProductData(row){
         statusCode: {
             200: function (response) {
                 if (response.success == true) {
-                    var data = response.product;
+                    let data = response.product;
                     console.log(data)
                     //Hide Loader
                     document.getElementById('loader' + row).classList.remove('d-block');
@@ -226,8 +226,7 @@ function getProductData(row){
 //----------------------------------------------------------------------
 
 function view(id) {
-    var url = "{{ route('showProduct', 'id') }}";
-    url = url.replace('id', id);
+    var url = "{{ route('showProduct', 'id') }}".replace('id', id);
     window.open(url, '_blank');
 }
 
@@ -238,15 +237,15 @@ function view(id) {
 function addRow() {
     $("#addRowBtn").button("loading");
 
-    var tableLength = $(Table + " tbody tr").length;
+    var tableLength = $(TABLE + " tbody tr").length;
 
     var tableRow;
     var arrayNumber;
     var count;
 
     if (tableLength > 0) {
-        tableRow = $(Table + " tbody tr:last").attr('id');
-        arrayNumber = $(Table + " tbody tr:last").attr('class');
+        tableRow = $(TABLE + " tbody tr:last").attr('id');
+        arrayNumber = $(TABLE + " tbody tr:last").attr('class');
         count = tableRow.substring(3);
         count = Number(count) + 1;
         arrayNumber = Number(arrayNumber) + 1;
@@ -301,9 +300,9 @@ function addRow() {
                 </td>
              </tr>`;
     if (tableLength > 0) {
-        $(Table + " tbody tr:last").after(tr);
+        $(TABLE + " tbody tr:last").after(tr);
     } else {
-        $(Table + " tbody").append(tr);
+        $(TABLE + " tbody").append(tr);
     }
     countRow();
 }
@@ -327,7 +326,7 @@ function changeprice(id, value) {
 }
 
 function countRow(){
-    var tableLength = $(Table + " tbody tr").length;
+    var tableLength = $(TABLE + " tbody tr").length;
     $("#trCount").val(tableLength);
 }
 
@@ -376,13 +375,13 @@ function unitValues(row) {
 //-------------------------Calc totals rows---------------------------------
 //----------------------------------------------------------------------
 function calculateProductsValues(){
-    let tableProductLength = $(Table + " tbody tr").length;
+    let tableProductLength = $(TABLE + " tbody tr").length;
     let grandsubtotal = 0
     let grandquantity = 0
     let taxvalue = 0
 
     for (x = 0; x < tableProductLength; x++) {
-        let tr = $(Table + " tbody tr")[x]
+        let tr = $(TABLE + " tbody tr")[x]
         let count = $(tr).attr('id').substring(3)
 
         grandsubtotal += Number(document.querySelector(TOTALVALUE + count).value)
@@ -471,9 +470,9 @@ function calculateInterest(){
 
 function searchProduct() {
 
-let query = $("#searchInput").val();
-let url = "{{ url('api/products/order/search', 'query') }}";
-url = url.replace("query", query);
+let query = document.querySelector('#searchInput').value
+let url = "{{ url('api/products/order/search', 'query') }}".replace("query", query)
+
 $.ajax({
     type: 'get',
     url: url,
@@ -485,8 +484,9 @@ $.ajax({
         200: function (response) {
             if (response.success == true) {
                 const data = response.products
+                const length = data.length
                 let output = ""
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < length; i++) {
                     const id = data[i].id
                     let prices = ""
                     for (let j = 0; j < 4; j++) {

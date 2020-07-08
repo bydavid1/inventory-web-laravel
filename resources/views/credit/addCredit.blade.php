@@ -85,9 +85,9 @@
                                     <label for="delivery" class="control-label">Estado de entrega</label>
                                     <div class="col-md-12">
                                         <select class="form-control" placeholder="Fecha" id="delivery" name="delivery">
-                                            <option value="completo">Completo</option>
-                                            <option value="parcial">Parcial</option>
-                                            <option value="pendiente">Pendiente</option>
+                                            <option value="1">Completo</option>
+                                            <option value="2">Parcial</option>
+                                            <option value="0">Pendiente</option>
                                         </select>
                                     </div>
                                 </div>

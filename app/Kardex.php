@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kardex extends Model
 {
-    protected $table = 'Kardex';
+    protected $table = 'kardex'; 
 }
