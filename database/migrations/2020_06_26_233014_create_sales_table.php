@@ -16,12 +16,12 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer('delivery_status');
-            $table->float('additional_discounts');
-            $table->float('additional_payments');
+            $table->integer('delivery_status'); // 1 => completo, 2 => parcial, 0 => pendiente
+            $table->float('additional_discounts')->nullable()->default('0.00');;
+            $table->float('additional_payments')->nullable()->default('0.00');;
             $table->integer('total_quantity');
             $table->float('subtotal');
-            $table->float('total_discounts');
+            $table->float('total_discounts')->nullable()->default('0.00');
             $table->float('total_tax');
             $table->float('total');
         });
