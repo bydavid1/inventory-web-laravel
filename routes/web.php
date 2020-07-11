@@ -55,7 +55,7 @@ Route::delete('costumer/delete/{id}', 'CostumerController@destroy')->name('delet
 Route::get('/sales', 'SaleController@index')->name('sales')->middleware('auth');
 Route::get('sales/create', 'SaleController@create')->name('addSale')->middleware('auth');
 Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice')->middleware('auth');
-Route::post('/save', 'SaleController@save')->name('save');
+Route::post('/save', 'SaleController@store')->name('save');
 Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice')->middleware('auth');
 
 //Purchases
