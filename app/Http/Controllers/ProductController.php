@@ -31,7 +31,12 @@ class ProductController extends Controller
 
     public function getRecords()
     {
-        $query = Products::select('products.id','products.code','products.name','products.is_available','products.type','products.stock', 'suppliers.name as name_supplier', 'categories.name as name_category')->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')->join('categories', 'products.category_id', '=', 'categories.id')->with(['first_price', 'first_image'])->where('products.is_deleted', '0');
+        $query = Products::select('products.id','products.code','products.name','products.is_available','products.type','products.stock', 'suppliers.name as name_supplier', 'categories.name as name_category')
+        ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+        ->join('categories', 'products.category_id', '=', 'categories.id')
+        ->with(['first_price', 'first_image'])
+        ->where('products.is_deleted', '0');
+        
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
                     <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>

@@ -15,11 +15,43 @@ use App\Invoices;
 use App\Payments;
 use App\Credit_invoice;
 use App\Kardex;
+use App\Costumers;
 use App\Traits\Helpers;
 
 class SaleController extends Controller
 {
     use Helpers;
+
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecords()
+    {
+        $query = Invoices::select('costumer_id', 'invoice_type', 'unregistered_costumer', 'user_id')
+        ->with('sale:id,total_quantity,total,total_tax');
+
+        return datatables()->eloquent($query)
+        ->addColumn('actions', '<div class="btn-group float-right">
+        <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-eye" style="color: white"></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
+        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fas fa-file-pdf" style="color: white"></i></a>
+        </div>')
+        ->addColumn('name', function($query){
+
+            if ($query->costumer_id == null) {
+                $name = $query->unregistered_costumer;
+            } elseif ($query->unregistered_costumer == null){
+                $name = Costumers::select('name')->where('id', $query->costumer_id);
+            }
+
+            return $name;
+        })
+        ->rawColumns(['actions'])
+        ->toJson();
+    }
 
     /**
      * Display a listing of the resource.
