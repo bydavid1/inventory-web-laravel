@@ -82,16 +82,7 @@ Route::get('products/order/search/{query}', function ($query){
 });
 
 
-Route::get('sales', function(){
-   return datatables()->eloquent(App\Sales::query())
-      ->addColumn('actions', '<div class="btn-group float-right">
-      <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-eye" style="color: white"></i></button>
-      <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
-      <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fas fa-file-pdf" style="color: white"></i></a>
-      </div>')
-      ->rawColumns(['actions'])
-      ->toJson();
-});
+Route::get('sales', 'SaleController@getRecords');
 
 Route::get('products/kardex', function (){
    return datatables()->eloquent(App\Products::select('products.id','products.image','products.code','products.name')->where('products.is_deleted', 0))
