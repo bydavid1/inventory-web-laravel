@@ -30635,6 +30635,9 @@ a.text-muted:hover {
   color: #495057;
 }
 
+.invoice-control-invalid{
+  border: 1px solid #dc3545 !important;
+}
 
 .autocomplete-items {
   position: absolute;

@@ -64,7 +64,7 @@ Route::get('products/order/{id}', function ($id){
 });
 
 Route::get('products/order/code/{code}', function ($code){
-      $products = App\Products::where('code', $code)->with('first_price')->firstOrFail();
+      $products = App\Products::where('code', $code)->with('first_price')->get();
       if ($products->count() > 0) {
          return response()->json(['success' => true, 'product' => $products], 200);
       }else{

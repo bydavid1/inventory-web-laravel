@@ -36,6 +36,8 @@ $(document).ready(function () {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(searchCostumer, doneTypingInterval);
     });
+
+    countRow()
 });
 
 //----------------------------------------------------------------------
@@ -183,24 +185,25 @@ function getProductData(row){
                     document.getElementById('loader' + row).classList.remove('d-block');
 
                     //Set DOM
-                    document.querySelector(PRODUCTCODEVALUE + row).value = data.code
-                    document.querySelector(PRODUCTNAME + row).value = data.name
-                    document.querySelector(PRODUCTNAMEVALUE + row).value = data.name
-                    document.querySelector(PRICE + row).value = data.first_price.price
-                    document.querySelector(PRICEVALUE + row).value = data.first_price.price
+                    document.querySelector(PRODUCTCODEVALUE + row).value = data[0].code
+                    document.querySelector(PRODUCTNAME + row).value = data[0].name
+                    document.querySelector(PRODUCTNAMEVALUE + row).value = data[0].name
+                    document.querySelector(PRICE + row).value = data[0].first_price.price
+                    document.querySelector(PRICEVALUE + row).value = data[0].first_price.price
                     document.querySelector(QUANTITY + row).value = 1;
                     document.querySelector(QUANTITYVALUE + row).value = 1
-                    document.querySelector(IDVALUE + row).value = data.id
+                    document.querySelector(IDVALUE + row).value = data[0].id
                     document.querySelector(PRICE + row).disabled = false
                     document.querySelector(QUANTITY + row).disabled = false
 
                     unitValues(row);
                     countRow();
                 }else{
+                    document.getElementById('loader' + row).classList.remove('d-block');
                     Toast.fire({
-                    type: 'warning',
-                    title: 'No existe un producto con ese codigo'
-                })
+                        type: 'warning',
+                        title: 'No existe un producto con ese codigo'
+                    })
                 }
             },
             404: function () {
@@ -414,8 +417,10 @@ function calculateTotals() {
 
     document.getElementById('grandtotal').textContent = "$" + total;
     document.getElementById('grandtotalvalue').value = total;
+    
+    let paymentSelect = document.getElementById('payment')
 
-    if (document.getElementById('payment').value == 2) {
+    if (paymentSelect && paymentSelect.value == 2) {
         calculateInterest();
     }
 }

@@ -46,14 +46,14 @@
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <label for="clientName" class="col-sm-4 control-label">Nombre del cliente</label>
+                                    <label for="clientName" class="control-label">Nombre del cliente</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="name" placeholder="Cliente"
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Cliente"
                                             autocomplete="off" />
                                     </div>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label for="clientName" class="col-sm-4 control-label">Fecha</label>
+                                    <label for="clientName" class="control-label">Fecha</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" placeholder="Fecha"
                                             autocomplete="off" />
@@ -63,11 +63,28 @@
                         </div>
 
                          @include('product-order.table')
-
-                        <div class="row mt-2">
-                            <div class="col-sm-6"></div>
-                            <div class="col-md-6">
-                                <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                         <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Descuento</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" class="form-control" name="discount" id="discount" placeholder="Desc.." autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Cobros adcionales</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" class="form-control" name="mpayments" id="mpayments" placeholder="Adicional.." autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="col-sm-8 control-label">Terminos o comentarios</label>
+                                    <textarea class="form-control" placeholder="Comentarios adicionales" name="comments"></textarea>
+                                </div>
                             </div>
                         </div>
                         <!--Num tr value-->
@@ -155,45 +172,116 @@
     <script>
         $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
             stay.preventDefault();
-            var formdata = $(this).serialize();
-            var url = "{{ route('save') }}";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formdata,
-                beforeSend: function () {
-                    Swal.fire({
-                        title: 'Registrando',
-                        html: 'Por favor espere...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading()
-                        },
-                    })
-                },
-                success: function (response) {
-                    console.log(response);
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    //Clear all fields
-                    $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
-                    print(response.data);
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    Swal.fire({
-                        position: 'top',
-                        type: 'error',
-                        html: 'Error crítico: ' + xhr.responseText,
-                        showConfirmButton: true,
-                    });
-                }
-            });
+            if(validate() == 0){
+                var formdata = $(this).serialize();
+                var url = "{{ route('save') }}";
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formdata,
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: 'Registrando',
+                            html: 'Por favor espere...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        //Clear all fields
+                        $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
+                        print(response.data);
+                    },
+                    error: function (xhr, textStatus, errorMessage) {
+                        Swal.fire({
+                            position: 'top',
+                            type: 'error',
+                            html: 'Error crítico: ' + xhr.responseText,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
         });
+
+        function validate(){
+            let handler = 0
+            //reset all fields messages
+
+            const fields = document.getElementsByClassName('invoice-control-invalid')
+            const invalidfields = document.getElementsByClassName('is-invalid')
+            const messages = document.getElementsByClassName('error')
+            const fieldslength = fields.length
+            const messageslength = messages.length
+            if (fieldslength > 0) {
+                for (let x = 0; x < fieldslength; x++) {
+                    fields[0].classList.remove('invoice-control-invalid') 
+                }
+            }
+
+            if (messageslength > 0) {
+                for (let x = 0; x < messageslength; x++) {
+                    messages[0].parentNode.removeChild(messages[x]);
+                    invalidfields[0].classList.remove('is-invalid')  
+                }
+            }
+
+            //error message
+            const spanerror = document.createElement('span')
+            spanerror.classList.add('error', 'invalid-feedback')
+            spanerror.textContent = 'No puede quedar vacío'
+
+            const nameInput = document.getElementById('name') //input name
+
+            if(!nameInput.value){
+                nameInput.after(spanerror)
+                nameInput.classList.add('is-invalid')
+                handler++
+            }
+
+            //table fields
+            const tableLenght = document.getElementById('trCount').value
+
+            for (let i = 0; i < tableLenght; i++) {
+                
+
+                if (document.getElementById('pnamevalue' + i).value != '') {
+
+                    let quantity = document.getElementById('quantity' + i)
+                    let code = document.getElementById('pcode' + i)
+                    let price = document.getElementById('price' + i)
+                    
+                    if (!document.getElementById('quantityvalue' + i).value) {
+                        quantity.parentNode.classList.add('invoice-control-invalid')
+                        handler++
+                    }
+
+                    if (!document.getElementById('pcodevalue' + i).value) {
+                        code.parentNode.classList.add('invoice-control-invalid')
+                        handler++
+                    }
+
+
+                    if (!document.getElementById('pricevalue' + i).value) {
+                        price.parentNode.classList.add('invoice-control-invalid')
+                        handler++
+                    }
+                }
+            }
+
+            return handler;
+        }
+
 
         function print(data) {
             var invoice = data.invoice;

@@ -18,14 +18,16 @@ class CreateInvoicesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('sale_id');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
-            $table->unsignedBigInteger('costumer_id');
+            $table->unsignedBigInteger('costumer_id')->nullable();
             $table->foreign('costumer_id')->references('id')->on('costumers')->onDelete('cascade');
             $table->unsignedBigInteger('payment_id');
             $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('invoice_type');
+            $table->unsignedBigInteger('invoice_type');
+            $table->foreign('invoice_type')->references('id')->on('invoice_type')->onDelete('cascade');
             $table->string('comments');
+            $table->string('unregistered_customer')->nullable();
         });
     }
 

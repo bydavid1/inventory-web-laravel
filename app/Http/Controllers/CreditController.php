@@ -66,7 +66,7 @@ class CreditController extends Controller
             $product_list = array();
             $counter = $request->trCount;
     
-            for ($i=1; $i <= $counter; $i++) { 
+            for ($i=0; $i < $counter; $i++) { 
                 $saleitem = new Sales_items;
                 $saleitem->sale_id = $id;
                 //database and request handlers

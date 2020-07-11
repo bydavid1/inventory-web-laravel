@@ -14,7 +14,7 @@
      <tbody>
          <?php
             $arrayNumber = 0;
-            for($x = 1; $x < 2; $x++) {
+            for($x = 0; $x < 1; $x++) {
           ?>
          <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
              <input type="hidden" name="idvalue<?php echo $x; ?>" id="idvalue<?php echo $x; ?>" />
