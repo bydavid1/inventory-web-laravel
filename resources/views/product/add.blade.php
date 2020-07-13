@@ -154,27 +154,27 @@
                     <!-- Bottom content-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="col-sm-12">
-                                <div class="input-group" id="message">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                    </div>
-                                    <input type="decimal" class="form-control" id="purchase"
-                                        placeholder="Precio de compra" name="purchase" autocomplete="off" value="{{ old('purchase') }}"/>
-                                </div>
-                            </div>
                             <br>
                             <!-- /form-group-->
                             <div class="row">
                                 <!-- Left Bottom group-->
                                 <div class="col-sm-6">
                                     <div class="col-sm-12 mb-3">
+                                        <div class="input-group" id="message">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="decimal" class="form-control" id="purchase"
+                                                placeholder="Precio de compra" name="purchase" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="price1" placeholder="Precio 1"
-                                                name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off" value="{{ old('price1') }}"/>
+                                            <input type="decimal" class="form-control" id="price1" placeholder="Precio 1" disabled
+                                                name="price1" onkeyup="calculate('price1', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -183,8 +183,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="price2" placeholder="Precio 2"
-                                                name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off" value="{{ old('price2') }}"/>
+                                            <input type="decimal" class="form-control" id="price2" placeholder="Precio 2" disabled
+                                                name="price2" onkeyup="calculate('price2', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -193,8 +193,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="price3" placeholder="Precio 3"
-                                                name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off" value="{{ old('price3') }}"/>
+                                            <input type="decimal" class="form-control" id="price3" placeholder="Precio 3" disabled
+                                                name="price3" onkeyup="calculate('price3', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -203,22 +203,28 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="price4" placeholder="Precio 4"
-                                                name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off" value="{{ old('price4') }}"/>
+                                            <input type="decimal" class="form-control" id="price4" placeholder="Precio 4" disabled
+                                                name="price4" onkeyup="calculate('price4', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
-        
                                 </div>
+                                <!------- Right column------------>
                                 <div class="col-sm-6">
-        
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="form-group" id="message">
+                                            <select data-placeholder="Seleciona una categoría" style="width: 100%;" class="select2bs4" id="tax_id" name="tax_id">
+                                                <option value="1">13%</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12 mb-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="utility1" placeholder="Utilidad 1"
-                                                name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off" value="{{ old('utility1') }}"/>
+                                            <input type="decimal" class="form-control" id="utility1" placeholder="Utilidad 1" disabled
+                                                name="utility1" onkeyup="calculate('utility1', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -227,8 +233,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="utility2" placeholder="Utilidad 2"
-                                                name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off" value="{{ old('utility2') }}"/>
+                                            <input type="decimal" class="form-control" id="utility2" placeholder="Utilidad 2" disabled
+                                                name="utility2" onkeyup="calculate('utility2', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -237,8 +243,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="utility3" placeholder="Utilidad 3"
-                                                name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off" value="{{ old('utility3') }}"/>
+                                            <input type="decimal" class="form-control" id="utility3" placeholder="Utilidad 3" disabled
+                                                name="utility3" onkeyup="calculate('utility3', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -247,8 +253,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-funnel-dollar"></i></span>
                                             </div>
-                                            <input type="decimal" class="form-control" id="utility4" placeholder="Utilidad 4"
-                                                name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off" value="{{ old('utility4') }}"/>
+                                            <input type="decimal" class="form-control" id="utility4" placeholder="Utilidad 4" disabled
+                                                name="utility4" onkeyup="calculate('utility4', 'add')" autocomplete="off"/>
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -330,6 +336,20 @@
 
 </script>
 <script>
+    document.getElementById('purchase').addEventListener('keyup', function (input) {
+        if (input.target.value != "" && isNaN(input.target.value) == false) {
+            for (let x = 1; x < 5; x++) {
+                document.getElementById('price' + x).disabled = false
+                document.getElementById('utility' + x).disabled = false
+            }
+        }else{
+            for (let x = 1; x < 5; x++) {
+                document.getElementById('price' + x).disabled = true
+                document.getElementById('utility' + x).disabled = true
+            }
+        }
+    })
+
     $('#submitProductForm').unbind('submit').bind('submit', function (stay) {
         stay.preventDefault();
         var formdata = $(this).serialize();
@@ -369,5 +389,25 @@
             }
         });
     });
+
+    function calculate(input, type){
+
+        let purchase = document.getElementById('purchase').value
+        
+        if (input.slice(0, -1) == "price") {
+
+            let price = document.getElementById(input).value
+            let identifier = input.slice(-1);
+            document.getElementById('utility' + identifier).value = (price - purchase).toFixed(2)
+
+        }else if(input.slice(0, -1) == "utility"){
+
+            let value = document.getElementById(input).value
+            let identifier = input.slice(-1);
+            document.getElementById('price' + identifier).value = (Number(value) + Number(purchase)).toFixed(2)
+
+        }
+    }
+
 </script>
 @endsection
