@@ -14,5 +14,6 @@ class TaxSeeder extends Seeder
     {
         $seed = new Tax_rules();
         $seed->percentage = "13";
+        $seed->save();
     }
 }

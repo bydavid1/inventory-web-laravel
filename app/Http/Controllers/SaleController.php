@@ -82,8 +82,17 @@ class SaleController extends Controller
     public function store(Request $request)
     {            
         try {
+
+            //payment info
+            $payment = Payments::create(['payment_method' => '1', 'total' => $request->grandtotalvalue, 'payed_with' => $request->grandtotalvalue,
+            'returned' => 0.00, 'description' => 'N/A']);
+
             //invoice headers info
             $sale = new Sales;
+            $sale->payment_id = $payment->id;
+            $sale->invoice_type = "1";
+            $sale->user_id = $request->user()->id;
+            $sale->unregistered_customer = $request->name;
             $sale->additional_discounts = $request->grandtotalvalue;
             $sale->additional_payments = $request->mpayments;
             $sale->total_quantity = $request->grandquantityvalue;
@@ -153,14 +162,8 @@ class SaleController extends Controller
     
                 } //for $i
     
-                $payment = Payments::create(['payment_method' => '1', 'total' => $request->grandtotalvalue, 'payed_with' => $request->grandtotalvalue,
-                'returned' => 0.00, 'description' => 'N/A']);
     
-                //'date' => $request->date  <- falta
-                $invoice = Invoices::create(['sale_id' => $sale->id, 'payment_id' => $payment->id, 'invoice_type' => "1",
-                 'user_id' => $request->user()->id, 'comments' => 'N/A', 'unregistered_customer' => $request->name]); //fix (if (costumerid = null))
-    
-                Credit_invoice::create(['invoice_id' => $invoice->id, 'serial' => 'N/A']);
+                Credit_invoice::create(['invoice_id' => $sale->id, 'serial' => 'N/A']);
     
                 //Design invoice
                 $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");
