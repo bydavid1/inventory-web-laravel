@@ -16,8 +16,8 @@ class CreateCreditsTable extends Migration
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('invoice_id');
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->unsignedBigInteger('sale_id');
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->integer('fees');
             $table->float('interest');
             $table->decimal('interest_per');
