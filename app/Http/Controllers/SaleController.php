@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Sales;
 use App\Sales_items;
 use App\Products;
-use App\Invoices;
 use App\Payments;
-use App\Credit_invoice;
+use App\Simple_invoice;
 use App\Kardex;
 use App\Costumers;
 use App\Traits\Helpers;
@@ -30,8 +29,7 @@ class SaleController extends Controller
      */
     public function getRecords()
     {
-        $query = Invoices::select('costumer_id', 'invoice_type', 'unregistered_costumer', 'user_id')
-        ->with('sale:id,total_quantity,total,total_tax');
+        $query = Sales::select('id', 'created_at', 'costumer_id', 'invoice_type', 'unregistered_costumer', 'total_quantity', 'subtotal', 'total');
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
@@ -42,14 +40,20 @@ class SaleController extends Controller
         ->addColumn('name', function($query){
 
             if ($query->costumer_id == null) {
-                $name = $query->unregistered_costumer;
-            } elseif ($query->unregistered_costumer == null){
-                $name = Costumers::select('name')->where('id', $query->costumer_id);
+                return $query->unregistered_costumer;
+            } else{
+                $costumer = Costumers::select('name')->where('id', $query->costumer_id)->get();
+                return $costumer[0]->name;
             }
-
-            return $name;
         })
-        ->rawColumns(['actions'])
+        ->editColumn('invoice_type', function($query){
+            if($query->invoice_type == '1'){
+                return '<span class="badge badge-success">Factura</span>';
+            }else{
+                return '<span class="badge badge-danger">Credito fiscal</span>';
+            }
+        })
+        ->rawColumns(['actions', 'invoice_type'])
         ->toJson();
     }
 
@@ -163,7 +167,7 @@ class SaleController extends Controller
                 } //for $i
     
     
-                Credit_invoice::create(['invoice_id' => $sale->id, 'serial' => 'N/A']);
+                Simple_invoice::create(['sale_id' => $sale->id]);
     
                 //Design invoice
                 $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");

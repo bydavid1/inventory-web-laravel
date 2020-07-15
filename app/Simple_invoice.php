@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Simple_invoice extends Model
 {
-    //
+    protected $guarded = [];
 }

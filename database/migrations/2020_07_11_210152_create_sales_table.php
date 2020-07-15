@@ -24,7 +24,7 @@ class CreateSalesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('invoice_type');
             $table->foreign('invoice_type')->references('id')->on('invoice_type')->onDelete('cascade');
-            $table->string('unregistered_customer')->nullable();
+            $table->string('unregistered_costumer')->nullable();
             $table->integer('delivery_status')->nullable()->default('1'); // 1 => completo, 2 => parcial, 0 => pendiente
             $table->float('additional_discounts')->nullable()->default('0.00');;
             $table->float('additional_payments')->nullable()->default('0.00');;

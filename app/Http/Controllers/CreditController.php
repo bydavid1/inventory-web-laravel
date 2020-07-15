@@ -57,7 +57,7 @@ class CreditController extends Controller
             $sale->payment_id = $payment->id;
             $sale->invoice_type = "2";
             $sale->user_id = $request->user()->id;
-            $sale->costumer_id = $request->costumer_id;
+            $sale->costumer_id = $request->costumerid;
             $sale->delivery_status = $request->delivery;
             $sale->additional_discounts = $request->grandtotalvalue;
             $sale->additional_payments = $request->mpayments;
@@ -129,7 +129,7 @@ class CreditController extends Controller
                 } //for $i
     
     
-                Credit_invoice::create(['invoice_id' => $sale->id, 'serial' => 'N/A']);
+                Credit_invoice::create(['sale_id' => $sale->id, 'serial' => 'N/A']);
     
                 //Design invoice
                 $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");

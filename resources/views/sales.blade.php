@@ -94,10 +94,12 @@
 			<table class="table table-condensed table-hover" id="items">
 					<thead>
 						<tr>				
-                            <th>Fecha de factura</th>
-							<th>Cliente</th>							
-							<th>Cantidad de productos</th>
-							<th>Valor</th>
+                            <th>Fecha</th>
+							<th>Cliente</th>	
+							<th>Tipo</th>						
+							<th>Cantidad</th>
+							<th>Subtotal</th>
+							<th>Total</th>
 							<th style="width:15%;" class="text-right">Opciones</th>
 						</tr>
 					</thead>
@@ -126,10 +128,16 @@
 						data: 'created_at'
 					},
 					{
-						data: 'costumer'
+						data: 'name'
 					},
 					{
-						data: 'quantity'
+						data: 'invoice_type'
+					},
+					{
+						data: 'total_quantity'
+					},
+					{
+						data: 'subtotal'
 					},
 					{
 						data: 'total'
