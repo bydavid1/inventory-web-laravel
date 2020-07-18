@@ -7,55 +7,69 @@
 @endsection
 
 @section('content')
-<div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Clientes</h1>
-			</div><!-- /.col -->
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Clientes</li>
-				</ol>
-			</div><!-- /.col -->
-		</div><!-- /.row -->
-	</div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-@if ( session('mensaje') )
-<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
-@endif
-<!-- /.col -->
-<div class="col-md-12">
-	<div class="card card-info">
-		<div class="card-header">
-			<h3 class="card-title">Lista de clientes</h3>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			<div class="text-right" style="margin-bottom: 15px"> 
-			<a type="button" class="btn btn-success" href="{{ route('addCostumers') }}"> <i class="fas fa-plus"></i> Agregar un nuevo cliente </a>
-			</div>
-			<table class="table" id="items">
-					<thead>
-						<tr>					
-							<th>Codigo</th>
-							<th>Nombre</th>							
-							<th>NIT</th>
-                            <th>Telefono</th>
-                            <th>Email</th>
-                            <th>Dirección</th>
-                            <th>Fecha de registro</th>
-							<th style="width:15%;" class="text-right">Opciones</th>
-						</tr>
-					</thead>
-				</table>
-		</div>
-		<!-- /.card-body -->
+<div class="app-content content">
+    <div class="content-header bg-white">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
+                    <h3 class="content-header-title mb-0">CLientes</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Clientes
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-header-right col-md-6 col-12">
+                    <div class="float-right">
+                        <a class="btn btn-float btn-primary" href="{{ route('addCostumers') }}">
+                            <i class="fa fa-plus-circle fa-2x"></i>
+                            <span>Nuevo Cliente</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-	<!-- /.card -->
+	@if ( session('mensaje') )
+		<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
+	@endif
+    <div class="content-body">
+        <div class="content-wrapper">
+			<div class="card card-info">
+				<div class="card-header">
+					<h3 class="card-title">Lista de clientes</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div class="text-right" style="margin-bottom: 15px"> 
+					<a type="button" class="btn btn-success" href="{{ route('addCostumers') }}"> <i class="fas fa-plus"></i> Agregar un nuevo cliente </a>
+					</div>
+						<table class="table" id="items">
+							<thead>
+								<tr>					
+									<th>Codigo</th>
+									<th>Nombre</th>							
+									<th>NIT</th>
+									<th>Telefono</th>
+									<th>Email</th>
+									<th>Dirección</th>
+									<th>Fecha de registro</th>
+									<th style="width:15%;" class="text-right">Opciones</th>
+								</tr>
+							</thead>
+						</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+        </div>
+    </div>
 </div>
+
 
 <!-- Delete modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeCostumer">

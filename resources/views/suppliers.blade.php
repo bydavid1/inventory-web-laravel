@@ -45,75 +45,83 @@
 @endsection
 
 @section('content')
-<div class="content-header bg-white mb-4 pt-2 pb-0">
-    <div class="container-fluid">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Compras</li>
-            </ol>
-        </nav>
-        <div class="row h-100">
-            <div class="col-sm-6 my-auto">
-                <h1 class="text-dark">Proveedores y Fabricantes</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <div class="float-right">
-                    <button class="btn btn-app bg-lightblue" data-toggle="modal" data-target="#addProviderModal">
-                        <i class="fas fa-plus-circle"></i>
-                        Agregar nuevo proveedor
-                    </button>
+<div class="app-content content">
+    <div class="content-header bg-white mb-3 pb-0">
+        <div class=" content-wrapper pb-0">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
+                    <h3 class="content-header-title mb-0">Propiedades del inventario</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Poveedores
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
                 </div>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-        <div class="page-head-tabs" id="head_tabs">
-            <ul class="nav tab-pills">
-                <li class="tab-item">
-                    <a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers" class="tab-link tab active current" data-submenu="17">
-                        Proveedores
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('manufacturers') }}" id="subtab-AdminSuppliers" class="tab-link tab" data-submenu="18">
-                        Fabricantes
-                    </a>
-                </li>
-            </ul>
+                <div class="content-header-right col-md-6 col-12">
+                    <div class="float-right">
+                        <button class="btn btn-float btn-outline-primary" data-toggle="modal"
+                            data-target="#addProviderModal">
+                            <i class="fa fa-plus-circle fa-2x"></i>
+                            <span>Agregar Proveedor</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 mt-1">
+                    <div class="page-head-tabs" id="head_tabs">
+                        <ul class="nav tab-pills">
+                            <li class="tab-item">
+                                <a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers" class="tab-link tab active current" data-submenu="17">
+                                    Proveedores
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('manufacturers') }}" id="subtab-AdminSuppliers" class="tab-link tab" data-submenu="18">
+                                    Fabricantes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('categories') }}" id="subtab-AdminSuppliers" class="tab-link tab"
+                                    data-submenu="18">
+                                    Categorias
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-<div class="container">
-	@if ( session('mensaje') )
-    <div class="alert alert-success">{{ session('mensaje') }}</div>
-     @endif
-</div>
-
-<!-- /.col -->
-<div class="col-md-12">
-	<div class="card card-lightblue">
-		<div class="card-header">
-            <h3 class="card-title my-auto">Proveedores</h3>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			<table class="table table-bordered table-condensed" id="items">
-					<thead>
-						<tr>
-							<!-- <th style="width:10%;">Imagen</th>	-->						
-							<th>Codigo</th>
-                            <th>Nombre</th>	
-                            <th>NIT</th>		
+    </div>  
+    <!-- /.col -->
+    <div class="col-md-12">
+        <div class="card card-lightblue">
+            <div class="card-header">
+                <h3 class="card-title my-auto">Proveedores</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table class="table table-bordered table-condensed" id="items">
+                    <thead>
+                        <tr>
+                            <!-- <th style="width:10%;">Imagen</th>	-->
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>NIT</th>
                             <th>Telefono</th>
-                            <th>Direccion</th>							
-							<th style="width:15%;" class="text-right">Opciones</th>
-						</tr>
-					</thead>
-				</table>
-		</div>
-		<!-- /.card-body -->
-	</div>
-	<!-- /.card -->
+                            <th>Direccion</th>
+                            <th style="width:15%;" class="text-right">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div> 
 </div>
 
 <!-- Modal -->
