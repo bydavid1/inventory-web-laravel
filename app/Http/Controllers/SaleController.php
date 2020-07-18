@@ -53,6 +53,12 @@ class SaleController extends Controller
                 return '<span class="badge badge-danger">Credito fiscal</span>';
             }
         })
+        ->editColumn('subtotal', function($query){
+            return '$' . $query->subtotal;
+        })
+        ->editColumn('total', function($query){
+            return '$' . $query->total;
+        })
         ->rawColumns(['actions', 'invoice_type'])
         ->toJson();
     }
