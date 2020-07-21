@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Categories;
 use App\Products;
-use App\Providers;
+use App\Suppliers;
 use App\Purchases;
 use App\Purchases_item;
 use App\Traits\Helpers;
@@ -15,6 +15,38 @@ class PurchaseController extends Controller
 {
 
     use Helpers;
+
+        /**
+     * Get a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecords()
+    {
+        $query = Purchases::select('id', 'created_at', 'supplier_id', 'quantity', 'sub_total', 'total');
+
+        return datatables()->eloquent($query)
+        ->addColumn('actions', '<div class="btn-group float-right">
+        <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-eye" style="color: white"></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
+        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fas fa-file-pdf" style="color: white"></i></a>
+        </div>')
+        ->addColumn('name', function($query){
+
+                $name = Suppliers::select('name')->where('id', $query->supplier_id)->get();
+                return $name[0]->name;
+         
+        })
+        ->editColumn('sub_total', function($query){
+            return '$' . $query->subtotal;
+        })
+        ->editColumn('total', function($query){
+            return '$' . $query->total;
+        })
+        ->rawColumns(['actions', 'invoice_type'])
+        ->toJson();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,9 +65,9 @@ class PurchaseController extends Controller
     public function create()
     {
         $categories = Categories::select(['id', 'name'])->where('is_available', 1)->get();
-        $providers = Providers::select(['id', 'name'])->where('is_available', 1)->get();
+        $suppliers = Suppliers::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('purchases.add', compact(['categories', 'providers']));
+        return view('purchases.add', compact(['categories', 'suppliers']));
     }
 
     /**

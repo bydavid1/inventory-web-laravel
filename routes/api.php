@@ -84,6 +84,8 @@ Route::get('products/order/search/{query}', function ($query){
 
 Route::get('sales', 'SaleController@getRecords');
 
+Route::get('purchases', 'PurchaseController@getRecords');
+
 Route::get('products/kardex', function (){
    return datatables()->eloquent(App\Products::select('products.id','products.image','products.code','products.name')->where('products.is_deleted', 0))
       ->addColumn('actions', '<div class="btn-group float-right">
