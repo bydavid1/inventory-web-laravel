@@ -8,48 +8,60 @@
 @endsection
 
 @section('content')
-<div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Productos</h1>
-			</div><!-- /.col -->
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Productos</li>
-				</ol>
-			</div><!-- /.col -->
-		</div><!-- /.row -->
-	</div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-<!-- /.col -->
-<div class="col-md-12">
-	<div class="card card-info">
-		<div class="card-header">
-			<h3 class="card-title">Inventario</h3>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			<div class="text-right" style="margin-bottom: 15px"> 
-			<a type="button" class="btn btn-success" href="{{ route('addProduct') }}"> <i class="fas fa-plus"></i> Crear nueva venta </a>
-			</div>
-			<table class="table table-condensed table-hover" id="items">
-					<thead>
-						<tr>				
-                            <th>Fecha de factura</th>
-							<th>Cliente</th>							
-							<th>Cantidad de productos</th>
-							<th>Valor</th>
-							<th style="width:15%;" class="text-right">Opciones</th>
-						</tr>
-					</thead>
-				</table>
-		</div>
-		<!-- /.card-body -->
+<div class="app-content content">
+    <div class="content-header bg-white">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
+                    <h3 class="content-header-title mb-0">Compras</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Compras
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-header-right col-md-6 col-12">
+                    <div class="float-right">
+                        <a class="btn btn-float btn-primary" href="{{ route('addPurchase') }}">
+                            <i class="fa fa-plus-circle fa-2x"></i>
+                            <span>Nueva compra</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-	<!-- /.card -->
+	<div class="content-body">
+		<div class="content-wrapper">
+			<div class="card card-info">
+				<div class="card-header">
+					<h3 class="card-title">Compras</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<table class="table table-condensed table-hover" id="items">
+							<thead>
+								<tr>				
+									<th>Fecha de factura</th>
+									<th>Proveedor</th>							
+									<th>Cantidad de productos</th>
+									<th>Sub total</th>
+									<th>Total</th>
+									<th style="width:15%;" class="text-right">Opciones</th>
+								</tr>
+							</thead>
+						</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
+	</div>
 </div>
 @endsection
 
@@ -64,7 +76,7 @@
 		$(document).ready(function () {
 			$('#items').DataTable({
 				"serverSide": true,
-				"ajax": "{{ url('api/sales') }}",
+				"ajax": "{{ url('api/purchases') }}",
 				"columns": [
 					{
 						data: 'created_at'
@@ -74,6 +86,9 @@
 					},
 					{
 						data: 'quantity'
+					},
+					{
+						data: 'sub_total'
 					},
 					{
 						data: 'total'
