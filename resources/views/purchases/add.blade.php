@@ -11,138 +11,138 @@
 @endsection
 
 @section('content')
-<div class="mx-5">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Agregar compra</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Compras</a></li>
-                        <li class="breadcrumb-item active">Agregar compra</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-    @if ( session('mensaje') )
-    <div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
-    @endif
-
-    <form id="createPurchaseForm">
-        @csrf
-        <div class="row">
-            <div class="col-sm-8">
-                <!-- card-->
-                <div class="card card-outline card-danger">
-                    <!-- /.card-header -->
-                    <div class="card-body">
-
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group row">
-                                        <label for="provider" class="col-sm-4 control-label">Proveedor</label>
-                                        <div class="col-sm-8">
-                                            <select data-placeholder="Seleciona un proveedor"
-                                                class="select2bs4 col-sm-10" name="provider" placeholder="Enter..."
-                                                autocomplete="off">
-                                                @foreach ($providers as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group row">
-                                        <label for="provider" class="col-sm-2 control-label">Fecha</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <table class="table table-condensed" id="productTable">
-                            <thead>
-                                <tr class="info">
-                                    <th style="width:10%;">Codigo</th>
-                                    <th style="width:20%;">Producto</th>
-                                    <th style="width:10%;">Condición</th>
-                                    <th style="width:10%;">Precio</th>
-                                    <th style="width:10%;">Cantidad</th>
-                                    <th style="width:10%;">Total</th>
-                                    <th style="width:10%;"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <div class="row mt-2">
-                            <div class="col-sm-6"></div>
-                            <div class="col-md-6">
-                                <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
-                            </div>
-                        </div>
-                        <!--Num tr value-->
-                        <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-
-                        <div class="form-group row mt-5">
-                            <div class="col-sm-offset-2 col-sm-8">
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                    data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
-                                    producto</button>
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
-                                    existentes</button>
-                            </div>
-                            <div class="col-sm-4">
-
-                            </div>
+<div class="app-content content">
+    <div class="content-header bg-white">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
+                    <h3 class="content-header-title mb-0">Compras</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Compras
+                                </li>
+                            </ol>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
-            </div>
-            <div class="col-sm-4">
-                <!-- card-->
-                <div class="card card-outline card-danger">
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <h4 class="mb-3">Resumen</h4>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Cantidad total
-                                <strong id="grandquantity">0</strong>
-                                <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Sub total
-                                <strong id="">$0.00</strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Total
-                                <strong id="grandtotal">$0.00</strong>
-                                <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
-                            </li>
-                        </ul>
-                        <button type="submit" id="createSale" data-loading-text="Cargando..."
-                            class="btn btn-success btn-block mt-2">Registrar compra</button>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
             </div>
         </div>
-    </form>
+    </div>
+    <div class="content-body">
+        <div class="content-wrapper">
+            <form id="createPurchaseForm">
+                @csrf
+                <div class="row">
+                    <div class="col-sm-8">
+                        <!-- card-->
+                        <div class="card card-outline card-danger">
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label for="provider" class="col-sm-4 control-label">Proveedor</label>
+                                                <div class="col-sm-8">
+                                                    <select data-placeholder="Seleciona un proveedor"
+                                                        class="select2bs4 col-sm-10" name="provider" placeholder="Enter..."
+                                                        autocomplete="off">
+                                                        @foreach ($suppliers as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label for="provider" class="col-sm-2 control-label">Fecha</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-condensed" id="productTable">
+                                    <thead>
+                                        <tr class="info">
+                                            <th style="width:10%;">Codigo</th>
+                                            <th style="width:20%;">Producto</th>
+                                            <th style="width:10%;">Condición</th>
+                                            <th style="width:10%;">Precio</th>
+                                            <th style="width:10%;">Cantidad</th>
+                                            <th style="width:10%;">Total</th>
+                                            <th style="width:10%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        
+                                    </tbody>
+                                </table>
+                                <div class="row mt-2">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-md-6">
+                                        <textarea class="form-control" placeholder="Comentarios adicionales"></textarea>
+                                    </div>
+                                </div>
+                                <!--Num tr value-->
+                                <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
+        
+                                <div class="form-group row mt-5">
+                                    <div class="col-sm-offset-2 col-sm-8">
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
+                                            producto</button>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
+                                            existentes</button>
+                                    </div>
+                                    <div class="col-sm-4">
+        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <div class="col-sm-4">
+                        <!-- card-->
+                        <div class="card card-outline card-danger">
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <h4 class="mb-3">Resumen</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cantidad total
+                                        <strong id="grandquantity">0</strong>
+                                        <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Sub total
+                                        <strong id="">$0.00</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Total
+                                        <strong id="grandtotal">$0.00</strong>
+                                        <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                                    </li>
+                                </ul>
+                                <button type="submit" id="createSale" data-loading-text="Cargando..."
+                                    class="btn btn-success btn-block mt-2">Registrar compra</button>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
@@ -189,7 +189,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <i class="far fa-file fa-4x text-primary fa-rotate-right mb-1"></i>
+                    <i class="fa fa-object-group fa-4x text-primary fa-rotate-right mb-1"></i>
                     <p><i class="fa fa-exclamation-circle text-primary mr-1"></i>El producto se guardará hasta que se
                         registre la compra</p>
                 </div>
@@ -206,7 +206,7 @@
                     <div class="form-group">
                         <label>Proveedor</label>
                         <select class="form-control" id="pprovider">
-                            @foreach ($providers as $item)
+                            @foreach ($suppliers as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>

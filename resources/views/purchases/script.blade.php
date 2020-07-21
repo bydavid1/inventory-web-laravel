@@ -25,14 +25,19 @@ $(document).ready(function () {
 
 });
 
+//----------------------------------------------------------------------
+//-------------------------Add new product---------------------------------
+//----------------------------------------------------------------------
+
+
 function addNewProduct() {
-    let name = $('#pname').val();
-    let code = $('#pcode').val();
-    let quantity = $('#pquantity').val();
-    let purchase = $('#ppurchase').val();
-    let price = $('#price').val();
-    let category = $('#category').val();
-    let provider = $('#pprovider').val();
+    let name = document.querySelector('#pname').value
+    let code = document.querySelector('#pcode').value 
+    let quantity = document.querySelector('#pquantity').value  
+    let purchase = document.querySelector('#ppurchase').value 
+    let price = document.querySelector('#price').value
+    let category = document.querySelector('#category')
+    let provider = document.querySelector('#pprovider')
     if (name == "" || code == "" || quantity == "" || purchase == "" || price == "") {
         Swal.fire({
             type: 'error',
@@ -57,36 +62,36 @@ function addNewProduct() {
             arrayNumber = 0;
         }
 
-        tr = /*html*/`<tr id="row` + count + `" class="` + arrayNumber + `">
-                <input type="hidden" name="provider` + count + `" id="provider` + count + `" value="` + provider + `"/>
-                <input type="hidden" name="category` + count + `" id="category` + count + `" value="` + category + `"/>
-                <input type="hidden" name="price` + count + `" id="price` + count + `" value="` + price + `"/>
+        tr = `<tr id="row${count}" class="${arrayNumber}">
+                <input type="hidden" name="provider${count}" id="provider${count}" value="${provider}"/>
+                <input type="hidden" name="category${count}" id="category${count}" value="${category}"/>
+                <input type="hidden" name="price${count}" id="price${count}" value="${price}"/>
                 <td>
-                ` + code + `
-                <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `" value="` + code + `"/>
+                ${code}
+                <input type="hidden" name="pcodevalue${count}" id="pcodevalue${count}" value="${code}"/>
                 </td>
                 <td>
-                ` + name + `
-                <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + name + `"/>
+                ${name}
+                <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}" value="${name}"/>
                 </td>
                 <td>
                 <small class="badge badge-primary">Nuevo</small>
-                <input type="hidden" name="status` + count + `" id="status` + count + `" value="nuevo"/>
+                <input type="hidden" name="status${count}" id="status${count}" value="nuevo"/>
                 </td>
                 <td>
-                $` + purchase + `
-                <input type="hidden" name="purchasevalue` + count + `" id="purchasevalue` + count + `" value="` + purchase + `"/>
+                $${purchase}
+                <input type="hidden" name="purchasevalue${count}" id="purchasevalue${count}" value="${purchase}"/>
                 </td>
                 <td>
-                ` + quantity + `
-                <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantity + `"/>
+                ${quantity}
+                <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}" value="${quantity}"/>
                 </td>
                 <td>
-                $` + total + `
-                <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + total + `"/>
+                $${total}
+                <input type="hidden" name="totalvalue${count}" id="totalvalue${count}" value="${total}"/>
                 </td>
                 <td>
-                <a onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></a>
+                <a onclick="removeProductRow(${count})"><i class="fa fa-trash"></i></a>
                 </td>
                 </tr>`;
 
@@ -102,20 +107,21 @@ function addNewProduct() {
     }
 }
 
+//----------------------------------------------------------------------
+//-------------------------Add listing product---------------------------------
+//----------------------------------------------------------------------
+
+
 function add(id) {
     $('#setInfo').modal('show');
 
     $('#AddProduct').click(function () {
-        var tableLength = $(Table + " tbody tr").length;
-        var tableRow;
-        var arrayNumber;
-        var count;
+        let tableLength = $(Table + " tbody tr").length;
+        let tableRow, arrayNumber, count;
         var tr = '';
-        var quantityvalue = $("#quantity").val();
-        var pricevalue = $("#purchase").val();
+        var quantityvalue = document.querySelector('#quantity').value
+        var pricevalue = (document.querySelector('#purchase').value).toFixed(2)
         var total = pricevalue * quantityvalue;
-        pricevalue = parseFloat(pricevalue);
-        pricevalue = pricevalue.toFixed(2);
 
         if (tableLength > 0) {
             tableRow = $(Table + " tbody tr:last").attr('id');
@@ -128,8 +134,7 @@ function add(id) {
             arrayNumber = 0;
         }
 
-        var url = "{{ url('api/products/order', 'id') }}";
-        url = url.replace("id", id);
+        var url = "{{ url('api/products/order', 'id') }}".replace("id", id);
 
         $.ajax({
             type: 'get',
@@ -142,34 +147,34 @@ function add(id) {
                 200: function (response) {
                     var data = response.data;
                     //Row
-                    tr = `<tr id="row` + count + `" class="` + arrayNumber + `">
-                        <input type="hidden" name="idvalue` + count + `" id="idvalue` + count + `" value="` + data[0].id + `"/>
+                    tr = `<tr id="row${count}" class="${arrayNumber}">
+                        <input type="hidden" name="idvalue${count}" id="idvalue${count}" value="${data[0].id}"/>
                         <td>
-                        ` + data[0].code + `
-                        <input type="hidden" name="pcodevalue` + count + `" id="pcodevalue` + count + `" value="` + data[0].code + `"/>
+                        ${data[0].code}
+                        <input type="hidden" name="pcodevalue${count}" id="pcodevalue${count}" value="${data[0].code}"/>
                         </td>
                         <td>
-                        ` + data[0].name + `
-                        <input type="hidden" name="pnamevalue` + count + `" id="pnamevalue` + count + `" value="` + data[0].name + `"/>
+                        ${data[0].name}
+                        <input type="hidden" name="pnamevalue${count}" id="pnamevalue${count}" value="${data[0].name}"/>
                         </td>
                         <td>
                         <small class="badge badge-danger">Existente</small>
-                        <input type="hidden" name="status` + count + `" id="status` + count + `" value="existente"/>
+                        <input type="hidden" name="status${count}" id="status${count}" value="existente"/>
                         </td>
                         <td>
-                        $` + pricevalue + `
-                        <input type="hidden" name="purchasevalue` + count + `" id="purchasevalue` + count + `" value="` + pricevalue + `"/>
+                        $${pricevalue}
+                        <input type="hidden" name="purchasevalue${count}" id="purchasevalue${count}" value="${pricevalue}"/>
                         </td>
                         <td>
-                        ` + quantityvalue + `
-                        <input type="hidden" name="quantityvalue` + count + `" id="quantityvalue` + count + `" value="` + quantityvalue + `"/>
+                        ${quantityvalue}
+                        <input type="hidden" name="quantityvalue${count}" id="quantityvalue${count}" value="${quantityvalue}"/>
                         </td>
                         <td>
-                        $` + total + `
-                        <input type="hidden" name="totalvalue` + count + `" id="totalvalue` + count + `" value="` + total + `"/>
+                        $${total}
+                        <input type="hidden" name="totalvalue${count}" id="totalvalue${count}" value="${total}"/>
                         </td>
                         <td>
-                        <a onclick="removeProductRow(` + count + `)"><i class="fa fa-trash"></i></a>
+                        <a onclick="removeProductRow(${count})"><i class="fa fa-trash"></i></a>
                         </td>
                         </tr>`;
 
@@ -249,15 +254,16 @@ function countRow() {
 }
 
 
+
 //----------------------------------------------------------------------
 //-------------------------Search Product---------------------------------
 //----------------------------------------------------------------------
 
 function searchProduct() {
 
-    let query = $("#searchInput").val();
-    let url = "{{ url('api/products/order/search', 'query') }}";
-    url = url.replace("query", query);
+    let query = document.querySelector('#searchInput').value
+    let url = "{{ url('api/products/order/search', 'query') }}".replace("query", query)
+
     $.ajax({
         type: 'get',
         url: url,
@@ -268,30 +274,111 @@ function searchProduct() {
         statusCode: {
             200: function (response) {
                 if (response.success == true) {
-                    let data = response.products;
-                    let output = "";
-                    for (let i = 0; i < data.length; i++) {
-                        output += `<div class="row mb-2">
-                        <div class="col-sm-2"><img class="img-round" src="{{ asset("${data[i].image}") }}" style="max-height:50px; max-width:70px;"/></div>
-                        <div class="col-sm-2 my-auto">${data[i].code}</div>
-                        <div class="col-sm-3 my-auto">${data[i].name}</div>
-                        <div class="col-sm-2 my-auto">${data[i].quantity}</div>
-                        <div class="col-sm-2 my-auto">${data[i].price}</div>
-                        <div class="col-sm-1 my-auto"><button class="btn btn-primary btn-sm mr-1" onclick="add(${data[i].id})"><i class="fas fa-plus"></i>Agregar</button></div>
-                        </div>`;
+                    const data = response.products
+                    const length = data.length
+                    let outputitems = ''
+                    for (let i = 0; i < length; i++) {
+                        const id = data[i].id
+                        let prices = ""
+                        for (let j = 0; j < 4; j++) {
+                            const price = data[i].prices[j].price_incl_tax
+                            prices += `<li class="dropdown-item" onclick="changeprice(${id}, ${price})">$${price.toFixed(2)}</li>`
+                        }
+                        
+                        outputitems += `
+                            <tr>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="collapse(${i})"> 
+                                        <i class="fa fa-plus" id="collapse_icon_${i}"></i>
+                                    </button>
+                                </td>
+                                <td>${data[i].code}</td>
+                                <td>${data[i].name}</td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">${data[i].stock}</span>
+                                        </div>
+                                        <input type="text" class="form-control" value="1" id="cantidad_${id}"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-primary"
+                                                data-toggle="dropdown"> 
+                                                <i class="fa  fa-angle-down"></i> 
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                ${prices}
+                                            </ul>
+                                        </div>
+                                        <input type="text" class="form-control" value="${data[i].prices[0].price_incl_tax.toFixed(2)}" id="precio_venta_${id}" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-sm-1 my-auto btn-group btn-group-sm float-center">
+                                        <button class="btn btn-primary" onclick="add(${id})"><i
+                                                class="fa fa-plus"></i></button>
+                                        <button class="btn btn-secondary" onclick="view(${id})"><i
+                                                class="fa fa-external-link"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="collapse" id="ex_row_${i}">
+                                <td colspan="6">
+                                    <img class="img-round" src="{{ asset("`+data[i].images[0].src+`") }}" style="max-height:50px; max-width:70px;" />
+                                </td>
+                            </tr>`
                     }
-                    $("#results").html(output);
+
+                    let output = `  
+                        <table class="table table-sm table-responsive">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1%;"></th>
+                                    <th style="width: 20%;">Codigo</th>
+                                    <th style="width: 30%;">Producto</th>
+                                    <th style="width: 20%;">Stock</th>
+                                    <th style="width: 20%;">Precios</th>
+                                    <th style="width: 9%;">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>  
+                                ${outputitems}
+                            </tbody>
+                        </table>`;
+
+                    $("#results").html(output)
                 }else{
-                    $("#results").html(`No hay productos que coincidan`);
+                    $("#results").html(`No hay productos que coincidan`)
                 }
             },
             404: function () {
-                $("#results").html(`Recurso no encontrado`);
+                $("#results").html(`Recurso no encontrado`)
             },
             500: function () {
-                $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`);
+                $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`)
             }
         }
     })
+}
+
+//----------------------------------------------------------------------
+//-------------------------Expand button search product form---------------------------------
+//----------------------------------------------------------------------
+function collapse(number){
+    let row = document.getElementById('ex_row_' + number)
+    let icon = document.getElementById('collapse_icon_' + number)
+
+    if(row.classList.contains('collapse')){
+        row.classList.remove('collapse')
+        icon.classList.remove('fa-plus')
+        icon.classList.add('fa-minus')
+    }else{
+        row.classList.add('collapse')
+        icon.classList.remove('fa-minus')
+        icon.classList.add('fa-plus')
+    }
 }
 </script>
