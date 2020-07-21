@@ -1,4 +1,3 @@
-<script>
 const TABLE = "#productTable"
 const PRICE = "#price"
 const PRODUCTNAME = "#pname"
@@ -77,8 +76,8 @@ function add(id) {
                 let data = response.data;
 
                 price = Number(price).toFixed(2)
-                let amount = price * 0.13
-                let total = ((Number(price) + amount) * Number(quantity)).toFixed(2);
+                let amount = (price * 0.13).toFixed(2)
+                let total = ((Number(price) + Number(amount)) * Number(quantity)).toFixed(2);
 
 
                 tr = `<tr id="row${count}" class="${arrayNumber}">
@@ -126,22 +125,22 @@ function add(id) {
 
                 if (tableLength > 1) {
                     $(TABLE + " tbody tr:last").after(tr);
-                } else if (tableLength == 1 && $(PRODUCTNAME + 1).val() == "") {
-                    document.querySelector(PRODUCTCODE + 1).value = data[0].code
-                    document.querySelector(PRODUCTCODEVALUE + 1).value = data[0].code
-                    document.querySelector(PRODUCTNAME + 1).value = data[0].name
-                    document.querySelector(PRODUCTNAMEVALUE + 1).value = data[0].name
-                    document.querySelector(PRICE + 1).value = price
-                    document.querySelector(PRICEVALUE + 1).value = price
-                    document.querySelector(QUANTITY + 1).value = quantity;
-                    document.querySelector(QUANTITYVALUE + 1).value = quantity
-                    document.querySelector(AMOUNT + 1).value = amount
-                    document.querySelector(AMOUNTVALUE + 1).value = amount
-                    document.querySelector(TOTAL + 1).value = total
-                    document.querySelector(TOTALVALUE + 1).value = total
-                    document.querySelector(IDVALUE + 1).value = data[0].id
-                    document.querySelector(PRICE + 1).disabled = false
-                    document.querySelector(QUANTITY + 1).disabled = false
+                } else if (tableLength == 1 && $(PRODUCTNAME + 0).val() == "") {
+                    document.querySelector(PRODUCTCODE + 0).value = data[0].code
+                    document.querySelector(PRODUCTCODEVALUE + 0).value = data[0].code
+                    document.querySelector(PRODUCTNAME + 0).value = data[0].name
+                    document.querySelector(PRODUCTNAMEVALUE + 0).value = data[0].name
+                    document.querySelector(PRICE + 0).value = price
+                    document.querySelector(PRICEVALUE + 0).value = price
+                    document.querySelector(QUANTITY + 0).value = quantity;
+                    document.querySelector(QUANTITYVALUE + 0).value = quantity
+                    document.querySelector(AMOUNT + 0).value = amount
+                    document.querySelector(AMOUNTVALUE + 0).value = amount
+                    document.querySelector(TOTAL + 0).value = total
+                    document.querySelector(TOTALVALUE + 0).value = total
+                    document.querySelector(IDVALUE + 0).value = data[0].id
+                    document.querySelector(PRICE + 0).disabled = false
+                    document.querySelector(QUANTITY + 0).disabled = false
                 } else {
                     $(TABLE + " tbody").append(tr);
                 }
@@ -324,10 +323,17 @@ function removeProductRow(row = null) {
     countRow();
 }
 
+//----------------------------------------------------------------------
+//-------------------------Change price from dropdown---------------------------------
+//----------------------------------------------------------------------
+
 function changeprice(id, value) {
     $("#precio_venta_" + id).val(value.toFixed(2));
 }
 
+//----------------------------------------------------------------------
+//-------------------------Count tables rows---------------------------------
+//----------------------------------------------------------------------
 function countRow(){
     var tableLength = $(TABLE + " tbody tr").length;
     $("#trCount").val(tableLength);
@@ -469,82 +475,6 @@ function calculateInterest(){
    document.getElementById('grandtotal').textContent = "$" + grandtotal;
 }
 
-//----------------------------------------------------------------------
-//-------------------------Search Product---------------------------------
-//----------------------------------------------------------------------
-
-function searchProduct() {
-
-let query = document.querySelector('#searchInput').value
-let url = "{{ url('api/products/order/search', 'query') }}".replace("query", query)
-
-$.ajax({
-    type: 'get',
-    url: url,
-    dataType: 'json',
-    beforeSend: function (objeto) {
-        $("#results").html(`<div class="d-flex justify-content-center mt-4"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>`);
-    },
-    statusCode: {
-        200: function (response) {
-            if (response.success == true) {
-                const data = response.products
-                const length = data.length
-                let output = ""
-                for (let i = 0; i < length; i++) {
-                    const id = data[i].id
-                    let prices = ""
-                    for (let j = 0; j < 4; j++) {
-                        const price = data[i].prices[j].price_incl_tax
-                        prices += `<li class="dropdown-item" onclick="changeprice(${id}, ${price})">$${price.toFixed(2)}</li>`
-                    }
-                    
-                    output += `<div class="row mb-2">
-                        <div class="col-sm-2"><img class="img-round" src="{{ asset("`+data[i].images[0].src+`") }}"
-                                style="max-height:50px; max-width:70px;" /></div>
-                        <div class="col-sm-2 my-auto">${data[i].code}</div>
-                        <div class="col-sm-3 my-auto">${data[i].name}</div>
-                        <div class="col-sm-2 my-auto">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group-prepend"><span class="input-group-text">En stock: ${data[i].stock}</span></div>
-                                    <input type="text" class="form-control" value="1" id="cantidad_${id}"/>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 my-auto">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group-prepend">
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown">  
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        ${prices}
-                                    </ul>
-                                </div><input type="text" class="form-control" value="${data[i].prices[0].price_incl_tax.toFixed(2)}"
-                                    id="precio_venta_${id}" />
-                            </div>
-                        </div>
-                        <div class="col-sm-1 my-auto btn-group float-center">
-                            <button class="btn btn-primary btn-sm mr-1" onclick="add(${id})"><i
-                                    class="fas fa-plus"></i></button>
-                            <button class="btn btn-secondary btn-sm mr-1" onclick="view(${id})"><i
-                                    class="fas fa-external-link-alt"></i></button>
-                        </div>
-                    </div>`
-                }
-                $("#results").html(output)
-            }else{
-                $("#results").html(`No hay productos que coincidan`)
-            }
-        },
-        404: function () {
-            $("#results").html(`Recurso no encontrado`)
-        },
-        500: function () {
-            $("#results").html(`<div class="alert alert-danger mt-2">Ocurrió un problema en el servidor, intentelo despues</div>`)
-        }
-    }
-})
-}
 
 //----------------------------------------------------------------------
 //-------------------------Search Costumer---------------------------------
@@ -608,5 +538,3 @@ function closeAllLists(elmnt) {
     }
 }
 
-
-</script>
