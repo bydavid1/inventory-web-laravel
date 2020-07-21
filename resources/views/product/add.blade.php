@@ -165,7 +165,7 @@
                                     <div class="row">
                                         <!-- Left Bottom group-->
                                         <div class="col-sm-6">
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="message">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -175,7 +175,7 @@
                                                         placeholder="Precio de compra" name="purchase" autocomplete="off" />
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -187,7 +187,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -199,7 +199,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -211,7 +211,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="alert">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -226,7 +226,7 @@
                                         </div>
                                         <!------- Right column------------>
                                         <div class="col-sm-6">
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="form-group" id="message">
                                                     <select data-placeholder="Seleciona una categoría" style="width: 100%;"
                                                         class="select2bs4" id="tax_id" name="tax_id">
@@ -234,7 +234,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -246,7 +246,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -258,7 +258,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
@@ -270,7 +270,7 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-                                            <div class="col-sm-12 mb-3">
+                                            <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
