@@ -20,8 +20,8 @@ Route::get('products', 'ProductController@getRecords');
 Route::get('categories', function (){
    return datatables()->eloquent(App\Categories::query())
       ->addColumn('actions', '<div class="btn-group float-right">
-                  <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
+                  <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fa fa-edit" style="color: white"></i></a>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fa fa-trash" style="color: white"></i></button>
                   </div>')
       ->rawColumns(['actions'])
       ->toJson();
@@ -36,8 +36,8 @@ Route::get('manufacturers/{id}', 'ManufacturersController@show');
 Route::get('costumers', function(){
    return datatables()->eloquent(App\Costumers::query())
       ->addColumn('actions', '<div class="btn-group float-right">
-      <button type="button" class="btn btn-danger" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-edit" style="color: white"></i></button>
-      <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
+      <button type="button" class="btn btn-danger" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fa fa-edit" style="color: white"></i></button>
+      <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fa fa-trash" style="color: white"></i></button>
       </div>')
       ->rawColumns(['actions'])
       ->toJson();
@@ -89,7 +89,7 @@ Route::get('purchases', 'PurchaseController@getRecords');
 Route::get('products/kardex', function (){
    return datatables()->eloquent(App\Products::select('products.id','products.image','products.code','products.name')->where('products.is_deleted', 0))
       ->addColumn('actions', '<div class="btn-group float-right">
-                  <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="fas fa-task" style="color: white"></i>Ver registros</a>
+                  <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="fa fa-task" style="color: white"></i>Ver registros</a>
                   </div>')
       ->addColumn('photo', '<img class="img-round" src="{{ asset("$image") }}" style="max-height:50px; max-width:70px;"/>')
       ->rawColumns(['actions', 'photo'])

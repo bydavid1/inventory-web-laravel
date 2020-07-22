@@ -28,6 +28,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="content-header-right col-md-6 col-12">
+                    <div class="float-right">
+						<button class="btn btn-float btn-outline-secondary" data-toggle="modal" data-target="#AddNewProductModal">
+							<i class="fa fa-plus fa-2x"></i>
+							<span>Nuevo producto</span>
+						</button>
+						<button class="btn btn-float btn-outline-primary" data-toggle="modal" data-target="#SearchProducts">
+							<i class="fa fa-search fa-2x"></i>
+							<span>Buscar producto</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -91,20 +103,6 @@
                                 </div>
                                 <!--Num tr value-->
                                 <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-        
-                                <div class="form-group row mt-5">
-                                    <div class="col-sm-offset-2 col-sm-8">
-                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                            data-target="#AddNewProductModal"><i class="fa fa-plus"></i>Agregar un nuevo
-                                            producto</button>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
-                                            existentes</button>
-                                    </div>
-                                    <div class="col-sm-4">
-        
-                                    </div>
-                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>

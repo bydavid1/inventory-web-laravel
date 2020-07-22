@@ -26,6 +26,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="content-header-right col-md-6 col-12">
+                    <div class="float-right">
+						<button class="btn btn-float btn-outline-secondary" onclick="addRow()" id="addRowBtn">
+							<i class="fa fa-plus-circle fa-2x"></i>
+							<span>Añadir fila</span>
+						</button>
+						<button class="btn btn-float btn-outline-primary" data-toggle="modal" data-target="#SearchProducts">
+							<i class="fa fa-search fa-2x"></i>
+							<span>Buscar producto</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -112,20 +124,6 @@
                                 </div>
                                 <!--Num tr value-->
                                 <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-        
-                                <div class="form-group row mt-5">
-                                    <div class="col-sm-offset-2 col-sm-8">
-                                        <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn"
-                                        data-loading-text="cargando..."> <i class="fa fa-plus-circle"></i> Añadir fila
-                                        </button>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#SearchProducts"><i class="fa fa-search"></i>Agregar
-                                            existentes</button>
-                                    </div>
-                                    <div class="col-sm-4">
-        
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

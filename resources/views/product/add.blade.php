@@ -168,8 +168,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="message">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-dollar-sign"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="purchase"
                                                         placeholder="Precio de compra" name="purchase" autocomplete="off" />
@@ -178,8 +177,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-dollar-sign"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price1"
                                                         placeholder="Precio 1" disabled name="price1"
@@ -190,8 +188,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-dollar-sign"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price2"
                                                         placeholder="Precio 2" disabled name="price2"
@@ -202,8 +199,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-dollar-sign"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price3"
                                                         placeholder="Precio 3" disabled name="price3"
@@ -214,8 +210,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="alert">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-dollar-sign"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price4"
                                                         placeholder="Precio 4" disabled name="price4"
@@ -237,8 +232,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-funnel-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility1"
                                                         placeholder="Utilidad 1" disabled name="utility1"
@@ -249,8 +243,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-funnel-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility2"
                                                         placeholder="Utilidad 2" disabled name="utility2"
@@ -261,8 +254,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-funnel-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility3"
                                                         placeholder="Utilidad 3" disabled name="utility3"
@@ -273,8 +265,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-funnel-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility4"
                                                         placeholder="Utilidad 4" disabled name="utility4"
@@ -290,7 +281,7 @@
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
+                                            <span class="input-group-text"><i class="ft-clipboard"></i></span>
                                         </div>
                                         <textarea class="form-control" id="description"
                                             placeholder="Ingrese una descripción" name="description"></textarea>
@@ -306,11 +297,11 @@
                                     class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
     
                             <button type="submit" class="btn btn-primary" id="createProductBtn"
-                                data-loading-text="Loading..." autocomplete="off"> <i class="fas fa-ok-sign"></i>
+                                data-loading-text="Loading..." autocomplete="off"> <i class="fa fa-ok-sign"></i>
                                 Guardar</button>
     
                             <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
-                                autocomplete="off"> <i class="fas fa-ok-sign"></i> Guardar y salir</button>
+                                autocomplete="off"> <i class="fa fa-ok-sign"></i> Guardar y salir</button>
                         </div>
                         <!-- /modal-footer -->
                     </form>

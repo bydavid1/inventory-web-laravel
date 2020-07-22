@@ -26,7 +26,7 @@
                 </div>
                 <div class="content-header-right col-md-6 col-12">
                     <div class="float-right">
-                        <a class="btn btn-float btn-primary" href="{{ route('addProduct') }}">
+                        <a class="btn btn-float btn-outline-success" href="{{ route('addProduct') }}">
                             <i class="fa fa-plus-circle fa-2x"></i>
                             <span>Nuevo producto</span>
                         </a>
