@@ -26,7 +26,7 @@
                 </div>
                 <div class="content-header-right col-md-6 col-12">
                     <div class="float-right">
-                        <a class="btn btn-float btn-primary" href="{{ route('addCostumers') }}">
+                        <a class="btn btn-float btn-outline-success" href="{{ route('addCostumers') }}">
                             <i class="fa fa-plus-circle fa-2x"></i>
                             <span>Nuevo Cliente</span>
                         </a>
@@ -46,9 +46,6 @@
 				</div>
 				<!-- /.card-header -->
 				<div class="card-body">
-					<div class="text-right" style="margin-bottom: 15px"> 
-					<a type="button" class="btn btn-success" href="{{ route('addCostumers') }}"> <i class="fas fa-plus"></i> Agregar un nuevo cliente </a>
-					</div>
 						<table class="table" id="items">
 							<thead>
 								<tr>					

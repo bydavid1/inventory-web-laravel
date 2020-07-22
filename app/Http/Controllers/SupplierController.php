@@ -25,9 +25,9 @@ class SupplierController extends Controller
     public function getRecords()
     {
         return datatables()->eloquent(Suppliers::query())
-        ->addColumn('actions', '<div class="btn-group float-right btn-group-sm">
-                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fas fa-edit" style="color: white"></i></a>
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fas fa-trash" style="color: white"></i></button>
+        ->addColumn('actions', '<div class="btn-group float-right">
+                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fa fa-edit" style="color: white"></i></a>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fa fa-trash" style="color: white"></i></button>
                     </div>')
         ->rawColumns(['actions'])
         ->toJson();
