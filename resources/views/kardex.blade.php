@@ -7,38 +7,41 @@
 @endsection
 
 @section('content')
-<div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Kardex</h1>
-			</div><!-- /.col -->
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Kardex</li>
-				</ol>
-			</div><!-- /.col -->
-		</div><!-- /.row -->
-	</div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
-<div class="container">
-<!-- /.col -->
-<div class="col-md-12">
-    <h4 class="mb-3">Seleccione un producto para ver sus registros</h4>
-    <table class="table" id="items">
-        <thead>
-            <tr>
-                <th style="width:10%;">Imagen</th>						
-                <th>Codigo</th>
-                <th>Nombre del producto</th>							
-                <th style="width:15%;" class="text-right">Opciones</th>
-            </tr>
-        </thead>
-    </table>
-    </div>
+<div class="app-content content">
+    <div class="content-header bg-white">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
+                    <h3 class="content-header-title mb-0">Kardex</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Kardex
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="content-body">
+		<div class="content-wrapper">
+			<h4 class="mb-3">Seleccione un producto para ver sus registros</h4>
+			<table class="table" id="items">
+				<thead>
+					<tr>
+						<th style="width:10%;">Imagen</th>						
+						<th>Codigo</th>
+						<th>Nombre del producto</th>							
+						<th style="width:15%;" class="text-right">Opciones</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
 </div>
 
 @endsection

@@ -5,10 +5,35 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Kardex;
 use App\Products;
+use App\Images;
 use Yajra\Datatables\Datatables;
 
 class KardexController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProductList()
+    {
+        $query = Products::select('id','code','name')
+        ->with(['first_image'])
+        ->where('products.is_deleted', '0');
+
+        return datatables()->eloquent($query)
+        ->addColumn('actions', '<div class="btn-group float-right">
+                    <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="fa fa-task" style="color: white"></i>Ver registros</a>
+                    </div>')
+        ->addColumn('photo', function($products){
+                    $path = asset($products->first_image->src);
+                    return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
+        })
+        ->rawColumns(['actions', 'photo'])
+        ->toJson();
+    }
+
     /**
      * Display a listing of the resource.
      *

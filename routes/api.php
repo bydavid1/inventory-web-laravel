@@ -86,12 +86,4 @@ Route::get('sales', 'SaleController@getRecords');
 
 Route::get('purchases', 'PurchaseController@getRecords');
 
-Route::get('products/kardex', function (){
-   return datatables()->eloquent(App\Products::select('products.id','products.image','products.code','products.name')->where('products.is_deleted', 0))
-      ->addColumn('actions', '<div class="btn-group float-right">
-                  <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="fa fa-task" style="color: white"></i>Ver registros</a>
-                  </div>')
-      ->addColumn('photo', '<img class="img-round" src="{{ asset("$image") }}" style="max-height:50px; max-width:70px;"/>')
-      ->rawColumns(['actions', 'photo'])
-      ->toJson();
-});
+Route::get('products/kardex', 'KardexController@getProductList');
