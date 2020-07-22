@@ -13,18 +13,15 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
   rel="stylesheet">
   <!-- BEGIN VENDOR CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/vendors.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/css/vendors.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
   <!-- END VENDOR CSS-->
   <!-- BEGIN STACK CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/app.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/css/app.css') }}">
   <!-- END STACK CSS-->
   <!-- BEGIN Page Level CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/horizontal-menu.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/css/core/menu/menu-types/horizontal-menu.css') }}">
   <!-- END Page Level CSS-->
-  <!-- BEGIN Custom CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
-  <!-- END Custom CSS-->
 
   @yield('custom_header')
 </head>
@@ -38,7 +35,7 @@ data-menu="horizontal-menu" data-col="2-columns">
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item">
             <a class="navbar-brand" href="index.html">
-              <img class="brand-logo" alt="stack admin logo" src="app-assets/images/logo/stack-logo-light.png">
+              <img class="brand-logo" alt="stack admin logo" src="{{ URL::asset('app-assets/images/logo/stack-logo-light.png') }}">
               <h2 class="brand-text">Stack</h2>
             </a>
           </li>
@@ -57,7 +54,7 @@ data-menu="horizontal-menu" data-col="2-columns">
                   <h6 class="dropdown-menu-header text-uppercase mb-1"><i class="fa fa-newspaper-o"></i> News</h6>
                   <div id="mega-menu-carousel-example">
                     <div>
-                      <img class="rounded img-fluid mb-1" src="app-assets/images/slider/slider-2.png"
+                      <img class="rounded img-fluid mb-1" src="{{ URL::asset('app-assets/images/slider/slider-2.png') }}"
                       alt="First slide"><a class="news-title mb-0" href="#">Poster Frame PSD</a>
                       <p class="news-content">
                         <span class="font-small-2">January 26, 2016</span>
@@ -219,7 +216,7 @@ data-menu="horizontal-menu" data-col="2-columns">
             <li class="dropdown dropdown-user nav-item">
               <a class="dropdown-toggle nav-link dropdown-user-link" href="#">
                 <span class="avatar avatar-online">
-                  <img src="app-assets/images/portrait/small/avatar-s-1.png" alt="avatar"><i></i></span>
+                  <img src="{{ URL::asset('app-assets/images/portrait/small/avatar-s-1.png') }}" alt="avatar"><i></i></span>
                 <span class="user-name">{{ Auth::user()->username }}</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a>
@@ -306,16 +303,16 @@ data-menu="horizontal-menu" data-col="2-columns">
       </p>
     </footer>
     <!-- BEGIN VENDOR JS-->
-    <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('app-assets/vendors/js/vendors.min.js') }}" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
-    <script type="text/javascript" src="{{ asset('app-assets/vendors/js/ui/jquery.sticky.j') }}s"></script>
-    <script type="text/javascript" src="{{ asset('app-assets/vendors/js/charts/jquery.sparkline.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('app-assets/vendors/js/ui/jquery.sticky.j') }}s"></script>
+    <script type="text/javascript" src="{{ URL::asset('app-assets/vendors/js/charts/jquery.sparkline.min.js') }}"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN STACK JS-->
-    <script src="{{ asset('app-assets/js/core/app-menu.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/js/core/app.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('app-assets/js/core/app-menu.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('app-assets/js/core/app.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('app-assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
     <!-- END STACK JS-->
     @yield('custom_footer')
   </body>
