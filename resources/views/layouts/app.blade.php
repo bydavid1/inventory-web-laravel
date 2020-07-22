@@ -278,7 +278,7 @@ data-menu="horizontal-menu" data-col="2-columns">
             <span>Compras</span></a>
         </li>
         <li class="dropdown nav-item">
-          <a class="nav-link" href="{{ route('purchases') }}"><i class="ft-briefcase"></i>
+          <a class="nav-link" href="{{ route('kardex') }}"><i class="ft-briefcase"></i>
             <span>Kardex</span>
           </a>
         </li>
