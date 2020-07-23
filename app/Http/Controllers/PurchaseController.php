@@ -67,7 +67,7 @@ class PurchaseController extends Controller
         $categories = Categories::select(['id', 'name'])->where('is_available', 1)->get();
         $suppliers = Suppliers::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('purchases.add', compact(['categories', 'suppliers']));
+        return view('purchases.addPurchase', compact(['categories', 'suppliers']));
     }
 
     /**
