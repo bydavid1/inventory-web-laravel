@@ -76,7 +76,8 @@
                                     </div>
                                 </div>
         
-                                 @include('product-order.table')
+                                @include('product-order.productTable')
+
                                  <div class="row mt-4">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -158,18 +159,18 @@
 </div>  
 
 <!-- Search product modal form -->
-@include('product-order.modal')
+@include('product-order.productModal')
 
 @endsection
 
 @section('custom_footer')
-    <!-- SweetAlert -->
+    <!-- For design -->
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- CN module -->
     <script src="{{ asset('js/path.js') }}"></script>
     <!-- Essential functions -->
-    <script src="{{ asset('js/scripts/product/product-order.js') }}"></script>
+    <script src="{{ asset('js/scripts/product-orders/product-order.js') }}"></script>
     <!-- Modal script -->
-    <script src="{{ asset('js/scripts/product/modal.js') }}"></script>
+    <script src="{{ asset('js/scripts/product-orders/modal.js') }}"></script>
 
 @endsection
