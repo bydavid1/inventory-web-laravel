@@ -83,7 +83,7 @@ class ProductController extends Controller
         $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();
         $manufacturers = Manufacturers::select(['id','name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('product.add', compact(['categories','providers', 'manufacturers']));
+        return view('product.addProduct', compact(['categories','providers', 'manufacturers']));
     }
 
     /**
@@ -166,7 +166,7 @@ class ProductController extends Controller
     {
         $product = Products::findOrFail($id);
 
-        return view('product.show', compact('product'));
+        return view('product.showProduct', compact('product'));
     }
 
     /**
@@ -180,7 +180,7 @@ class ProductController extends Controller
         $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
         $suppliers = Suppliers::select(['id','name'])->where('is_available', 1)->get();;
         $product = Products::findOrfail($id)->with(['prices','images']);
-        return view('product.edit', compact(['product', 'categories', 'suppliers']));
+        return view('product.editProduct', compact(['product', 'categories', 'suppliers']));
     }
 
     /**
