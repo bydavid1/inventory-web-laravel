@@ -1,3 +1,6 @@
+//import domain
+const domain = new PATH();
+
 document.getElementById('purchase').addEventListener('keyup', function (input) {
     if (input.target.value != "" && isNaN(input.target.value) == false) {
         for (let x = 1; x < 5; x++) {

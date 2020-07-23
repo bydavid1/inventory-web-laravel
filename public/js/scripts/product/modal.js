@@ -1,11 +1,14 @@
+//import domain
+const domain = new PATH();
+
 //----------------------------------------------------------------------
 //-------------------------Search Product---------------------------------
 //----------------------------------------------------------------------
 
 function searchProduct() {
-
+    
     let query = document.querySelector('#searchInput').value
-    let url = "{{ url('api/products/order/search', 'query') }}".replace("query", query)
+    let url = domain.getDomain('api/products/order/search/' + query)
 
     $.ajax({
         type: 'get',
@@ -72,7 +75,7 @@ function searchProduct() {
                                 <td colspan="6">
                                     <div class="row">
                                         <div class="col-3">
-                                            <img class="img-round" src="{{ asset("`+data[i].images[0].src+`") }}" style="max-height:110px; max-width:110px;" />
+                                            <img class="img-round" src="${domain.getDomain(data[i].images[0].src)}" style="max-height:110px; max-width:110px;" />
                                         </div>
                                         <div class="col-9">
                                             <p>${data[i].description}</p>

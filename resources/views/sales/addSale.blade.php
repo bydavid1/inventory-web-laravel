@@ -165,9 +165,10 @@
 @section('custom_footer')
     <!-- SweetAlert -->
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- CN module -->
+    <script src="{{ asset('js/path.js') }}"></script>
     <!-- Essential functions -->
     <script src="{{ asset('js/scripts/product/product-order.js') }}"></script>
-
     <!-- Modal script -->
     <script src="{{ asset('js/scripts/product/modal.js') }}"></script>
 
