@@ -46,7 +46,7 @@
                             <span aria-hidden="true">&times;</span></button>
                     </div>
                     @endif
-                    <form class="form-horizontal" id="submitProductForm" enctype="multipart/form-data">
+                    <form class="form-horizontal" id="submitProductForm" action="{{ route('makeProduct') }}" enctype="multipart/form-data">
                         @csrf
                         <div id="add-product-messages"></div>
     
@@ -322,6 +322,8 @@
 <!-- Fileinput -->
 <script src="{{ asset('plugins/fileinput/js/fileinput.min.js') }}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- CN module -->
+<script src="{{ asset('js/path.js') }}"></script>
 <!-- Owner -->
 <script src="{{ asset('js/scripts/product/addProduct.js') }}"></script>
 <script>
