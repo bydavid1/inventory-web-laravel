@@ -33,15 +33,17 @@ Route::get('manufacturers',  'ManufacturersController@getItems');
 
 Route::get('manufacturers/{id}', 'ManufacturersController@show');
 
-Route::get('costumers', function(){
+Route::get('customers', function(){
    return datatables()->eloquent(App\Costumers::query())
       ->addColumn('actions', '<div class="btn-group float-right">
-      <button type="button" class="btn btn-danger" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fa fa-edit" style="color: white"></i></button>
-      <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fa fa-trash" style="color: white"></i></button>
+      <button type="button" class="btn btn-success" data-toggle="modal" onclick="update({{"$id"}})" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fa fa-edit" style="color: white"></i></button>
+      <button type="button" class="btn btn-warning" data-toggle="modal" onclick="delete({{"$id"}})" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fa fa-trash" style="color: white"></i></button>
       </div>')
       ->rawColumns(['actions'])
       ->toJson();
 });
+
+Route::get('customer/{id}', 'CostumerController@show');
 
 Route::get('costumers/search/{query}', function($query){
       $result = App\Costumers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
@@ -51,11 +53,6 @@ Route::get('costumers/search/{query}', function($query){
       }else{
          return response()->json(['success' => false, 'data' => null], 200);
       }
-});
-
-Route::get('costumers/{id}', function($id){
-   return datatables()->eloquent(App\Costumers::where('id', $id))
-      ->toJson();
 });
 
 Route::get('products/order/{id}', function ($id){

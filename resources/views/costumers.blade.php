@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('custom_header')
-	  <!-- DataTables -->
-	  <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-	  <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+	<!-- Design -->
+	<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('content')
@@ -26,10 +25,10 @@
                 </div>
                 <div class="content-header-right col-md-6 col-12">
                     <div class="float-right">
-                        <a class="btn btn-float btn-outline-success" href="{{ route('addCostumers') }}">
+                        <button class="btn btn-float btn-outline-success" data-toggle="modal" data-target="#addCostumer">
                             <i class="fa fa-plus-circle fa-2x"></i>
                             <span>Nuevo Cliente</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -73,9 +72,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Eliminar cliente</h4>
+				<h4 class="modal-title"><i class="fa fa-trash"></i> Eliminar cliente</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
             </div>
             <div class="modal-body">
                 <form method="POST" id="destroyform">
@@ -99,45 +99,151 @@
 <!-- /.modal -->
 
 <!-- Edit modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="addCostumer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<h4 class="modal-title"><i class="fa fa-user"></i> Registrar nuevo cliente</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+            </div>
+            <div class="modal-body">
+				<form id="createForm" method="POST" action="{{ route('makeCostumer') }}">
+					@csrf
+					<div class="alert alert-info alert-icon-left" role="alert">
+						<strong>Tip:</strong> Click en <span class="fa fa-random"></span> para generar un codigo aleatorio
+					</div>
+					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
+						Hay datos importantes que hacen falta
+					</div>
+					<hr>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="name" class="control-label">Codigo: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-key"></i></span>
+								</div>
+								<input type="text" class="form-control" placeholder="Ej: C123" name="code" id="code"
+								autocomplete="off">
+								<div class="input-group-append">
+									<button type="button" class="btn btn-outline-secondary"><i class="fa fa-random"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="name" class="control-label">Telefono: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-phone"></i></span>
+								</div>
+								<input type="tel" class="form-control" placeholder="Ej: 7548-5689" name="phone" id="phone"
+								autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="name" class="control-label">Nombre: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-user"></i></span>
+								</div>
+								<input type="text" class="form-control" placeholder="Nombre" name="name" id="name"
+								autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="name" class="control-label">NIT: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-id-card"></i></span>
+								</div>
+								<input type="tel" class="form-control" placeholder="Ej: 45654-54555-555-5" name="nit" id="nit"
+								autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="name" class="control-label">Email: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+								</div>
+								<input type="email" class="form-control" placeholder="Ej: 7548-5689" name="email" id="email"
+								autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="name" class="control-label">Direccion: </label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fa fa-building"></i></span>
+								</div>
+								<input type="text" class="form-control" placeholder="Ej: Santa Monica" name="address" id="address"
+								autocomplete="off">
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
+						autocomplete="off"> <i class="fa fa-save"></i> Guardar</button>
+				</form>
+			</div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Edit modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="editCostumer">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Editar información del cliente</h4>
+				<h4 class="modal-title"><i class="fa fa-user"></i> Editar informacion del cliente</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
             </div>
             <div class="modal-body">
                 <form id="editform" action="" method="POST">
 					@method('PUT')
 					@csrf
+					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
+						Al parecer el cliente ya no está disponible
+					</div>
+					<hr>
                     <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Email: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" placeholder="Email" name="email" id="email"
-                                autocomplete="off" value="{{ old('email') }}">
+                        <label for="name" class="control-label">Email: </label>
+                        <div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+							</div>
+                            <input type="text" class="form-control" placeholder="Email" name="email" id="uemail"
+                                autocomplete="off">
                         </div>
 					</div>
 					<div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Telefono: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" placeholder="Telefono" name="phone" id="phone"
-                                autocomplete="off" value="{{ old('phone') }}">
+                        <label for="name" class="control-label">Telefono: </label>
+                        <div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fa fa-phone"></i></span>
+							</div>
+                            <input type="text" class="form-control" placeholder="Telefono" name="phone" id="uphone"
+                                autocomplete="off">
                         </div>
 					</div>
 					<div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Dirección: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" placeholder="Dirección" name="address" id="address"
-                                autocomplete="off" value="{{ old('address') }}">
+                        <label for="name" class="control-label">Dirección: </label>
+                        <div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fa fa-building"></i></span>
+							</div>
+                            <input type="text" class="form-control" placeholder="Dirección" name="address" id="uaddress"
+                                autocomplete="off">
                         </div>
                     </div>
-				    <div class="modal-footer removeProductFooter">
-					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
-							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
-							class="glyphicon glyphicon-ok-sign"></i> Editar</button>
-				</div>
+					<button type="submit" class="btn btn-primary btn-block" id="editCostumer"> <i
+							class="fa fa-edit"></i> Actualizar</button>
 				</form>
 			</div>
         </div>
@@ -150,79 +256,11 @@
 @endsection
 
 @section('custom_footer')
-    <!-- DataTables -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script>
-	$(document).ready(function () {
-	    $('#items').DataTable({
-	        "serverSide": true,
-	        "ajax": "{{ url('api/costumers') }}",
-	        "columns": [
-				{
-	                data: 'code'
-	            },
-			    {
-	                data: 'name'
-	            },
-                {
-	                data: 'nit'
-	            },
-                {
-	                data: 'phone'
-	            },
-	            {
-	                data: 'email'
-	            },
-	            {
-	                data: 'address'
-	            },
-                {
-	                data: 'created_at'
-	            },
-                {
-	                data: 'actions'
-	            },
-	        ]
-	    })
-	});
-</script>
-
-<script>
-$(document).on('click','#editCostumerModalBtn',function(){
-
-     //Get Id from data-id property
-    var id = $(this).attr('data-id');
-	var action = "{{ route('updateCostumer', ':id') }}";
-	action = action.replace(":id", id);
-	$("#editform").attr("action", action);
-
-    var url = "{{ url('api/costumers', 'id') }}";
-     url = url.replace("id", id);
-	$.ajax({
-		url: url,
-		type: 'get',
-		dataType: 'json',
-		serverSide : true,
-        success : function(response){
-			var data = response.data;
-		    	$('#email').val(data[0].email);
-				$('#phone').val(data[0].phone);
-				$('#address').val(data[0].address);
-		}
-	})
-});
-
-$(document).on('click', '#destroyCostumerModalBtn', function(){
-
-   //Get Id from data-destroy-id property
-    var id = $(this).attr('data-destroy-id');
-	var action = "{{ route('deleteCostumer', ':id') }}";
-	action = action.replace(":id", id);
-	$("#destroyform").attr("action", action);
-})
-</script>
+<!-- Design -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- CN module -->
+<script src="{{ asset('js/path.js') }}"></script>
+<!-- Essential functions -->
+<script src="{{ asset('js/scripts/customer/customer.js') }}"></script>
 
 @endsection

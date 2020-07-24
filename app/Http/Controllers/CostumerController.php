@@ -61,7 +61,13 @@ class CostumerController extends Controller
      */
     public function show($id)
     {
-        //
+        $result = Costumers::where('id', $id)->get();
+
+        if ($result->count() > 0) {
+            return response($result, 200);
+        }else{
+            return response('Recurso no encontrado', 404);
+        }
     }
 
     /**

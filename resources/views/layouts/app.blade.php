@@ -264,7 +264,7 @@ data-menu="horizontal-menu" data-col="2-columns">
           </a>
         </li>
         <li class="dropdown nav-item">
-          <a class="nav-link" href="{{ route('costumers') }}"><i class="ft-zap"></i>
+          <a class="nav-link" href="{{ route('customers') }}"><i class="ft-zap"></i>
             <span>Clientes</span>
           </a>
         </li>
@@ -304,6 +304,7 @@ data-menu="horizontal-menu" data-col="2-columns">
     </footer>
     <!-- BEGIN VENDOR JS-->
     <script src="{{ URL::asset('app-assets/vendors/js/vendors.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
     <script type="text/javascript" src="{{ URL::asset('app-assets/vendors/js/ui/jquery.sticky.j') }}s"></script>
