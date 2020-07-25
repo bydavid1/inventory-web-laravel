@@ -24,10 +24,10 @@ class SupplierController extends Controller
      */
     public function getRecords()
     {
-        return datatables()->eloquent(Suppliers::query())
+        return datatables()->eloquent(Suppliers::where('is_deleted', '0'))
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fa fa-edit" style="color: white"></i></a>
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fa fa-trash" style="color: white"></i></button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="fa fa-edit" style="color: white"></i></button>
+                    <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="fa fa-trash" style="color: white"></i></button>
                     </div>')
         ->rawColumns(['actions'])
         ->toJson();
@@ -73,7 +73,13 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        //
+        $result = Suppliers::where('id', $id)->get();
+
+        if ($result->count() > 0) {
+            return response($result, 200);
+        }else{
+            return response('Recurso no encontrado', 404);
+        }
     }
 
     /**
@@ -96,17 +102,34 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $costumer = Suppliers::find($id);
+        $costumer->name = $request->uname;
+        $costumer->nit = $request->unit;
+        $costumer->address = $request->uaddress;
+        $costumer->phone = $request->uphone;
+
+        if ($costumer->save()) {
+            return response(200);
+        }else{
+            return response(500);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove to trash
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $costumer = Suppliers::find($id);
+        $costumer->is_deleted = 1;
+
+        if ($costumer->save()) {
+            return response(200);
+        }else{
+            return response(500);
+        }
     }
 }

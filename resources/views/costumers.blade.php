@@ -75,7 +75,7 @@
 	</form>
 </div>
 
-<!-- Edit modal-->
+<!-- Create modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="addCostumer">
     <div class="modal-dialog">
         <div class="modal-content">

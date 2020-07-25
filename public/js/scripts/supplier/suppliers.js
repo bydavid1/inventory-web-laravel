@@ -3,18 +3,17 @@ const domain = new PATH();
 var table = "";
 
 
-
     //----------------------------------------------------------------------
     //-------------------------Get all items---------------------------------
     //----------------------------------------------------------------------
 
 
     $(document).ready(function () {
+
         table = $('#items').DataTable({
-            "serverSide": true,
-            "ajax": domain.getDomain('api/customers'),
-            "columns": [
-                {
+            serverSide: true,
+            ajax: domain.getDomain('api/suppliers'),
+            columns: [{
                     data: 'code'
                 },
                 {
@@ -27,20 +26,14 @@ var table = "";
                     data: 'phone'
                 },
                 {
-                    data: 'email'
-                },
-                {
                     data: 'address'
                 },
                 {
-                    data: 'created_at'
-                },
-                {
                     data: 'actions'
-                },
+                }
             ]
         });
-    });
+    })
 
 
     //----------------------------------------------------------------------
@@ -48,48 +41,15 @@ var table = "";
     //----------------------------------------------------------------------
 
 
-    $('#createForm').unbind('submit').bind('submit', function (stay) {
-        stay.preventDefault();
-
-        if (validate()) {
-            var formdata = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formdata,
-                beforeSend: function () {
-                    Swal.fire({
-                        title: 'Guardando',
-                        html: 'Por favor espere...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading()
-                        },
-                    })
-                },
-                success: function (response) {
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Registrado',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    //Clear all fields
-                    document.getElementById('createForm').reset();
-                    table.ajax.reload();
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    Swal.fire({
-                        position: 'top',
-                        type: 'error',
-                        html: 'Error crítico: ' + xhr.responseText,
-                        showConfirmButton: true,
-                    });
-                }
-            });
+    document.getElementById('createForm').addEventListener('submit', function(e){
+        e.preventDefault()
+        if (validate() == true) {
+            let formdata = $(this).serialize()
+            let url = route('storeSupplier')
+    
+            sendData(url, formdata, this)
         }
-    });    
+    })
 
     //-----------------Validate function-------------------
 
@@ -124,6 +84,7 @@ var table = "";
             document.getElementById('phone').classList.add('is-invalid')
             handler++
         }
+
         if(!document.getElementById('nit').value){
             document.getElementById('nit').classList.add('is-invalid')
             handler++
@@ -141,7 +102,7 @@ var table = "";
             return false
         }
     }
-    
+
 
     //----------------------------------------------------------------------
     //-------------------------Update customer---------------------------------
@@ -150,7 +111,7 @@ var table = "";
 
     function update(id){
         $.ajax({
-            url: domain.getDomain('api/customer/' + id),
+            url: domain.getDomain('api/suppliers/' + id),
             type: 'get',
             dataType: 'json',
             serverSide : true,
@@ -164,8 +125,9 @@ var table = "";
             statusCode: {
                 200: function(response) {
                     //set data
-                    document.getElementById('uemail').value = response[0].email
+                    document.getElementById('uname').value = response[0].name
                     document.getElementById('uphone').value = response[0].phone
+                    document.getElementById('unit').value = response[0].nit
                     document.getElementById('uaddress').value = response[0].address
                     document.getElementById('put_id').value = response[0].id
                 },
@@ -174,10 +136,11 @@ var table = "";
                     document.getElementById('puterror').classList.remove('d-none')
                     table.ajax.reload()
                     //disable all elements
-                    document.getElementById('uemail').disabled = true
+                    document.getElementById('uname').disabled = true
                     document.getElementById('uphone').disabled = true
+                    document.getElementById('unit').disabled = true
                     document.getElementById('uaddress').disabled = true
-                    document.getElementById('editCostumer').disabled = true //<--------------------------------------fix it (not working)
+                    document.getElementById('editSupplier').disabled = true //<--------------------------------------fix it (not working)
                     console.clear() //temporaly
                 }
             }
@@ -187,43 +150,10 @@ var table = "";
     document.getElementById('editform').addEventListener('submit', function(e){
         e.preventDefault()
         if (updateValidation() == true) {
-            var formdata = $(this).serialize();
-            $.ajax({
-                url: route('updateCostumer', {id: document.getElementById('put_id').value}),
-                type: 'POST',
-                data: formdata,
-                beforeSend : function() {
-                    Swal.fire({
-                        title: 'Actualizando',
-                        html: 'Por favor espere...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading()
-                        },
-                    })
-                },
-                success: function (response) {
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Registrado',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-    
-                    //Clear all fields
-                    document.getElementById('editform').reset();
-                    table.ajax.reload();
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    Swal.fire({
-                        position: 'top',
-                        type: 'error',
-                        html: 'Error crítico: ' + xhr.responseText,
-                        showConfirmButton: true,
-                    });
-                }
-            })
+            let formdata = $(this).serialize()
+            let url = route('updateSupplier', {id: document.getElementById('put_id').value})
+
+            sendData(url, formdata, this)
         }
     });
 
@@ -245,13 +175,13 @@ var table = "";
             }
         }
         
-        if(!document.getElementById('uphone').value){
-            document.getElementById('uphone').classList.add('is-invalid')
+        if(!document.getElementById('uname').value){
+            document.getElementById('uname').classList.add('is-invalid')
             handler++
         }
         
-        if(!document.getElementById('uaddress').value){
-            document.getElementById('uaddress').classList.add('is-invalid')
+        if(!document.getElementById('uphone').value){
+            document.getElementById('uphone').classList.add('is-invalid')
             handler++
         }
         
@@ -265,13 +195,57 @@ var table = "";
 
 
     //----------------------------------------------------------------------
-    //-------------------------Delete customer---------------------------------
+    //-------------------------Ajax function to send data---------------------------------
     //----------------------------------------------------------------------
 
-    
+
+    function sendData(url, formdata, form) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formdata,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Guardando',
+                    html: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            },
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Guardado',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                //Clear all fields
+                form.reset()
+                table.ajax.reload();
+            },
+            error: function (xhr, textStatus, errorMessage) {
+                Swal.fire({
+                    position: 'top',
+                    type: 'error',
+                    html: 'Error crítico: ' + xhr.responseText,
+                    showConfirmButton: true,
+                });
+            }
+        });
+    }
+
+
+    //----------------------------------------------------------------------
+    //-------------------------Delete supplier---------------------------------
+    //----------------------------------------------------------------------
+
+
     function remove(id){
         Swal.fire({
-            title: '¿Está seguro de eliminar a este cliente?',
+            title: '¿Está seguro de eliminar a este proveedor?',
             text: "Se enviará a la papelera",
             type: 'warning',
             showCancelButton: true,
@@ -281,7 +255,7 @@ var table = "";
           }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: route('deleteCostumer', {id: id}),
+                    url: route('deleteSupplier', {id: id}),
                     type: 'POST',
                     data: $('#destroyform').serialize(),
                     success: function (response) {
@@ -291,7 +265,7 @@ var table = "";
                             title: 'Eliminado',
                             timer: 1500
                         });
-        
+    
                         table.ajax.reload();
                     },
                     error: function (xhr, textStatus, errorMessage) {

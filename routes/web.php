@@ -37,19 +37,22 @@ Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduc
 Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth');
 Route::post('/makeCategory', 'CategoriesController@store')->name('makeCategory')->middleware('auth');
 
-//Suppliers and manufacturers Routes
-Route::get('/suppliers', 'SupplierController@index')->name('suppliers')->middleware('auth');
-Route::get('/manufacturers', 'ManufacturersController@index')->name('manufacturers')->middleware('auth');
-Route::post('/storeSupplier', 'SupplierController@store')->name('storeSupplier')->middleware('auth');
-Route::post('/storeManufacturer', 'ManufacturersController@store')->name('storeManufacturer')->middleware('auth');
-Route::put('/editmanufacturer/{id}', 'ManufacturersController@update')->name('editManufacturer')->middleware('auth');
+//Suppliers Routes
+Route::get('/suppliers', 'SupplierController@index')->name('suppliers')->middleware('auth'); //index
+Route::post('suppliers/store', 'SupplierController@store')->name('storeSupplier')->middleware('auth'); //store
+Route::put('suppliers/update/{id}', 'SupplierController@update')->name('updateSupplier')->middleware('auth'); //update
+Route::put('suppliers/delete/{id}', 'SupplierController@delete')->name('deleteSupplier')->middleware('auth'); //update
+
+//manufacturers Routes
+Route::get('/manufacturers', 'ManufacturersController@index')->name('manufacturers')->middleware('auth'); //index
+Route::post('manufacturers/store', 'ManufacturersController@store')->name('storeManufacturer')->middleware('auth'); //store
+Route::put('manufacturers/update/{id}', 'ManufacturersController@update')->name('editManufacturer')->middleware('auth'); //update
 
 //Costumer routes´
-Route::get('/customers', 'CostumerController@index')->name('customers')->middleware('auth');
-Route::get('customer/create', 'CostumerController@create')->name('addCostumers')->middleware('auth');
-Route::post('customer/store', 'CostumerController@store')->name('makeCostumer')->middleware('auth');
-Route::put('customer/update/{id}', 'CostumerController@update')->name('updateCostumer')->middleware('auth');
-Route::put('customer/delete/{id}', 'CostumerController@delete')->name('deleteCostumer')->middleware('auth');
+Route::get('/customers', 'CostumerController@index')->name('customers')->middleware('auth'); //index view
+Route::post('customer/store', 'CostumerController@store')->name('makeCostumer')->middleware('auth'); //store
+Route::put('customer/update/{id}', 'CostumerController@update')->name('updateCostumer')->middleware('auth'); //update
+Route::put('customer/delete/{id}', 'CostumerController@delete')->name('deleteCostumer')->middleware('auth'); //delete (trash)
 //Route::delete('customer/remove/{id}', 'CostumerController@destroy')->name('deleteCostumer')->middleware('auth');
 
 //Sales Routes

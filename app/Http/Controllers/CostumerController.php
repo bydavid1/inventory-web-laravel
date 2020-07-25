@@ -19,16 +19,6 @@ class CostumerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('costumer.addCostumer');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,6 +33,7 @@ class CostumerController extends Controller
         $costumer->email = $request->email;
         $costumer->address = $request->address;
         $costumer->nit = $request->nit;
+        $costumer->is_deleted = '0';
 
         if($costumer->save()){
             return back()->with('mensaje', 'Cliente creado');
