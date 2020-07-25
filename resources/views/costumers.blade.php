@@ -67,36 +67,13 @@
 </div>
 
 
-<!-- Delete modal-->
-<div class="modal fade" tabindex="-1" role="dialog" id="removeCostumer">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-trash"></i> Eliminar cliente</h4>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" id="destroyform">
-					@method('delete')
-					@csrf
-					<p id="message">¿Realmente deseas eliminar el cliente? Se movera a la palera</p>
-					<input type="hidden" id="id-item">
-				<div class="modal-footer removeProductFooter">
-					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
-							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
-							class="glyphicon glyphicon-ok-sign"></i> Eliminar</button>
-				</div>
-				</form>
-			</div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+<!-- Delete form-->
+<div class="d-none">
+	<form id="destroyform" method="POST">
+		@method('PUT')
+		@csrf
+	</form>
 </div>
-<!-- /.modal -->
 
 <!-- Edit modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="addCostumer">
@@ -205,20 +182,21 @@
 				</button>
             </div>
             <div class="modal-body">
-                <form id="editform" action="" method="POST">
+                <form id="editform" method="POST">
 					@method('PUT')
 					@csrf
 					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
-						Al parecer el cliente ya no está disponible
+						Hay datos importantes que faltan
 					</div>
 					<hr>
+					<input type="hidden" id="put_id">
                     <div class="form-group">
                         <label for="name" class="control-label">Email: </label>
                         <div class="input-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
 							</div>
-                            <input type="text" class="form-control" placeholder="Email" name="email" id="uemail"
+                            <input type="text" class="form-control" placeholder="Email" name="uemail" id="uemail"
                                 autocomplete="off">
                         </div>
 					</div>
@@ -228,7 +206,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fa fa-phone"></i></span>
 							</div>
-                            <input type="text" class="form-control" placeholder="Telefono" name="phone" id="uphone"
+                            <input type="text" class="form-control" placeholder="Telefono" name="uphone" id="uphone"
                                 autocomplete="off">
                         </div>
 					</div>
@@ -238,7 +216,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fa fa-building"></i></span>
 							</div>
-                            <input type="text" class="form-control" placeholder="Dirección" name="address" id="uaddress"
+                            <input type="text" class="form-control" placeholder="Dirección" name="uaddress" id="uaddress"
                                 autocomplete="off">
                         </div>
                     </div>
@@ -261,6 +239,7 @@
 <!-- CN module -->
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
+@routes
 <script src="{{ asset('js/scripts/customer/customer.js') }}"></script>
 
 @endsection

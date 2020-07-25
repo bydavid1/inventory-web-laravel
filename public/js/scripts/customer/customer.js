@@ -167,6 +167,7 @@ $(document).ready(function () {
                     document.getElementById('uemail').value = response[0].email
                     document.getElementById('uphone').value = response[0].phone
                     document.getElementById('uaddress').value = response[0].address
+                    document.getElementById('put_id').value = response[0].id
                 },
                 404: function(){
                     //show error
@@ -183,14 +184,123 @@ $(document).ready(function () {
         })
     }
 
+    document.getElementById('editform').addEventListener('submit', function(e){
+        e.preventDefault()
+        if (updateValidation() == true) {
+            var formdata = $(this).serialize();
+            $.ajax({
+                url: route('updateCostumer', {id: document.getElementById('put_id').value}),
+                type: 'POST',
+                data: formdata,
+                beforeSend : function() {
+                    Swal.fire({
+                        title: 'Actualizando',
+                        html: 'Por favor espere...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+                },
+                success: function (response) {
+                    Swal.fire({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Registrado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+    
+                    //Clear all fields
+                    document.getElementById('editform').reset();
+                    table.ajax.reload();
+                },
+                error: function (xhr, textStatus, errorMessage) {
+                    Swal.fire({
+                        position: 'top',
+                        type: 'error',
+                        html: 'Error crítico: ' + xhr.responseText,
+                        showConfirmButton: true,
+                    });
+                }
+            })
+        }
+    });
+
+    function updateValidation(){
+        let handler = 0
+
+        //reset all fields messages
+        const invalidfields = document.getElementsByClassName('is-invalid')
+        const puterror = document.getElementById('puterror')
+
+        const messageslength = invalidfields.length
+
+        if (messageslength > 0) {
+            puterror.classList.add('d-none')
+            for (let x = 0; x < messageslength; x++) {
+                invalidfields[0].classList.remove('is-invalid')  
+            }
+        }
+        
+        if(!document.getElementById('uphone').value){
+            document.getElementById('uphone').classList.add('is-invalid')
+            handler++
+        }
+        
+        if(!document.getElementById('uaddress').value){
+            document.getElementById('uaddress').classList.add('is-invalid')
+            handler++
+        }
+        
+        if(handler == 0){
+            return true
+        }else{
+            puterror.classList.remove('d-none')
+            return false
+        }
+    }
+
     //----------------------------------------------------------------------
     //-------------------------Delete customer---------------------------------
     //----------------------------------------------------------------------
 
     function remove(id){
-        //Get Id from data-destroy-id property
-        var id = $(this).attr('data-destroy-id');
-        var action = "{{ route('deleteCostumer', ':id') }}";
-        action = action.replace(":id", id);
-        $("#destroyform").attr("action", action);
+        Swal.fire({
+            title: '¿Está seguro de eliminar a este cliente?',
+            text: "Se enviará a la papelera",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar'
+          }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: route('deleteCostumer', {id: id}),
+                    type: 'POST',
+                    data: $('#destroyform').serialize(),
+                    success: function (response) {
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Eliminado',
+                            timer: 1500
+                        });
+        
+                        //Clear all fields
+                        document.getElementById('editform').reset();
+                        table.ajax.reload();
+                    },
+                    error: function (xhr, textStatus, errorMessage) {
+                        Swal.fire({
+                            position: 'top',
+                            type: 'error',
+                            html: 'Error crítico: ' + xhr.responseText,
+                            showConfirmButton: true,
+                        });
+                    }
+                })
+            }
+        })
     }

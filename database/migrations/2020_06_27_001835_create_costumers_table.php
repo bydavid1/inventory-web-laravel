@@ -22,6 +22,7 @@ class CreateCostumersTable extends Migration
             $table->string('phone');
             $table->string('nit');
             $table->string('address');
+            $table->integer('is_deleted');
 
         });
     }
