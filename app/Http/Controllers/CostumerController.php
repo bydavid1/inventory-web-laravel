@@ -90,13 +90,33 @@ class CostumerController extends Controller
      */
     public function update(Request $request, $id)
     {
+            $costumer = Costumers::find($id);
+            $costumer->email = $request->uemail;
+            $costumer->address = $request->uaddress;
+            $costumer->phone = $request->uphone;
+
+            if ($costumer->save()) {
+                return response(200);
+            }else{
+                return response(500);
+            }
+    }
+
+    /**
+     * Remove to trash
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
         $costumer = Costumers::find($id);
-        $costumer->email = $request->email;
-        $costumer->address = $request->address;
-        $costumer->phone = $request->phone;
+        $costumer->is_deleted = 1;
 
         if ($costumer->save()) {
-            return back()->with('mensaje', 'Cliente editado');
+            return response(200);
+        }else{
+            return response(500);
         }
     }
 
