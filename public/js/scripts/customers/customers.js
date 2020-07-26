@@ -3,7 +3,6 @@ const domain = new PATH();
 var table = "";
 
 
-
     //----------------------------------------------------------------------
     //-------------------------Get all items---------------------------------
     //----------------------------------------------------------------------
@@ -55,7 +54,7 @@ var table = "";
             var formdata = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: $(this).attr('action'),
+                url: route('makeCostumer'),
                 data: formdata,
                 beforeSend: function () {
                     Swal.fire({
