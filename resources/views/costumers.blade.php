@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('custom_header')
-	<!-- Design -->
-	<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+<!-- Design -->
+<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('content')
@@ -86,7 +86,7 @@
 				</button>
             </div>
             <div class="modal-body">
-				<form id="createForm" method="POST" action="{{ route('makeCostumer') }}">
+				<form id="createForm" method="POST">
 					@csrf
 					<div class="alert alert-info alert-icon-left" role="alert">
 						<strong>Tip:</strong> Click en <span class="fa fa-random"></span> para generar un codigo aleatorio
@@ -240,6 +240,6 @@
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
 @routes
-<script src="{{ asset('js/scripts/customer/customer.js') }}"></script>
+<script src="{{ asset('js/scripts/customers/customers.js') }}"></script>
 
 @endsection

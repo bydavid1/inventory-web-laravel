@@ -62,17 +62,6 @@ class CostumerController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -81,16 +70,16 @@ class CostumerController extends Controller
      */
     public function update(Request $request, $id)
     {
-            $costumer = Costumers::find($id);
-            $costumer->email = $request->uemail;
-            $costumer->address = $request->uaddress;
-            $costumer->phone = $request->uphone;
+        $costumer = Costumers::find($id);
+        $costumer->email = $request->uemail;
+        $costumer->address = $request->uaddress;
+        $costumer->phone = $request->uphone;
 
-            if ($costumer->save()) {
-                return response(200);
-            }else{
-                return response(500);
-            }
+        if ($costumer->save()) {
+            return response(200);
+        }else{
+            return response(500);
+        }
     }
 
     /**
