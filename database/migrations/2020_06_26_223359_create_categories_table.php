@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('is_available');
             $table->integer('is_deleted')->nullable()->default('0');
         });
