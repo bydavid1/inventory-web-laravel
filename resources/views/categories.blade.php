@@ -1,46 +1,45 @@
 @extends('layouts.app')
 @section('custom_header')
-	  <!-- DataTables -->
-	  <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-      <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-      <style>
-        .tab-pills {
-            border-top: 1px solid #dfdfdf;
-            border-bottom: 1px solid #dfdfdf;
-        }
+<!-- Design -->
+<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+ <style>
+    .tab-pills {
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+    }
 
-        .tab-pills .tab-link.active,
-        .show>.tab-pills .tab-link {
-            border-bottom: 3px solid #25b9d7;
-            border-bottom: .1875rem solid #25b9d7;
-        }
+    .tab-pills .tab-link.active,
+    .show>.tab-pills .tab-link {
+        border-bottom: 3px solid #25b9d7;
+        border-bottom: .1875rem solid #25b9d7;
+    }
 
-        .tab-pills .tab-link.active,
-        .tab-pills .show>.tab-link {
-            color: #363a41;
-            background-color: #f4f9fb;
-        }
+    .tab-pills .tab-link.active,
+    .tab-pills .show>.tab-link {
+        color: #363a41;
+        background-color: #f4f9fb;
+    }
 
-        .page-head-tabs .tab {
-            position: relative;
-        }
+    .page-head-tabs .tab {
+        position: relative;
+    }
 
-        .tab-link {
-            color: #6c868e;
-        }
+    .tab-link {
+        color: #6c868e;
+    }
 
-        .tab-link {
-            display: block;
-            padding: 15px 20px;
-            padding: .9375rem 1.25rem;
-        }
+    .tab-link {
+        display: block;
+        padding: 15px 20px;
+        padding: .9375rem 1.25rem;
+    }
 
-        a {
-            color: #25b9d7;
-            text-decoration: none;
-            background-color: transparent;
-            -webkit-text-decoration-skip: objects;
-        }
+    a {
+        color: #25b9d7;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects;
+    }
   </style>
 @endsection
 
@@ -110,10 +109,6 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <div class="text-right" style="margin-bottom: 15px">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCategoryModal">
-                        <i class="fas fa-plus"></i> Agregar categoria </button>
-                </div>
                 <table class="table" id="items">
                     <thead>
                         <tr>
@@ -132,32 +127,94 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Delete form-->
+<div class="d-none">
+	<form id="destroyform" method="POST">
+		@method('PUT')
+		@csrf
+	</form>
+</div>
+
+<!-- Create Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="addCategoryModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Agregar una nueva categoría</h3>
+				<h4 class="modal-title"><i class="fa fa-boxes"></i> Agregar nueva categoría</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('makeCategory') }}" method="POST">
+                <form id="createForm" method="POST">
                     @csrf
+                    <div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
+						Hay datos importantes que hacen falta
+                    </div>
+                    <hr>
                     <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Nombre de la categoría: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" id="name" placeholder="Nombre" name="name"
-                                autocomplete="off" value="{{ old('name') }}" required>
+                        <label for="name" class="control-label">Nombre de la categoría: </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+								<span class="input-group-text"><i class="fa fa-file"></i></span>
+							</div>
+                            <input type="text" class="form-control" placeholder="Nombre" id="name" name="name"
+                                autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Descripcion: </label>
-                        <div class="col-sm-12">
-                            <textarea name="description" class="form-control" placeholder="Ingrese una descripcion" value="{{ old('description') }}" cols="30" rows="10">
+                        <label for="name" class="control-label">Descripcion: </label>
+                        <div class="input-group">
+                            <textarea name="description" class="form-control" placeholder="Ingrese una descripcion" cols="30" rows="10">
                             </textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off"> <i
-                            class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                    <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..." autocomplete="off"> <i
+                            class="fa fa-save"></i> Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="editCategoryModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<h4 class="modal-title"><i class="fa fa-edit"></i> Editar categoria</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+            </div>
+            <div class="modal-body">
+                <form id="editform" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
+						Hay datos importantes que faltan
+                    </div>
+                    <hr>
+                    <input type="hidden" id="put_id">
+                    <div class="form-group">
+                        <label for="name" class="control-label">Nombre de la categoría: </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+								<span class="input-group-text"><i class="fa fa-file"></i></span>
+							</div>
+                            <input type="text" class="form-control" id="uname" name="uname" placeholder="Nombre"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="control-label">Descripcion: </label>
+                        <div class="input-group">
+                            <textarea name="udescription" id="udescription" class="form-control" placeholder="Ingrese una descripcion" cols="30" rows="10">
+                            </textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="editCategory" data-loading-text="Loading..." autocomplete="off"><i
+                            class="fa fa-edit"></i> Guardar</button>
                 </form>
             </div>
         </div>
@@ -167,31 +224,11 @@
 
 
 @section('custom_footer')
-    <!-- DataTables -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script>
-	$(document).ready(function () {
-	    $('#items').DataTable({
-	        "serverSide": true,
-	        "ajax": "{{ url('api/categories') }}",
-	        "columns": [
-			    {
-	                data: 'id'
-	            },
-	            {
-	                data: 'name'
-	            },
-	            {
-	                data: 'is_available'
-	            },
-                {
-                    data: 'actions'
-                }
-	        ]
-	    })
-	})
-</script>
+<!-- Design -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- CN module -->
+<script src="{{ asset('js/path.js') }}"></script>
+<!-- Essential functions -->
+@routes
+<script src="{{ asset('js/scripts/categories/categories.js') }}"></script>
 @endsection
