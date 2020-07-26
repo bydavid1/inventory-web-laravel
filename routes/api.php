@@ -17,15 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('products', 'ProductController@getRecords');
 
-Route::get('categories', function (){
-   return datatables()->eloquent(App\Categories::query())
-      ->addColumn('actions', '<div class="btn-group float-right">
-                  <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fa fa-edit" style="color: white"></i></a>
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#removeProductModal" id="removeProductModalBtn" onclick="removeProduct()"><i class="fa fa-trash" style="color: white"></i></button>
-                  </div>')
-      ->rawColumns(['actions'])
-      ->toJson();
-});
+Route::get('categories', 'CategoriesController@getRecords');
+
+Route::get('categories/{id}', 'CategoriesController@show');
 
 Route::get('suppliers', 'SupplierController@getRecords');
 
