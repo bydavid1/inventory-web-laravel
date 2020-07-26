@@ -287,5 +287,5 @@
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
 @routes
-<script src="{{ asset('js/scripts/supplier/suppliers.js') }}"></script>
+<script src="{{ asset('js/scripts/suppliers/suppliers.js') }}"></script>
 @endsection

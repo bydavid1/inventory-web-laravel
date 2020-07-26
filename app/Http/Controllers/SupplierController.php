@@ -83,17 +83,6 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -123,10 +112,10 @@ class SupplierController extends Controller
      */
     public function delete($id)
     {
-        $costumer = Suppliers::find($id);
-        $costumer->is_deleted = 1;
+        $supplier = Suppliers::find($id);
+        $supplier->is_deleted = 1;
 
-        if ($costumer->save()) {
+        if ($supplier->save()) {
             return response(200);
         }else{
             return response(500);
