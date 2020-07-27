@@ -48,7 +48,8 @@ Route::put('suppliers/delete/{id}', 'SupplierController@delete')->name('deleteSu
 //manufacturers Routes
 Route::get('/manufacturers', 'ManufacturersController@index')->name('manufacturers')->middleware('auth'); //index
 Route::post('manufacturers/store', 'ManufacturersController@store')->name('storeManufacturer')->middleware('auth'); //store
-Route::put('manufacturers/update/{id}', 'ManufacturersController@update')->name('editManufacturer')->middleware('auth'); //update
+Route::put('manufacturers/update/{id}', 'ManufacturersController@update')->name('updateManufacturer')->middleware('auth'); //update
+Route::put('manufacturers/delete/{id}', 'ManufacturersController@delete')->name('deleteManufacturer')->middleware('auth'); //update
 
 //Costumer routes´
 Route::get('/customers', 'CostumerController@index')->name('customers')->middleware('auth'); //index view

@@ -25,7 +25,7 @@ Route::get('suppliers', 'SupplierController@getRecords');
 
 Route::get('suppliers/{id}', 'SupplierController@show');
 
-Route::get('manufacturers',  'ManufacturersController@getItems');
+Route::get('manufacturers',  'ManufacturersController@getRecords');
 
 Route::get('manufacturers/{id}', 'ManufacturersController@show');
 
