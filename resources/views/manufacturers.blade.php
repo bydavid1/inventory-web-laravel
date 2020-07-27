@@ -129,26 +129,45 @@
     </div>  
 </div>
 
+<!-- Delete form-->
+<div class="d-none">
+	<form id="destroyform" method="POST">
+		@method('PUT')
+		@csrf
+	</form>
+</div>
 
+<!-- Create Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="addManufacturer">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form" enctype="multipart/form-data">
+            <form id="createform" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-header">
-                    <h3 class="modal-title">Agregar Fabricante o marca</h3>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i> Registrar fabricante o marca</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
+                        <!-- Custom Message -->
+                    </div>
+                    <hr>
                     <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
+                        <label >Escojer un logo</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imagepath" name="imagepath" accept="image/png, image/jpeg, image/jpg" name="imagepath">
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <input type="file" class="custom-file-input" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg" name="imagepath">
+                            <label class="custom-file-label">Buscar</label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Nombre: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" placeholder="Nombre" name="name"
+                        <label for="name" class="control-label">Nombre: </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-key"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Nombre" name="name" id="name"
                                 autocomplete="off">
                         </div>
                     </div>
@@ -156,7 +175,7 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
                         autocomplete="off">
-                        <i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                        <i class="fa fa-save"></i> Guardar</button>
                 </div>
             </form>
         </div>
@@ -168,31 +187,45 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="editform" enctype="multipart/form-data">
+                @csrf
                 @method('PUT')
                 <div class="modal-header">
                     <h4 class="modal-title">Editar Fabricante o marca</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="spinner-grow text-primary d-none" id="edit2-loader" role="status">
-                        <span class="sr-only">Loading...</span>
+                    <div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
+						<!-- Custom Message -->
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" for="brandlogo">Escoger logo</label>
-                        <input type="file" class="form-control" id="brandlogo" name="brandlogo" accept="image/png, image/jpeg, image/jpg">
-                    </div>
-                    <div class="form-group">
-                        <label for="name" class="control-label">Nombre: </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" placeholder="Nombre" name="brandname" id="brandname"
-                                autocomplete="off" disabled required>
+                    <hr>
+                    <input type="hidden" id="put_id">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Escojer un logo nuevo</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" disabled id="ulogo" name="ulogo" accept="image/png, image/jpeg, image/jpg">
+                                <label class="custom-file-label">Escoger logo</label>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <img class="img-border height-100" alt="Card image" id="previewlogo">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="name" class="control-label">Nombre: </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Nombre" name="uname" id="uname"
+                                    autocomplete="off" disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" name="brandid" id="brandid">
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
-                        autocomplete="off">
-                        <i class="glyphicon glyphicon-ok-sign"></i> Actualizar</button>
+                    <button type="submit" id="editManufacturer" class="btn btn-primary btn-block" data-loading-text="Loading..."
+                        autocomplete="off" disabled>
+                        <i class="fa fa-edit"></i> Actualizar</button>
                 </div>
             </form>
         </div>
@@ -201,118 +234,11 @@
 @endsection
 
 @section('custom_footer')
-    <!-- DataTables -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<!-- Design -->
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<script>
-    let brandid = document.querySelector('#brandid')
-
-	$(document).ready(function () {
-	    let table = $('#items').DataTable({
-	        serverSide: true,
-	        ajax: "{{ url('api/manufacturers') }}",
-	        columns: [{
-	                data: 'image'
-	            },
-	            {
-	                data: 'name'
-	            },
-	            {
-	                data: 'available'
-	            },
-	            {
-	                data: 'actions'
-	            }
-	        ]
-	    })
-
-        $('#form').unbind('submit').bind('submit', function (stay) {
-            stay.preventDefault()
-            var formData = new FormData(this)
-            var url = "{{ route('storeManufacturer') }}"
-
-            sendData(url, formData, $(this), table)
-        })
-
-        $('#editform').unbind('submit').bind('submit', function (stay) {
-            stay.preventDefault();
-            var formData = new FormData(this)
-            var url = "{{ route('editManufacturer', 'id') }}".replace('id', brandid.value)
-
-            sendData(url, formData, $(this), table)
-
-        })
-    }) //Ready Document
-
-    function sendData(url, formdata, form, table) {
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-            type: 'POST',
-            url: url,
-            data: formdata,
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function () {
-                Swal.fire({
-                    title: 'Registrando',
-                    html: 'Por favor espere...',
-                    allowOutsideClick: false,
-                    onBeforeOpen: () => {
-                        Swal.showLoading()
-                    },
-                })
-            },
-            success: function (response) {
-                Swal.fire({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Guardado',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                //Clear all fields
-                $(form).closest('form').find("input[type=text], input[type=number], textarea").val("");
-                table.ajax.reload();
-            },
-            error: function (xhr, textStatus, errorMessage) {
-                Swal.fire({
-                    position: 'top',
-                    type: 'error',
-                    html: 'Error crítico: ' + xhr.responseText,
-                    showConfirmButton: true,
-                });
-            }
-        });
-    }
-
-    function editManufacturer(id) {
-        $('#editManufacturerModal').modal('show')
-        let url = "{{ url('api/manufacturers', 'id') }}"
-        url = url.replace('id', id)
-        let loader = document.querySelector('#edit2-loader')
-        let brandname = document.querySelector('#brandname')
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            beforeSend: function () {
-                loader.classList.remove('d-none')
-                brandname.setAttribute('disabled', '')
-                brandname.value = ""
-            },
-            success: function (response) {
-                loader.classList.add('d-none')
-                let data = response.data
-                brandname.removeAttribute('disabled')
-                brandname.value = data.name
-                brandid.value = data.id
-            },
-            error: function (xhr, textStatus, errorMessage) {
-
-            }
-        });
-    }
-</script>
+<!-- CN module -->
+<script src="{{ asset('js/path.js') }}"></script>
+<!-- Essential functions -->
+@routes
+<script src="{{ asset('js/scripts/manufacturers/manufacturers.js') }}"></script>
 @endsection

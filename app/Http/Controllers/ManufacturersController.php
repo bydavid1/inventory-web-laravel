@@ -30,13 +30,13 @@ class ManufacturersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getItems()
+    public function getRecords()
     {
         $manufacturers = Manufacturers::where('is_deleted', '0');
         return datatables()->eloquent($manufacturers)
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" onclick="editManufacturer({{ $id }})"><i class="fa fa-edit" style="color: white"></i></button>
-                    <button type="button" class="btn btn-warning" data-toggle="modal" onclick="removeManufacturer({{ $id }})"><i class="fa fa-trash" style="color: white"></i></button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="fa fa-edit" style="color: white"></i></button>
+                    <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="fa fa-trash" style="color: white"></i></button>
                     </div>')
         ->addColumn('image', '<img class="img-round" src="{{ asset($logo) }}"  style="max-height:50px; max-width:70px;"/>')
         ->addColumn('available', function($manufacturers){
@@ -61,8 +61,8 @@ class ManufacturersController extends Controller
         try {
             $path = '';
 
-            if ($request->file('imagepath')) {
-                $file = $request->file('imagepath');
+            if ($request->file('logo')) {
+                $file = $request->file('logo');
                 $path = Storage::disk('public')->put('uploads', $file);
             }else{
                 $path = $this->photo_default;
@@ -92,8 +92,13 @@ class ManufacturersController extends Controller
      */
     public function show($id)
     {
-        $find = Manufacturers::findOrFail($id);
-        return response()->json(['success'=>'false', 'data'=> $find]);
+        $result = Manufacturers::where('id', $id)->get();
+
+        if ($result->count() > 0) {
+            return response($result, 200);
+        }else{
+            return response('Recurso no encontrado', 404);
+        }
     }
 
     /**
@@ -107,15 +112,17 @@ class ManufacturersController extends Controller
     {
         try {
             $find = Manufacturers::find($id);
-            $find->name = $request->brandname;
+            $find->name = $request->uname;
+            //getLogo
+            $savedImage = $find->logo;
 
-            if ($request->file('brandlogo')) {
-                $file = $request->file('brandlogo');
+            if ($request->file('ulogo')) {
+                $file = $request->file('ulogo');
                 $path = Storage::disk('public')->put('uploads', $file);
                 $find->logo = $path;
             }
             
-            if ($find->save() && $request->file('brandimage')) {
+            if ($find->save() && $request->file('ulogo')) {
                 if ($savedImage != $this->photo_default) {
                     unlink($savedImage);
                 }
@@ -133,8 +140,15 @@ class ManufacturersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $supplier = Manufacturers::find($id);
+        $supplier->is_deleted = 1;
+
+        if ($supplier->save()) {
+            return response(200);
+        }else{
+            return response(500);
+        }
     }
 }
