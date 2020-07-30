@@ -46,7 +46,7 @@
                             <span aria-hidden="true">&times;</span></button>
                     </div>
                     @endif
-                    <form class="form-horizontal" id="submitProductForm" action="{{ route('makeProduct') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" id="submitProductForm" action="{{ route('storeProduct') }}" enctype="multipart/form-data">
                         @csrf
                         <div id="add-product-messages"></div>
     
@@ -296,10 +296,6 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal"> <i
                                     class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
     
-                            <button type="submit" class="btn btn-primary" id="createProductBtn"
-                                data-loading-text="Loading..." autocomplete="off"> <i class="fa fa-ok-sign"></i>
-                                Guardar</button>
-    
                             <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
                                 autocomplete="off"> <i class="fa fa-ok-sign"></i> Guardar y salir</button>
                         </div>
@@ -322,6 +318,7 @@
 <!-- Fileinput -->
 <script src="{{ asset('plugins/fileinput/js/fileinput.min.js') }}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+@routes
 <!-- CN module -->
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Owner -->
@@ -344,9 +341,9 @@
         showCaption: true,
         browseLabel: 'Buscar en el equipo',
         removeLabel: 'Quitar',
-        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
-        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-        removeTitle: 'Cancel or reset changes',
+        browseIcon: '<i class="fa fa-folder-open"></i>',
+        removeIcon: '<i class="fa fa-remove"></i>',
+        removeTitle: 'Reiniciar',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',
         defaultPreviewContent: '<img src="{{ asset("media/placeholder.png") }}" alt="Profile Image" style="width:100%;">',
