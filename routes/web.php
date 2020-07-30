@@ -25,11 +25,11 @@ Route::get('/register', function(){
 })->name('register');
 
 //Product Routes
-Route::get('/product', 'ProductController@index')->name('products')->middleware('auth');
+Route::get('/products', 'ProductController@index')->name('products')->middleware('auth');
 Route::get('product/create', 'ProductController@create')->name('addProduct')->middleware('auth');
-Route::post('/makeProduct', 'ProductController@store')->name('makeProduct')->middleware('auth');
-Route::get('product/{id}/edit', 'ProductController@edit')->name('editProduct')->middleware('auth');
-Route::put('updateProduct/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
+Route::post('product/store', 'ProductController@store')->name('storeProduct')->middleware('auth');
+Route::get('product/edit/{id}', 'ProductController@edit')->name('editProduct')->middleware('auth');
+Route::put('product/update/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
 Route::get('product/show/{id}', 'ProductController@show')->name('showProduct')->middleware('auth');
 Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
 

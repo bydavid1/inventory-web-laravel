@@ -149,7 +149,7 @@ class ProductController extends Controller
                 $kardex->total = $request->purchase * $new->stock;
                 $kardex->save();
 
-                return response()->json(['success'=>'true', 'message'=>'Producto guardado']);
+                return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
             }
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
