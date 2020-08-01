@@ -62,6 +62,35 @@ class ProductController extends Controller
         ->toJson();
     }
 
+    public function byCode($code)
+    {
+        $products = Products::where('code', $code)->with('first_price')->get();
+        if ($products->count() > 0) {
+           return response()->json(['success' => true, 'product' => $products], 200);
+        }else{
+           return response()->json(['success' => false, 'product' => null], 200);
+        }
+    }
+
+    public function byQuery($query)
+    {
+        $products = Products::select('id','code','name','stock','description')->with(['prices', 'images'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
+        if ($products->count() > 0) {
+           return response()->json(['success' => true, 'products' => $products], 200);
+        }else{
+           return response()->json(['success' => false, 'products' => null], 200);
+        }
+    }
+
+    public function byId($id){
+        return datatables()->eloquent(Products::where('id', $id))
+        ->toJson();
+    }
+
+    /**
+     * Web routes
+     */
+
     /**
      * Display a listing of the resource.
      *

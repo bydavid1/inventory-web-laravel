@@ -61,7 +61,7 @@ function add(id) {
         arrayNumber = 0
     }
 
-    let url = "{{ url('api/products/order', 'id') }}".replace("id", id)
+    let url =  domain.getDomain('api/products/order/' + id)
 
     $.ajax({
         type: 'get',
@@ -164,9 +164,8 @@ function add(id) {
 //----------------------------------------------------------------------
 
 function getProductData(row){
-    var url = "{{ url('api/products/order/code', 'identify') }}";
     var code = $(PRODUCTCODE + row).val();
-    url = url.replace("identify", code);
+    var url = domain.getDomain('api/products/order/code/' + code);
 
     $.ajax({
         type: 'get',
@@ -228,7 +227,7 @@ function getProductData(row){
 //----------------------------------------------------------------------
 
 function view(id) {
-    var url = "{{ route('showProduct', 'id') }}".replace('id', id);
+    var url = domain.getDomain('showProduct', {id : id});
     window.open(url, '_blank');
 }
 
@@ -492,8 +491,8 @@ function searchCostumer() {
             closeAllLists();
         });
 
-    let url = "{{ url('api/costumers/search', 'query') }}";
-    url = url.replace("query", input.value);
+    let url = domain.getDomain('api/costumers/search/' + input.value);
+
     $.ajax({
         type: 'get',
         url: url,

@@ -33,9 +33,9 @@ class SaleController extends Controller
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
-        <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-eye" style="color: white"></i></button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
-        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fas fa-file-pdf" style="color: white"></i></a>
+        <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fa fa-eye" style="color: white"></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fa fa-trash" style="color: white"></i></button>
+        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fa fa-file-pdf-o" style="color: white"></i></a>
         </div>')
         ->addColumn('name', function($query){
 
