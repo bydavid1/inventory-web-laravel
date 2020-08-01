@@ -8,6 +8,35 @@ use App\Costumers;
 
 class CostumerController extends Controller
 {
+
+    /**
+     * Api routes
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecords()
+    {
+        return datatables()->eloquent(Costumers::where('is_deleted', '0'))
+        ->addColumn('actions', '<div class="btn-group float-right">
+        <button type="button" class="btn btn-success" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer"><i class="fa fa-edit" style="color: white"></i></button>
+        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="fa fa-trash" style="color: white"></i></button>
+        </div>')
+        ->rawColumns(['actions'])
+        ->toJson();
+    }
+
+    public function byQuery($query)
+    {
+        $result = Costumers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
+
+        if ($result->count() > 0) {
+           return response()->json(['success' => true, 'data' => $result], 200);
+        }else{
+           return response()->json(['success' => false, 'data' => null], 200);
+        }
+    }
+
+
     /**
      * Display a listing of the resource.
      *
