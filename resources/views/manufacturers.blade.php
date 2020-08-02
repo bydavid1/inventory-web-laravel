@@ -111,7 +111,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table class="table table-bordered table-condensed" id="items">
+                <table class="table table-condensed table-hover table-bordered table-striped" id="items">
                         <thead>
                             <tr>
                                 <!-- <th style="width:10%;">Imagen</th>	-->						

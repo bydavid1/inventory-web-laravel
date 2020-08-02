@@ -206,10 +206,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();;
-        $suppliers = Suppliers::select(['id','name'])->where('is_available', 1)->get();;
-        $product = Products::findOrfail($id)->with(['prices','images']);
-        return view('product.editProduct', compact(['product', 'categories', 'suppliers']));
+        $categories = Categories::select(['id','name'])->where('is_available', '1');
+        $suppliers = Suppliers::select(['id','name'])->where('is_available', '1');
+        $product = Products::with(['prices','images'])->where('id', $id);
+        return response()->json(['data' => $product], 200);
+        //return view('product.editProduct', compact(['product', 'categories', 'suppliers']));
     }
 
     /**

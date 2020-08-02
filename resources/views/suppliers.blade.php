@@ -105,7 +105,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table class="table table-bordered table-condensed" id="items">
+                <table class="table table-condensed table-hover table-bordered table-striped" id="items">
                     <thead>
                         <tr>
                             <!-- <th style="width:10%;">Imagen</th>	-->
@@ -219,7 +219,7 @@
                 @method('PUT')
                 @csrf
                 <div class="modal-header">
-                    <h4 class="modal-title"><i class="fa fa-edit"></i> Registrar nuevo proveedor</h4>
+                    <h4 class="modal-title"><i class="fa fa-edit"></i> Editar proveedor</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>

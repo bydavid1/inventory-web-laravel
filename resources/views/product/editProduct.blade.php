@@ -45,12 +45,12 @@
                <span aria-hidden="true">&times;</span></button>
             </div>
             @endif
-            <form class="form-horizontal" id="submitProductForm" action="{{ route('updateProduct', $product->id) }}" method="POST"
+            @foreach ($product as $item)
+            <form class="form-horizontal" id="submitProductForm" action="{{ route('updateProduct', $item->id) }}" method="POST"
                 enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div id="add-product-messages"></div>
-
                 <div class="col-12 col-md-10 container">
                     <div class="row">
                         <div class="col-md-3 col-sm-12">
@@ -74,7 +74,7 @@
                                         <label for="codProduct" class="col-sm-3 control-label">Codigo: </label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="code"
-                                                placeholder="Codigo del producto" name="code" autocomplete="off" value="{{ $product->code }}">
+                                                placeholder="Codigo del producto" name="code" autocomplete="off" value="{{ $item->code }}">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
@@ -83,15 +83,15 @@
                                         <label for="productName" class="col-sm-3 control-label">Nombre: </label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="name"
-                                                placeholder="Nombre del producto" name="name" autocomplete="off" value="{{ $product->name }}">
+                                                placeholder="Nombre del producto" name="name" autocomplete="off" value="{{ $item->name }}">
                                         </div>
                                     </div>
                                     <!-- /form-group-->
-
+                                    @endforeach
                                     <div class="form-group col-sm-12">
                                         <label>Fabricante:</label>
                                         <select data-placeholder="Seleciona un fabricante" style="width: 100%;" class="select2bs4" id="provider_id" name="provider_id">
-                                            @foreach ($providers as $item)
+                                            @foreach ($suppliers as $item)
                                             @if ($item->id == $product->provider_id)
                                             <option value="{{ $item->id }}" selected>{{ $item->name }} (Seleccionado)</option>
                                             @endif
