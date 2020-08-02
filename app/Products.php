@@ -15,8 +15,8 @@ class Products extends Model
         return $this->hasMany("App\Images", 'product_id');
     }
 
-    public function purchases_prices(){
-        return $this->hasMany("App\Purchases_prices", 'product_id');
+    public function purchase_prices(){
+        return $this->hasMany("App\Purchase_prices", 'product_id');
     }
 
     public function first_image(){

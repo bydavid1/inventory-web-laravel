@@ -206,11 +206,22 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $categories = Categories::select(['id','name'])->where('is_available', '1');
-        $suppliers = Suppliers::select(['id','name'])->where('is_available', '1');
-        $product = Products::with(['prices','images'])->where('id', $id);
-        return response()->json(['data' => $product], 200);
-        //return view('product.editProduct', compact(['product', 'categories', 'suppliers']));
+        $categories = Categories::select(['id','name'])->where('is_available', '1')->get();
+        $suppliers = Suppliers::select(['id','name'])->where('is_available', '1')->get();
+        $manufacturers = Manufacturers::select(['id','name'])->where('is_available', '1')->get();
+        $product = Products::with(['prices' => function($query){
+            $query->select('id','product_id','price','price_incl_tax','utility');
+        },
+        'images' => function($query){
+            $query->select('id','product_id','src');
+        },
+        'purchase_prices' => function($query){
+            $query->select('id','product_id','value');
+        }])
+        ->where('id', $id)->get();
+
+        //return response($product, 200);
+        return view('product.editProduct', compact(['product', 'categories', 'suppliers','manufacturers']));
     }
 
     /**
