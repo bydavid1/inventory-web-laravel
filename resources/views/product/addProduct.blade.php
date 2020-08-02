@@ -36,16 +36,6 @@
         <div class="content-wrapper">
             <div class="card card-info">
                 <div class="card-body">
-                    @if ( session('mensaje') )
-                    <div class="alert alert-success">{{ session('mensaje') }}</div>
-                    @endif
-                    @if($errors->has(['code', 'name', 'purchase', 'quantity', 'price1']))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Faltan datos importantes
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                    </div>
-                    @endif
                     <form class="form-horizontal" id="submitProductForm" action="{{ route('storeProduct') }}" enctype="multipart/form-data">
                         @csrf
                         <div id="add-product-messages"></div>
@@ -323,7 +313,6 @@
                                 <!--/ Right bottom group-->
                             </div>
                         </div>
-                        <!-- /modal-body -->
     
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal"> <i
