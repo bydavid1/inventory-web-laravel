@@ -33,6 +33,24 @@
     </div>
     <div class="content-body">
         <div class="content-wrapper">
+                <div class="container">
+                    @if ( session('mensaje') )
+                    <div class="alert alert-success alert-icon-left alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{ session('mensaje') }}
+                    </div>
+                    @endif
+                    @if ( session('error') )
+                    <div class="alert alert-danger alert-icon-left alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{ session('error') }}
+                    </div>
+                    @endif
+                </div>
             <div class="card card-info">
                 <div class="card-header">
                     <h3 class="card-title">Editar Producto</h3>
@@ -42,6 +60,7 @@
                     <form class="form-horizontal" id="submitProductForm" action="{{ route('updateProduct', $product[0]->id) }}" method="POST"
                             enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="col-12 col-md-10 container">
                             <div class="row">
                                 <div class="col-md-3 col-sm-12">
@@ -55,7 +74,6 @@
                                                     placeholder="Imagen del producto" name="image" class="file-loading"
                                                     style="width:auto;" />
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +86,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-key"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control" id="code"
+                                                    <input type="text" class="form-control @error('code') is-invalid @enderror" id="code"
                                                         placeholder="Codigo del producto" name="code"
                                                         autocomplete="ggg-ss" value="{{ $product[0]->code }}">
                                                     <div class="input-group-append">
@@ -78,20 +96,18 @@
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-
                                             <div class="form-group">
                                                 <label for="productName" class="control-label">Nombre: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="ft-box"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control" id="name"
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                                         placeholder="Nombre del producto" name="name"
                                                         autocomplete="ggg-ss" value="{{ $product[0]->name }}">
                                                 </div>
                                             </div>
                                             <!-- /form-group-->
-
                                             <div class="form-group">
                                                 <label>Proveedor:</label>
                                                 <div class="input-group">
@@ -183,8 +199,8 @@
                                                         <span class="input-group-text"><i
                                                                 class="fa fa-cubes"></i></span>
                                                     </div>
-                                                    <input type="number" class="form-control" id="quantity"
-                                                        placeholder="Stock" name="quantity" autocomplete="ggg-ss"
+                                                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="quantity"
+                                                        placeholder="Stock" name="stock" autocomplete="ggg-ss"
                                                         value="{{ $product[0]->stock }}">
                                                 </div>
                                             </div>
@@ -199,10 +215,10 @@
                                                     <select class="form-control" id="manufacturer_id"
                                                         name="manufacturer_id">
                                                         @foreach ($manufacturers as $item)
-                                                        @if ($item->id == $product[0]->manufacturer_id)
-                                                        <option value="{{ $item->id }}" selected>{{ $item->name }}
-                                                            (Seleccionado)</option>
-                                                        @endif
+                                                            @if ($item->id == $product[0]->manufacturer_id)
+                                                            <option value="{{ $item->id }}" selected>{{ $item->name }}
+                                                                (Seleccionado)</option>
+                                                            @endif
                                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -236,7 +252,7 @@
                                                                 class="fa fa-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price{{ $i }}"
-                                                        placeholder="Precio {{ $i }}" disabled name="price{{ $i }}"
+                                                        placeholder="Precio {{ $i }}" name="price{{ $product[0]->prices[$i - 1]->id }}"
                                                         onkeyup="calculate('price{{ $i }}', 'add')"
                                                         autocomplete="ggg-ss"
                                                         value="{{ number_format($product[0]->prices[$i - 1]->price, 2) }}" />
@@ -260,7 +276,7 @@
                                                         <span class="input-group-text"><i class="fa fa-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility{{ $i }}"
-                                                        placeholder="Utilidad {{ $i }}" disabled name="utility{{ $i }}"
+                                                        placeholder="Utilidad {{ $i }}" name="utility{{ $product[0]->prices[$i - 1]->id }}"
                                                         onkeyup="calculate('utility{{ $i }}', 'add')" autocomplete="ggg-ss"
                                                         value="{{ number_format($product[0]->prices[$i - 1]->utility, 2) }}" />
                                                 </div>
@@ -288,7 +304,6 @@
                                 <!--/ Right bottom group-->
                             </div>
                         </div>
-    
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
                                 autocomplete="ggg-ss"> <i class="fa fa-ok-sign"></i> Guardar</button>
@@ -310,25 +325,24 @@
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <!-- Fileinput -->
 <script src="{{ asset('plugins/fileinput/js/fileinput.min.js') }}"></script>
+<!-- Owner -->
+<script src="{{ asset('js/scripts/product/editProduct.js') }}"></script>
 <script>
-   $(function () {
-        //Initialize Select2 Elements
-        $('.select2').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-     });
+    //Initialize Select2 Elements
+    $('#provider_id').select2()
+    $('#category_id').select2()
+    $('#manufacturer_id').select2()
 
-     $("#image").fileinput({
+
+    $("#image").fileinput({
         overwriteInitial: true,
         maxFileSize: 2500,
         showClose: false,
         showCaption: true,
         browseLabel: 'Buscar en el equipo',
         removeLabel: 'Quitar',
-        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
-        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+        browseIcon: '<i class="fa fa-folder-open"></i>',
+        removeIcon: '<i class="fa fa-remove"></i>',
         removeTitle: 'Cancel or reset changes',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',

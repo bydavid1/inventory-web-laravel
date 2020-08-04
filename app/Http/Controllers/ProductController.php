@@ -17,6 +17,7 @@ use App\Categories;
 use App\Suppliers;
 use App\Manufacturers;
 use App\Kardex;
+use Exception;
 
 class ProductController extends Controller
 {
@@ -45,11 +46,11 @@ class ProductController extends Controller
                     </div>')
         ->addColumn('photo', function($products){
                     $path = asset($products->first_image->src);
-                     return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
+                        return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
         })
         ->addColumn('prices', function($products){
                      //Make sure there is at least one price registered
-                     return "$".$products->first_price->price_incl_tax;   
+                        return "$".$products->first_price->price_incl_tax;   
         })
         ->editColumn('is_available', function($products){
                     if ($products->is_available == 1) {
@@ -66,9 +67,9 @@ class ProductController extends Controller
     {
         $products = Products::where('code', $code)->with('first_price')->get();
         if ($products->count() > 0) {
-           return response()->json(['success' => true, 'product' => $products], 200);
+            return response()->json(['success' => true, 'product' => $products], 200);
         }else{
-           return response()->json(['success' => false, 'product' => null], 200);
+            return response()->json(['success' => false, 'product' => null], 200);
         }
     }
 
@@ -76,9 +77,9 @@ class ProductController extends Controller
     {
         $products = Products::select('id','code','name','stock','description')->with(['prices', 'images'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
         if ($products->count() > 0) {
-           return response()->json(['success' => true, 'products' => $products], 200);
+            return response()->json(['success' => true, 'products' => $products], 200);
         }else{
-           return response()->json(['success' => false, 'products' => null], 200);
+            return response()->json(['success' => false, 'products' => null], 200);
         }
     }
 
@@ -98,7 +99,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-      return view('products');
+        return view('products');
     }
 
     /**
@@ -232,40 +233,78 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){ 
-        $product = Products::find($id);
-        //Salvo el path de la imagen por si luego es necesario eliminarlo
-        $savedImage = $product->image;
-        $product->code = $request->code;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->provider_id = $request->provider_id;
-        $product->category_id = $request->category_id;
-        $product->purchase = $request->purchase;
-        $product->quantity = $request->quantity;
-        $product->type = $request->type;
-        $product->price1 = $request->price1;
-        $product->price2 = $request->price2;
-        $product->price3 = $request->price3;
-        $product->price4 = $request->price4;
-        $product->utility1 = $request->utility1;
-        $product->utility2 = $request->utility2;
-        $product->utility3 = $request->utility3;
-        $product->utility4 = $request->utility4;
-        $product->is_available = $request->is_available;
-        $product->is_deleted = 0;
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $path = Storage::disk('public')->put('uploads', $file);
-            $product->image = $path;
-        }
-        $product->save();
-        if ($request->file('image')) {
-            if ($savedImage != $this->photo_default) {
-                unlink($savedImage);
+        try {
+            $request->validate([
+                'code' => 'required',
+                'name' => 'required',
+                'stock' => 'required',
+                'purchase' => 'required'
+            ]);
+
+            $product = Products::find($id);
+            $savedImage = $product->first_image->src; //Salvo el path de la imagen por si luego es necesario eliminarlo
+            $product->code = $request->code;
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->supplier_id = $request->provider_id;
+            $product->category_id = $request->category_id;
+            $product->stock = $request->stock;
+            $product->type = $request->type;
+            $product->is_available = $request->is_available;
+
+            //Update purchase_prices
+            $product->first_purchase_price()->update([
+                'value' => $request->purchase
+            ]);
+            
+            //Update prices
+            $prices = $product->prices();
+            $prices->each(function($item) use($request){
+                $id = $item->id;
+                $item->update(array('price' => $request->{'price'.$id}, 'utility' => $request->{'utility'.$id}));
+            });
+
+            //Update image if exist
+            if ($request->file('image')) {
+                $file = $request->file('image');
+                $path = Storage::disk('public')->put('uploads', $file);
+                $product->first_image()->update([
+                    'src' => $path
+                ]);
             }
-        }
+
+            $product->save();
+
+            if ($request->file('image')) {
+                if ($savedImage != $this->photo_default) {
+                    unlink($savedImage);
+                }
+            }
 
         return back()->with('mensaje', 'Registro actualizado exitosamente');
+
+        } catch (Exception $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    /**
+     * Move to trash
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $product = Products::find($request->identifier);
+        $product->is_deleted = 1;
+        $product->save();
+
+        if ($product->save()) {
+            return back()->with('mensaje', "Eliminado correctamente");
+        }else{
+            return back()->with('error', "No se pudo eliminar");
+        }
     }
 
     /**

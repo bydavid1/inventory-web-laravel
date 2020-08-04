@@ -31,7 +31,8 @@ Route::post('product/store', 'ProductController@store')->name('storeProduct')->m
 Route::get('product/edit/{id}', 'ProductController@edit')->name('editProduct');
 Route::put('product/update/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
 Route::get('product/show/{id}', 'ProductController@show')->name('showProduct')->middleware('auth');
-Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
+Route::put('product/delete', 'ProductController@delete')->name('deleteProduct')->middleware('auth'); //update
+//Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
 
 //Categories Routes
 Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth'); //index

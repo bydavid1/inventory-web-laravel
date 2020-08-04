@@ -71,22 +71,24 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Eliminar producto</h4>
+				<h4 class="modal-title"><i class="fa fa-cube"></i> Eliminar producto</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
             </div>
             <div class="modal-body">
-                <form action="{{route('deleteProduct')}}" method="POST">
-					@method('delete')
+
+                <form action="{{ route('deleteProduct') }}" method="POST">
+					@method('PUT')
 					@csrf
 					<p id="message">¿Realmente deseas eliminar el producto? Se movera a la palera</p>
-					<input type="hidden" id="id_product">
-				<div class="modal-footer removeProductFooter">
-					<button type="button" class="btn btn-default" data-dismiss="modal"> <i
-							class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-					<button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
-							class="glyphicon glyphicon-ok-sign"></i> Eliminar</button>
-				</div>
+					<input type="hidden" name="identifier" id="identifier">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> <i
+                                class="fa fa-times"></i> Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
+                                class="fa fa-trash"></i> Eliminar</button>
+                    </div>
 				</form>
 			</div>
         </div>
@@ -146,7 +148,7 @@
 <script>
 $(document).on('click','#removeProductModalBtn',function(){
     var id=$(this).attr('data-id');
-    $('#id_product').val(id); 
+    $('#identifier').val(id); 
     $('#removeProductModal').modal('show'); 
 });
 </script>
