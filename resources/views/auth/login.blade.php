@@ -38,7 +38,7 @@ data-open="hover" data-menu="horizontal-menu" data-col="1-column">
                 </div>
                 <div class="card-content">
                   <div class="card-body pt-0">
-                    <form class="form-horizontal" id="loginform">
+                    <form class="form-horizontal" method="POST" id="loginform" action="{{ route('login') }}">
                       @csrf
                       <fieldset class="form-group floating-label-form-group">
                         <label for="user-name">Your Username</label>
@@ -75,26 +75,5 @@ data-open="hover" data-menu="horizontal-menu" data-col="1-column">
     </div>
   </div>
 <script src="{{ URL::asset('plugins/jquery/jquery.min.js') }}"></script>
-<script>
-  ///FAtara arreglar el login
-$('#loginform').unbind('submit').bind('submit', function (stay) {
-            stay.preventDefault();
-            var formdata = $(this).serialize();
-            var url = "{{ route('login') }}";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formdata,
-                beforeSend: function () {
-                  document.getElementById('icon-lock').classList.add('d-none')
-                  document.getElementById('spinner').classList.add('d-block')
-                },
-                error: function (xhr, textStatus, errorMessage) {
-
-                }
-            });
-        });
-
-</script>
 </body>
 </html>
