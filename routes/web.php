@@ -62,8 +62,7 @@ Route::put('customer/delete/{id}', 'CostumerController@delete')->name('deleteCos
 //Sales Routes
 Route::get('/sales', 'SaleController@index')->name('sales')->middleware('auth');
 Route::get('sales/create', 'SaleController@create')->name('addSale')->middleware('auth');
-Route::post('/makeinvoice', 'SaleController@store')->name('makeInvoice')->middleware('auth');
-Route::post('/save', 'SaleController@store')->name('save');
+Route::post('sales/create/store', 'SaleController@store')->name('storeSale')->middleware('auth');
 Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice')->middleware('auth');
 
 //Purchases
@@ -79,4 +78,4 @@ Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get
 
 //Credits
 Route::get('credits/create', 'CreditController@create')->name('addCredit');
-Route::post('credits/create/buildCredit', 'CreditController@store')->name('createCredit');
+Route::post('credits/create/store', 'CreditController@store')->name('storeCredit');

@@ -2,7 +2,7 @@ $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
     stay.preventDefault();
     if(validate() == 0){
         var formdata = $(this).serialize();
-        var url = "{{ route('save') }}";
+        var url = route('storeSale');
         $.ajax({
             type: 'POST',
             url: url,
@@ -28,7 +28,7 @@ $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
                 });
                 //Clear all fields
                 $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
-                print(response.data);
+                //print(response.data);
             },
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({

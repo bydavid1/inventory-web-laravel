@@ -15,11 +15,11 @@ const IDVALUE = "#idvalue"
 
 //Alert
 const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: true,
-      timer: 3000
-    });
+    toast: true,
+    position: 'center',
+    showConfirmButton: true,
+    timer: 3000
+});
 
 $(document).ready(function () {
 
