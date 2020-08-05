@@ -1,14 +1,7 @@
-$('.datefield').datepicker({
-    orientation: "bottom auto",
-    language: "es",
-    format: "yyyy-mm-dd",
-    todayBtn: "linked",
-});
-
 $('#createForm').unbind('submit').bind('submit', function (stay) {
     stay.preventDefault();
     let formdata = $(this).serialize();
-    let url = "{{ route('createCredit') }}";
+    let url = route('storeCredit');
     let ajaxTime= new Date().getTime();
     $.ajax({
         type: 'POST',
