@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('custom_header')
-	  <!-- DataTables -->
-	  <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-      <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+	  <!-- For Design -->
       <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+      <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
 @endsection
 
 @section('content')
@@ -67,9 +66,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-lg-6">
-                                            <label for="clientName" class="control-label">Fecha</label>
+                                            <label class="control-label">Fecha</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="Fecha"
+                                                <input type="text" class="form-control pickadate" placeholder="Fecha"
                                                     autocomplete="off" />
                                             </div>
                                         </div>
@@ -78,7 +77,7 @@
         
                                 @include('product-order.productTable')
 
-                                 <div class="row mt-4">
+                                <div class="row mt-4">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="name" class="control-label">Descuento</label>
@@ -166,11 +165,24 @@
 @section('custom_footer')
     <!-- For design -->
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
     <!-- CN module -->
     <script src="{{ asset('js/path.js') }}"></script>
     <!-- Essential functions -->
     <script src="{{ asset('js/scripts/product-orders/product-order.js') }}"></script>
     <!-- Modal script -->
     <script src="{{ asset('js/scripts/product-orders/modal.js') }}"></script>
-
+    <!-- Owner -->
+    <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
+    @routes
+    <script>
+        // Basic date
+        $('.pickadate').pickadate({
+            format: 'yyyy-mm-dd',
+            formatSubmit: 'yyyy-mm-dd',
+            hiddenPrefix: 'prefix__',
+            hiddenSuffix: '__suffix'
+        });
+    </script>
 @endsection
