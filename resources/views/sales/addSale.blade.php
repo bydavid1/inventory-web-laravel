@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.secondary_app')
 
 @section('custom_header')
 	  <!-- For Design -->
@@ -13,26 +13,13 @@
     <div class="content-body h-100">
         <div class="row h-100">
             <div class="col-md-8 h-100 overflow-auto">
-                <input class="form-control form-control-lg form-control-borderless mt-1"  id="searchInput" type="search" autofocus 
+                <div class="col-md-12">
+                    <input class="form-control form-control-lg mt-1"  id="searchInput" type="search" autofocus 
                     autocomplete="off" placeholder="Buscar en el inventario">
-                <div class="row py-2 px-1">
-                    @foreach ($products as $item)
-                    <div class="col-md-2">
-                        <div class="card cursor-pointer" onclick="add({{ $item->id }})" style="height: 220px">
-                            <div class="card-content h-100">
-                                <div style="background-image: url('{{ asset($item->first_image->src) }}'); background-size: 
-                                    cover; height: 60%; background-position: center; background-repeat: no-repeat;">
-                                </div>
-                                <div class="card-body" style="height: 40%">
-                                    <h6 class="card-text">{{ $item->name }}</h6>
-                                    <h6 class="card-text">${{ number_format($item->first_price->price, 2) }}</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
                 </div>
-                {{ $products->links() }}
+                <div id="products">
+                    @include('sales.list_products')
+                </div>
             </div>
             <div class="col-md-4 p-0" style="height: 100%; border-left: 1px solid #707070">
                 <div class="content-header bg-white p-2" style="height: 10%">
@@ -125,5 +112,6 @@
             hiddenPrefix: 'prefix__',
             hiddenSuffix: '__suffix'
         });
+        
     </script>
 @endsection

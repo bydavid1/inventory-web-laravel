@@ -79,3 +79,6 @@ Route::get('kardex/get_records/{id}', 'KardexController@get_records')->name('get
 //Credits
 Route::get('credits/create', 'CreditController@create')->name('addCredit');
 Route::post('credits/create/store', 'CreditController@store')->name('storeCredit');
+
+//Others
+Route::get('pagination/fetch', 'SaleController@pagination');
