@@ -84,8 +84,12 @@ class ProductController extends Controller
     }
 
     public function byId($id){
-        return datatables()->eloquent(Products::where('id', $id))
-        ->toJson();
+        $product = Products::where('id', $id)->with('first_price')->get();
+        if ($product->count() > 0) {
+            return response()->json(['success' => true, 'product' => $product], 200);
+        }else{
+            return response()->json(['success' => false, 'product' => null], 200);
+        }
     }
 
     /**
@@ -301,7 +305,7 @@ class ProductController extends Controller
         $product->save();
 
         if ($product->save()) {
-            return back()->with('mensaje', "Eliminado correctamente");
+            return back()->with('mensaje', "Se movió a la papelera");
         }else{
             return back()->with('error', "No se pudo eliminar");
         }
