@@ -1,5 +1,5 @@
-$('#createOrderForm').unbind('submit').bind('submit', function (stay) {
-    stay.preventDefault();
+$('#createOrderForm').unbind('submit').bind('submit', function (event) {
+    event.preventDefault();
     if(validate() == 0){
         var formdata = $(this).serialize();
         var url = route('storeSale');
@@ -13,7 +13,7 @@ $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
                     html: 'Por favor espere...',
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
-                        Swal.showLoading()
+                        Swal.fire.showLoading()
                     },
                 })
             },
@@ -21,10 +21,9 @@ $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
                 console.log(response);
                 Swal.fire({
                     position: 'top-end',
-                    type: 'success',
+                    icon: 'success',
                     title: response.message,
-                    showConfirmButton: false,
-                    timer: 1500
+                    button: false,
                 });
                 //Clear all fields
                 $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
@@ -33,9 +32,9 @@ $('#createOrderForm').unbind('submit').bind('submit', function (stay) {
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({
                     position: 'top',
-                    type: 'error',
+                    icon: 'error',
                     html: 'Error crítico: ' + xhr.responseText,
-                    showConfirmButton: true,
+                    button: true,
                 });
             }
         });
@@ -77,35 +76,17 @@ function validate(){
         handler++
     }
 
-    //table fields
-    const tableLenght = document.getElementById('trCount').value
-
-    for (let i = 0; i < tableLenght; i++) {
-        
-
-        if (document.getElementById('pnamevalue' + i).value != '') {
-
-            let quantity = document.getElementById('quantity' + i)
-            let code = document.getElementById('pcode' + i)
-            let price = document.getElementById('price' + i)
-            
-            if (!document.getElementById('quantityvalue' + i).value) {
-                quantity.parentNode.classList.add('invoice-control-invalid')
-                handler++
-            }
-
-            if (!document.getElementById('pcodevalue' + i).value) {
-                code.parentNode.classList.add('invoice-control-invalid')
-                handler++
-            }
-
-
-            if (!document.getElementById('pricevalue' + i).value) {
-                price.parentNode.classList.add('invoice-control-invalid')
-                handler++
-            }
-        }
+    //Items count
+    if (document.getElementById('items').childElementCount < 1) {
+        handler++
+        Swal.fire({
+            icon: 'error',
+            text: 'Debe haber al menos 1 producto',
+            button: true,
+        });
     }
+
+
 
     return handler;
 }

@@ -213,10 +213,12 @@ function getProductData(row){
             },
             500: function () {
                 document.getElementById('loader' + row).classList.remove('d-block');
-                Toast.fire({
-                    type: 'warning',
-                    title: ' Error en el servidor.'
-               })
+                Swal.fire({
+                    position: 'top',
+                    type: 'error',
+                    html: 'Error crítico:',
+                    showConfirmButton: true,
+                });
             }
         }
     })
