@@ -1,6 +1,6 @@
 <div class="row py-2 px-1" id="products">
     @foreach ($products as $item)
-    <div class="col-md-2">
+    <div class="col-xl-2 col-lg-3 col-md-4">
         <div class="card cursor-pointer" onclick="add({{ $item->id }})" style="height: 200px">
             <div class="card-content h-100">
                 <div style="background-image: url('{{ asset($item->first_image->src) }}'); background-size: 
