@@ -106,19 +106,110 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {            
+    {
         try {
-            $counter = $request->trCount;
-            if ($this->validateItems($counter, $request)) {
-                return response()->json(['message'=> 'Si Pasa'], 200);
-            }else{
-                return response()->json(['message'=> 'No pasaa'], 500);
+
+            if ($this->validateItems($request)) {
+                //payment info
+                $payment = Payments::create(['payment_method' => '1', 'total' => $request->grandtotalvalue, 'payed_with' => $request->grandtotalvalue,
+                'returned' => 0.00, 'description' => 'N/A']);
+
+                //invoice headers info
+                $sale = new Sales;
+                $sale->payment_id = $payment->id;
+                $sale->invoice_type = "1";
+                $sale->user_id = $request->user()->id;
+                $sale->unregistered_customer = $request->name;
+                $sale->additional_discounts = $request->additionalDiscounts;
+                $sale->additional_payments = $request->additionalPayments;
+                $sale->total_quantity = $request->grandquantityvalue;
+                $sale->subtotal = $request->subtotalvalue;
+                $sale->total_discounts = $request->additionalDiscounts;
+                $sale->total_tax = "0.00"; //Temporal data
+                $sale->total = $request->grandtotalvalue;
+
+                if ($sale->save()) {
+
+                    $id = $sale->id;
+                    $product_list = array();
+                    $counter = $request->itemsCount;
+
+                    for ($i = 1; $i <= $counter; $i++) {
+                        $saleitem = new Sales_items;
+                        $saleitem->sale_id = $id;
+                        //database and request handlers
+                        $data = ['productId', 'quantityValue', 'priceValue', 'amountValue', 'totalValue'];
+                        $db = ['product_id', 'quantity', 'unit_price', 'unit_tax', 'total'];
+                        for ($j = 0; $j < 5; $j++) {
+                            //Packing item data to -> $saleitem
+                            $modifier = $data[$j] . "" . $i;
+                            $dbmodifier = $db[$j];
+                            $saleitem->$dbmodifier = $request->$modifier;
+                        } //for $j
+
+                        if ($saleitem->save()) {
+                            //Update quantity 
+                            $product = Products::find($saleitem->product_id);
+                            // Make sure we've got the Products model
+                            if ($product) {
+                                $product->stock = ($product->stock - $saleitem->quantity);
+
+                                if ($product->save()) {
+                                    //Adding $saleitems to -> $invoice_products array
+                                    $product_items = array(
+                                        'code' => $product->code,
+                                        'name' => $product->name,
+                                        'quantity' => $saleitem->quantity,
+                                        'price' => $saleitem->unit_price,
+                                        'total' => $saleitem->total
+                                    );
+
+                                    array_push($product_list, $product_items);
+
+                                    //Adding to Kardex
+                                    $kardex = new Kardex;
+                                    $kardex->tag = "Venta de producto";
+                                    $kardex->product_id = $saleitem->product_id;
+                                    $kardex->quantity = $saleitem->quantity;
+                                    $kardex->difference = "+ $" . $saleitem->total;
+                                    $kardex->unit_price = $saleitem->unit_price;
+                                    $kardex->total = $saleitem->total;
+
+                                    if (!$kardex->save()) {
+                                        throw new Exception("Could not save kardex information at product ". $i, 1);  
+                                    }
+                                }else{
+                                    throw new Exception("Could not update stock of product " . $i, 1);  
+                                }
+
+                            } else {
+                                throw new Exception("Product " . $i . "not exist", 1);    
+                            }
+
+                        } else {
+                            $sale->delete();
+                            throw new Exception("Corrupt data in item: ". $i, 1);
+                        }
+                        
+                    } //for $i
+
+                    Simple_invoice::create(['sale_id' => $sale->id]);
+
+                    //Design invoice
+                    $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");
+
+                    //send invoice
+                    return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);
+
+                }else{
+                    throw new Exception("Error guardando la informacion de la venta", 1);
+                }
+
+            } else {
+                return response()->json(['message' => 'Data was invalid'], 500);
             }
-            
         } catch (Exception $e) {
-
-            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
-
+            return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
         }
     }
         

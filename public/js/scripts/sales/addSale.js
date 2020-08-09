@@ -13,7 +13,7 @@ $('#createOrderForm').unbind('submit').bind('submit', function (event) {
                     html: 'Por favor espere...',
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
-                        Swal.fire.showLoading()
+                        Swal.showLoading()
                     },
                 })
             },
@@ -23,18 +23,18 @@ $('#createOrderForm').unbind('submit').bind('submit', function (event) {
                     position: 'top-end',
                     icon: 'success',
                     title: response.message,
-                    button: false,
+                    showConfirmButton: false,
                 });
                 //Clear all fields
                 $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
-                //print(response.data);
+                print(response.data);
             },
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({
                     position: 'top',
                     icon: 'error',
                     html: 'Error crítico: ' + xhr.responseText,
-                    button: true,
+                    showConfirmButton: true,
                 });
             }
         });
@@ -45,16 +45,9 @@ function validate(){
     let handler = 0
     //reset all fields messages
 
-    const fields = document.getElementsByClassName('invoice-control-invalid')
     const invalidfields = document.getElementsByClassName('is-invalid')
     const messages = document.getElementsByClassName('error')
-    const fieldslength = fields.length
     const messageslength = messages.length
-    if (fieldslength > 0) {
-        for (let x = 0; x < fieldslength; x++) {
-            fields[0].classList.remove('invoice-control-invalid') 
-        }
-    }
 
     if (messageslength > 0) {
         for (let x = 0; x < messageslength; x++) {
@@ -82,11 +75,9 @@ function validate(){
         Swal.fire({
             icon: 'error',
             text: 'Debe haber al menos 1 producto',
-            button: true,
+            showConfirmButton: true,
         });
     }
-
-
 
     return handler;
 }

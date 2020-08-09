@@ -9,6 +9,8 @@ use App\Jobs\CreateInvoice;
 use App\Payments_dates;
 use App\Credits;
 use App\Sales_items;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 /**
  * 
@@ -105,15 +107,37 @@ trait Helpers
         }
     }
 
-    public function validateItems($counter, $name){
+    public function validateItems($request){
+        $counter = $request->itemsCount;
 
         if ($counter < 1) {
             throw new Exception("Debe haber al menos un item", 1);
         }
 
-        if ($name == "") {
+        if ($request->name == "") {
             throw new Exception("Nombre requerido", 1);
         }
+
+        $all_rules = array();
+
+        for ($i=1; $i <= $counter ; $i++) { 
+            $rules = array(
+            "productId". $i => ["required", "numeric"],
+            "quantityValue". $i => ["required", "numeric"],
+            "priceValue". $i => ["required", "numeric"],
+            "totalValue". $i => ["required", "numeric"]
+            );
+
+        array_push($all_rules, $rules);
+
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+            {
+                return response()->json(['message' => 'Error de validacion: '. $validator->getMessageBag()], 400);
+            }
 
         return true;
     }

@@ -100,7 +100,7 @@
                                         <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
                                     </li>
                                 </ul>
-                                <input type="hidden" id="itemsCount" name="itemsCount" value="4"><!-- itemsCount-->
+                                <input type="hidden" id="itemsCount" name="itemsCount"><!-- itemsCount-->
                                 <button type="submit" id="createSale" data-loading-text="Cargando..."
                                     class="btn btn-success btn-block mt-2">Registrar factura</button>
                             </div>

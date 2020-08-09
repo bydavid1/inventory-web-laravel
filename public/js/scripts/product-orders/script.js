@@ -27,20 +27,20 @@ function add(id){
                                                 <i class="fa fa-trash fa-2x"></i>
                                             </button>
                                         </div>
-                                        <input type="hidden" id="productId" value="${id}"/>
+                                        <input type="hidden" id="productId${count}" name="productId${count}" value="${id}"/>
+                                        <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
                                         <div class="col-md-4 py-0 h-100 my-auto">
                                             <h6><span id="quantity${count}">1</span> ${data[0].name}<h6>
-                                            <input type="hidden" value="1" id="quantityValue${count}"/>
+                                            <input type="hidden" value="1" id="quantityValue${count}" name="quantityValue${count}"/>
                                         </div>
                                         <div class="col-md-3 py-0 h-100 my-auto"> 
                                             <h6>$${price}</h6>
-                                            <input type="hidden" value="${price}" id="priceValue${count}"/>
+                                            <input type="hidden" value="${price}" id="priceValue${count}" name="priceValue${count}"/>
                                         </div>
                                         <div class="col-md-3 py-0 h-100 my-auto"> 
                                             <h6 id="total${count}">$${price}</h6>
-                                            <input type="hidden" value="${price}" id="totalValue${count}"/>
+                                            <input type="hidden" value="${price}" id="totalValue${count}" name="totalValue${count}"/>
                                         </div>
-                                        <input type="hidden" id="taxValue" value="0.00"/>
                                         <div class="col-md-1 py-0 h-100 my-auto"> 
                                             <button class="btn btn-primary" onclick="editItem(${id})"><i class="fa fa-edit"></i></button>
                                         </div>
@@ -74,7 +74,7 @@ function add(id){
                     position: 'top-end',
                     icon: 'error',
                     text: 'Error en el servidor',
-                    button: false,
+                    showConfirmButton: false,
                     timer: 1500
                 });
             }
@@ -103,7 +103,7 @@ document.addEventListener('click', function(event){
                     position: 'top-end',
                     icon: 'error',
                     text: 'Error en el servidor ' + xhr.responseText,
-                    button: false,
+                    showConfirmButton: false,
                 });
             }
         });
@@ -163,7 +163,7 @@ function removeItem(id){
             position: 'top-end',
             icon: 'error',
             text: 'Error' + error + ". Recargue el sitio",
-            button: false,
+            showConfirmButton: false,
         });
     }
 }
@@ -177,11 +177,14 @@ function reAssignCounts(){
         for (let i = 1; i <= numOfItems; i++) {
             let currentChild = childs[i].getAttribute('item')
             //rename ids
+            changeIdAndName('productId' + currentChild, 'productId' + i)
+            changeIdAndName('quantityValue' + currentChild, 'quantityValue' + i)
+            changeIdAndName('priceValue' + currentChild, 'priceValue' + i)
+            changeIdAndName('totalValue' + currentChild, 'totalValue' + i)
+            changeIdAndName('amountValue' + currentChild, 'amountValue' + i)
+
             document.getElementById('quantity' + currentChild).id = 'quantity' + i
-            document.getElementById('quantityValue' + currentChild).id = 'quantityValue' + i
-            document.getElementById('priceValue' + currentChild).id = 'priceValue' + i
             document.getElementById('total' + currentChild).id = 'total' + i
-            document.getElementById('totalValue' + currentChild).id = 'totalValue' + i
 
             //rename item attribute
             childs[i].setAttribute('item', i)
@@ -190,4 +193,10 @@ function reAssignCounts(){
 
     calculate()
 }   
+
+function changeIdAndName(identifier, nameOrId){
+    const element = document.getElementById(identifier)
+    element.tagName = nameOrId
+    element.id = nameOrId
+}
 
