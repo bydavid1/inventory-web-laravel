@@ -15,6 +15,7 @@ use App\Payments;
 use App\Credit_invoice;
 use App\Kardex;
 use App\Traits\Helpers;
+use Exception;
 
 class CreditController extends Controller
 {
@@ -36,7 +37,7 @@ class CreditController extends Controller
      */
     public function create()
     {
-        return \view('credit.addCredit');
+        return \view('sales.addCredit');
     }
 
     /**
@@ -121,10 +122,9 @@ class CreditController extends Controller
                     array_push($product_list, $product_items);
     
                 }else{
-    
                     $sale->delete();
                     return response()->json(['message'=>'No se terminó de crear la factura'], 500);
-                    }
+                }
     
                 } //for $i
     
@@ -145,50 +145,5 @@ class CreditController extends Controller
                 return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
     
             }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
