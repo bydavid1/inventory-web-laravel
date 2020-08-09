@@ -15,9 +15,7 @@ function add(id){
                 const data = response.product;
                 const id = data[0].id
                 const price = Number(data[0].first_price.price_incl_tax).toFixed(2);
-
-                const count = Number(document.getElementById('items').childElementCount) + 1
-
+                const count = Number(document.getElementById('items').childElementCount) + 1 //add 1 to total items
                 const itemrow = document.getElementById(id) ///Element could exist or not
 
                 //verify if exist item
@@ -178,10 +176,18 @@ function reAssignCounts(){
         const childs = document.getElementById('items').childNodes
         for (let i = 1; i <= numOfItems; i++) {
             let currentChild = childs[i].getAttribute('item')
+            //rename ids
+            document.getElementById('quantity' + currentChild).id = 'quantity' + i
+            document.getElementById('quantityValue' + currentChild).id = 'quantityValue' + i
+            document.getElementById('priceValue' + currentChild).id = 'priceValue' + i
+            document.getElementById('total' + currentChild).id = 'total' + i
+            document.getElementById('totalValue' + currentChild).id = 'totalValue' + i
 
-            
+            //rename item attribute
+            childs[i].setAttribute('item', i)
         }
     }
 
+    calculate()
 }   
 
