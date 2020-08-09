@@ -18,16 +18,16 @@ function add(id){
 
                 const count = Number(document.getElementById('items').childElementCount) + 1
 
-                const itemrow = document.getElementById('item' + id) ///Element could exist or not
+                const itemrow = document.getElementById(id) ///Element could exist or not
 
                 //verify if exist item
                 if (!itemrow) {
-                    let item = `<div class="list-group-item pr-3" id="item${id}" item="${count}">
+                    let item = `<div class="list-group-item pr-3" id="${id}" item="${count}">
                                     <div class="row p-0">
                                         <div class="col-md-1 py-0 h-100 my-auto">
-                                            <span>
+                                            <button type="button" class="btn bg-transparent" onclick="removeItem(${id})">
                                                 <i class="fa fa-trash fa-2x"></i>
-                                            </span>
+                                            </button>
                                         </div>
                                         <input type="hidden" id="productId" value="${id}"/>
                                         <div class="col-md-4 py-0 h-100 my-auto">
@@ -52,7 +52,7 @@ function add(id){
                     document.getElementById('items').insertAdjacentHTML('beforeend', item)
                 }else{
 
-                    const count = itemrow.getAttribute('item')
+                    const count = itemrow.getAttribute('item') //get count value from existing element
 
                     let quantity = document.getElementById('quantityValue' + count)
                     let qtyValue = Number(quantity.value) + 1
@@ -123,6 +123,7 @@ function calculate(){
 
     //seting trcount value
     document.getElementById('itemsCount').value = childs
+
     //sum all items
     for (let i = 1; i <= childs; i++) {
         grandQuantity += Number(document.getElementById('quantityValue' + i).value)
@@ -142,7 +143,6 @@ function calculate(){
 function calculateAdditionalData(subtotal){
     const discounts =  Number(document.getElementById('additionalDiscounts').value).toFixed(2)
     const payments =  Number(document.getElementById('additionalPayments').value).toFixed(2)
-
     const total = (Number(subtotal) + payments - discounts).toFixed(2)
 
     document.getElementById('grandtotal').textContent = "$" + total
@@ -151,3 +151,37 @@ function calculateAdditionalData(subtotal){
     document.getElementById('additionalpayments').textContent = "$" + payments
 
 }
+
+//----------------------------------------------------------------
+//--------------------Remove Item----------------------------------
+//----------------------------------------------------------------
+
+function removeItem(id){
+    try {
+        document.getElementById(id).remove();
+        reAssignCounts()
+    } catch (error) {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            text: 'Error' + error + ". Recargue el sitio",
+            button: false,
+        });
+    }
+}
+
+function reAssignCounts(){
+    const numOfItems = document.getElementById('items').childElementCount
+    document.getElementById('itemsCount').value = numOfItems//set numOfitems to items count
+
+    if (!numOfItems < 1) {
+        const childs = document.getElementById('items').childNodes
+        for (let i = 1; i <= numOfItems; i++) {
+            let currentChild = childs[i].getAttribute('item')
+
+            
+        }
+    }
+
+}   
+

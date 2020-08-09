@@ -8,12 +8,15 @@ use App\Kardex;
 use App\Jobs\CreateInvoice;
 use App\Payments_dates;
 use App\Credits;
+use App\Sales_items;
 
 /**
  * 
  */
 trait Helpers
 {
+
+    protected $items = array();
     
     public function storedata($status, $productid, $quantity, $price, $total){
         if ($status == "new") {
@@ -100,5 +103,18 @@ trait Helpers
             $paymentdate->status = "Pendiente";
             $paymentdate->save();
         }
+    }
+
+    public function validateItems($counter, $name){
+
+        if ($counter < 1) {
+            throw new Exception("Debe haber al menos un item", 1);
+        }
+
+        if ($name == "") {
+            throw new Exception("Nombre requerido", 1);
+        }
+
+        return true;
     }
 }
