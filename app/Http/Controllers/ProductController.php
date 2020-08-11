@@ -88,7 +88,7 @@ class ProductController extends Controller
         if ($product->count() > 0) {
             return response()->json(['success' => true, 'product' => $product], 200);
         }else{
-            return response()->json(['success' => false, 'product' => null], 200);
+            return response()->json(['success' => false], 204);
         }
     }
 

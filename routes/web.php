@@ -82,3 +82,4 @@ Route::post('credits/create/store', 'CreditController@store')->name('storeCredit
 
 //Others
 Route::get('pagination/fetch', 'SaleController@pagination');
+Route::get('pagination/fetch/search/{query}', 'SaleController@search');

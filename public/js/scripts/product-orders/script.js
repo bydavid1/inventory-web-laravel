@@ -1,3 +1,16 @@
+
+$(document).ready(function () {
+
+    var typingTimer; 
+    var doneTypingInterval = 200;
+
+    $('#searchInput').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(searchProduct, doneTypingInterval);
+
+    });
+})
+
 function add(id){
 
     let url =  domain.getDomain('api/products/order/' + id)
@@ -9,8 +22,7 @@ function add(id){
         beforeSend: function (objeto) {
 
         },
-        statusCode: {
-            200: function (response) {
+        success: function(response){
                 //get data object fron json
                 const data = response.product;
                 const id = data[0].id
@@ -64,21 +76,16 @@ function add(id){
                 }
 
                 calculate()
-
-            },
-            204: function () {
-
-            },
-            500: function () {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    text: 'Error en el servidor',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        }
+        },
+        error: function(xhr, textStatus, errorMessage){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text: 'Error en el servidor: ' + xhr.responseJSON.message,
+                showConfirmButton: false,
+                timer: 1700
+            });
+        },
     })
 }
 
@@ -102,7 +109,7 @@ document.addEventListener('click', function(event){
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    text: 'Error en el servidor ' + xhr.responseText,
+                    text: 'Error en el servidor: ' + xhr.responseJSON.message,
                     showConfirmButton: false,
                 });
             }
@@ -198,5 +205,30 @@ function changeIdAndName(identifier, nameOrId){
     const element = document.getElementById(identifier)
     element.tagName = nameOrId
     element.id = nameOrId
+}
+
+
+//----------------------------------------------------------------------
+//-------------------------Search Product---------------------------------
+//----------------------------------------------------------------------
+
+function searchProduct() {
+    
+    let query = document.querySelector('#searchInput').value
+    let url = '/pagination/fetch/search/' + query
+
+    $.ajax({
+        type: 'get',
+        url: url,
+        beforeSend: function (objeto) {
+            
+        },
+        success: function(data) {
+            document.getElementById('products').innerHTML = data
+        },
+        error: function(){
+
+        }
+    })
 }
 

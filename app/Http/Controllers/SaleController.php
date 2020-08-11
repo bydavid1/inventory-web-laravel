@@ -98,6 +98,22 @@ class SaleController extends Controller
         }
     }
 
+    /**
+     * Search products pagination with ajax 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($query)
+    {
+        if ($query != "") {
+            $products = Products::select('id','code','name','stock','description')->with(['first_price', 'first_image'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->paginate(15);
+        }else{
+            $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
+        }
+            
+        return view('sales.list_products', compact('products'))->render();
+    }
+
 
     /**
      * Store a newly created resource in storage.
