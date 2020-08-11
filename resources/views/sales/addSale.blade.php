@@ -127,8 +127,6 @@
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
 <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
-<!-- Modal script -->
-<script src="{{ asset('js/scripts/product-orders/modal.js') }}"></script>
 <!-- Owner -->
 <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
 @routes
