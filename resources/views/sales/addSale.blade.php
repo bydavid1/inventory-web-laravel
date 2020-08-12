@@ -4,6 +4,7 @@
 <!-- For Design -->
 <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/extensions/sweetalert2.css') }}">
 <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css') }}">
 @endsection
 
 @section('content')
@@ -25,12 +26,12 @@
                 </div>
                 <div style="border-left: 1px solid #707070" class="col-md-4 p-0  overflow-auto">
                     <div class="content-header bg-white p-2" style="">
-                        <div class="content-header row">
-                            <div class="content-header-left col-md-4 h-100 my-auto">
+                        <div class="row h-100">
+                            <div class="col-md-4 h-100 my-auto">
                                 <h4>Detalles</h4>
                             </div>
-                            <div class="content-header-right col-md-8">
-                                <div class="form-group">
+                            <div class="col-md-8">
+                                <div class="form-group my-auto">
                                     <input type="text" class="form-control" name="name" id="name"
                                         placeholder="Nombre del cliente" autocomplete="off">
                                 </div>
@@ -123,6 +124,7 @@
 <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js') }}"></script>
 <!-- CN module -->
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
