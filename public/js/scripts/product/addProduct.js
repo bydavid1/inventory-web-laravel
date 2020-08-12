@@ -14,7 +14,7 @@ document.getElementById('submitProductForm').addEventListener('submit', function
         const formdata = new FormData(this);
     
         request.addEventListener('progress', function(){
-            swal({
+            Swal.fire({
                 title: 'Guardando',
                 title: 'Por favor espere...',
                 allowOutsideClick: false,
@@ -31,7 +31,7 @@ document.getElementById('submitProductForm').addEventListener('submit', function
             if (request.readyState === DONE) {
                 if (request.status === OK) {
                     console.log(request.responseText); // 'This is the returned text.'
-                    swal({
+                    Swal.fire({
                         position: 'top-end',
                         icon: 'success',
                         title: 'Guardado',
@@ -43,7 +43,7 @@ document.getElementById('submitProductForm').addEventListener('submit', function
                     document.getElementById('submitProductForm').reset()
     
                 } else {
-                    swal({
+                    Swal.fire({
                         position: 'top',
                         icon: 'error',
                         text: 'Ocurrio un error en el servidor',

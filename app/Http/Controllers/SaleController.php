@@ -103,9 +103,9 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($query)
+    public function search($query = null)
     {
-        if ($query != "") {
+        if ($query != null) {
             $products = Products::select('id','code','name','stock','description')->with(['first_price', 'first_image'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->paginate(15);
         }else{
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);

@@ -13,7 +13,7 @@ $(document).ready(function () {
 
 function add(id){
 
-    let url =  domain.getDomain('api/products/order/' + id)
+    let url =  '../api/products/order/' + id
 
     $.ajax({
         type: 'get',
@@ -32,24 +32,39 @@ function add(id){
 
                 //verify if exist item
                 if (!itemrow) {
-                    let item = `<div class="list-group-item pr-3" id="${id}" item="${count}">
+                    let item = `<div class="list-group-item p-0" id="${id}" item="${count}">
                                     <div class="row p-0">
+                                        <input type="hidden" id="productId${count}" name="productId${count}" value="${id}"/>
+                                        <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
                                         <div class="col-md-1 py-0 h-100 my-auto">
                                             <button type="button" class="btn bg-transparent" onclick="removeItem(${id})">
                                                 <i class="fa fa-trash fa-2x"></i>
                                             </button>
                                         </div>
-                                        <input type="hidden" id="productId${count}" name="productId${count}" value="${id}"/>
-                                        <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
-                                        <div class="col-md-4 py-0 h-100 my-auto">
-                                            <h6><span id="quantity${count}">1</span> ${data[0].name}<h6>
+                                        <div class="col-md-2 py-0 h-100 my-auto">
+                                            <fieldset>
+                                                <div class="input-group bootstrap-touchspin">
+                                                    <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1">
+                                                    <span class="input-group-btn-vertical">
+                                                        <button class="btn btn-primary bootstrap-touchspin-up" type="button">
+                                                            <i class="fa fa-angle-up"></i>
+                                                        </button>
+                                                        <button class="btn btn-primary bootstrap-touchspin-down" type="button">
+                                                            <i class="fa fa-angle-down"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </fieldset>
                                             <input type="hidden" value="1" id="quantityValue${count}" name="quantityValue${count}"/>
                                         </div>
-                                        <div class="col-md-3 py-0 h-100 my-auto"> 
+                                        <div class="col-md-4 py-0 h-100 my-auto">
+                                            <h6>${data[0].name}<h6>
+                                        </div>
+                                        <div class="col-md-2 py-0 h-100 my-auto"> 
                                             <h6>$${price}</h6>
                                             <input type="hidden" value="${price}" id="priceValue${count}" name="priceValue${count}"/>
                                         </div>
-                                        <div class="col-md-3 py-0 h-100 my-auto"> 
+                                        <div class="col-md-2 py-0 h-100 my-auto"> 
                                             <h6 id="total${count}">$${price}</h6>
                                             <input type="hidden" value="${price}" id="totalValue${count}" name="totalValue${count}"/>
                                         </div>
@@ -69,7 +84,7 @@ function add(id){
                     let totalValue = (qtyValue * price).toFixed(2)
 
                     quantity.value = qtyValue
-                    document.getElementById('quantity' + count).textContent = qtyValue
+                    document.getElementById('quantity' + count).value = qtyValue
                     document.getElementById('quantityValue' + count).value = qtyValue
                     document.getElementById('total' + count).textContent = `$${totalValue}`
                     document.getElementById('totalValue' + count).value = totalValue
@@ -226,8 +241,13 @@ function searchProduct() {
         success: function(data) {
             document.getElementById('products').innerHTML = data
         },
-        error: function(){
-
+        error: function(xhr, textStatus, errorMessage){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text: 'Error en el servidor: ' + xhr.responseJSON.message,
+                showConfirmButton: false,
+            });
         }
     })
 }

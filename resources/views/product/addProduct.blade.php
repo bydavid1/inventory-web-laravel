@@ -6,7 +6,7 @@
 <!-- Fileinput -->
 <link rel="stylesheet" href="{{ asset('plugins/fileinput/css/fileinput.min.css') }}">
 <!-- SweetAlert -->
-<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/extensions/sweetalert.css') }}">
+<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/extensions/sweetalert2.css') }}">
 @endsection
 
 @section('content')
@@ -340,7 +340,7 @@
 <!-- Fileinput -->
 <script src="{{ asset('plugins/fileinput/js/fileinput.min.js') }}"></script>
 <!-- sweetalert -->
-<script src="{{ asset('app-assets/vendors/js/extensions/sweetalert.min.js') }}"></script>
+<script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.min.js') }}"></script>
 @routes
 <!-- CN module -->
 <script src="{{ asset('js/path.js') }}"></script>
