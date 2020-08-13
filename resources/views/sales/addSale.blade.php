@@ -38,12 +38,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-auto" style="height: 35%">
+                    <div class="overflow-auto" style="height: 40%">
                         <ul id="items" class="list-group py-1">
 
                         </ul>
                     </div>
-                    <div class="position-absolute bottom-0">
+                    <div class="position-absolute" style="bottom: 0">
                         <!-- card-->
                         <div class="card card-outline card-dangers mb-0">
                             <div class="card-body">

@@ -33,7 +33,7 @@ function add(id){
                 //verify if exist item
                 if (!itemrow) {
                     let item = `<div class="list-group-item p-0" id="${id}" item="${count}">
-                                    <div class="row p-0">
+                                    <div class="row p-0 w-100">
                                         <input type="hidden" id="productId${count}" name="productId${count}" value="${id}"/>
                                         <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
                                         <div class="col-md-1 py-0 h-100 my-auto">
@@ -67,7 +67,7 @@ function add(id){
                                             <input type="hidden" value="${price}" id="totalValue${count}" name="totalValue${count}"/>
                                         </div>
                                         <div class="col-md-1 py-0 h-100 my-auto"> 
-                                            <button class="btn btn-primary" onclick="editItem(${id})"><i class="fa fa-edit"></i></button>
+                                            <button type="button" class="btn btn-primary" onclick="editItem(${id})"><i class="fa fa-edit"></i></button>
                                         </div>
                                     </div>
                                 </div>`
