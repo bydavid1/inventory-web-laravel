@@ -8,6 +8,7 @@ use App\Kardex;
 use App\Jobs\CreateInvoice;
 use App\Payments_dates;
 use App\Credits;
+use App\Products;
 use App\Sales_items;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
@@ -120,15 +121,24 @@ trait Helpers
 
         $all_rules = array();
 
-        for ($i=1; $i <= $counter ; $i++) { 
+        for ($i=1; $i <= $counter ; $i++) {
+            //validation rules 
             $rules = array(
-            "productId". $i => ["required", "numeric"],
-            "quantityValue". $i => ["required", "numeric"],
-            "priceValue". $i => ["required", "numeric"],
-            "totalValue". $i => ["required", "numeric"]
+                "productId". $i => ["required", "numeric"],
+                "quantityValue". $i => ["required", "numeric"],
+                "priceValue". $i => ["required", "numeric","min:0","max:9999999"],
+                "totalValue". $i => ["required", "numeric","min:0","max:9999999"]
             );
 
-        array_push($all_rules, $rules);
+            //stock validation
+            $requiredQuantity = $request->{"quantityValue" . $i};
+            $currentId = $request->{"productId" . $i};
+            $currentItem = Products::select('stock', 'name')->where('id', $currentId)->first();
+            if ($requiredQuantity > $currentItem->stock) {
+                throw new Exception("Solo hay ". $currentItem->stock ." ". $currentItem->name ." y se requiren ". $requiredQuantity , 1);
+            }
+
+            array_push($all_rules, $rules);
 
         }
 
@@ -136,7 +146,7 @@ trait Helpers
 
         if ($validator->fails())
             {
-                return response()->json(['message' => 'Error de validacion: '. $validator->getMessageBag()], 400);
+                throw new Exception("Error Processing Request: " . $validator->getMessageBag(), 1);              
             }
 
         return true;
