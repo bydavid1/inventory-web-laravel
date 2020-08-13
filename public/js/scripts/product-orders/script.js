@@ -43,7 +43,7 @@ function add(id){
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto">
                                              <div class="input-group bootstrap-touchspin">
-                                                <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1">
+                                                <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1" onchange="calculateUnitTotals(this.id.substr(8))">
                                                 <span class="input-group-btn-vertical">
                                                     <button class="btn btn-primary bootstrap-touchspin-up" type="button">
                                                         <i class="fa fa-angle-up"></i>
@@ -73,22 +73,17 @@ function add(id){
                                 </div>`
 
                     document.getElementById('items').insertAdjacentHTML('beforeend', item)
+
+                    calculate()
                 }else{
 
                     const count = itemrow.getAttribute('item') //get count value from existing element
 
-                    let quantity = document.getElementById('quantityValue' + count)
-                    let qtyValue = Number(quantity.value) + 1
-                    let totalValue = (qtyValue * price).toFixed(2)
+                    let quantityValue = document.getElementById('quantityValue' + count)
+                    document.getElementById('quantity' + count).value = Number(quantityValue.value) + 1
 
-                    quantity.value = qtyValue
-                    document.getElementById('quantity' + count).value = qtyValue
-                    document.getElementById('quantityValue' + count).value = qtyValue
-                    document.getElementById('total' + count).textContent = `$${totalValue}`
-                    document.getElementById('totalValue' + count).value = totalValue
+                    calculateUnitTotals(count)
                 }
-
-                calculate()
         },
         error: function(xhr, textStatus, errorMessage){
             Swal.fire({
@@ -133,6 +128,18 @@ document.addEventListener('click', function(event){
 //----------------------------------------------------------------
 //--------------------Calculate----------------------------------
 //----------------------------------------------------------------
+function calculateUnitTotals(row){
+    let quantity = document.getElementById('quantity' + row).value
+    let price = document.getElementById('priceValue' + row).value
+
+    let totalValue = (quantity * price).toFixed(2)
+
+    document.getElementById('quantityValue' + row).value = quantity
+    document.getElementById('total' + row).textContent = `$${totalValue}`
+    document.getElementById('totalValue' + row).value = totalValue
+
+    calculate()
+}
 
 function calculate(){
     const childs = document.getElementById('items').childElementCount
@@ -159,14 +166,14 @@ function calculate(){
 
 
 function calculateAdditionalData(subtotal){
-    const discounts =  Number(document.getElementById('additionalDiscounts').value).toFixed(2)
-    const payments =  Number(document.getElementById('additionalPayments').value).toFixed(2)
-    const total = (Number(subtotal) + payments - discounts).toFixed(2)
+    const discounts =  document.getElementById('additionalDiscounts').value
+    const payments =  document.getElementById('additionalPayments').value
+    const total = (Number(subtotal) + Number(payments) - discounts).toFixed(2)
 
     document.getElementById('grandtotal').textContent = "$" + total
     document.getElementById('grandtotalvalue').value = total
-    document.getElementById('discounts').textContent = "$" + discounts
-    document.getElementById('additionalpayments').textContent = "$" + payments
+    document.getElementById('discounts').textContent = discounts == "" ? "$0.00" : "$" + discounts
+    document.getElementById('additionalpayments').textContent = payments == "" ? "$0.00" : "$" + payments
 
 }
 

@@ -212,7 +212,7 @@ class SaleController extends Controller
                     Simple_invoice::create(['sale_id' => $sale->id]);
 
                     //Design invoice
-                    $invoice = $this->designInvoice($product_list, $request->costumer, $sale, "invoices/");
+                    $invoice = $this->designInvoice($product_list, $request->name, $sale, "invoices/");
 
                     //send invoice
                     return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);

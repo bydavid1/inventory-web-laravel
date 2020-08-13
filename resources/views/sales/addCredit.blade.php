@@ -1,218 +1,125 @@
 @extends('layouts.app')
 
 @section('custom_header')
-      <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-      <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/extensions/sweetalert2.css') }}">
+<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css') }}">
 @endsection
 
 @section('content')
 
-<div class="app-content content">
-	<div class="content-header bg-white pb-0">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Factura credito fiscal</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="index.html">Ventas</a>
-                                </li>
-                                <li class="breadcrumb-item active">Nueva venta de credito fical
-                                </li>
-                            </ol>
+<div class="app-content content" style="height: 100%">
+    <div class="content-header bg-white pb-0">
+    </div>
+    <div class="content-body h-100">
+        <form class="h-100" id="createOrderForm">
+            @csrf
+            <div class="row h-100">
+                <div class="col-md-8 h-100 overflow-auto">
+                    <div class="col-md-12">
+                        <input class="form-control form-control-lg mt-1" id="searchInput" type="search" autofocus
+                            autocomplete="off" placeholder="Buscar en el inventario">
+                    </div>
+                    <div id="products">
+                        @include('sales.list_products')
+                    </div>
+                </div>
+                <div style="border-left: 1px solid #707070" class="col-md-4 p-0  overflow-auto">
+                    <div class="content-header bg-white p-2" style="">
+                        <div class="row h-100">
+                            <div class="col-md-3 h-100 my-auto">
+                                <h4>Cliente</h4>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <input type="hidden" id="costumerid" name="costumerid"/>
+                                    <input type="text" class="form-control" placeholder="Buscar" id="costumer"
+                                        name="name" aria-label="Enter..." aria-describedby="button-add" autocomplete="off"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button" id="button-add" data-toggle="modal"
+                                        data-target="#addCostumer"><i
+                                                class="fa fa-plus mr-1"></i>Nuevo cliente</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-						<button class="btn btn-float btn-outline-secondary" onclick="addRow()" id="addRowBtn">
-							<i class="fa fa-plus-circle fa-2x"></i>
-							<span>Añadir fila</span>
-						</button>
-						<button class="btn btn-float btn-outline-primary" data-toggle="modal" data-target="#SearchProducts">
-							<i class="fa fa-search fa-2x"></i>
-							<span>Buscar producto</span>
-                        </button>
+                    <div class="overflow-auto" style="height: 40%">
+                        <ul id="items" class="list-group py-1">
+
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="content-body">
-        <div class="content-wrapper">
-            <form class="form-horizontal" id="createForm" autocomplete="off"> 
-                @csrf
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="card card-primary card-outline">
-                            <div class="card-header">
-                                <h3 class="card-title">Información</h3>
-                            </div>
+                    <div class="position-absolute" style="bottom: 0">
+                        <!-- card-->
+                        <div class="card card-outline card-dangers mb-0">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-6 form-group">
-                                        <label for="costumer" class="control-label">Vendido a:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fa fa-search"></i></span>
-                                            </div>
-                                            <input type="hidden" id="costumerid" name="costumerid"/>
-                                            <input type="text" class="form-control" placeholder="Buscar" id="costumer"
-                                                name="costumer" aria-label="Enter..." aria-describedby="button-add" autocomplete="off"/>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-secondary" type="button" id="button-add" data-toggle="modal"
-                                                data-target="#addCostumer"><i
-                                                        class="fa fa-plus mr-1"></i>Nuevo cliente</button>
-                                            </div>
-                                        </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="label-control">Descuentos</label>
+                                        <input type="decimal" class="form-control" id="additionalDiscounts"
+                                            name="additionalDiscounts" placeholder="Descuento adicional"
+                                            onkeyup="calculate()">
                                     </div>
-                                    <div class="form-group col-lg-3">
-                                        <label for="payment" class="control-label">Estado de pago</label>
-                                        <div> 
-                                            <select class="form-control" placeholder="Fecha" id="payment" name="payment" onchange="moptions()">
-                                                <option value="1">Completo</option>
-                                                <option value="2">Crédito</option>
-                                            </select>
-                                        </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="label-control">Pago adicional</label>
+                                        <input type="decimal" class="form-control" id="additionalPayments"
+                                            name="additionalPayments" placeholder="Pago adicional"
+                                            onkeyup="calculate()">
                                     </div>
-                                    <div class="form-group col-lg-3">
-                                        <label for="date" class="control-label">Fecha de factura</label>
-                                        <div>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control pickadate" placeholder="Fecha"
-                                                autocomplete="off" id="date" name="date" />
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-th"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="label-control">Notas de la venta</label>
+                                        <textarea name="notes" id="notes" class="form-control"></textarea>
                                     </div>
                                 </div>
-        
-                                @include('product-order.productTable')
-        
-                                <div class="row mt-4">
-                                    <div class="col-md-4">
-                                        <div class="form-group col-md-12">
-                                            <label for="delivery" class="control-label">Estado de entrega</label>
-                                            <div class="col-md-12">
-                                                <select class="form-control" placeholder="Fecha" id="delivery" name="delivery">
-                                                    <option value="1">Completo</option>
-                                                    <option value="2">Parcial</option>
-                                                    <option value="0">Pendiente</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="name" class="control-label">Descuento</label>
-                                        <div class="col-sm-12">
-                                            <input type="number" class="form-control" name="discount" id="discount" placeholder="Desc.." autocomplete="off" />
-                                        </div>
-                                        <label for="name" class="mt-2 control-label">Cobros adcionales</label>
-                                        <div class="col-sm-12">
-                                            <input type="number" class="form-control" name="mpayments" id="mpayments" placeholder="Adicional.." autocomplete="off" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="col-sm-8 control-label">Terminos o comentarios</label>
-                                        <textarea class="form-control" placeholder="Comentarios adicionales" name="comments"></textarea>
-                                    </div>
-                                </div>
-                                <!--Num tr value-->
-                                <input type="hidden" name="trCount" id="trCount" autocomplete="off" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <!-- card-->
-                        <div class="card card-outline card-danger">
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <h4 class="mb-3 card-title">Resumen</h4>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                         Cantidad total
                                         <strong id="grandquantity">0</strong>
                                         <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Impuestos
-                                        <strong id="tax">$0.00</strong>
-                                        <input type="hidden" id="taxvalue" name="taxesvalue">
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                         Sub total
                                         <strong id="subtotal">$0.00</strong>
                                         <input type="hidden" id="subtotalvalue" name="subtotalvalue">
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                         Descuentos
                                         <strong id="discounts">$0.00</strong>
-                                        <input type="hidden" id="discountsvalue" name="discountsvalue">
                                     </li>
-                                    <li class="list-group-item d-none justify-content-between align-items-center" id="grandinterest">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                        Pagos adicionales
+                                        <strong id="additionalpayments">$0.00</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                        Impuestos
+                                        <strong id="tax">$0.00</strong>
+                                        <input type="hidden" id="taxvalue" name="taxesvalue">
+                                    </li>
+                                    <li class="list-group-item d-none justify-content-between align-items-center py-05"
+                                        id="grandinterest">
                                         Interés
                                         <strong id="interest">$0.00</strong>
                                         <input type="hidden" id="interestvalue" name="interestvalue">
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                         Total
                                         <strong id="grandtotal">$0.00</strong>
                                         <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
                                     </li>
                                 </ul>
+                                <input type="hidden" id="itemsCount" name="itemsCount"><!-- itemsCount-->
                                 <button type="submit" id="createSale" data-loading-text="Cargando..."
                                     class="btn btn-success btn-block mt-2">Registrar factura</button>
                             </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                        <!-- card-->
-                        <div class="card card-outline card-danger d-none" id="creditinfo">
-                            <div class="card-body">
-                                <h5 class="mb-3">Información del crédito</h5>
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="delivery" class="control-label">Numero de cuotas</label>
-                                            <input type="number" name="numfees" id="numfees" class="form-control"/>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="delivery" class="control-label">Fecha de inicio</label>
-                                            <input type="text" name="startdate" class="form-control datefield"/>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="delivery" class="control-label">Rango entre cuotas</label>
-                                            <select name="rangefees" id="rangefees" class="form-control">
-                                                <option value="1D">1 día</option>
-                                                <option value="1D">10 día</option>
-                                                <option value="15D" selected>15 días</option>
-                                                <option value="1M">1 mes</option>
-                                                <option value="2M">2 mes</option>
-                                                <option value="6M">6M</option>
-                                            </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="delivery" class="control-label">Porcentaje de interés</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-percent"></i></span>
-                                            </div>
-                                            <input type="decimal" name="interestper" id="interestper" class="form-control" max="100" min="0" value="3.0"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -230,7 +137,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <i class="fa fa-user fa-4x text-primary fa-rotate-right mb-1"></i>
+                    <i class="fa fa-user fa-4x text-primary mb-1"></i>
                 </div>
                 <form action="{{ route('makeCostumer') }}" method="POST">
                     @csrf
@@ -294,15 +201,13 @@
 
 @section('custom_footer')
     <!-- For design -->
-    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
     <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
     <!-- CN module -->
     <script src="{{ asset('js/path.js') }}"></script>
     <!-- Essential functions -->
-    <script src="{{ asset('js/scripts/product-orders/product-order.js') }}"></script>
-    <!-- Modal script -->
-    <script src="{{ asset('js/scripts/product-orders/modal.js') }}"></script>
+    <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
     <!-- Owner -->
     <script src="{{ asset('js/scripts/sales/addCredit.js') }}"></script>
     @routes
