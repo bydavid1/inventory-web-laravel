@@ -42,19 +42,17 @@ function add(id){
                                             </button>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto">
-                                            <fieldset>
-                                                <div class="input-group bootstrap-touchspin">
-                                                    <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1">
-                                                    <span class="input-group-btn-vertical">
-                                                        <button class="btn btn-primary bootstrap-touchspin-up" type="button">
-                                                            <i class="fa fa-angle-up"></i>
-                                                        </button>
-                                                        <button class="btn btn-primary bootstrap-touchspin-down" type="button">
-                                                            <i class="fa fa-angle-down"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </fieldset>
+                                             <div class="input-group bootstrap-touchspin">
+                                                <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1">
+                                                <span class="input-group-btn-vertical">
+                                                    <button class="btn btn-primary bootstrap-touchspin-up" type="button">
+                                                        <i class="fa fa-angle-up"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary bootstrap-touchspin-down" type="button">
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
                                             <input type="hidden" value="1" id="quantityValue${count}" name="quantityValue${count}"/>
                                         </div>
                                         <div class="col-md-4 py-0 h-100 my-auto">
@@ -252,3 +250,11 @@ function searchProduct() {
     })
 }
 
+function removeAllItems(){
+    const parent = document.getElementById('items')
+    const numOfItems = parent.childElementCount
+
+    for (let i = 1; i <= numOfItems; i++) {
+        parent.removeChild(parent.childNodes[1])
+    }
+}

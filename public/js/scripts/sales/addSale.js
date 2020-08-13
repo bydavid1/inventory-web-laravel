@@ -25,15 +25,16 @@ $('#createOrderForm').unbind('submit').bind('submit', function (event) {
                     title: response.message,
                     showConfirmButton: false,
                 });
-                //Clear all fields
-                $('#createOrderForm').closest('form').find("input[type=text], input[type=number], textarea").val("");
+                //reset form
+                removeAllItems()
+                document.getElementById('createOrderForm').reset()
                 print(response.data);
             },
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({
                     position: 'top',
                     icon: 'error',
-                    html: 'Error crítico: ' + xhr.responseText,
+                    html: xhr.responseJSON.message,
                     showConfirmButton: true,
                 });
             }

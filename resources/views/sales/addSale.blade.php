@@ -124,7 +124,6 @@
 <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
-<script src="{{ asset('app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js') }}"></script>
 <!-- CN module -->
 <script src="{{ asset('js/path.js') }}"></script>
 <!-- Essential functions -->
