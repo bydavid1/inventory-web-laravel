@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 
     var typingTimer; 
@@ -13,7 +12,7 @@ $(document).ready(function () {
 
 function add(id){
 
-    let url =  '../api/products/order/' + id
+    let url =  '../api/products/order/' + id + '/compact'
 
     $.ajax({
         type: 'get',
@@ -23,6 +22,7 @@ function add(id){
 
         },
         success: function(response){
+            console.log(response)
                 //get data object fron json
                 const data = response.product;
                 const id = data[0].id
@@ -264,4 +264,10 @@ function removeAllItems(){
     for (let i = 1; i <= numOfItems; i++) {
         parent.removeChild(parent.childNodes[1])
     }
+}
+
+function editItem(id){
+    let count = document.getElementById(id).getAttribute('item')
+
+    $("#editItem").modal('show')
 }
