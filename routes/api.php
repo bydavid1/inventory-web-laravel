@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('products', 'ProductController@getRecords');
 
-Route::get('products/order/{id}', 'ProductController@byId');
+Route::get('products/order/{id}/{options}', 'ProductController@byId'); //options parameter can be: all, compact...
 
 Route::get('products/order/code/{code}', 'ProductController@byCode');
 

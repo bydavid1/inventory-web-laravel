@@ -10,8 +10,8 @@
                     </div>
                 </div>
                 <div class="p-1" style="height: 40%">
-                    <h5 class=" text-primary">{{ $item->name }}</h5>
-                    <h6 class="card-text">${{ number_format($item->first_price->price, 2) }}</h6>
+                    <h5>{{ $item->name }}</h5>
+                    <h6 class="text-primary">${{ number_format($item->first_price->price, 2) }}</h6>
                 </div>
             </div>
         </div>

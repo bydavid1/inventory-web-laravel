@@ -115,7 +115,7 @@
 </div>
 
 <!-- Search product modal form -->
-@include('product-order.productModal')
+@include('sales.modalItem')
 
 @endsection
 

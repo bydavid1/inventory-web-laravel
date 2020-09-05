@@ -83,8 +83,19 @@ class ProductController extends Controller
         }
     }
 
-    public function byId($id){
-        $product = Products::where('id', $id)->with('first_price')->get();
+    public function byId($id, $options){
+        switch ($options) {
+            case 'all':
+                $product = Products::where('id', $id)->with(['prices','images'])->get();
+                break;
+            case 'compact':
+                $product = Products::where('id', $id)->with(['first_price','first_image'])->get();
+                break;
+            default:
+                $product = Products::where('id', $id)->get();
+                break;
+        }
+
         if ($product->count() > 0) {
             return response()->json(['success' => true, 'product' => $product], 200);
         }else{
