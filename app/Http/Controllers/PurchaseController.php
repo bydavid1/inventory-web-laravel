@@ -54,7 +54,10 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return \view('purchases');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return \view('pages.purchases', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -64,10 +67,13 @@ class PurchaseController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $categories = Categories::select(['id', 'name'])->where('is_available', 1)->get();
         $suppliers = Suppliers::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('purchases.addPurchase', compact(['categories', 'suppliers']));
+        return view('pages.purchases.addPurchase', compact(['categories', 'suppliers', 'breadcrumbs']));
     }
 
     /**

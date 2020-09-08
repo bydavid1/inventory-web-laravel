@@ -71,7 +71,10 @@ class SaleController extends Controller
      */
     public function index()
     {
-        return view('sales');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.sales', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -81,8 +84,11 @@ class SaleController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-        return view('sales.addSale', compact(['products']));
+        return view('pages.sales.addSale', compact(['products', 'breadcrumbs']));
     }
 
     /**
@@ -94,7 +100,7 @@ class SaleController extends Controller
     {
         if($request->ajax()){
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-            return view('sales.list_products', compact('products'))->render();
+            return view('pages.sales.list_products', compact('products'))->render();
         }
     }
 
@@ -111,7 +117,7 @@ class SaleController extends Controller
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
         }
             
-        return view('sales.list_products', compact('products'))->render();
+        return view('pages.sales.list_products', compact('products'))->render();
     }
 
 

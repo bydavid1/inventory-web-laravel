@@ -114,7 +114,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.products', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -124,11 +127,14 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $categories = Categories::select(['id','name'])->where('is_available', 1)->get();
         $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();
         $manufacturers = Manufacturers::select(['id','name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('product.addProduct', compact(['categories','providers', 'manufacturers']));
+        return view('pages.product.addProduct', compact(['categories','providers', 'manufacturers', 'breadcrumbs']));
     }
 
     /**
@@ -209,9 +215,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $product = Products::findOrFail($id);
 
-        return view('product.showProduct', compact('product'));
+        return view('pages.product.showProduct', compact('product', 'breadcrumbs'));
     }
 
     /**
@@ -222,6 +231,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $categories = Categories::select(['id','name'])->where('is_available', '1')->get();
         $suppliers = Suppliers::select(['id','name'])->where('is_available', '1')->get();
         $manufacturers = Manufacturers::select(['id','name'])->where('is_available', '1')->get();
@@ -237,7 +249,7 @@ class ProductController extends Controller
         ->where('id', $id)->get();
 
         //return response($product, 200);
-        return view('product.editProduct', compact(['product', 'categories', 'suppliers','manufacturers']));
+        return view('pages.product.editProduct', compact(['product', 'categories', 'suppliers', 'manufacturers', 'breadcrumbs']));
     }
 
     /**

@@ -37,8 +37,11 @@ class CreditController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-        return \view('sales.addCredit', compact(['products']));
+        return \view('pages.sales.addCredit', compact(['products', 'breadcrumbs']));
     }
 
     /**

@@ -44,7 +44,10 @@ class CostumerController extends Controller
      */
     public function index()
     {
-        return view('costumers');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.costumers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
