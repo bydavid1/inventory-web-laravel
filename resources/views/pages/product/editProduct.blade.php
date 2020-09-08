@@ -84,14 +84,14 @@
                                                 <label for="codProduct" class="control-label">Codigo: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-key"></i></span>
                                                     </div>
                                                     <input type="text" class="form-control @error('code') is-invalid @enderror" id="code"
                                                         placeholder="Codigo del producto" name="code"
                                                         autocomplete="ggg-ss" value="{{ $product[0]->code }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-random"></i></span>
+                                                                class="bx bx-random"></i></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -113,7 +113,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-truck"></i></span>
+                                                                class="bx bx-truck"></i></span>
                                                     </div>
                                                     <select class="form-control" id="provider_id" name="provider_id">
                                                         @foreach ($suppliers as $item)
@@ -131,7 +131,7 @@
                                                 <label>Categoría:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-tag"></i></span>
                                                     </div>
                                                     <select class="form-control" id="category_id" name="category_id">
                                                         @foreach ($categories as $item)
@@ -152,7 +152,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-spinner"></i></span>
+                                                                class="bx bx-spinner"></i></span>
                                                     </div>
                                                     <select class="form-control" id="is_available" name="is_available">
                                                         @if ($product[0]->is_available == 1)
@@ -172,7 +172,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-asterisk"></i></span>
+                                                                class="bx bx-asterisk"></i></span>
                                                     </div>
                                                     <select class="form-control" id="type" name="type">
                                                         @if ($product[0]->type == 1)
@@ -197,7 +197,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-cubes"></i></span>
+                                                                class="bx bx-cubes"></i></span>
                                                     </div>
                                                     <input type="number" class="form-control @error('stock') is-invalid @enderror" id="quantity"
                                                         placeholder="Stock" name="stock" autocomplete="ggg-ss"
@@ -210,7 +210,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-industry"></i></span>
+                                                                class="bx bx-industry"></i></span>
                                                     </div>
                                                     <select class="form-control" id="manufacturer_id"
                                                         name="manufacturer_id">
@@ -239,7 +239,7 @@
                                             <div class="input-group" id="message">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i
-                                                            class="fa fa-dollar"></i></span>
+                                                            class="bx bx-dollar"></i></span>
                                                 </div>
                                                 <input type="decimal" class="form-control" id="purchase"
                                                     placeholder="Precio de compra" name="purchase"
@@ -249,7 +249,7 @@
                                                 <div class="input-group mt-1">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
-                                                                class="fa fa-dollar"></i></span>
+                                                                class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price{{ $i }}"
                                                         placeholder="Precio {{ $i }}" name="price{{ $product[0]->prices[$i - 1]->id }}"
@@ -263,7 +263,7 @@
                                         <div class="col-sm-6">
                                             <div class="input-group" id="message">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fa fa-percent"></i></span>
+                                                    <span class="input-group-text"><i class="bx bx-percent"></i></span>
                                                 </div>
                                                 <select data-placeholder="Seleciona una categoría" class="custom-select"
                                                     id="tax_id" name="tax_id">
@@ -273,7 +273,7 @@
                                             @for ($i = 1; $i < 5; $i++) 
                                                 <div class="input-group mt-1">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility{{ $i }}"
                                                         placeholder="Utilidad {{ $i }}" name="utility{{ $product[0]->prices[$i - 1]->id }}"
@@ -306,7 +306,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
-                                autocomplete="ggg-ss"> <i class="fa fa-ok-sign"></i> Guardar</button>
+                                autocomplete="ggg-ss"> <i class="bx bx-ok-sign"></i> Guardar</button>
                         </div>
                         <!-- /modal-footer -->
                     </form>
@@ -341,8 +341,8 @@
         showCaption: true,
         browseLabel: 'Buscar en el equipo',
         removeLabel: 'Quitar',
-        browseIcon: '<i class="fa fa-folder-open"></i>',
-        removeIcon: '<i class="fa fa-remove"></i>',
+        browseIcon: '<i class="bx bx-folder-open"></i>',
+        removeIcon: '<i class="bx bx-remove"></i>',
         removeTitle: 'Cancel or reset changes',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',

@@ -180,7 +180,7 @@
 
 						if (settings.backLabel === true)
 						{
-							$('.back', target).html('<i class="fa fa-arrow-circle-o-left back-in"></i>'+label);
+							$('.back', target).html('<i class="bx bx-arrow-circle-o-left back-in"></i>'+label);
 						}
 						else
 						{

@@ -24,7 +24,7 @@ class KardexController extends Controller
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="fa fa-task" style="color: white"></i>Ver registros</a>
+                    <a type="button" class="btn btn-info" href="{{ route("records", "$id") }}"><i class="bx bx-task" style="color: white"></i>Ver registros</a>
                     </div>')
         ->addColumn('photo', function($products){
                     $path = asset($products->first_image->src);

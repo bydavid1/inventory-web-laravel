@@ -15,5 +15,6 @@ return [
         'isCustomizer' => true, //If True customizer available or false its not available
         'isCardShadow' => true, // Option: true(default) and false ( remove card shadow)
         'isScrollTop' => true, // Option: true and false (Hide Scroll To Top)
+        'extendApp' => false, // Option: hide content-wrapper class
     ],
 ];

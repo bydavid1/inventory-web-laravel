@@ -38,15 +38,15 @@ class ManufacturersController extends Controller
         $manufacturers = Manufacturers::where('is_deleted', '0');
         return datatables()->eloquent($manufacturers)
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="fa fa-edit" style="color: white"></i></button>
-                    <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="fa fa-trash" style="color: white"></i></button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
+                    <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
                     </div>')
         ->addColumn('image', '<img class="img-round" src="{{ asset($logo) }}"  style="max-height:50px; max-width:70px;"/>')
         ->addColumn('available', function($manufacturers){
             if ($manufacturers->is_available == 1) {
-                return '<i class="fa fa-check fa-2x text-success"></i>';
+                return '<i class="bx bx-check fa-2x text-success"></i>';
             }else{
-                return '<i class="fa fa-times fa-2x text-danger"></i>';
+                return '<i class="bx bx-times fa-2x text-danger"></i>';
             }
         })
         ->rawColumns(['actions', 'available', 'image'])

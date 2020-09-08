@@ -8,82 +8,53 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
 @endsection
 
+@section('tools')
+	<button class="btn btn-success" data-toggle="modal" data-target="#addCostumer">
+		<i class="bx bx-plus-circle fa-2x"></i>
+		<span>Nuevo Cliente</span>
+	</button>
+@endsection
+
 @section('content')
-<div class="app-content content">
-    <div class="content-header bg-white">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">CLientes</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Clientes
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-                        <button class="btn btn-float btn-outline-success" data-toggle="modal" data-target="#addCostumer">
-                            <i class="fa fa-plus-circle fa-2x"></i>
-                            <span>Nuevo Cliente</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="card">
+		<div class="card-body">
+			@if ( session('mensaje') )
+			<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
+			@endif
+			<table class="table table-condensed table-hover table-bordered table-striped" id="items">
+				<thead>
+					<tr>					
+						<th>Codigo</th>
+						<th>Nombre</th>							
+						<th>NIT</th>
+						<th>Telefono</th>
+						<th>Email</th>
+						<th>Dirección</th>
+						<th>Fecha de registro</th>
+						<th style="width:15%;" class="text-right">Opciones</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<!-- /.card-body -->
 	</div>
-	@if ( session('mensaje') )
-		<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
-	@endif
-    <div class="content-body">
-        <div class="content-wrapper">
-			<div class="card card-info">
-				<div class="card-header">
-					<h3 class="card-title">Lista de clientes</h3>
-				</div>
-				<!-- /.card-header -->
-				<div class="card-body">
-						<table class="table table-condensed table-hover table-bordered table-striped" id="items">
-							<thead>
-								<tr>					
-									<th>Codigo</th>
-									<th>Nombre</th>							
-									<th>NIT</th>
-									<th>Telefono</th>
-									<th>Email</th>
-									<th>Dirección</th>
-									<th>Fecha de registro</th>
-									<th style="width:15%;" class="text-right">Opciones</th>
-								</tr>
-							</thead>
-						</table>
-				</div>
-				<!-- /.card-body -->
-			</div>
-        </div>
-    </div>
-</div>
 
 
-<!-- Delete form-->
-<div class="d-none">
-	<form id="destroyform" method="POST">
-		@method('PUT')
-		@csrf
-	</form>
-</div>
+
+	<!-- Delete form-->
+	<div class="d-none">
+		<form id="destroyform" method="POST">
+			@method('PUT')
+			@csrf
+		</form>
+	</div>
 
 <!-- Create modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="addCostumer">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-user"></i> Registrar nuevo cliente</h4>
+				<h4 class="modal-title"><i class="bx bx-user"></i> Registrar nuevo cliente</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -92,7 +63,7 @@
 				<form id="createForm" method="POST">
 					@csrf
 					<div class="alert alert-info alert-icon-left" role="alert">
-						<strong>Tip:</strong> Click en <span class="fa fa-random"></span> para generar un codigo aleatorio
+						<strong>Tip:</strong> Click en <span class="bx bx-random"></span> para generar un codigo aleatorio
 					</div>
 					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
 						Hay datos importantes que hacen falta
@@ -103,12 +74,12 @@
 							<label for="name" class="control-label">Codigo: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-key"></i></span>
+									<span class="input-group-text"><i class="bx bx-key"></i></span>
 								</div>
 								<input type="text" class="form-control" placeholder="Ej: C123" name="code" id="code"
 								autocomplete="off">
 								<div class="input-group-append">
-									<button type="button" class="btn btn-outline-secondary"><i class="fa fa-random"></i></button>
+									<button type="button" class="btn btn-outline-secondary"><i class="bx bx-random"></i></button>
 								</div>
 							</div>
 						</div>
@@ -116,7 +87,7 @@
 							<label for="name" class="control-label">Telefono: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-phone"></i></span>
+									<span class="input-group-text"><i class="bx bx-phone"></i></span>
 								</div>
 								<input type="tel" class="form-control" placeholder="Ej: 7548-5689" name="phone" id="phone"
 								autocomplete="off">
@@ -126,7 +97,7 @@
 							<label for="name" class="control-label">Nombre: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-user"></i></span>
+									<span class="input-group-text"><i class="bx bx-user"></i></span>
 								</div>
 								<input type="text" class="form-control" placeholder="Nombre" name="name" id="name"
 								autocomplete="off">
@@ -136,7 +107,7 @@
 							<label for="name" class="control-label">NIT: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-id-card"></i></span>
+									<span class="input-group-text"><i class="bx bx-id-card"></i></span>
 								</div>
 								<input type="tel" class="form-control" placeholder="Ej: 45654-54555-555-5" name="nit" id="nit"
 								autocomplete="off">
@@ -146,7 +117,7 @@
 							<label for="name" class="control-label">Email: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+									<span class="input-group-text"><i class="bx bx-envelope"></i></span>
 								</div>
 								<input type="email" class="form-control" placeholder="Ej: 7548-5689" name="email" id="email"
 								autocomplete="off">
@@ -156,7 +127,7 @@
 							<label for="name" class="control-label">Direccion: </label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa fa-building"></i></span>
+									<span class="input-group-text"><i class="bx bx-building"></i></span>
 								</div>
 								<input type="text" class="form-control" placeholder="Ej: Santa Monica" name="address" id="address"
 								autocomplete="off">
@@ -164,7 +135,7 @@
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
-						autocomplete="off"> <i class="fa fa-save"></i> Guardar</button>
+						autocomplete="off"> <i class="bx bx-save"></i> Guardar</button>
 				</form>
 			</div>
         </div>
@@ -179,7 +150,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-user"></i> Editar informacion del cliente</h4>
+				<h4 class="modal-title"><i class="bx bx-user"></i> Editar informacion del cliente</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -197,7 +168,7 @@
                         <label for="name" class="control-label">Email: </label>
                         <div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+								<span class="input-group-text"><i class="bx bx-envelope"></i></span>
 							</div>
                             <input type="text" class="form-control" placeholder="Email" name="uemail" id="uemail"
                                 autocomplete="off">
@@ -207,7 +178,7 @@
                         <label for="name" class="control-label">Telefono: </label>
                         <div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-phone"></i></span>
+								<span class="input-group-text"><i class="bx bx-phone"></i></span>
 							</div>
                             <input type="text" class="form-control" placeholder="Telefono" name="uphone" id="uphone"
                                 autocomplete="off">
@@ -217,14 +188,14 @@
                         <label for="name" class="control-label">Dirección: </label>
                         <div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-building"></i></span>
+								<span class="input-group-text"><i class="bx bx-building"></i></span>
 							</div>
                             <input type="text" class="form-control" placeholder="Dirección" name="uaddress" id="uaddress"
                                 autocomplete="off">
                         </div>
                     </div>
 					<button type="submit" class="btn btn-primary btn-block" id="editCostumer"> <i
-							class="fa fa-edit"></i> Actualizar</button>
+							class="bx bx-edit"></i> Actualizar</button>
 				</form>
 			</div>
         </div>

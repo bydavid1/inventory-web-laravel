@@ -40,9 +40,9 @@ class ProductController extends Controller
         
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="fa fa-edit" style="color: white"></i></a>
-                    <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="fa fa-trash" style="color: white"></i></button>
-                    <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="fa fa-eye" style="color: white"></i></a>
+                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="bx bx-edit" style="color: white"></i></a>
+                    <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="bx bx-trash" style="color: white"></i></button>
+                    <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="bx bx-eye" style="color: white"></i></a>
                     </div>')
         ->addColumn('photo', function($products){
                     $path = asset($products->first_image->src);
@@ -54,9 +54,9 @@ class ProductController extends Controller
         })
         ->editColumn('is_available', function($products){
                     if ($products->is_available == 1) {
-                        return '<i class="fa fa-check text-success"></i>';
+                        return '<i class="bx bx-check text-success"></i>';
                     }else{
-                        return '<i class="fa fa-times text-danger"></i>';
+                        return '<i class="bx bx-times text-danger"></i>';
                     }
         })
         ->rawColumns(['actions', 'photo', 'is_available'])

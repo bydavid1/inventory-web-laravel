@@ -53,7 +53,7 @@ trait Helpers
     }
 
     public function designInvoice($products, $name = null, $object, $path){
-        $view = \View::make('pdf.invoice', compact('object', 'products', 'name'))->render();
+        $view = \View::make('pages.pdf.invoice', compact('object', 'products', 'name'))->render();
         CreateInvoice::dispatch($view, $path, $object->id);
         return $view;
     }

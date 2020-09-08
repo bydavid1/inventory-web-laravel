@@ -18,8 +18,8 @@ class CostumerController extends Controller
     {
         return datatables()->eloquent(Costumers::where('is_deleted', '0'))
         ->addColumn('actions', '<div class="btn-group float-right">
-        <button type="button" class="btn btn-success" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer"><i class="fa fa-edit" style="color: white"></i></button>
-        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="fa fa-trash" style="color: white"></i></button>
+        <button type="button" class="btn btn-success" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer"><i class="bx bx-edit" style="color: white"></i></button>
+        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
         </div>')
         ->rawColumns(['actions'])
         ->toJson();

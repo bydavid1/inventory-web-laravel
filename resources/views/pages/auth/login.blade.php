@@ -57,7 +57,7 @@ data-open="hover" data-menu="horizontal-menu" data-col="1-column">
                         </div>
                         <div class="col-md-6 col-12 float-sm-left text-center text-sm-right"><a href="recover-password.html" class="card-link">Forgot Password?</a></div>
                       </div>
-                      <button type="submit" class="btn btn-outline-primary btn-block"><i class="ft-user" id="icon-lock"></i><i class="fa fa-spinner spinner d-none" id="spinner"></i> Login</button>
+                      <button type="submit" class="btn btn-outline-primary btn-block"><i class="ft-user" id="icon-lock"></i><i class="bx bx-spinner spinner d-none" id="spinner"></i> Login</button>
                     </form>
                   </div>
                   <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">

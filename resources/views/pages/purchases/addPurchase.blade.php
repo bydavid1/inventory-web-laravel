@@ -29,11 +29,11 @@
                 <div class="content-header-right col-md-6 col-12">
                     <div class="float-right">
 						<button class="btn btn-float btn-outline-secondary" data-toggle="modal" data-target="#AddNewProductModal">
-							<i class="fa fa-plus fa-2x"></i>
+							<i class="bx bx-plus fa-2x"></i>
 							<span>Nuevo producto</span>
 						</button>
 						<button class="btn btn-float btn-outline-primary" data-toggle="modal" data-target="#SearchProducts">
-							<i class="fa fa-search fa-2x"></i>
+							<i class="bx bx-search fa-2x"></i>
 							<span>Buscar producto</span>
                         </button>
                     </div>
@@ -166,7 +166,7 @@
                             autocomplete="off" />
                     </div>
                 </div>
-                <button type="button" id="AddProduct" class="btn btn-primary"><i class="fa fa-save"></i>Agregar</button>
+                <button type="button" id="AddProduct" class="btn btn-primary"><i class="bx bx-save"></i>Agregar</button>
             </div>
         </div>
     </div>
@@ -185,8 +185,8 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <i class="fa fa-object-group fa-4x text-primary fa-rotate-right mb-1"></i>
-                    <p><i class="fa fa-exclamation-circle text-primary mr-1"></i>El producto se guardará hasta que se
+                    <i class="bx bx-object-group fa-4x text-primary fa-rotate-right mb-1"></i>
+                    <p><i class="bx bx-exclamation-circle text-primary mr-1"></i>El producto se guardará hasta que se
                         registre la compra</p>
                 </div>
                 <form role="form" id="newProductForm">
