@@ -1,65 +1,41 @@
 @extends('layouts.app')
 
+{{-- page title --}}
+@section('title','Compras')
+
+
 @section('vendor-styles')
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
 @endsection
 
+@section('tools')
+<a class="btn btn-float btn-primary" href="{{ route('addPurchase') }}">
+	<i class="bx bx-plus-circle fa-2x"></i>
+	<span>Nueva compra</span>
+</a>
+@endsection
+
 @section('content')
-<div class="app-content content">
-    <div class="content-header bg-white">
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Compras</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Compras
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-                        <a class="btn btn-float btn-primary" href="{{ route('addPurchase') }}">
-                            <i class="fa fa-plus-circle fa-2x"></i>
-                            <span>Nueva compra</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<div class="card">
+	<div class="card-body">
+		<table class="table table-condensed table-hover table-bordered table-striped" id="items">
+				<thead>
+					<tr>				
+						<th>Fecha de factura</th>
+						<th>Proveedor</th>							
+						<th>Cantidad de productos</th>
+						<th>Sub total</th>
+						<th>Total</th>
+						<th style="width:15%;" class="text-right">Opciones</th>
+					</tr>
+				</thead>
+			</table>
 	</div>
-	<div class="content-body">
-		<div class="content-wrapper">
-			<div class="card card-info">
-				<div class="card-header">
-					<h3 class="card-title">Compras</h3>
-				</div>
-				<!-- /.card-header -->
-				<div class="card-body">
-					<table class="table table-condensed table-hover table-bordered table-striped" id="items">
-							<thead>
-								<tr>				
-									<th>Fecha de factura</th>
-									<th>Proveedor</th>							
-									<th>Cantidad de productos</th>
-									<th>Sub total</th>
-									<th>Total</th>
-									<th style="width:15%;" class="text-right">Opciones</th>
-								</tr>
-							</thead>
-						</table>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
-		</div>
-	</div>
+	<!-- /.card-body -->
 </div>
+<!-- /.card -->
+
 @endsection
 
 @section('vendor-scripts')

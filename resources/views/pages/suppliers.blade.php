@@ -9,86 +9,44 @@
 @endsection
 
 @section('content')
-<div class="app-content content">
-    <div class="content-header bg-white mb-3 pb-0">
-        <div class=" content-wrapper pb-0">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Propiedades del inventario</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Poveedores
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-                        <button class="btn btn-float btn-outline-primary" data-toggle="modal"
-                            data-target="#addProviderModal">
-                            <i class="fa fa-plus-circle fa-2x"></i>
-                            <span>Agregar Proveedor</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-12 mt-1">
-                    <div class="page-head-tabs" id="head_tabs">
-                        <ul class="nav tab-pills">
-                            <li class="tab-item">
-                                <a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers"
-                                    class="tab-link tab active current" data-submenu="17">
-                                    Proveedores
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('manufacturers') }}" id="subtab-AdminSuppliers" class="tab-link tab"
-                                    data-submenu="18">
-                                    Fabricantes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('categories') }}" id="subtab-AdminSuppliers" class="tab-link tab"
-                                    data-submenu="18">
-                                    Categorias
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.col -->
-    <div class="col-md-12">
-        <div class="card card-lightblue">
-            <div class="card-header">
-                <h3 class="card-title my-auto">Proveedores</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table class="table table-condensed table-hover table-bordered table-striped" id="items">
-                    <thead>
-                        <tr>
-                            <!-- <th style="width:10%;">Imagen</th>	-->
-                            <th>Codigo</th>
-                            <th>Nombre</th>
-                            <th>NIT</th>
-                            <th>Telefono</th>
-                            <th>Direccion</th>
-                            <th style="width:15%;" class="text-right">Opciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
+<div class="card">
+    <!-- /.card-header -->
+    <div class="card-body">
+        <ul class="nav nav-tabs justify-content-center" role="tablist">
+            <li class="nav-item current">
+                <a class="nav-link active" id="home-tab-center" href="{{ route('suppliers') }}"
+                    aria-controls="home-center" role="tab" aria-selected="true">
+                    Proveedores
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="service-tab-center"  href="{{ route('categories') }}"
+                    aria-controls="service-center" role="tab" aria-selected="false">
+                    Categorías
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="account-tab-center" href="{{ route('manufacturers') }}"
+                    aria-controls="account-center" role="tab" aria-selected="false">
+                    Fabricantes
+                </a>
+            </li>
+        </ul>
+        <table class="table table-condensed table-hover table-bordered table-striped" id="items">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>NIT</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th style="width:15%;" class="text-right">Opciones</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
+<!-- /.card -->
 
 <!-- Delete form-->
 <div class="d-none">
@@ -106,7 +64,7 @@
             <form id="createForm">
                 @csrf
                 <div class="modal-header">
-                    <h4 class="modal-title"><i class="fa fa-plus"></i> Registrar nuevo proveedor</h4>
+                    <h4 class="modal-title"><i class="bx bx-plus"></i> Registrar nuevo proveedor</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -121,7 +79,7 @@
                             <label for="name" class="control-label">Codigo: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-key"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nombre" name="code" id="code" autocomplete="off">
                             </div>
@@ -130,7 +88,7 @@
                             <label for="name" class="control-label">Contacto: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-address-book"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-address-book"></i></span>
                                 </div>
                                 <input type="number" class="form-control" placeholder="Telefono" name="phone" id="phone"
                                     autocomplete="off"">
@@ -140,7 +98,7 @@
                             <label for="name" class="control-label">Nombre: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-truck"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-truck"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nombre" name="name" id="name" autocomplete="off">
                             </div>
@@ -149,7 +107,7 @@
                             <label for="name" class="control-label">NIT: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nombre" name="nit" id="nit" autocomplete="off">
                             </div>
@@ -158,7 +116,7 @@
                             <label for="name" class="control-label">Direccion: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-building"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Direccion" name="address" id="address"
                                     autocomplete="off">
@@ -169,7 +127,7 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
                         autocomplete="off">
-                        <i class="fa fa-save"></i> Guardar</button>
+                        <i class="bx bx-save"></i> Guardar</button>
                 </div>
             </form>
         </div>
@@ -184,7 +142,7 @@
                 @method('PUT')
                 @csrf
                 <div class="modal-header">
-                    <h4 class="modal-title"><i class="fa fa-edit"></i> Editar proveedor</h4>
+                    <h4 class="modal-title"><i class="bx bx-edit"></i> Editar proveedor</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -199,7 +157,7 @@
                         <label for="name" class="control-label">Contacto: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-address-book"></i></span>
+                                <span class="input-group-text"><i class="bx bx-address-book"></i></span>
                             </div>
                             <input type="number" class="form-control" placeholder="Telefono" name="uphone" id="uphone"
                                 autocomplete="off"">
@@ -209,7 +167,7 @@
                         <label for="name" class="control-label">Nombre: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-truck"></i></span>
+                                <span class="input-group-text"><i class="bx bx-truck"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Nombre" name="uname" id="uname" autocomplete="off">
                         </div> 
@@ -218,7 +176,7 @@
                         <label for="name" class="control-label">NIT: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Nombre" name="unit" id="unit" autocomplete="off">
                         </div>
@@ -227,7 +185,7 @@
                         <label for="name" class="control-label">Direccion: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                <span class="input-group-text"><i class="bx bx-building"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Direccion" name="uaddress" id="uaddress"
                                 autocomplete="off">
@@ -237,7 +195,7 @@
                 <div class="modal-footer">
                     <button type="submit" id="editSupplier" class="btn btn-primary btn-block" data-loading-text="Loading..."
                         autocomplete="off">
-                        <i class="fa fa-save"></i> Actualizar</button>
+                        <i class="bx bx-save"></i> Actualizar</button>
                 </div>
             </form>
         </div>

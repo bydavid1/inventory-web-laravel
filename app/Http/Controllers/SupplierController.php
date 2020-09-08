@@ -29,8 +29,8 @@ class SupplierController extends Controller
     {
         return datatables()->eloquent(Suppliers::where('is_deleted', '0'))
         ->addColumn('actions', '<div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="fa fa-edit" style="color: white"></i></button>
-                    <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="fa fa-trash" style="color: white"></i></button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
+                    <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
                     </div>')
         ->rawColumns(['actions'])
         ->toJson();

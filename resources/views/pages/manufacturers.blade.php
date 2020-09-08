@@ -9,89 +9,49 @@
 @endsection
 
 @section('content')
-<div class="app-content content">
-    <div class="content-header bg-white mb-3 pb-0">
-        <div class=" content-wrapper pb-0">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Propiedades del inventario</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Fabricantes
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-                        <button class="btn btn-float btn-outline-primary" data-toggle="modal"
-                            data-target="#addManufacturer">
-                            <i class="fa fa-plus-circle fa-2x"></i>
-                            <span>Agregar Fabricante</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-12 mt-1">
-                    <div class="page-head-tabs" id="head_tabs">
-                        <ul class="nav tab-pills">
-                            <li class="tab-item">
-                                <a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers" class="tab-link tab " data-submenu="17">
-                                    Proveedores
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('manufacturers') }}" id="subtab-AdminSuppliers" class="tab-link tab active current" data-submenu="18">
-                                    Fabricantes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('categories') }}" id="subtab-AdminSuppliers" class="tab-link tab"
-                                    data-submenu="18">
-                                    Categorias
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
+
     <div class="container">
         @if ( session('mensaje') )
         <div class="alert alert-success">{{ session('mensaje') }}</div>
          @endif
     </div>
-    
-    <!-- /.col -->
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-lightblue">
-                <h3 class="card-title my-auto">Fabricantes o marcas</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table class="table table-condensed table-hover table-bordered table-striped" id="items">
-                        <thead>
-                            <tr>
-                                <!-- <th style="width:10%;">Imagen</th>	-->						
-                                <th>Logo</th>
-                                <th>Nombre</th>	
-                                <th>Disponible</th>									
-                                <th style="width:15%;" class="text-right">Opciones</th>
-                            </tr>
-                        </thead>
-                    </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>  
-</div>
 
+    <div class="card mt-2">
+        <div class="card-body">
+            <ul class="nav nav-tabs justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab-center" href="{{ route('suppliers') }}"
+                        aria-controls="home-center" role="tab" aria-selected="true">
+                        Proveedores
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="service-tab-center" href="{{ route('categories') }}"
+                        aria-controls="service-center" role="tab" aria-selected="false">
+                        Categorías
+                    </a>
+                </li>
+                <li class="nav-item current">
+                    <a class="nav-link active" id="account-tab-center" href="{{ route('manufacturers') }}"
+                        aria-controls="account-center" role="tab" aria-selected="false">
+                        Fabricantes
+                    </a>
+                </li>
+            </ul>
+            <table class="table table-condensed table-hover table-bordered table-striped" id="items">
+                <thead>
+                    <tr>					
+                        <th>Logo</th>
+                        <th>Nombre</th>	
+                        <th>Disponible</th>									
+                        <th style="width:15%;" class="text-right">Opciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <!-- /.card -->
+    
 <!-- Delete form-->
 <div class="d-none">
 	<form id="destroyform" method="POST">
@@ -107,7 +67,7 @@
             <form id="createform" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
-                    <h4 class="modal-title"><i class="fa fa-plus"></i> Registrar fabricante o marca</h4>
+                    <h4 class="modal-title"><i class="bx bx-plus"></i> Registrar fabricante o marca</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -128,7 +88,7 @@
                         <label for="name" class="control-label">Nombre: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                <span class="input-group-text"><i class="bx bx-key"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Nombre" name="name" id="name"
                                 autocomplete="off">
@@ -138,7 +98,7 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..."
                         autocomplete="off">
-                        <i class="fa fa-save"></i> Guardar</button>
+                        <i class="bx bx-save"></i> Guardar</button>
                 </div>
             </form>
         </div>
@@ -176,7 +136,7 @@
                             <label for="name" class="control-label">Nombre: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-key"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nombre" name="uname" id="uname"
                                     autocomplete="off" disabled>
@@ -188,7 +148,7 @@
                 <div class="modal-footer">
                     <button type="submit" id="editManufacturer" class="btn btn-primary btn-block" data-loading-text="Loading..."
                         autocomplete="off" disabled>
-                        <i class="fa fa-edit"></i> Actualizar</button>
+                        <i class="bx bx-edit"></i> Actualizar</button>
                 </div>
             </form>
         </div>

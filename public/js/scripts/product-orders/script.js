@@ -38,7 +38,7 @@ function add(id){
                                         <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
                                         <div class="col-md-1 py-0 h-100 my-auto">
                                             <button type="button" class="btn bg-transparent" onclick="removeItem(${id})">
-                                                <i class="fa fa-trash fa-2x text-danger"></i>
+                                                <i class="bx bx-trash fa-2x text-danger"></i>
                                             </button>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto">
@@ -52,7 +52,7 @@ function add(id){
                                             <h6>${data[0].name}<h6>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto"> 
-                                            <h6 class="cursor-pointer" onclick="editItem(${id})">$${price}</h6>
+                                            <h6 class="cursor-pointer text-info" onclick="editItem(${id})">$${price}</h6>
                                             <input type="hidden" value="${price}" id="priceValue${count}" name="priceValue${count}"/>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto"> 

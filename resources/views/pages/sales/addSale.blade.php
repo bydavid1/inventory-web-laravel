@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('custom_header')
-
+@section('vendor-styles')
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
 @endsection
 
 @section('content')
@@ -18,14 +18,14 @@
                             autocomplete="off" placeholder="Buscar en el inventario">
                     </div>
                     <div id="products">
-                        @include('sales.list_products')
+                        @include('pages.sales.list_products')
                     </div>
                 </div>
                 <div style="border-left: 1px solid #707070" class="col-md-4 p-0  overflow-auto">
                     <div class="content-header bg-white p-2" style="">
                         <div class="row h-100">
                             <div class="col-md-4 h-100 my-auto">
-                                <h4>Detalles</h4>
+                                <h4>Cliente</h4>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group my-auto">
@@ -35,8 +35,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-auto px-2" style="height: 40%">
-                        <div class="row mt-1 w-100">
+                    <div class="overflow-auto" style="height: 40%">
+                        <div class="row mt-1 w-100 pl-1">
                             <div class="col-md-1">
                                 <h6 class="text-bold-600">Elim.</h6>
                             </div>
@@ -129,26 +129,26 @@
 </div>
 
 <!-- Search product modal form -->
-@include('sales.modalItem')
+@include('pages.sales.modalItem')
 
 @endsection
 
-@section('custom_footer')
+@section('vendor-scripts')
+    <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+@endsection
 
-<!-- CN module -->
-<script src="{{ asset('js/path.js') }}"></script>
-<!-- Essential functions -->
-<script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
-<!-- Owner -->
-<script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
-@routes
-<script>
-    // Basic date
-    $('.pickadate').pickadate({
-        format: 'yyyy-mm-dd',
-        formatSubmit: 'yyyy-mm-dd',
-        hiddenPrefix: 'prefix__',
-        hiddenSuffix: '__suffix'
-    });
+@section('page-scripts')
+    <script src="{{ asset('js/path.js') }}"></script>
+    <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
+    <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
+    @routes
+    <script>
+        // Basic date
+        $('.pickadate').pickadate({
+            format: 'yyyy-mm-dd',
+            formatSubmit: 'yyyy-mm-dd',
+            hiddenPrefix: 'prefix__',
+            hiddenSuffix: '__suffix'
+        });
 </script>
 @endsection

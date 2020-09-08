@@ -63,12 +63,12 @@
                                                 <label for="codProduct" class="control-label">Codigo: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-key"></i></span>
                                                     </div>
                                                     <input type="text" class="form-control" id="code"
                                                         placeholder="Codigo del producto" name="code" autocomplete="ggg-ss">
                                                     <div class="input-group-append">
-                                                        <span class="input-group-text"><i class="fa fa-random"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-random"></i></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@
                                                 <label>Proveedor:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-truck"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-truck"></i></span>
                                                     </div>
                                                     <select class="form-control" id="provider_id" name="provider_id">
                                                         @foreach ($providers as $item)
@@ -105,7 +105,7 @@
                                                 <label>Categoría:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-tag"></i></span>
                                                     </div>
                                                     <select class="form-control" id="category_id" name="category_id">
                                                         @foreach ($categories as $item)
@@ -121,7 +121,7 @@
                                                 <label for="productStatus" class="control-label">Estado: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-spinner"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-spinner"></i></span>
                                                     </div>
                                                     <select class="form-control" id="is_available" name="is_available">
                                                         <option value="1">Disponible</option>
@@ -134,7 +134,7 @@
                                                 <label for="type" class="control-label">Tipo: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-asterisk"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-asterisk"></i></span>
                                                     </div>
                                                     <select class="form-control" id="type" name="type">
                                                         <option value="1">Fisico</option>
@@ -149,7 +149,7 @@
                                                 <label for="quantity" class="control-label">Stock: </label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-cubes"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-cubes"></i></span>
                                                     </div>
                                                     <input type="number" class="form-control" id="quantity"
                                                         placeholder="Stock" name="quantity" autocomplete="ggg-ss">
@@ -160,7 +160,7 @@
                                                 <label>Fabricante:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-industry"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-industry"></i></span>
                                                     </div>
                                                     <select class="form-control" id="manufacturer_id" name="manufacturer_id">
                                                         @foreach ($manufacturers as $item)
@@ -185,7 +185,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="message">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="purchase"
                                                         placeholder="Precio de compra" name="purchase" autocomplete="ggg-ss" />
@@ -194,7 +194,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price1"
                                                         placeholder="Precio 1" disabled name="price1"
@@ -205,7 +205,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price2"
                                                         placeholder="Precio 2" disabled name="price2"
@@ -216,7 +216,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price3"
                                                         placeholder="Precio 3" disabled name="price3"
@@ -227,7 +227,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="alert">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="price4"
                                                         placeholder="Precio 4" disabled name="price4"
@@ -241,7 +241,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group" id="message">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-percent"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-percent"></i></span>
                                                     </div>
                                                     <select data-placeholder="Seleciona una categoría"
                                                         class="custom-select" id="tax_id" name="tax_id">
@@ -252,7 +252,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility1"
                                                         placeholder="Utilidad 1" disabled name="utility1"
@@ -263,7 +263,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility2"
                                                         placeholder="Utilidad 2" disabled name="utility2"
@@ -274,7 +274,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility3"
                                                         placeholder="Utilidad 3" disabled name="utility3"
@@ -285,7 +285,7 @@
                                             <div class="col-sm-12 mb-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+                                                        <span class="input-group-text"><i class="bx bx-exchange"></i></span>
                                                     </div>
                                                     <input type="decimal" class="form-control" id="utility4"
                                                         placeholder="Utilidad 4" disabled name="utility4"
@@ -319,7 +319,7 @@
                                     class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
     
                             <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
-                                autocomplete="ggg-ss"> <i class="fa fa-ok-sign"></i> Guardar y salir</button>
+                                autocomplete="ggg-ss"> <i class="bx bx-ok-sign"></i> Guardar y salir</button>
                         </div>
                         <!-- /modal-footer -->
                     </form>
@@ -362,8 +362,8 @@
         showCaption: true,
         browseLabel: 'Buscar en el equipo',
         removeLabel: 'Quitar',
-        browseIcon: '<i class="fa fa-folder-open"></i>',
-        removeIcon: '<i class="fa fa-remove"></i>',
+        browseIcon: '<i class="bx bx-folder-open"></i>',
+        removeIcon: '<i class="bx bx-remove"></i>',
         removeTitle: 'Reiniciar',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',

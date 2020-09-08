@@ -6,88 +6,50 @@
 @endsection
 
 @section('content')
-<div class="app-content content">
-    <div class="content-header bg-white mb-3 pb-0">
-        <div class=" content-wrapper pb-0">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Propiedades del inventario</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Categorías
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-                        <button class="btn btn-float btn-outline-primary" data-toggle="modal"
-                            data-target="#addCategoryModal">
-                            <i class="fa fa-plus-circle fa-2x"></i>
-                            <span>Agregar Categoría</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-12 mt-1">
-                    <div class="page-head-tabs" id="head_tabs">
-                        <ul class="nav tab-pills">
-                            <li class="tab-item">
-                                <a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers" class="tab-link tab" data-submenu="17">
-                                    Proveedores
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('manufacturers') }}" id="subtab-AdminSuppliers" class="tab-link tab" data-submenu="18">
-                                    Fabricantes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('categories') }}" id="subtab-AdminSuppliers" class="tab-link tab active current"
-                                    data-submenu="18">
-                                    Categorias
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
-    <!-- /.content-header -->
+
     <div class="container">
         @if ( session('mensaje') )
         <div class="alert alert-success">{{ session('mensaje') }}</div>
         @endif
     </div>
-    <!-- /.col -->
-    <div class="col-md-12">
-        <div class="card card-info">
-            <div class="card-header">
-                <h3 class="card-title">Categorias</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table class="table table-condensed table-hover table-bordered table-striped" id="items">
-                    <thead>
-                        <tr>
-                            <!-- <th style="width:10%;">Imagen</th>	-->
-                            <th>Codigo</th>
-                            <th>Nombre</th>
-                            <th>Status</th>
-                            <th style="width:15%;" class="text-right">Opciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <!-- /.card-body -->
+
+    <div class="card card-info mt-2">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <ul class="nav nav-tabs justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab-center" href="{{ route('suppliers') }}"
+                        aria-controls="home-center" role="tab" aria-selected="true">
+                        Proveedores
+                    </a>
+                </li>
+                <li class="nav-item current">
+                    <a class="nav-link active" id="service-tab-center" href="{{ route('categories') }}"
+                        aria-controls="service-center" role="tab" aria-selected="false">
+                        Categorías
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="account-tab-center" href="{{ route('manufacturers') }}"
+                        aria-controls="account-center" role="tab" aria-selected="false">
+                        Fabricantes
+                    </a>
+                </li>
+            </ul>
+            <table class="table table-condensed table-hover table-bordered table-striped" id="items">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Status</th>
+                        <th style="width:15%;" class="text-right">Opciones</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        <!-- /.card -->
     </div>
-</div>
+    <!-- /.card -->
+
 
 <!-- Delete form-->
 <div class="d-none">
@@ -102,7 +64,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-boxes"></i> Agregar nueva categoría</h4>
+				<h4 class="modal-title"><i class="bx bx-boxes"></i> Agregar nueva categoría</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -118,7 +80,7 @@
                         <label for="name" class="control-label">Nombre de la categoría: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-file"></i></span>
+								<span class="input-group-text"><i class="bx bx-file"></i></span>
 							</div>
                             <input type="text" class="form-control" placeholder="Nombre" id="name" name="name"
                                 autocomplete="off">
@@ -132,7 +94,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..." autocomplete="off"> <i
-                            class="fa fa-save"></i> Guardar</button>
+                            class="bx bx-save"></i> Guardar</button>
                 </form>
             </div>
         </div>
@@ -144,7 +106,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-edit"></i> Editar categoria</h4>
+				<h4 class="modal-title"><i class="bx bx-edit"></i> Editar categoria</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -162,7 +124,7 @@
                         <label for="name" class="control-label">Nombre de la categoría: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-file"></i></span>
+								<span class="input-group-text"><i class="bx bx-file"></i></span>
 							</div>
                             <input type="text" class="form-control" id="uname" name="uname" placeholder="Nombre"
                                 autocomplete="off">
@@ -176,7 +138,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" id="editCategory" data-loading-text="Loading..." autocomplete="off"><i
-                            class="fa fa-edit"></i> Guardar</button>
+                            class="bx bx-edit"></i> Guardar</button>
                 </form>
             </div>
         </div>

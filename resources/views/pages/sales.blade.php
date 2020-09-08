@@ -7,75 +7,38 @@
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
 @endsection
 
-@section('content')
-<div class="app-content content">
-	<div class="content-header bg-white pb-0">
-        <div class=" content-wrapper pb-0">
-            <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2 h-100 my-auto">
-                    <h3 class="content-header-title mb-0">Ventas y facturas</h3>
-                    <div class="row breadcrumbs-top">
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active">Ventas
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-header-right col-md-6 col-12">
-                    <div class="float-right">
-						<a class="btn btn-float btn-outline-primary" href="{{ route('addSale') }}">
-							<i class="fa fa-plus-circle fa-2x"></i>
-							<span>Factura</span>
-						</a>
-						<a class="btn btn-float btn-outline-primary" href="{{ route('addCredit') }}">
-							<i class="fa fa-plus-circle fa-2x"></i>
-							<span>Factura de credito fiscal</span>
-						</a>
-                    </div>
-                </div>
-                <div class="col-12 mt-1">
-					<div class="page-head-tabs" id="head_tabs">
-						<ul class="nav tab-pills">
-							<li class="tab-item">
-								<a href="{{ route('suppliers') }}" id="subtab-AdminManufacturers" class="tab-link tab active current" data-submenu="17">
-									Todas las facturas
-								</a>
-							</li>
-						</ul>
-					</div>
-                </div>
-            </div>
-        </div>
-	</div>  
-	<div class="content-body">
-		<div class="content-wrapper">
-			<div class="card card-info card-outline">
-				<!-- /.card-header -->
-				<div class="card-body">
-					<table class="table table-condensed table-hover table-bordered table-striped" id="items">
-							<thead>
-								<tr>				
-									<th>Fecha</th>
-									<th>Cliente</th>	
-									<th>Tipo</th>						
-									<th>Cantidad</th>
-									<th>Subtotal</th>
-									<th>Total</th>
-									<th style="width:15%;" class="text-right">Opciones</th>
-								</tr>
-							</thead>
-						</table>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
-		</div>
+@section('tools')
+<a class="btn btn-info" href="{{ route('addSale') }}">
+	<i class="bx bx-plus-circle fa-2x"></i>
+	<span>Factura</span>
+</a>
+<a class="btn btn-danger" href="{{ route('addCredit') }}">
+	<i class="bx bx-plus-circle fa-2x"></i>
+	<span>Factura de credito fiscal</span>
+</a>
+@endsection
+
+@section('content') 
+<div class="card">
+	<div class="card-body">
+		<table class="table table-condensed table-hover table-bordered table-striped" id="items">
+				<thead>
+					<tr>				
+						<th>Fecha</th>
+						<th>Cliente</th>	
+						<th>Tipo</th>						
+						<th>Cantidad</th>
+						<th>Subtotal</th>
+						<th>Total</th>
+						<th style="width:15%;" class="text-right">Opciones</th>
+					</tr>
+				</thead>
+			</table>
 	</div>
+	<!-- /.card-body -->
 </div>
+<!-- /.card -->
+
 @endsection
 
 @section('vendor-scripts')

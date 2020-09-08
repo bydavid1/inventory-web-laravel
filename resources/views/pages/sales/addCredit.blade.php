@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
-@section('custom_header')
-<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/extensions/sweetalert2.css') }}">
-<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
-<link rel="stylesheet" href="{{ asset('app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css') }}">
+@section('vendor-styles')
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
 @endsection
 
 @section('content')
@@ -21,7 +19,7 @@
                             autocomplete="off" placeholder="Buscar en el inventario">
                     </div>
                     <div id="products">
-                        @include('sales.list_products')
+                        @include('pages.sales.list_products')
                     </div>
                 </div>
                 <div style="border-left: 1px solid #707070" class="col-md-4 p-0  overflow-auto">
@@ -33,7 +31,7 @@
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                        <span class="input-group-text"><i class="bx bx-search"></i></span>
                                     </div>
                                     <input type="hidden" id="costumerid" name="costumerid"/>
                                     <input type="text" class="form-control" placeholder="Buscar" id="costumer"
@@ -41,7 +39,7 @@
                                     <div class="input-group-append">
                                         <button class="btn btn-secondary" type="button" id="button-add" data-toggle="modal"
                                         data-target="#addCostumer"><i
-                                                class="fa fa-plus mr-1"></i>Nuevo cliente</button>
+                                                class="bx bx-plus mr-1"></i>Nuevo cliente</button>
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +135,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <i class="fa fa-user fa-4x text-primary mb-1"></i>
+                    <i class="bx bx-user fa-4x text-primary mb-1"></i>
                 </div>
                 <form action="{{ route('makeCostumer') }}" method="POST">
                     @csrf
@@ -194,23 +192,20 @@
 </div>
 
 <!-- Search product modal form -->
-@include('product-order.productModal')
-
+@include('pages.product-order.productModal')
 
 @endsection
 
-@section('custom_footer')
-    <!-- For design -->
-    <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
-    <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
-    <!-- CN module -->
-    <script src="{{ asset('js/path.js') }}"></script>
-    <!-- Essential functions -->
-    <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
-    <!-- Owner -->
-    <script src="{{ asset('js/scripts/sales/addCredit.js') }}"></script>
+@section('vendor-scripts')
+    <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+@endsection
+
+@section('page-scripts')
     @routes
+    <script src="{{ asset('js/path.js') }}"></script>
+    <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
+    <script src="{{ asset('js/scripts/sales/addCredit.js') }}"></script>
+
     <script>
     // Basic date
 	$('.pickadate').pickadate({
@@ -220,5 +215,4 @@
 		hiddenSuffix: '__suffix'
     });
     </script>
-
 @endsection

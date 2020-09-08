@@ -55,7 +55,7 @@
                  <input type="hidden" name="totalvalue<?php echo $x; ?>" id="totalvalue<?php echo $x; ?>"/>
              </td>
              <td class="text-center">
-                 <a class="btn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="fa fa-trash text-primary"></i></a>
+                 <a class="btn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="bx bx-trash text-primary"></i></a>
              </td>
          </tr>
          <?php

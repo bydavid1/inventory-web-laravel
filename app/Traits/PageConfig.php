@@ -22,6 +22,7 @@ class PageConfig
         'isCustomizer' => true,
         'isCardShadow' => true,
         'isScrollTop' => true,
+        'extendApp' => false,
       ];
       
       //if any key missing of array from custom.php file it will be merge and set a default value from dataDefault array and store in data variable
@@ -54,6 +55,7 @@ class PageConfig
         'isCustomizer' => array(true,false),
         'isCardShadow' => array(true,false),
         'isScrollTop' => array(true,false),
+        'extendApp' => array(true,false),
       ];
       // navbar body class array
       $navbarBodyClass = [
@@ -118,6 +120,7 @@ class PageConfig
         'isCustomizer' => $data['isCustomizer'],
         'isCardShadow' => $data['isCardShadow'],
         'isScrollTop' => $data['isScrollTop'],
+        'extendApp' => $data['extendApp'],
       ];
 
       return $layoutClasses;

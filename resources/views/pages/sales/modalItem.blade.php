@@ -29,7 +29,7 @@
                             <i class="ft-x"></i> Cancel
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-check-square-o"></i> Save
+                            <i class="bx bx-check-square-o"></i> Save
                         </button>
                     </div>
                 </form>
