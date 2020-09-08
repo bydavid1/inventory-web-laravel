@@ -33,25 +33,18 @@ function add(id){
                 //verify if exist item
                 if (!itemrow) {
                     let item = `<div class="list-group-item p-0" id="${id}" item="${count}">
-                                    <div class="row p-0 w-100">
+                                    <div class="row h-100">
                                         <input type="hidden" id="productId${count}" name="productId${count}" value="${id}"/>
                                         <input type="hidden" id="amountValue${count}" name="amountValue${count}" value="0.00"/> 
                                         <div class="col-md-1 py-0 h-100 my-auto">
                                             <button type="button" class="btn bg-transparent" onclick="removeItem(${id})">
-                                                <i class="fa fa-trash fa-2x"></i>
+                                                <i class="fa fa-trash fa-2x text-danger"></i>
                                             </button>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto">
-                                             <div class="input-group bootstrap-touchspin">
-                                                <input type="text" class="touchspin-vertical form-control" id="quantity${count}" value="1" onchange="calculateUnitTotals(this.id.substr(8))">
-                                                <span class="input-group-btn-vertical">
-                                                    <button class="btn btn-primary bootstrap-touchspin-up" type="button">
-                                                        <i class="fa fa-angle-up"></i>
-                                                    </button>
-                                                    <button class="btn btn-primary bootstrap-touchspin-down" type="button">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </button>
-                                                </span>
+                                             <div class="form-group my-auto">
+                                                <input type="number" class="form-control" style="padding: 0.50rem 0.5rem" id="quantity${count}" 
+                                                    value="1" onchange="calculateUnitTotals(this.id.substr(8))"/>
                                             </div>
                                             <input type="hidden" value="1" id="quantityValue${count}" name="quantityValue${count}"/>
                                         </div>
@@ -59,15 +52,12 @@ function add(id){
                                             <h6>${data[0].name}<h6>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto"> 
-                                            <h6>$${price}</h6>
+                                            <h6 class="cursor-pointer" onclick="editItem(${id})">$${price}</h6>
                                             <input type="hidden" value="${price}" id="priceValue${count}" name="priceValue${count}"/>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto"> 
                                             <h6 id="total${count}">$${price}</h6>
                                             <input type="hidden" value="${price}" id="totalValue${count}" name="totalValue${count}"/>
-                                        </div>
-                                        <div class="col-md-1 py-0 h-100 my-auto"> 
-                                            <button type="button" class="btn btn-primary" onclick="editItem(${id})"><i class="fa fa-edit"></i></button>
                                         </div>
                                     </div>
                                 </div>`

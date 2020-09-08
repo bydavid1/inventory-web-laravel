@@ -14,7 +14,10 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('suppliers');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.suppliers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**

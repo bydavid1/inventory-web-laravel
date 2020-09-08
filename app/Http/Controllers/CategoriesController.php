@@ -39,7 +39,10 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.categories', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**

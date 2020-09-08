@@ -41,7 +41,10 @@ class KardexController extends Controller
      */
     public function index()
     {
-        return view('kardex');
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
+        return view('pages.kardex', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -51,8 +54,11 @@ class KardexController extends Controller
      */
     public function records($id)
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $product = Products::select(['name', 'code', 'description', 'image'])->where('id', $id)->first();
-        return view('kardex.records', compact(['id', 'product']));
+        return view('pages.kardex.records', compact(['id', 'product']));
     }
 
     public function get_records($id)

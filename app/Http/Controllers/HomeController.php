@@ -23,7 +23,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+        ];
         $request->user()->authorizeRoles(['user', 'admin']);
-        return view('home');
+        return view('pages.home', ['breadcrumbs'=>$breadcrumbs]);
     }
 }
