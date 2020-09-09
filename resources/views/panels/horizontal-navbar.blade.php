@@ -207,7 +207,7 @@
           <li class="dropdown dropdown-user nav-item">
             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
               <div class="user-nav d-lg-flex d-none">
-                <span class="user-name">John Doe</span><span class="user-status">Available</span>
+                <span class="user-name">{{ Auth::user()->username }}</span><span class="user-status">Available</span>
               </div>
               <span><img class="round" src="{{asset('images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
             </a>
@@ -217,7 +217,12 @@
               <a class="dropdown-item" href="{{asset('app-todo')}}"><i class="bx bx-check-square mr-50"></i> Task</a>
               <a class="dropdown-item" href="{{asset('app-chat')}}"><i class="bx bx-message mr-50"></i> Chats</a>
               <div class="dropdown-divider mb-0"></div>
-              <a class="dropdown-item" href="{{asset('auth-login')}}"><i class="bx bx-power-off mr-50"></i> Logout</a>
+              <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bx bx-power-off mr-50"></i> Logout</a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                style="display: none;">
+                @csrf
+              </form>
             </div>
           </li>
         </ul>

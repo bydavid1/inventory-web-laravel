@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-auto" style="height: 40%">
+                    <div class="overflow-auto" style="height: 50%">
                         <div class="row mt-1 w-100 pl-1">
                             <div class="col-md-1">
                                 <h6 class="text-bold-600">Elim.</h6>
@@ -57,67 +57,134 @@
 
                         </ul>
                     </div>
-                    <div class="position-absolute" style="bottom: 0">
-                        <!-- card-->
-                        <div class="card card-outline card-dangers mb-0">
+                    <div class="position-absolute w-100">
+                        <div class="card mb-0">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-3">
-                                        <label class="label-control">Descuentos</label>
-                                        <input type="decimal" class="form-control" id="additionalDiscounts"
-                                            name="additionalDiscounts" placeholder="Descuento adicional"
-                                            onkeyup="calculate()">
+                                    <div class="col-lg-6">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Cantidad total
+                                                <strong id="grandquantity">0</strong>
+                                                <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Sub total
+                                                <strong id="subtotal">$0.00</strong>
+                                                <input type="hidden" id="subtotalvalue" name="subtotalvalue">
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Descuentos
+                                                <strong id="discounts">$0.00</strong>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label class="label-control">Pago adicional</label>
-                                        <input type="decimal" class="form-control" id="additionalPayments"
-                                            name="additionalPayments" placeholder="Pago adicional"
-                                            onkeyup="calculate()">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label class="label-control">Notas de la venta</label>
-                                        <textarea name="notes" id="notes" class="form-control"></textarea>
+                                    <div class="col-lg-6">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Pagos adicionales
+                                                <strong id="additionalpayments">$0.00</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Impuestos
+                                                <strong id="tax">$0.00</strong>
+                                                <input type="hidden" id="taxvalue" name="taxesvalue">
+                                            </li>
+                                            <li class="list-group-item d-none justify-content-between align-items-center py-05"
+                                                id="grandinterest">
+                                                Interés
+                                                <strong id="interest">$0.00</strong>
+                                                <input type="hidden" id="interestvalue" name="interestvalue">
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-05">
+                                                Total
+                                                <strong id="grandtotal">$0.00</strong>
+                                                <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Cantidad total
-                                        <strong id="grandquantity">0</strong>
-                                        <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Sub total
-                                        <strong id="subtotal">$0.00</strong>
-                                        <input type="hidden" id="subtotalvalue" name="subtotalvalue">
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Descuentos
-                                        <strong id="discounts">$0.00</strong>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Pagos adicionales
-                                        <strong id="additionalpayments">$0.00</strong>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Impuestos
-                                        <strong id="tax">$0.00</strong>
-                                        <input type="hidden" id="taxvalue" name="taxesvalue">
-                                    </li>
-                                    <li class="list-group-item d-none justify-content-between align-items-center py-05"
-                                        id="grandinterest">
-                                        Interés
-                                        <strong id="interest">$0.00</strong>
-                                        <input type="hidden" id="interestvalue" name="interestvalue">
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-05">
-                                        Total
-                                        <strong id="grandtotal">$0.00</strong>
-                                        <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
-                                    </li>
-                                </ul>
+                                <div class="invoice-action-btn mb-1 mt-1 dropup">
+                                    <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                      <span>Agregar nota</span>
+                                    </button>
+                                    <div class="dropdown-menu p-1">
+                                        <div class="row">
+                                            <div class="col-12 form-group">
+                                                <label for="discount">Nota</label>
+                                                <textarea class="form-control" id="note"
+                                                    name="note" placeholder="Type note"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                data-dismiss="modal">
+                                                <span>Apply</span>
+                                            </button>
+                                            <button type="button" class="btn btn-light-primary ml-1"
+                                                data-dismiss="modal" onclick="document.getElementById('note').value = ''">
+                                                <span>Cancel</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="invoice-action-btn mb-1 d-flex">
+                                    <div class="preview w-50 mr-50 dropup">
+                                        <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                            <span class="text-nowrap">Agregar descuento</span>
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="row">
+                                                <div class="col-12 form-group">
+                                                    <label for="discount">Descuento</label>
+                                                    <input type="number" class="form-control" id="additionalDiscounts"
+                                                        name="additionalDiscounts" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                    data-dismiss="modal" onclick="calculate()">
+                                                    <span>Apply</span>
+                                                </button>
+                                                <button type="button" class="btn btn-light-primary ml-1"
+                                                    data-dismiss="modal">
+                                                    <span>Cancel</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="save w-50 dropup">
+                                        <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                            <span class="text-nowrap">Pago adicional</span>
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="row">
+                                                <div class="col-12 form-group">
+                                                    <label for="discount">Pago adicional</label>
+                                                    <input type="number" class="form-control" id="additionalPayments"
+                                                        name="additionalPayments" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                    data-dismiss="modal" onclick="calculate()">
+                                                    <span>Apply</span>
+                                                </button>
+                                                <button type="button" class="btn btn-light-primary ml-1"
+                                                    data-dismiss="modal">
+                                                    <span>Cancel</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="invoice-action-btn mb-1">
+                                    <button type="submit" id="createSale" class="btn btn-success btn-block">
+                                        <i class="bx bx-save"></i>
+                                        <span>Guardar factura</span>
+                                    </button>
+                                  </div>
                                 <input type="hidden" id="itemsCount" name="itemsCount"><!-- itemsCount-->
-                                <button type="submit" id="createSale" data-loading-text="Cargando..."
-                                    class="btn btn-success btn-block mt-2">Registrar factura</button>
                             </div>
                         </div>
                         <!-- /.card -->

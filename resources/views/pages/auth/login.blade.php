@@ -1,79 +1,99 @@
-<!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-  <meta name="description" content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-  <meta name="keywords" content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
-  <meta name="author" content="PIXINVENT">
-  <title>Login with Background Color - Stack Responsive Bootstrap 4 Admin Template</title>
+@extends('layouts.fullLayout')
+{{-- title --}}
+@section('title','Login')
+{{-- page scripts --}}
+@section('page-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('css/pages/authentication.css')}}">
+@endsection
 
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/css/vendors.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ URL::asset('app-assets/css/app.css') }}">
-
-</head>
-<body class="horizontal-layout horizontal-menu 1-column  bg-cyan bg-lighten-2 menu-expanded blank-page blank-page"
-data-open="hover" data-menu="horizontal-menu" data-col="1-column">
-  <!-- ////////////////////////////////////////////////////////////////////////////-->
-  <div class="app-content content">
-    <div class="content-wrapper">
-      <div class="content-header row">
-      </div>
-      <div class="content-body">
-        <section class="flexbox-container">
-          <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-md-4 col-10 box-shadow-2 p-0">
-              <div class="card border-grey border-lighten-3 m-0">
-                <div class="card-header border-0">
-                  <div class="card-title text-center">
-                    <div class="p-1">
-                      <img src="{{ URL::asset('app-assets/images/logo/stack-logo-dark.png') }}" alt="branding logo">
+@section('content')
+<!-- login page start -->
+<section id="auth-login" class="row flexbox-container">
+  <div class="col-xl-8 col-11">
+    <div class="card bg-authentication mb-0">
+      <div class="row m-0">
+        <!-- left section-login -->
+        <div class="col-md-6 col-12 px-0">
+          <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
+            <div class="card-header pb-1">
+              <div class="card-title">
+                <h4 class="text-center mb-2">Welcome Back</h4>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="card-body">
+                <div class="d-flex flex-md-row flex-column justify-content-around">
+                  <a href="#" class="btn btn-social btn-google btn-block font-small-3 mr-md-1 mb-md-0 mb-1">
+                    <i class="bx bxl-google font-medium-3"></i>
+                    <span class="pl-50 d-block text-center">Google</span>
+                  </a>
+                  <a href="#" class="btn btn-social btn-block mt-0 btn-facebook font-small-3">
+                    <i class="bx bxl-facebook-square font-medium-3"></i>
+                    <span class="pl-50 d-block text-center">Facebook</span>
+                  </a>
+                </div>
+                <div class="divider">
+                  <div class="divider-text text-uppercase text-muted">
+                    <small>or login with email</small>
+                  </div>
+                </div>
+                {{-- form  --}}
+                <form method="POST" action="{{ route('login') }}">
+                  @csrf
+                  <div class="form-group mb-50">
+                    <label class="text-bold-600" for="email">Username</label>
+                    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  autocomplete="email" autofocus placeholder="Email">
+                    @error('email')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                  <div class="form-group">
+                    <label class="text-bold-600" for="password">Password</label>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password" placeholder="Password">
+                    @error('password')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                     @enderror
+                  </div>
+                  <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
+                    <div class="text-left">
+                      <div class="checkbox checkbox-sm">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="remember">
+                          <small>Keep me logged in</small>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <a href="#" class="card-link"><small>Forgot Password?</small></a>
                     </div>
                   </div>
-                  <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                    <span>Easily Using</span>
-                  </h6>
-                </div>
-                <div class="card-content">
-                  <div class="card-body pt-0">
-                    <form class="form-horizontal" method="POST" id="loginform" action="{{ route('login') }}">
-                      @csrf
-                      <fieldset class="form-group floating-label-form-group">
-                        <label for="user-name">Your Username</label>
-                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required placeholder="Your Username">
-                      </fieldset>
-                      <fieldset class="form-group floating-label-form-group mb-1">
-                        <label for="user-password">Enter Password</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required placeholder="Enter Password">
-                      </fieldset>
-                      <div class="form-group row">
-                        <div class="col-md-6 col-12 text-center text-sm-left">
-                          <fieldset>
-                            <input type="checkbox" id="remember-me" class="chk-remember">
-                            <label for="remember-me"> Remember Me</label>
-                          </fieldset>
-                        </div>
-                        <div class="col-md-6 col-12 float-sm-left text-center text-sm-right"><a href="recover-password.html" class="card-link">Forgot Password?</a></div>
-                      </div>
-                      <button type="submit" class="btn btn-outline-primary btn-block"><i class="ft-user" id="icon-lock"></i><i class="bx bx-spinner spinner d-none" id="spinner"></i> Login</button>
-                    </form>
-                  </div>
-                  <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
-                    <span>New to Stack ?</span>
-                  </p>
-                  <div class="card-body">
-                    <a href="{{ route('register') }}" class="btn btn-outline-danger btn-block"><i class="ft-user"></i> Register</a>
-                  </div>
+                  <button type="submit" class="btn btn-primary glow w-100 position-relative">Login
+                    <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
+                  </button>
+                </form>
+                <hr>
+                <div class="text-center">
+                  <small class="mr-25">Don't have an account?</small>
+                  <a href="{{route('register')}}"><small>Sign up</small></a>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+        <!-- right section image -->
+        <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
+          <div class="card-content">
+            <img class="img-fluid" src="{{asset('images/pages/login.png')}}" alt="branding logo">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-<script src="{{ URL::asset('plugins/jquery/jquery.min.js') }}"></script>
-</body>
-</html>
+</section>
+<!-- login page ends -->
+@endsection
+
