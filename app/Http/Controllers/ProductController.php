@@ -91,6 +91,12 @@ class ProductController extends Controller
             case 'compact':
                 $product = Products::where('id', $id)->with(['first_price','first_image'])->get();
                 break;
+            case 'images':
+                $product = Products::where('id', $id)->with(['images'])->get();
+                break;
+            case 'prices':
+                $product = Products::where('id', $id)->with(['prices',])->get();
+                break;
             default:
                 $product = Products::where('id', $id)->get();
                 break;

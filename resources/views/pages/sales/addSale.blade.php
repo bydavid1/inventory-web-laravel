@@ -210,12 +210,8 @@
     <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
     @routes
     <script>
-        // Basic date
-        $('.pickadate').pickadate({
-            format: 'yyyy-mm-dd',
-            formatSubmit: 'yyyy-mm-dd',
-            hiddenPrefix: 'prefix__',
-            hiddenSuffix: '__suffix'
+        $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
         });
-</script>
+    </script>
 @endsection

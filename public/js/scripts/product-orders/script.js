@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 function add(id){
 
-    let url =  '../api/products/order/' + id + '/compact'
+    let url =  '../api/products/order/' + id + '/prices'
 
     $.ajax({
         type: 'get',
@@ -24,9 +24,16 @@ function add(id){
         success: function(response){
             console.log(response)
                 //get data object fron json
-                const data = response.product;
-                const id = data[0].id
-                const price = Number(data[0].first_price.price_incl_tax).toFixed(2);
+                const data = response.product; //response product
+                const id = data[0].id // id product
+                const prices = data[0].prices; //get all prices
+
+                //print options
+                let registeredprices = ''
+                for(let price of prices){
+                   registeredprices += `<option value="21">$${price.price_incl_tax}</option>`
+                }
+
                 const count = Number(document.getElementById('items').childElementCount) + 1 //add 1 to total items
                 const itemrow = document.getElementById(id) ///Element could exist or not
 
@@ -51,13 +58,34 @@ function add(id){
                                         <div class="col-md-4 py-0 h-100 my-auto">
                                             <h6>${data[0].name}<h6>
                                         </div>
-                                        <div class="col-md-2 py-0 h-100 my-auto"> 
-                                            <h6 class="cursor-pointer text-info" onclick="editItem(${id})">$${price}</h6>
-                                            <input type="hidden" value="${price}" id="priceValue${count}" name="priceValue${count}"/>
+                                        <div class="col-md-2 py-0 h-100 my-auto "> 
+                                            <h6 class="cursor-pointer text-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" 
+                                                aria-expanded="false" role="button">$${prices[0].price_incl_tax}</h6>
+                                            <input type="hidden" value="${prices[0].price_incl_tax}" id="priceValue${count}" name="priceValue${count}"/>
+                                            <div class="dropdown-menu p-1">
+                                                <div class="row">
+                                                    <div class="col-12 form-group">
+                                                        <label for="prices">Precios registrados</label>
+                                                        <select class="form-control" id="prices">
+                                                            ${registeredprices}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                        data-dismiss="modal" onclick="calculate()">
+                                                        <span>Apply</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-light-primary ml-1"
+                                                        data-dismiss="modal">
+                                                        <span>Cancel</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-2 py-0 h-100 my-auto"> 
-                                            <h6 id="total${count}">$${price}</h6>
-                                            <input type="hidden" value="${price}" id="totalValue${count}" name="totalValue${count}"/>
+                                            <h6 id="total${count}">$</h6>
+                                            <input type="hidden" value="" id="totalValue${count}" name="totalValue${count}"/>
                                         </div>
                                     </div>
                                 </div>`
@@ -260,4 +288,5 @@ function editItem(id){
     let count = document.getElementById(id).getAttribute('item')
 
     $("#editItem").modal('show')
+    console.log('ggggg')
 }
