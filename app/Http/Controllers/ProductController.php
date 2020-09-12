@@ -95,7 +95,7 @@ class ProductController extends Controller
                 $product = Products::where('id', $id)->with(['images'])->get();
                 break;
             case 'prices':
-                $product = Products::where('id', $id)->with(['prices',])->get();
+                $product = Products::where('id', $id)->with(['prices'])->get();
                 break;
             default:
                 $product = Products::where('id', $id)->get();
@@ -103,9 +103,9 @@ class ProductController extends Controller
         }
 
         if ($product->count() > 0) {
-            return response()->json(['success' => true, 'product' => $product], 200);
+            return response($product, 200);
         }else{
-            return response()->json(['success' => false], 204);
+            return response('', 204);
         }
     }
 

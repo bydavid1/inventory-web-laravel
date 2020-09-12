@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="app-content content" style="height: 100%">
+<div class="app-content content" id="app" style="height: 100%">
     <div class="content-header bg-white pb-0">
     </div>
     <div class="content-body h-100">
@@ -54,7 +54,9 @@
                             </div>
                         </div>
                         <ul id="items" class="list-group py-1">
-
+                            <div v-for="item in items" :key="item.id">
+                                <item :item="item" v-on:datachange="calcTotals()"></item>
+                            </div>
                         </ul>
                     </div>
                     <div class="position-absolute w-100">
@@ -65,17 +67,15 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Cantidad total
-                                                <strong id="grandquantity">0</strong>
-                                                <input type="hidden" id="grandquantityvalue" name="grandquantityvalue">
+                                                <strong>@{{ data.quantityValue }}</strong>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Sub total
-                                                <strong id="subtotal">$0.00</strong>
-                                                <input type="hidden" id="subtotalvalue" name="subtotalvalue">
+                                                <strong>@{{ '$ ' + data.subtotalValue }}</strong>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Descuentos
-                                                <strong id="discounts">$0.00</strong>
+                                                <strong>@{{ '$ ' + data.discountsValue }}</strong>
                                             </li>
                                         </ul>
                                     </div>
@@ -83,23 +83,20 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Pagos adicionales
-                                                <strong id="additionalpayments">$0.00</strong>
+                                                <strong>@{{ '$ ' + data.additionalPayments }}</strong>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Impuestos
-                                                <strong id="tax">$0.00</strong>
-                                                <input type="hidden" id="taxvalue" name="taxesvalue">
+                                                <strong>@{{ '$ ' + data.taxValue }}</strong>
                                             </li>
                                             <li class="list-group-item d-none justify-content-between align-items-center py-05"
                                                 id="grandinterest">
                                                 Interés
-                                                <strong id="interest">$0.00</strong>
-                                                <input type="hidden" id="interestvalue" name="interestvalue">
+                                                <strong>$0.00</strong>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-05">
                                                 Total
-                                                <strong id="grandtotal">$0.00</strong>
-                                                <input type="hidden" id="grandtotalvalue" name="grandtotalvalue">
+                                                <strong>@{{ '$ ' + data.totalValue }}</strong>
                                             </li>
                                         </ul>
                                     </div>
@@ -111,9 +108,8 @@
                                     <div class="dropdown-menu p-1">
                                         <div class="row">
                                             <div class="col-12 form-group">
-                                                <label for="discount">Nota</label>
-                                                <textarea class="form-control" id="note"
-                                                    name="note" placeholder="Type note"></textarea>
+                                                <label>Nota</label>
+                                                <textarea class="form-control" v-model="data.note" placeholder="Type note"></textarea>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between">
@@ -122,7 +118,7 @@
                                                 <span>Apply</span>
                                             </button>
                                             <button type="button" class="btn btn-light-primary ml-1"
-                                                data-dismiss="modal" onclick="document.getElementById('note').value = ''">
+                                                data-dismiss="modal" v-on:click="data.note=''">
                                                 <span>Cancel</span>
                                             </button>
                                         </div>
@@ -137,8 +133,7 @@
                                             <div class="row">
                                                 <div class="col-12 form-group">
                                                     <label for="discount">Descuento</label>
-                                                    <input type="number" class="form-control" id="additionalDiscounts"
-                                                        name="additionalDiscounts" placeholder="0">
+                                                    <input type="number" class="form-control" v-model="discountControl" placeholder="0">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-between">
@@ -147,7 +142,7 @@
                                                     <span>Apply</span>
                                                 </button>
                                                 <button type="button" class="btn btn-light-primary ml-1"
-                                                    data-dismiss="modal">
+                                                    data-dismiss="modal" v-on:click="discountControl=''">
                                                     <span>Cancel</span>
                                                 </button>
                                             </div>
@@ -161,8 +156,7 @@
                                             <div class="row">
                                                 <div class="col-12 form-group">
                                                     <label for="discount">Pago adicional</label>
-                                                    <input type="number" class="form-control" id="additionalPayments"
-                                                        name="additionalPayments" placeholder="0">
+                                                    <input type="number" class="form-control" v-model="addPaymentControl" placeholder="0">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-between">
@@ -171,7 +165,7 @@
                                                     <span>Apply</span>
                                                 </button>
                                                 <button type="button" class="btn btn-light-primary ml-1"
-                                                    data-dismiss="modal">
+                                                    data-dismiss="modal" v-on:click="addPaymentControl=''">
                                                     <span>Cancel</span>
                                                 </button>
                                             </div>
@@ -201,14 +195,14 @@
 @endsection
 
 @section('vendor-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"><script>
     <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/path.js') }}"></script>
     <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
     <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
-    @routes
     <script>
         $(document).on('click', '.dropdown-menu', function (e) {
             e.stopPropagation();
