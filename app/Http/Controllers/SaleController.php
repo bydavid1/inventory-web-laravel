@@ -128,10 +128,9 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         try {
-
             if ($this->validateItems($request)) {
                 //payment info
-                $payment = Payments::create(['payment_method' => '1', 'total' => $request->grandtotalvalue, 'payed_with' => $request->grandtotalvalue,
+                $payment = Payments::create(['payment_method' => '1', 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
                 'returned' => 0.00, 'description' => 'N/A']);
 
                 //invoice headers info
@@ -140,32 +139,27 @@ class SaleController extends Controller
                 $sale->invoice_type = "1";
                 $sale->user_id = $request->user()->id;
                 $sale->unregistered_customer = $request->name;
-                $sale->additional_discounts = $request->additionalDiscounts;
+                $sale->additional_discounts = $request->discountsValue;
                 $sale->additional_payments = $request->additionalPayments;
-                $sale->total_quantity = $request->grandquantityvalue;
-                $sale->subtotal = $request->subtotalvalue;
-                $sale->total_discounts = $request->additionalDiscounts;
+                $sale->total_quantity = $request->quantityValue;
+                $sale->subtotal = $request->subtotalValue;
+                $sale->total_discounts = $request->discountsValue; //we will need add discounts option for each product
                 $sale->total_tax = "0.00"; //Temporal data
-                $sale->total = $request->grandtotalvalue;
+                $sale->total = $request->totalValue;
 
                 if ($sale->save()) {
 
                     $id = $sale->id;
                     $product_list = array();
-                    $counter = $request->itemsCount;
 
-                    for ($i = 1; $i <= $counter; $i++) {
+                    foreach ($request->products as $product) {
                         $saleitem = new Sales_items;
                         $saleitem->sale_id = $id;
-                        //database and request handlers
-                        $data = ['productId', 'quantityValue', 'priceValue', 'amountValue', 'totalValue'];
-                        $db = ['product_id', 'quantity', 'unit_price', 'unit_tax', 'total'];
-                        for ($j = 0; $j < 5; $j++) {
-                            //Packing item data to -> $saleitem
-                            $modifier = $data[$j] . "" . $i;
-                            $dbmodifier = $db[$j];
-                            $saleitem->$dbmodifier = $request->$modifier;
-                        } //for $j
+                        $saleitem->product_id = $product['id'];
+                        $saleitem->quantity = $product['quantity'];
+                        $saleitem->unit_price = $product['price'];
+                        $saleitem->unit_tax = $product['tax'];
+                        $saleitem->total = $product['total'];
 
                         if ($saleitem->save()) {
                             //Update quantity 
@@ -177,8 +171,8 @@ class SaleController extends Controller
                                 if ($product->save()) {
                                     //Adding $saleitems to -> $invoice_products array
                                     $product_items = array(
-                                        'code' => $product->code,
-                                        'name' => $product->name,
+                                        'code' => $product['code'],
+                                        'name' => $product['name'],
                                         'quantity' => $saleitem->quantity,
                                         'price' => $saleitem->unit_price,
                                         'total' => $saleitem->total
@@ -196,22 +190,23 @@ class SaleController extends Controller
                                     $kardex->total = $saleitem->total;
 
                                     if (!$kardex->save()) {
-                                        throw new Exception("Could not save kardex information at product ". $i, 1);  
+                                        throw new Exception("Could not save kardex information at product ". $product['name'], 1);  
                                     }
                                 }else{
-                                    throw new Exception("Could not update stock of product " . $i, 1);  
+                                    throw new Exception("Could not update stock of product " . $product['name'], 1);  
                                 }
 
                             } else {
-                                throw new Exception("Product " . $i . "not exist", 1);    
+                                throw new Exception("Product " . $product['name'] . "not exist", 1);    
                             }
 
                         } else {
                             $sale->delete();
-                            throw new Exception("Corrupt data in item: ". $i, 1);
+                            throw new Exception("Corrupt data in item: ". $product['name'], 1);
                         }
-                        
-                    } //for $i
+
+
+                    }
 
                     Simple_invoice::create(['sale_id' => $sale->id]);
 
@@ -219,7 +214,7 @@ class SaleController extends Controller
                     $invoice = $this->designInvoice($product_list, $request->name, $sale, "invoices/");
 
                     //send invoice
-                    return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);
+                    return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
 
                 }else{
                     throw new Exception("Error guardando la informacion de la venta", 1);
@@ -229,7 +224,7 @@ class SaleController extends Controller
                 return response()->json(['message' => 'Data was invalid'], 500);
             }
         } catch (Exception $e) {
-            return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
         

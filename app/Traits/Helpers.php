@@ -109,9 +109,8 @@ trait Helpers
     }
 
     public function validateItems($request){
-        $counter = $request->itemsCount;
-
-        if ($counter < 1) {
+        $count = count($request->products);
+        if ($count < 1) {
             throw new Exception("Debe haber al menos un item", 1);
         }
 
@@ -119,35 +118,32 @@ trait Helpers
             throw new Exception("Nombre requerido", 1);
         }
 
-        $all_rules = array();
+        //$all_rules = array();
 
-        for ($i=1; $i <= $counter ; $i++) {
-            //validation rules 
-            $rules = array(
-                "productId". $i => ["required", "numeric"],
-                "quantityValue". $i => ["required", "numeric"],
-                "priceValue". $i => ["required", "numeric","min:0","max:9999999"],
-                "totalValue". $i => ["required", "numeric","min:0","max:9999999"]
-            );
-
-            //stock validation
-            $requiredQuantity = $request->{"quantityValue" . $i};
-            $currentId = $request->{"productId" . $i};
+        foreach ($request->products as $product) {
+            $requiredQuantity = $product['quantity'];
+            $currentId = $product['id'];
             $currentItem = Products::select('stock', 'name')->where('id', $currentId)->first();
             if ($requiredQuantity > $currentItem->stock) {
                 throw new Exception("Solo hay ". $currentItem->stock ." ". $currentItem->name ." y se requiren ". $requiredQuantity , 1);
             }
-
-            array_push($all_rules, $rules);
-
         }
+
+        $rules = array(
+            "products.*.id" => ["required", "numeric"],
+            "products.*.quantity" => ["required", "numeric"],
+            "products.*.tax" => ["required", "numeric"],
+            "products.*.price" => ["required", "numeric","min:0","max:999999"],
+            "products.*.total" => ["required", "numeric","min:0","max:999999"]
+        );
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails())
-            {
-                throw new Exception("Error Processing Request: " . $validator->getMessageBag(), 1);              
-            }
+        {
+            throw new Exception("Data incorrect: " . $validator->getMessageBag(), 1);              
+        }
+
 
         return true;
     }
