@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group my-auto">
-                                    <input type="text" class="form-control" v-model="name"
+                                    <input type="text" class="form-control" v-model="data.name"
                                         placeholder="Nombre del cliente" autocomplete="off">
                                 </div>
                             </div>

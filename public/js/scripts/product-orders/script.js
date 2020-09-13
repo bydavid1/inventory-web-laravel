@@ -17,11 +17,11 @@ var vm = new Vue({
                 'taxValue' : 0.00,
                 'totalValue' : 0.00,
                 'note' : '',
+                'name' : '',
                 'products' : []
             },
             discountControl : 0,
             addPaymentControl : 0,
-            name : ''
         }
     },
     methods : {
@@ -33,8 +33,10 @@ var vm = new Vue({
                     let data = response.data[0]
                     let item = {
                         'id' : data.id,
+                        'code' : data.code,
                         'name' : data.name,
                         'prices' : data.prices,
+                        'tax' : 0.00,
                         'price' : data.prices[0].price_incl_tax,
                         'quantity' : 1,
                         'total' : data.prices[0].price_incl_tax
@@ -68,24 +70,55 @@ var vm = new Vue({
             this.calculate(false)
         },
         saveSale() {
-            this.data.products = this.items
+            //packing data
+            let products = this.items
+            for(let current of products){
+                delete current.prices //delete prices beacuse server not needed
+            }
+            this.data.products = products
             axios.post(route('storeSale'), this.data)
                 .then(response => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: response.message,
+                        title: response.data.message,
                         showConfirmButton: false,
                     });
+                    this.print(response.data.invoice.invoice) //!!!!!!!!!!!!!!!!fix this response
+                    Object.assign(this.$data, this.initialState());
                 })
                 .catch(error => {
-                    console.log(error.response.data.message)
+                    console.log(error.response.data)
                     Swal.fire({
                         icon: 'error',
                         html: error.response.data.message,
                         showConfirmButton: true,
                     });
                 })
+        },
+        print(invoice) {
+            let target = window.open('', 'PRINT', 'height=800,width=800');
+            target.document.write(invoice);
+            target.print();
+            target.close();
+        },
+        initialState () {
+            return {
+                items : [],
+                data : {
+                    'quantityValue' : 0,
+                    'subtotalValue' : 0.00,
+                    'discountsValue' : 0.00,
+                    'additionalPayments' : 0.00,
+                    'taxValue' : 0.00,
+                    'totalValue' : 0.00,
+                    'note' : '',
+                    'name' : '',
+                    'products' : []
+                },
+                discountControl : 0,
+                addPaymentControl : 0,
+            }
         }
     },
     watch : {
@@ -157,4 +190,3 @@ Vue.component('item', {
             }
         },
     })
-

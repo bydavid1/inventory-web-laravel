@@ -177,13 +177,15 @@ class ProductController extends Controller
             if ($new->save()) {
 
                 for ($i=1; $i <= 4; $i++) { 
-                    $prices = new Prices;
-                    $prices->product_id = $new->id;
-                    $prices->price = $request->{'price'.$i};
-                    $prices->utility = $request->{'utility'.$i};
-                    $prices->tax_id = 1;
-                    $prices->price_incl_tax = $request->{'price'.$i};
-                    $prices->save();
+                    if ($request->{'price'.$i} != "" || $request->{'utility'.$i} != "") {
+                        $prices = new Prices;
+                        $prices->product_id = $new->id;
+                        $prices->price = $request->{'price'.$i};
+                        $prices->utility = $request->{'utility'.$i};
+                        $prices->tax_id = 1;
+                        $prices->price_incl_tax = $request->{'price'.$i};
+                        $prices->save();
+                    }
                 }
         
                 $images = new Images;
