@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
 @section('vendor-styles')
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
+
 
 @section('content')
 <div class="app-content content" id="app" style="height: 100%">
     <div class="content-header bg-white pb-0">
     </div>
     <div class="content-body h-100">
-        <form class="h-100" id="createOrderForm">
+        <form class="h-100" id="createOrderForm" v-on:submit.prevent="saveSale()">
             @csrf
             <div class="row h-100">
                 <div class="col-md-8 h-100 overflow-auto">
@@ -29,7 +31,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group my-auto">
-                                    <input type="text" class="form-control" name="name" id="name"
+                                    <input type="text" class="form-control" v-model="name"
                                         placeholder="Nombre del cliente" autocomplete="off">
                                 </div>
                             </div>
@@ -54,8 +56,8 @@
                             </div>
                         </div>
                         <ul id="items" class="list-group py-1">
-                            <div v-for="item in items" :key="item.id">
-                                <item :item="item" v-on:datachange="calcTotals()"></item>
+                            <div v-for="(item, index) in items" :key="item.id">
+                                <item :item="item" v-on:remove="removeItem(index)"></item>
                             </div>
                         </ul>
                     </div>
@@ -101,73 +103,80 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="invoice-action-btn mb-1 mt-1 dropup">
-                                    <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                      <span>Agregar nota</span>
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="row">
-                                            <div class="col-12 form-group">
-                                                <label>Nota</label>
-                                                <textarea class="form-control" v-model="data.note" placeholder="Type note"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <button type="button" class="btn btn-primary invoice-apply-btn"
-                                                data-dismiss="modal">
-                                                <span>Apply</span>
-                                            </button>
-                                            <button type="button" class="btn btn-light-primary ml-1"
-                                                data-dismiss="modal" v-on:click="data.note=''">
-                                                <span>Cancel</span>
-                                            </button>
-                                        </div>
+                                <div class="invoice-action-btn mb-1 mt-1">
+                                    <div class="dropup">
+                                        <button class="btn btn-light-primary btn-block dropdown-toggle" id="additionalNote" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                            <span>Agregar nota</span>
+                                          </button>
+                                          <div class="dropdown-menu p-1" aria-labelledby="additionalNote">
+                                              <div class="row">
+                                                  <div class="col-12 form-group">
+                                                      <label>Nota</label>
+                                                      <textarea class="form-control" v-model="data.note" placeholder="Type note"></textarea>
+                                                  </div>
+                                              </div>
+                                              <div class="d-flex justify-content-between">
+                                                  <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                      data-dismiss="modal">
+                                                      <span>Apply</span>
+                                                  </button>
+                                                  <button type="button" class="btn btn-light-primary ml-1"
+                                                      data-dismiss="modal" v-on:click="data.note=''">
+                                                      <span>Cancel</span>
+                                                  </button>
+                                              </div>
+                                          </div>
                                     </div>
                                 </div>
                                 <div class="invoice-action-btn mb-1 d-flex">
-                                    <div class="preview w-50 mr-50 dropup">
-                                        <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                            <span class="text-nowrap">Agregar descuento</span>
-                                        </button>
-                                        <div class="dropdown-menu p-1">
-                                            <div class="row">
-                                                <div class="col-12 form-group">
-                                                    <label for="discount">Descuento</label>
-                                                    <input type="number" class="form-control" v-model="discountControl" placeholder="0">
+                                    <div class="preview w-50 mr-50">
+                                        <div class="dropup">
+                                            <button class="btn btn-light-primary btn-block dropdown-toggle" id="additionalDiscount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                <span class="text-nowrap">Agregar descuento</span>
+                                            </button>
+                                            <div class="dropdown-menu p-1" aria-labelledby="additionalDiscount">
+                                                <div class="row">
+                                                    <div class="col-12 form-group">
+                                                        <label for="discount">Descuento</label>
+                                                        <input type="number" class="form-control" v-model="discountControl" placeholder="0" 
+                                                            v-on:keyup.enter="addDiscount()">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <button type="button" class="btn btn-primary invoice-apply-btn"
-                                                    data-dismiss="modal" onclick="calculate()">
-                                                    <span>Apply</span>
-                                                </button>
-                                                <button type="button" class="btn btn-light-primary ml-1"
-                                                    data-dismiss="modal" v-on:click="discountControl=''">
-                                                    <span>Cancel</span>
-                                                </button>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                        data-dismiss="modal" v-on:click="addDiscount()">
+                                                        <span>Apply</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-light-primary ml-1"
+                                                        data-dismiss="modal">
+                                                        <span>Cancel</span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="save w-50 dropup">
-                                        <button class="btn btn-light-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                            <span class="text-nowrap">Pago adicional</span>
-                                        </button>
-                                        <div class="dropdown-menu p-1">
-                                            <div class="row">
-                                                <div class="col-12 form-group">
-                                                    <label for="discount">Pago adicional</label>
-                                                    <input type="number" class="form-control" v-model="addPaymentControl" placeholder="0">
+                                    <div class="save w-50">
+                                        <div class="dropup">
+                                            <button class="btn btn-light-primary btn-block dropdown-toggle" id="additionalPayment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                <span class="text-nowrap">Pago adicional</span>
+                                            </button>
+                                            <div class="dropdown-menu p-1" aria-labelledby="additionalPayment">
+                                                <div class="row">
+                                                    <div class="col-12 form-group">
+                                                        <label for="discount">Pago adicional</label>
+                                                        <input type="number" class="form-control" v-model="addPaymentControl" placeholder="0">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <button type="button" class="btn btn-primary invoice-apply-btn"
-                                                    data-dismiss="modal" onclick="calculate()">
-                                                    <span>Apply</span>
-                                                </button>
-                                                <button type="button" class="btn btn-light-primary ml-1"
-                                                    data-dismiss="modal" v-on:click="addPaymentControl=''">
-                                                    <span>Cancel</span>
-                                                </button>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-primary invoice-apply-btn"
+                                                        data-dismiss="modal" v-on:click="addPayment()">
+                                                        <span>Apply</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-light-primary ml-1"
+                                                        data-dismiss="modal" v-on:click="addPaymentControl=''">
+                                                        <span>Cancel</span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -189,20 +198,17 @@
     </div>
 </div>
 
-<!-- Search product modal form -->
-@include('pages.sales.modalItem')
-
 @endsection
 
 @section('vendor-scripts')
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"><script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
-    <script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
+    @routes
+    <script type="module" src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
     <script>
         $(document).on('click', '.dropdown-menu', function (e) {
             e.stopPropagation();
