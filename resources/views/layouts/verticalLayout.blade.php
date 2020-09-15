@@ -59,19 +59,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <div class="customizer d-none d-md-block">
     <a class="customizer-close" href="#"><i class="bx bx-x"></i></a>
     <a class="customizer-toggle" href="#"><i class="bx bx-cog bx bx-spin white"></i></a>
-    @include('pages.customizer-content')
+    @include('panels.customizer-content')
   </div>
   <!-- End: Customizer-->
-
-  <!-- Buynow Button-->
-  <div class="buy-now">
-    @include('pages.buy-now')
-  </div>
   @endif
-  <!-- demo chat-->
-  <div class="widget-chat-demo">
-    @include('pages.widget-chat')
-  </div>
 
   <div class="sidenav-overlay"></div>
   <div class="drag-target"></div>

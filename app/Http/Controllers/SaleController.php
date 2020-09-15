@@ -83,7 +83,7 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $pageConfigs = ['pageHeader' => false, 'theme' => 'semi-dark', 'extendApp' => true, 'footerType' => 'hidden'];
+        $pageConfigs = ['pageHeader' => false, 'theme' => 'light', 'extendApp' => true, 'footerType' => 'hidden', 'navbarType' => 'static'];
 
         $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
         return view('pages.sales.addSale', compact(['products', 'pageConfigs']));
