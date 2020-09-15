@@ -28,21 +28,8 @@ class PageConfig
       //if any key missing of array from custom.php file it will be merge and set a default value from dataDefault array and store in data variable
       $data = array_merge($dataDefault, config('custom.custom'));
 
-      // $fullURL = request()->fullurl();
-      // $data = [];
-      // if (App()->environment() === "production") {
-      //     for ($i = 1; $i < 7; $i++) {
-      //         $contains = Str::contains($fullURL, "demo-" . $i);
-      //         if ($contains === true) {
-      //             $data = config("demo-".$i.".custom");
-      //         }
-      //     }
-      // }
-      // $data = array_merge($dataDefault, $data);
-      
-      // all available option of materialize template
       $allOptions = [
-        'mainLayoutType' => array('vertical-menu','horizontal-menu','vertical-menu-boxicons'),
+        'mainLayoutType' => array('vertical-menu','horizontal-menu'),
         'theme' => array('light'=>'light','dark'=>'dark','semi-dark'=>'semi-dark'),
         'isContentSidebar'=> array(false,true),
         'pageHeader' => array(false,true),

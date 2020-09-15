@@ -27,7 +27,6 @@
                     </div>
                 </div>
                 <div class="content-right">
-                    <div class="content-overlay"></div>
                     <div class="content-wrapper">
                         <div class="content-header row">
                         </div>
@@ -38,31 +37,18 @@
                 </div>
             </div>
         @else
-            {{-- others page structures --}}
-            <div class="content-overlay"></div>
-
             {{-- if full width is required--}}
-            @if ($configData['extendApp'] == true)
-                <div class="content-header row" style="margin-top: 8.75rem !important">
-                    @if($configData['pageHeader'] === true && isset($breadcrumbs))
-                    @include('panels.breadcrumbs')
-                    @endif
-                </div>
+            <div class="@if($configData['extendApp'] == true) {{ 'px-0' }} @else {{ 'content-wrapper ' }} @endif">
+                @if($configData['pageHeader'] === true && isset($breadcrumbs))
+                    <div class="content-header row">
+                        @include('panels.breadcrumbs')
+                    </div>
+                @endif
+
                 <div class="content-body">
                     @yield('content')
                 </div>
-            @else
-                <div class="content-wrapper">
-                    <div class="content-header row">
-                      @if($configData['pageHeader'] === true && isset($breadcrumbs))
-                      @include('panels.breadcrumbs')
-                      @endif
-                  </div>
-                  <div class="content-body">
-                      @yield('content')
-                  </div>
-                </div>
-            @endif
+            </div>
         @endif
     </div>
     <!-- END: Content-->
