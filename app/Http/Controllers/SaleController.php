@@ -98,7 +98,7 @@ class SaleController extends Controller
     {
         if($request->ajax()){
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-            return view('pages.sales.list_products', compact('products'))->render();
+            return response($products, 200);
         }
     }
 
@@ -115,7 +115,7 @@ class SaleController extends Controller
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
         }
             
-        return view('pages.sales.list_products', compact('products'))->render();
+        return response($products, 200);
     }
 
 

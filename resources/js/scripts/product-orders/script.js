@@ -4,6 +4,11 @@ window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 };
 
+import item from './components/Item.js'
+import product from "./components/Product.js"
+import pagination from "./components/Pagination.js"
+
+
 var vm = new Vue({
     el : '#app',
     data () {
@@ -22,13 +27,32 @@ var vm = new Vue({
             },
             discountControl : 0,
             addPaymentControl : 0,
+            searchControl : "",
+            inventory : {},
+            loader : false
         }
     },
+    mounted () {
+        this.getInventory()
+    },
     methods : {
+        getInventory(page = 1) {
+            this.loader = true
+            axios.get('/pagination/fetch?page=' + page)
+            .then(response => {
+                this.inventory = response.data;
+                this.loader = false
+            })
+            .catch(err => {
+                //make alert for error
+                this.loader = false
+            })
+
+        },
         add (id) {
             if(document.getElementById('item' + id) == null){
-                axios
-                .get('/api/products/order/' + id + '/prices')
+                this.loader = true
+                axios.get('/api/products/order/' + id + '/prices')
                 .then(response => {
                     let data = response.data[0]
                     let item = {
@@ -43,6 +67,7 @@ var vm = new Vue({
                     }
                     
                     this.items.push(item) 
+                    this.loader = false
                 })
             }
         },
@@ -70,10 +95,18 @@ var vm = new Vue({
             this.calculate(false)
         },
         saveSale() {
+            Swal.fire({
+                title: 'Guardando',
+                html: 'Por favor espere...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            })
             //packing data
             let products = this.items
             for(let current of products){
-                delete current.prices //delete prices beacuse server not needed
+                delete current.prices //delete prices beacuse server not will need
             }
             this.data.products = products
             axios.post(route('storeSale'), this.data)
@@ -86,6 +119,7 @@ var vm = new Vue({
                     });
                     this.print(response.data.invoice.invoice) //!!!!!!!!!!!!!!!!fix this response
                     Object.assign(this.$data, this.initialState());
+                    this.getInventory()
                 })
                 .catch(error => {
                     console.log(error.response.data)
@@ -119,6 +153,24 @@ var vm = new Vue({
                 discountControl : 0,
                 addPaymentControl : 0,
             }
+        },
+        searchTimer () {
+            this.loader = true
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
+            }
+            this.timer = setTimeout(() => {
+                this.searchProduct()
+            }, 800);
+        },
+        searchProduct () {
+            axios
+            .get('/pagination/fetch/search/' + this.searchControl)
+            .then(response => {
+                this.inventory = response.data;
+            })
+            this.loader = false
         }
     },
     watch : {
@@ -132,61 +184,4 @@ var vm = new Vue({
     
 })
 
-/**************************************************************************************************************/
-/*********************************************** Components  **************************************************/
-/**************************************************************************************************************/
 
-Vue.component('item', {
-    data () {
-        return {
-
-        }
-    },
-    props : ['item'],
-    template :
-    /*html*/`<div class="list-group-item p-0" :id="'item' + item.id">
-                <div class="row h-100">
-                    <input type="hidden" id="productId" name="productId" v-model="item.id"/>
-                    <input type="hidden" id="amountValue" name="amountValue" value="0.00"/> 
-                    <div class="col-md-1 py-0 h-100 my-auto">
-                        <button type="button" class="btn bg-transparent" v-on:click="$emit('remove')">
-                            <i class="bx bx-trash fa-2x text-danger"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-2 py-0 h-100 my-auto">
-                        <div class="form-group my-auto">
-                            <input type="number" class="form-control" style="padding: 0.50rem 0.5rem" id="quantity" v-model="item.quantity"/>
-                        </div>
-                    </div>
-                    <div class="col-md-4 py-0 h-100 my-auto">
-                        <h6>{{ item.name }}</h6>
-                    </div>
-                    <div class="col-md-2 py-0 h-100 my-auto "> 
-                        <h6 class="cursor-pointer text-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" 
-                            aria-expanded="false" role="button">{{ '$' + item.price }}</h6>
-                        <div class="dropdown-menu p-1">
-                            <div class="row">
-                                <div class="col-12 form-group">
-                                    <label for="prices">Precios registrados</label>
-                                    <select class="form-control" v-model="item.price">
-                                        <option v-for="price in item.prices" :value="price.price_incl_tax">{{ '$' + price.price_incl_tax }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 py-0 h-100 my-auto"> 
-                        <h6 id="total">{{ '$' + calculateTotal }}</h6>
-                        <input type="hidden" v-model="calculateTotal" id="totalValue" name="totalValue"/>
-                    </div>
-                </div>
-            </div>`,
-    
-        computed : {
-            calculateTotal : function () {
-                this.item.total = this.item.quantity * this.item.price
-                this.$emit('datachange')
-                return this.item.total
-            }
-        },
-    })
