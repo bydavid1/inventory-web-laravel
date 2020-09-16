@@ -48,15 +48,29 @@
             <div class="col-md-8 inventory-list">
                 <div class="col-md-12 row">
                     <div class="col-md-10">
-                        <input class="form-control form-control-lg mt-1" id="searchInput" type="search" autofocus
-                            autocomplete="off" placeholder="Buscar en el inventario">
+                        <fieldset>
+                            <div class="input-group mt-1">
+                                <input class="form-control form-control-lg" v-model="searchControl" v-on:keyup="searchTimer" type="search" autofocus
+                                    autocomplete="off" placeholder="Buscar en el inventario">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <div v-if="loader == true" class="spinner-border" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <i v-else class="bx bx-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                     <div class="col-md-2 d-flex justify-content-center pt-2">
-                            {{ $products->links() }}
+                        <pagination :data="inventory" v-on:change="getInventory($event)"></pagination>
                     </div>
                 </div>
-                <div class="inventory-results" id="products">
-                    @include('pages.sales.list_products')
+                <div class="inventory-results">
+                    <div class="row py-2 px-1">
+                        <product v-on:add="add(product.id)" :product="product" :key="product.id" v-for="product in inventory.data"></product>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4 invoice-details">
@@ -148,7 +162,7 @@
                                           <div class="row">
                                               <div class="col-12 form-group">
                                                   <label>Nota</label>
-                                                  <textarea class="form-control" v-model="data.note" placeholder="Type note"></textarea>
+                                                  <textarea class="form-control" v-model="data.note" placeholder="Nota descriptiva"></textarea>
                                               </div>
                                           </div>
                                           <div class="d-flex justify-content-between">
@@ -174,8 +188,7 @@
                                             <div class="row">
                                                 <div class="col-12 form-group">
                                                     <label for="discount">Descuento</label>
-                                                    <input type="number" class="form-control" v-model="discountControl" placeholder="0" 
-                                                        v-on:keyup.enter="addDiscount()">
+                                                    <input type="number" class="form-control" v-model="discountControl" placeholder="0">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-between">
@@ -218,7 +231,7 @@
                                 </div>
                             </div>
                             <div class="invoice-action-btn mb-1">
-                                <button type="submit" id="createSale" class="btn btn-success btn-block">
+                                <button type="submit" class="btn btn-success btn-block">
                                     <i class="bx bx-save"></i>
                                     <span>Guardar factura</span>
                                 </button>
