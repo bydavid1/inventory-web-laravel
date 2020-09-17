@@ -30,7 +30,7 @@
 						<th>Cantidad</th>
 						<th>Subtotal</th>
 						<th>Total</th>
-						<th style="width:15%;" class="text-right">Opciones</th>
+						<th>Opciones</th>
 					</tr>
 				</thead>
 			</table>

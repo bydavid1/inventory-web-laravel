@@ -29,7 +29,7 @@
                     <th>Categoria</th>
                     <th>Fabricante</th>
                     <th>Estado</th>
-                    <th style="width:15%;" class="text-right">Opciones</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
         </table>

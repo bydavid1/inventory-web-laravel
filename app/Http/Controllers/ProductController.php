@@ -39,10 +39,16 @@ class ProductController extends Controller
         ->where('products.is_deleted', '0');
         
         return datatables()->eloquent($query)
-        ->addColumn('actions', '<div class="btn-group float-right">
-                    <a type="button" class="btn btn-danger" href="{{ route("editProduct", "$id") }}"><i class="bx bx-edit" style="color: white"></i></a>
-                    <button type="button" class="btn btn-warning" id="removeProductModalBtn" data-id="{{"$id"}}"><i class="bx bx-trash" style="color: white"></i></button>
-                    <a type="button" class="btn btn-info" href="{{ route("showProduct", "$id") }}"><i class="bx bx-eye" style="color: white"></i></a>
+        ->addColumn('actions', '<div>
+                    <a role="button" href="{{ route("editProduct", "$id") }}">
+                        <i class="badge-circle badge-circle-success bx bx-edit font-medium-1"></i>
+                    </a>
+                    <a role="button" id="removeProductModalBtn" data-id="{{"$id"}}">
+                        <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>    
+                    </a>
+                    <a href="{{ route("showProduct", "$id") }}">
+                        <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
+                    </a>
                     </div>')
         ->addColumn('photo', function($products){
                     $path = asset($products->first_image->src);
