@@ -40,7 +40,6 @@
 </style>
 @endsection
 
-
 @section('content')
 <div id="app" class="pos-app">
     <form id="createOrderForm" class="h-100" v-on:submit.prevent="saveSale()">
@@ -245,7 +244,6 @@
         </div>
     </form>
 </div>
-
 @endsection
 
 @section('vendor-scripts')

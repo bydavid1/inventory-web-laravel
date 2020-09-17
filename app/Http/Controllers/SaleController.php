@@ -30,12 +30,14 @@ class SaleController extends Controller
      */
     public function getRecords()
     {
-        $query = Sales::select('id', 'created_at', 'costumer_id', 'invoice_type', 'unregistered_customer', 'total_quantity', 'subtotal', 'total');
+        $query = Sales::select('id', 'created_at', 'costumer_id', 'invoice_type', 'unregistered_customer', 'total_quantity', 'subtotal', 'total')->orderBy('created_at', 'desc');;
 
         return datatables()->eloquent($query)
-        ->addColumn('actions', '<div class="btn-group float-right">
-        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fa fa-trash" style="color: white"></i></button>
-        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fa fa-file-pdf-o" style="color: white"></i></a>
+        ->addColumn('actions', '<div class="float-center">
+        <a href="#" role="button"  data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer">
+            <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
+        </a>
+        <a href="{{ route("invoice", "$id") }}"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
         </div>')
         ->addColumn('name', function($query){
 

@@ -44,11 +44,11 @@ Route::get('manufacturers/{id}', 'ManufacturersController@show');
 
 //Customers routes
 
-Route::get('customers', 'CostumerController@getRecords');
+Route::get('customers', 'CustomerController@getRecords');
 
-Route::get('customer/{id}', 'CostumerController@show');
+Route::get('customer/{id}', 'CustomerController@show');
 
-Route::get('costumers/search/{query}', 'CostumerController@byQuery');
+Route::get('costumers/search/{query}', 'CustomerController@byQuery');
 
 //Other routes
 

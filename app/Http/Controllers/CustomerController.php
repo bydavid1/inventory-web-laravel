@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Costumers;
 
-class CostumerController extends Controller
+class CustomerController extends Controller
 {
 
     /**
@@ -17,9 +17,11 @@ class CostumerController extends Controller
     public function getRecords()
     {
         return datatables()->eloquent(Costumers::where('is_deleted', '0'))
-        ->addColumn('actions', '<div class="btn-group float-right">
-        <button type="button" class="btn btn-success" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer"><i class="bx bx-edit" style="color: white"></i></button>
-        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
+        ->addColumn('actions', '<div>
+        <a href="" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer">
+            <i class="badge-circle badge-circle-success bx bx-edit font-medium-1" style="color: white"></i>
+        </a>
+        <a href="" onclick="remove({{"$id"}})"><i class="badge-circle badge-circle-danger bx bx-trash font-medium-1" style="color: white"></i></a>
         </div>')
         ->rawColumns(['actions'])
         ->toJson();
@@ -47,7 +49,7 @@ class CostumerController extends Controller
         $breadcrumbs = [
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
-        return view('pages.costumers', ['breadcrumbs'=>$breadcrumbs]);
+        return view('pages.customers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**

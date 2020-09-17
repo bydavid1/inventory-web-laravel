@@ -31,7 +31,7 @@
 						<th>Email</th>
 						<th>Dirección</th>
 						<th>Fecha de registro</th>
-						<th style="width:15%;" class="text-right">Opciones</th>
+						<th>Opciones</th>
 					</tr>
 				</thead>
 			</table>
