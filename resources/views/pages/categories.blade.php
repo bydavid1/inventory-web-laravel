@@ -5,8 +5,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
 @endsection
 
-@section('content')
+@section('tools')
+    <button class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
+        <i class="fa fa-plus-circle fa-2x"></i>
+        <span>Agregar Categoría</span>
+    </button>
+@endsection
 
+@section('content')
     <div class="container">
         @if ( session('mensaje') )
         <div class="alert alert-success">{{ session('mensaje') }}</div>

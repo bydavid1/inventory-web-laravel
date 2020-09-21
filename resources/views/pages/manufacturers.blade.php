@@ -8,6 +8,13 @@
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
 @endsection
 
+@section('tools')
+    <button class="btn btn-float btn-outline-primary" data-toggle="modal" data-target="#addManufacturer">
+        <i class="fa fa-plus-circle fa-2x"></i>
+        <span>Agregar Fabricante</span>
+    </button>
+@endsection
+
 @section('content')
 
     <div class="container">
