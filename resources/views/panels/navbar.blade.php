@@ -1,7 +1,7 @@
 {{-- navabar  --}}
 <div class="header-navbar-shadow"></div>
-<nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu 
-@if(isset($configData['navbarType'])){{$configData['navbarClass']}} @endif" 
+<nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu
+@if(isset($configData['navbarType'])){{$configData['navbarClass']}} @endif"
 data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgColor']}}@endif">
   <div class="navbar-wrapper">
     <div class="navbar-container content">
@@ -63,7 +63,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
               <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
                   <div class="media d-flex align-items-center">
                     <div class="media-left pr-0">
-                      <div class="avatar mr-1 m-0"><img src="{{asset('images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="39" width="39"></div>
+                      <div class="avatar mr-1 m-0"><img src="{{asset('media/user.jpg')}}" alt="avatar" height="39" width="39"></div>
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><span class="text-bold-500">Congratulate Socrates Itumay</span> for work anniversaries</h6><small class="notification-text">Mar 15 12:32pm</small>
@@ -72,7 +72,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <div class="d-flex justify-content-between read-notification cursor-pointer">
                   <div class="media d-flex align-items-center">
                     <div class="media-left pr-0">
-                      <div class="avatar mr-1 m-0"><img src="{{asset('images/portrait/small/avatar-s-16.jpg')}}" alt="avatar" height="39" width="39"></div>
+                      <div class="avatar mr-1 m-0"><img src="{{asset('media/user.jpg')}}" alt="avatar" height="39" width="39"></div>
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><span class="text-bold-500">New Message</span> received</h6><small class="notification-text">You have 18 unread messages</small>
@@ -135,7 +135,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <div class="d-flex justify-content-between read-notification cursor-pointer">
                   <div class="media d-flex align-items-center">
                     <div class="media-left pr-0">
-                      <div class="avatar mr-1 m-0"><img src="{{asset('images/portrait/small/avatar-s-4.jpg')}}" alt="avatar" height="39" width="39"></div>
+                      <div class="avatar mr-1 m-0"><img src="{{asset('media/user.jpg')}}" alt="avatar" height="39" width="39"></div>
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><span class="text-bold-500">New file</span> has been uploaded</h6><small class="notification-text">4 hrs ago</small>
@@ -157,7 +157,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <div class="d-flex justify-content-between cursor-pointer">
                   <div class="media d-flex align-items-center border-0">
                     <div class="media-left pr-0">
-                      <div class="avatar mr-1 m-0"><img src="{{asset('images/portrait/small/avatar-s-16.jpg')}}" alt="avatar" height="39" width="39"></div>
+                      <div class="avatar mr-1 m-0"><img src="{{asset('media/user.jpg')}}" alt="avatar" height="39" width="39"></div>
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><span class="text-bold-500">New customer</span> comment recieved</h6><small class="notification-text">2 days ago</small>
