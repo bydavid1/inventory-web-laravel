@@ -14,7 +14,7 @@ use App\Products;
 use App\Payments;
 use App\Simple_invoice;
 use App\Kardex;
-use App\Costumers;
+use App\Customers;
 use App\Traits\Helpers;
 use Exception;
 
@@ -44,7 +44,7 @@ class SaleController extends Controller
             if ($query->costumer_id == null) {
                 return $query->unregistered_customer;
             } else{
-                $costumer = Costumers::select('name')->where('id', $query->costumer_id)->get();
+                $costumer = Customers::select('name')->where('id', $query->costumer_id)->get();
                 return $costumer[0]->name;
             }
         })
@@ -105,7 +105,7 @@ class SaleController extends Controller
     }
 
     /**
-     * Search products pagination with ajax 
+     * Search products pagination with ajax
      *
      * @return \Illuminate\Http\Response
      */
@@ -116,7 +116,7 @@ class SaleController extends Controller
         }else{
             $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
         }
-            
+
         return response($products, 200);
     }
 
@@ -164,7 +164,7 @@ class SaleController extends Controller
                         $saleitem->total = $product['total'];
 
                         if ($saleitem->save()) {
-                            //Update quantity 
+                            //Update quantity
                             $product = Products::find($saleitem->product_id);
                             // Make sure we've got the Products model
                             if ($product) {
@@ -192,14 +192,14 @@ class SaleController extends Controller
                                     $kardex->total = $saleitem->total;
 
                                     if (!$kardex->save()) {
-                                        throw new Exception("Could not save kardex information at product ". $product['name'], 1);  
+                                        throw new Exception("Could not save kardex information at product ". $product['name'], 1);
                                     }
                                 }else{
-                                    throw new Exception("Could not update stock of product " . $product['name'], 1);  
+                                    throw new Exception("Could not update stock of product " . $product['name'], 1);
                                 }
 
                             } else {
-                                throw new Exception("Product " . $product['name'] . "not exist", 1);    
+                                throw new Exception("Product " . $product['name'] . "not exist", 1);
                             }
 
                         } else {
@@ -229,18 +229,18 @@ class SaleController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-        
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response  
+     * @return \Illuminate\Http\Response
      */
     public function invoice($id)
     {
         try {
-            
-            $path = public_path() . "\invoices\\$id.pdf"; 
+
+            $path = public_path() . "\invoices\\$id.pdf";
             if (file_exists($path)) {
                 return response()->file($path);
             }else{

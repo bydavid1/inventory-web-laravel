@@ -254,7 +254,7 @@
 
 @section('page-scripts')
     @routes
-    <script type="module" src="{{ asset('js/scripts/product-orders/script.js') }}"></script>
+    <script type="module" src="{{ asset('js/scripts/sales/script.js') }}"></script>
     <script>
         $(document).on('click', '.dropdown-menu', function (e) {
             e.stopPropagation();

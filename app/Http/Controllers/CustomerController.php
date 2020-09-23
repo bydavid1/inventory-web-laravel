@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use App\Costumers;
+use App\Customers;
 
 class CustomerController extends Controller
 {
@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function getRecords()
     {
-        return datatables()->eloquent(Costumers::where('is_deleted', '0'))
+        return datatables()->eloquent(Customers::where('is_deleted', '0'))
         ->addColumn('actions', '<div>
         <a href="" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer">
             <i class="badge-circle badge-circle-success bx bx-edit font-medium-1" style="color: white"></i>
@@ -29,7 +29,7 @@ class CustomerController extends Controller
 
     public function byQuery($query)
     {
-        $result = Costumers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
+        $result = Customers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
 
         if ($result->count() > 0) {
            return response()->json(['success' => true, 'data' => $result], 200);
@@ -60,7 +60,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $costumer = new Costumers;
+        $costumer = new Customers;
         $costumer->code = $request->code;
         $costumer->name = $request->name;
         $costumer->phone = $request->phone;
@@ -86,7 +86,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $result = Costumers::where('id', $id)->get();
+        $result = Customers::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
@@ -104,7 +104,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $costumer = Costumers::find($id);
+        $costumer = Customers::find($id);
         $costumer->email = $request->uemail;
         $costumer->address = $request->uaddress;
         $costumer->phone = $request->uphone;
@@ -124,7 +124,7 @@ class CustomerController extends Controller
      */
     public function delete($id)
     {
-        $costumer = Costumers::find($id);
+        $costumer = Customers::find($id);
         $costumer->is_deleted = 1;
 
         if ($costumer->save()) {
@@ -142,7 +142,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $costumer = Costumers::find($id);
+        $costumer = Customers::find($id);
         if ($costumer->delete()) {
             return back()->with('mensaje', 'Cliente editado');
         }
