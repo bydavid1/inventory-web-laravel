@@ -95,36 +95,6 @@
     <!-- ---------------------------------------------------------------------------------- -->
     <!-- --------------------Modal-------------------- -->
     <!-- ---------------------------------------------------------------------------------- -->
-    <div class="modal fade right" tabindex="-1" role="dialog" id="setInfo">
-        <div class="modal-dialog modal-full-height modal-right">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Actualizar información</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="quantity" class="col-sm-4 control-label">Cantidad comprada</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="quantity" placeholder="Enter..."
-                                autocomplete="off" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="purchase" class="col-sm-4 control-label">Precio de compra</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="purchase" placeholder="Enter..."
-                                autocomplete="off" />
-                        </div>
-                    </div>
-                    <button type="button" id="AddProduct" class="btn btn-primary"><i class="bx bx-save"></i>Agregar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ---------------------------------------------------------------------------------- -->
-    <!-- --------------------Modal-------------------- -->
-    <!-- ---------------------------------------------------------------------------------- -->
     <div class="modal fade right" role="dialog" tabindex="-1" id="AddNewProductModal">
         <div class="modal-dialog modal-full-height modal-right">
             <div class="modal-content">
@@ -172,12 +142,12 @@
                         <div class="form-group">
                             <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
                                 de compra</label>
-                            <input type="text" class="form-control" v-model="newProduct.purchase" placeholder="Enter ...">
+                            <input type="number" class="form-control" v-model="newProduct.purchase" placeholder="Enter ...">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
                                 principal</label>
-                            <input type="text" class="form-control" v-model="newProduct.price" placeholder="Enter ...">
+                            <input type="number" class="form-control" v-model="newProduct.price" placeholder="Enter ...">
                         </div>
                     </form>
                 </div>
@@ -213,6 +183,18 @@
                             </div>
                         </div>
                     </fieldset>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Imagen</td>
+                                <td>Codigo</td>
+                                <td>Producto</td>
+                                <td>Stock</td>
+                                <td>Precio</td>
+                                <td>Agregar</td>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>

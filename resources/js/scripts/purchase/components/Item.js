@@ -8,16 +8,24 @@ Vue.component('Item', {
 
         }
     },
+    computed : {
+        calculateTotal() {
+            return this.item.quantity * this.item.purchase
+        }
+    },
+    watch : {
+        calculateTotal(value){
+            this.total = value
+        }
+    },
     props : {
         item : {
             type : Object,
             required : true
         }
     },
-    template : 
-/*html*/`<div class="invoice-product-details ">
-    <form class="form invoice-item-repeater">
-      <div data-repeater-list="group-a">
+    template :
+/*html*/`<div data-repeater-list="group-a">
         <div data-repeater-item>
           <div class="row mb-50">
             <div class="col-3 col-md-4 invoice-item-title">Item</div>
@@ -37,7 +45,7 @@ Vue.component('Item', {
                 <input type="text" class="form-control" v-model="item.quantity" placeholder="0">
               </div>
               <div class="col-md-2 col-12 form-group">
-                <strong class="text-primary align-middle">{{ item.total }}</strong>
+                <strong class="text-primary align-middle">{{ '$' + item.total }}</strong>
               </div>
               <div class="col-md-4 col-12 form-group">
                 <input type="text" class="form-control invoice-item-desc" v-model="item.description">
