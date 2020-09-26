@@ -26,7 +26,7 @@ body {
   &.dark-layout {
     background-color: $theme-dark-bg;
 
-    // Universal elements 
+    // Universal elements
     // -------------------
     // heading tags
     h1,
@@ -110,7 +110,7 @@ body {
     }
     // miscellaneous
     &.bg-full-screen-image {
-      background: url('../images/pages/auth-bg-dark.jpg');
+      background: url('https://github.com/bydavid1/inventory-web-laravel/blob/e78359383580c8634b6f321ae38480596f16fb73/resources/images/pages/auth-bg-dark.jpg');
     }
     // perfect scroll bar
     .ps__rail-y,
@@ -434,13 +434,13 @@ body {
       }
     }
 
-    // overlay image 
+    // overlay image
     .overlay-image-card{
       .btn-white{
         background-color: $dark !important;
       }
     }
-    
+
     // Grid
     .bd-example {
       .row,
@@ -683,7 +683,7 @@ body {
           background-color: $theme-dark-card-color;
           border-color: $theme-dark-border-color;
           color: $theme-dark-text-color;
-          
+
         }
         &.active {
           background-color: $primary !important;
@@ -2328,7 +2328,7 @@ body {
         color: $theme-dark-text-color !important;
       }
       .invoice-payment{
-        border-color: $theme-dark-border-color;        
+        border-color: $theme-dark-border-color;
       }
     }
     .invoice-list-wrapper {
