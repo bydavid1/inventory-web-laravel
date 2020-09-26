@@ -444,7 +444,7 @@ label{
   border-radius: 0 0 5px 5px;
   margin-right: 1rem;
 }
-/*   Input Group css   */ 
+/*   Input Group css   */
 /*--------------------*/
 .input-group{
   .input-group-text{
@@ -486,7 +486,7 @@ label{
 select.form-control {
   &:not([multiple="multiple"]){
     background-image:
-      url("../images/pages/arrow-down.png");
+      url("https://github.com/bydavid1/inventory-web-laravel/blob/9d8e9be5d8072f8c198191600603f09fabdbfd28/resources/images/pages/arrow-down.png");
     background-position:
       calc(100% - 12px) 13px,
       calc(100% - 20px) 13px,
@@ -583,7 +583,7 @@ select::-ms-expand {
 /*-----------------------------*/
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{
-  // Remove arrow on hover 
+  // Remove arrow on hover
     -webkit-appearance: none;
 }
 
