@@ -47,10 +47,10 @@
             </ul>
             <table class="table table-condensed table-hover table-bordered table-striped" id="items">
                 <thead>
-                    <tr>					
+                    <tr>
                         <th>Logo</th>
-                        <th>Nombre</th>	
-                        <th>Disponible</th>									
+                        <th>Nombre</th>
+                        <th>Disponible</th>
                         <th style="width:15%;" class="text-right">Opciones</th>
                     </tr>
                 </thead>
@@ -58,7 +58,7 @@
         </div>
     </div>
     <!-- /.card -->
-    
+
 <!-- Delete form-->
 <div class="d-none">
 	<form id="destroyform" method="POST">
@@ -170,7 +170,6 @@
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/path.js') }}"></script>
     @routes
     <script src="{{ asset('js/scripts/manufacturers/manufacturers.js') }}"></script>
 @endsection

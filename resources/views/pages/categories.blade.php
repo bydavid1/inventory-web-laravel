@@ -159,7 +159,6 @@
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/path.js') }}"></script>
     @routes
     <script src="{{ asset('js/scripts/categories/categories.js') }}"></script>
 @endsection

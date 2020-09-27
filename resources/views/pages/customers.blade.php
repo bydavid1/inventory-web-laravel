@@ -23,9 +23,9 @@
 			@endif
 			<table class="table table-condensed table-hover table-bordered table-striped" id="items">
 				<thead>
-					<tr>					
+					<tr>
 						<th>Codigo</th>
-						<th>Nombre</th>							
+						<th>Nombre</th>
 						<th>NIT</th>
 						<th>Telefono</th>
 						<th>Email</th>
@@ -220,7 +220,6 @@
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/path.js') }}"></script>
     @routes
 	<script src="{{ asset('js/scripts/customers/customers.js') }}"></script>
 @endsection

@@ -177,7 +177,7 @@
                                 <span class="input-group-text"><i class="bx bx-truck"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Nombre" name="uname" id="uname" autocomplete="off">
-                        </div> 
+                        </div>
                     </div>
                     <div class="form-group col-12">
                         <label for="name" class="control-label">NIT: </label>
@@ -217,7 +217,6 @@
 @endsection
 
 @section('page-scripts')
-    <script src="{{ asset('js/path.js') }}"></script>
     @routes
     <script src="{{ asset('js/scripts/suppliers/suppliers.js') }}"></script>
 @endsection
