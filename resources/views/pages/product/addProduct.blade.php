@@ -315,7 +315,6 @@
 
 @section('page-scripts')
 @routes
-<script src="{{ asset('js/path.js') }}"></script>
 <script src="{{ asset('js/scripts/product/addProduct.js') }}"></script>
 <script>
 
