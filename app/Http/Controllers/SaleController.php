@@ -92,36 +92,6 @@ class SaleController extends Controller
     }
 
     /**
-     * Sale products pagination with ajax
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function pagination(Request $request)
-    {
-        if($request->ajax()){
-            $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-            return response($products, 200);
-        }
-    }
-
-    /**
-     * Search products pagination with ajax
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function search($query = null)
-    {
-        if ($query != null) {
-            $products = Products::select('id','code','name','stock','description')->with(['first_price', 'first_image'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->paginate(15);
-        }else{
-            $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-        }
-
-        return response($products, 200);
-    }
-
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

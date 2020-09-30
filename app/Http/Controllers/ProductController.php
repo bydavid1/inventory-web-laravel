@@ -24,101 +24,6 @@ class ProductController extends Controller
 
     private $photo_default = "media/photo_default.png";
 
-     /**
-     * Api
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function getRecords()
-    {
-        $query = Products::select('products.id','products.code','products.name','products.is_available','products.type','products.stock', 'suppliers.name as name_supplier', 'categories.name as name_category')
-        ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->with(['first_price', 'first_image'])
-        ->where('products.is_deleted', '0');
-        
-        return datatables()->eloquent($query)
-        ->addColumn('actions', '<div>
-                    <a role="button" href="{{ route("editProduct", "$id") }}">
-                        <i class="badge-circle badge-circle-success bx bx-edit font-medium-1"></i>
-                    </a>
-                    <a role="button" id="removeProductModalBtn" data-id="{{"$id"}}">
-                        <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>    
-                    </a>
-                    <a href="{{ route("showProduct", "$id") }}">
-                        <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
-                    </a>
-                    </div>')
-        ->addColumn('photo', function($products){
-                    $path = asset($products->first_image->src);
-                        return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
-        })
-        ->addColumn('prices', function($products){
-                     //Make sure there is at least one price registered
-                        return "$".$products->first_price->price_incl_tax;   
-        })
-        ->editColumn('is_available', function($products){
-                    if ($products->is_available == 1) {
-                        return '<i class="bx bx-check text-success"></i>';
-                    }else{
-                        return '<i class="bx bx-times text-danger"></i>';
-                    }
-        })
-        ->rawColumns(['actions', 'photo', 'is_available'])
-        ->toJson();
-    }
-
-    public function byCode($code)
-    {
-        $products = Products::where('code', $code)->with('first_price')->get();
-        if ($products->count() > 0) {
-            return response()->json(['success' => true, 'product' => $products], 200);
-        }else{
-            return response()->json(['success' => false, 'product' => null], 200);
-        }
-    }
-
-    public function byQuery($query)
-    {
-        $products = Products::select('id','code','name','stock','description')->with(['prices', 'images'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
-        if ($products->count() > 0) {
-            return response()->json(['success' => true, 'products' => $products], 200);
-        }else{
-            return response()->json(['success' => false, 'products' => null], 200);
-        }
-    }
-
-    public function byId($id, $options){
-        switch ($options) {
-            case 'all':
-                $product = Products::where('id', $id)->with(['prices','images'])->get();
-                break;
-            case 'compact':
-                $product = Products::where('id', $id)->with(['first_price','first_image'])->get();
-                break;
-            case 'images':
-                $product = Products::where('id', $id)->with(['images'])->get();
-                break;
-            case 'prices':
-                $product = Products::where('id', $id)->with(['prices'])->get();
-                break;
-            default:
-                $product = Products::where('id', $id)->get();
-                break;
-        }
-
-        if ($product->count() > 0) {
-            return response($product, 200);
-        }else{
-            return response('', 204);
-        }
-    }
-
-    /**
-     * Web routes
-     */
-
     /**
      * Display a listing of the resource.
      *
@@ -166,7 +71,7 @@ class ProductController extends Controller
             }else{
                 $path = $this->photo_default;
             }
-            
+
             $new = new Products;
             $new->code = $request->code;
             $new->name = $request->name;
@@ -182,7 +87,7 @@ class ProductController extends Controller
 
             if ($new->save()) {
 
-                for ($i=1; $i <= 4; $i++) { 
+                for ($i=1; $i <= 4; $i++) {
                     if ($request->{'price'.$i} != "" || $request->{'utility'.$i} != "") {
                         $prices = new Prices;
                         $prices->product_id = $new->id;
@@ -193,7 +98,7 @@ class ProductController extends Controller
                         $prices->save();
                     }
                 }
-        
+
                 $images = new Images;
                 $images->src = $path;
                 $images->product_id = $new->id;
@@ -204,7 +109,7 @@ class ProductController extends Controller
                 $purchase->product_id = $new->id;
                 $purchase->value = $request->purchase;
                 $purchase->save();
-        
+
                 $kardex = new Kardex;
                 $kardex->tag = "Ingreso al inventario";
                 $kardex->product_id = $new->id;
@@ -273,7 +178,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){ 
+    public function update(Request $request, $id){
         try {
             $request->validate([
                 'code' => 'required',
@@ -297,7 +202,7 @@ class ProductController extends Controller
             $product->first_purchase_price()->update([
                 'value' => $request->purchase
             ]);
-            
+
             //Update prices
             $prices = $product->prices();
             $prices->each(function($item) use($request){
@@ -357,7 +262,7 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         $id=$request->input('id_product');
-        
+
         $product = Products::findOrFail($id);
         $product->delete();
 

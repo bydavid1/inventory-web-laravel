@@ -16,44 +16,56 @@ use Illuminate\Support\Facades\Route;
 
 // Products routes
 
-Route::get('products', 'ProductController@getRecords');
+Route::middleware('auth')->group(function () {
 
-Route::get('products/order/{id}/{options}', 'ProductController@byId'); //options parameter can be: all, compact...
+    //Api Products
 
-Route::get('products/order/code/{code}', 'ProductController@byCode');
+    Route::get('products', 'ProductApiController@getRecords');
 
-Route::get('products/order/search/{query}', 'ProductController@byQuery');
+    Route::get('products/{id}/{columns}', 'ProductApiController@byId');
 
-// Products categories
+    Route::get('products/code/{code}/{columns}', 'ProductApiController@byCode');
 
-Route::get('categories', 'CategoriesController@getRecords');
+    Route::get('products/search/{query}/{columns}', 'ProductApiController@byQuery');
 
-Route::get('categories/{id}', 'CategoriesController@show');
+    Route::get('products/order/fetch', 'ProductApiController@pagination');
 
-// Products suppliers
+    Route::get('products/order/search/{query?}', 'ProductApiController@search');
 
-Route::get('suppliers', 'SupplierController@getRecords');
+    // Api categories
 
-Route::get('suppliers/{id}', 'SupplierController@show');
+    Route::get('categories', 'CategoriesController@getRecords');
 
-// Products manufacturers
+    Route::get('categories/{id}', 'CategoriesController@show');
 
-Route::get('manufacturers',  'ManufacturersController@getRecords');
+    // Api suppliers
 
-Route::get('manufacturers/{id}', 'ManufacturersController@show');
+    Route::get('suppliers', 'SupplierController@getRecords');
 
-//Customers routes
+    Route::get('suppliers/{id}', 'SupplierController@show');
 
-Route::get('customers', 'CustomerController@getRecords');
+    // Api manufacturers
 
-Route::get('customer/{id}', 'CustomerController@show');
+    Route::get('manufacturers',  'ManufacturersController@getRecords');
 
-Route::get('costumers/search/{query}', 'CustomerController@byQuery');
+    Route::get('manufacturers/{id}', 'ManufacturersController@show');
 
-//Other routes
+    //Api routes
 
-Route::get('sales', 'SaleController@getRecords');
+    Route::get('customers', 'CustomerController@getRecords');
 
-Route::get('purchases', 'PurchaseController@getRecords');
+    Route::get('customer/{id}', 'CustomerController@show');
 
-Route::get('products/kardex', 'KardexController@getProductList');
+    Route::get('costumers/search/{query}', 'CustomerController@byQuery');
+
+    //Other routes
+
+    Route::get('sales', 'SaleController@getRecords');
+
+    Route::get('purchases', 'PurchaseController@getRecords');
+
+    Route::get('products/kardex', 'KardexController@getProductList');
+
+});
+
+
