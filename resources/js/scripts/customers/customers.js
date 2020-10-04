@@ -61,7 +61,7 @@ $(document).ready(function () {
             var formdata = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: route('makeCostumer'),
+                url: route('storeCustomer'),
                 data: formdata,
                 beforeSend: function () {
                     Swal.fire({
@@ -76,7 +76,7 @@ $(document).ready(function () {
                 success: function (response) {
                     Swal.fire({
                         position: 'top-end',
-                        type: 'success',
+                        icon: 'success',
                         title: 'Registrado',
                         showConfirmButton: false,
                         timer: 1500
@@ -88,7 +88,7 @@ $(document).ready(function () {
                 error: function (xhr, textStatus, errorMessage) {
                     Swal.fire({
                         position: 'top',
-                        type: 'error',
+                        icon: 'error',
                         html: 'Error crítico: ' + xhr.responseText,
                         showConfirmButton: true,
                     });
@@ -156,7 +156,7 @@ $(document).ready(function () {
 
     function update(id){
         $.ajax({
-            url: domain.getDomain('api/customer/' + id),
+            url: '/api/customer/' + id,
             type: 'get',
             dataType: 'json',
             serverSide : true,
@@ -195,7 +195,7 @@ $(document).ready(function () {
         if (updateValidation() == true) {
             var formdata = $(this).serialize();
             $.ajax({
-                url: route('updateCostumer', {id: document.getElementById('put_id').value}),
+                url: route('updateCustomer', {id: document.getElementById('put_id').value}),
                 type: 'POST',
                 data: formdata,
                 beforeSend : function() {
@@ -211,7 +211,7 @@ $(document).ready(function () {
                 success: function (response) {
                     Swal.fire({
                         position: 'top-end',
-                        type: 'success',
+                        icon: 'success',
                         title: 'Registrado',
                         showConfirmButton: false,
                         timer: 1500
@@ -224,7 +224,7 @@ $(document).ready(function () {
                 error: function (xhr, textStatus, errorMessage) {
                     Swal.fire({
                         position: 'top',
-                        type: 'error',
+                        icon: 'error',
                         html: 'Error crítico: ' + xhr.responseText,
                         showConfirmButton: true,
                     });
@@ -279,7 +279,7 @@ $(document).ready(function () {
         Swal.fire({
             title: '¿Está seguro de eliminar a este cliente?',
             text: "Se enviará a la papelera",
-            type: 'warning',
+            icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -287,7 +287,7 @@ $(document).ready(function () {
           }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: route('deleteCostumer', {id: id}),
+                    url: route('deleteCustomer', {id: id}),
                     type: 'POST',
                     data: $('#destroyform').serialize(),
                     success: function (response) {
@@ -303,7 +303,7 @@ $(document).ready(function () {
                     error: function (xhr, textStatus, errorMessage) {
                         Swal.fire({
                             position: 'top',
-                            type: 'error',
+                            icon: 'error',
                             html: 'Error crítico: ' + xhr.responseText,
                             showConfirmButton: true,
                         });
