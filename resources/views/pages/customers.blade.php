@@ -117,7 +117,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="bx bx-envelope"></i></span>
 								</div>
-								<input type="email" class="form-control" placeholder="Ej: 7548-5689" name="email" id="email"
+								<input type="email" class="form-control" placeholder="Ej: user@domain.com" name="email" id="email"
 								autocomplete="off">
 							</div>
 						</div>
