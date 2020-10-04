@@ -1,45 +1,52 @@
-//import domain
-const domain = new PATH();
 var table = "";
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
-    //----------------------------------------------------------------------
-    //-------------------------Get all items---------------------------------
-    //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+//-------------------------Get all items---------------------------------
+//----------------------------------------------------------------------
 
 
-    $(document).ready(function () {
-        table = $('#items').DataTable({
-            "serverSide": true,
-            "ajax": domain.getDomain('api/customers'),
-            "columns": [
-                {
-                    data: 'code'
-                },
-                {
-                    data: 'name'
-                },
-                {
-                    data: 'nit'
-                },
-                {
-                    data: 'phone'
-                },
-                {
-                    data: 'email'
-                },
-                {
-                    data: 'address'
-                },
-                {
-                    data: 'created_at'
-                },
-                {
-                    data: 'actions'
-                },
-            ]
-        });
+$(document).ready(function () {
+    table = $('#items').DataTable({
+        serverSide: true,
+        ajax: {
+            url: '/api/customers',
+            type: 'GET',
+        },
+        columns: [
+            {
+                data: 'code'
+            },
+            {
+                data: 'name'
+            },
+            {
+                data: 'nit'
+            },
+            {
+                data: 'phone'
+            },
+            {
+                data: 'email'
+            },
+            {
+                data: 'address'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions'
+            },
+        ]
     });
+});
 
 
     //----------------------------------------------------------------------
@@ -88,7 +95,7 @@ var table = "";
                 }
             });
         }
-    });    
+    });
 
     //-----------------Validate function-------------------
 
@@ -105,7 +112,7 @@ var table = "";
         if (messageslength > 0) {
             posterror.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
 
@@ -118,7 +125,7 @@ var table = "";
             document.getElementById('code').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('phone').value){
             document.getElementById('phone').classList.add('is-invalid')
             handler++
@@ -127,12 +134,12 @@ var table = "";
             document.getElementById('nit').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('address').value){
             document.getElementById('address').classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -140,7 +147,7 @@ var table = "";
             return false
         }
     }
-    
+
 
     //----------------------------------------------------------------------
     //-------------------------Update customer---------------------------------
@@ -209,7 +216,7 @@ var table = "";
                         showConfirmButton: false,
                         timer: 1500
                     });
-    
+
                     //Clear all fields
                     document.getElementById('editform').reset();
                     table.ajax.reload();
@@ -240,20 +247,20 @@ var table = "";
         if (messageslength > 0) {
             puterror.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
-        
+
         if(!document.getElementById('uphone').value){
             document.getElementById('uphone').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('uaddress').value){
             document.getElementById('uaddress').classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -267,7 +274,7 @@ var table = "";
     //-------------------------Delete customer---------------------------------
     //----------------------------------------------------------------------
 
-    
+
     function remove(id){
         Swal.fire({
             title: '¿Está seguro de eliminar a este cliente?',
@@ -290,7 +297,7 @@ var table = "";
                             title: 'Eliminado',
                             timer: 1500
                         });
-        
+
                         table.ajax.reload();
                     },
                     error: function (xhr, textStatus, errorMessage) {

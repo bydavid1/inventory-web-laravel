@@ -1,6 +1,10 @@
-//import domain
-const domain = new PATH();
 var table = "";
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 //----------------------------------------------------------------------
 //-------------------------Get all items---------------------------------
@@ -8,9 +12,12 @@ var table = "";
 
 $(document).ready(function () {
     table = $('#items').DataTable({
-        "serverSide": true,
-        "ajax": domain.getDomain('api/categories'),
-        "columns": [
+        serverSide: true,
+        ajax: {
+            url: '/api/categories',
+            type: 'GET',
+        },
+        columns: [
             {
                 data: 'id'
             },
@@ -38,7 +45,7 @@ $(document).ready(function () {
         if (validate() == true) {
             let formdata = $(this).serialize()
             let url = route('storeCategory')
-    
+
             sendData(url, formdata, this)
         }
     })
@@ -48,25 +55,25 @@ $(document).ready(function () {
         function validate(){
 
             let handler = 0
-    
+
             //reset all fields messages
             const invalidfields = document.getElementsByClassName('is-invalid')
             const posterror = document.getElementById('posterror')
-    
+
             const messageslength = invalidfields.length
-    
+
             if (messageslength > 0) {
                 posterror.classList.add('d-none')
                 for (let x = 0; x < messageslength; x++) {
-                    invalidfields[0].classList.remove('is-invalid')  
+                    invalidfields[0].classList.remove('is-invalid')
                 }
             }
-    
+
             if(!document.getElementById('name').value){
                 document.getElementById('name').classList.add('is-invalid')
                 handler++
             }
-            
+
             if(handler == 0){
                 return true
             }else{
@@ -83,7 +90,7 @@ $(document).ready(function () {
 
     function update(id){
         $.ajax({
-            url: domain.getDomain('api/categories/' + id),
+            url: '/api/categories/' + id,
             type: 'get',
             dataType: 'json',
             serverSide : true,
@@ -139,15 +146,15 @@ $(document).ready(function () {
         if (messageslength > 0) {
             puterror.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
-        
+
         if(!document.getElementById('uname').value){
             document.getElementById('uname').classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -180,7 +187,7 @@ $(document).ready(function () {
             success: function (response) {
                 Swal.fire({
                     position: 'top-end',
-                    type: 'success',
+                    icon: 'success',
                     title: 'Guardado',
                     showConfirmButton: false,
                     timer: 1500
@@ -192,7 +199,7 @@ $(document).ready(function () {
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({
                     position: 'top',
-                    type: 'error',
+                    icon: 'error',
                     html: 'Error crítico: ' + xhr.responseText,
                     showConfirmButton: true,
                 });
@@ -210,7 +217,7 @@ $(document).ready(function () {
         Swal.fire({
             title: '¿Está seguro de eliminar a esta categoría?',
             text: "Se enviará a la papelera",
-            type: 'warning',
+            icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -224,17 +231,17 @@ $(document).ready(function () {
                     success: function (response) {
                         Swal.fire({
                             position: 'top-end',
-                            type: 'success',
+                            icon: 'success',
                             title: 'Eliminado',
                             timer: 1500
                         });
-    
+
                         table.ajax.reload();
                     },
                     error: function (xhr, textStatus, errorMessage) {
                         Swal.fire({
                             position: 'top',
-                            type: 'error',
+                            icon: 'error',
                             html: 'Error crítico: ' + xhr.responseText,
                             showConfirmButton: true,
                         });

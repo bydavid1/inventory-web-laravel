@@ -1,39 +1,45 @@
-//import domain
-const domain = new PATH();
 var table = "";
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
-    //----------------------------------------------------------------------
-    //-------------------------Get all items---------------------------------
-    //----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//-------------------------Get all items---------------------------------
+//----------------------------------------------------------------------
 
 
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        table = $('#items').DataTable({
-            serverSide: true,
-            ajax: domain.getDomain('api/suppliers'),
-            columns: [{
-                    data: 'code'
-                },
-                {
-                    data: 'name'
-                },
-                {
-                    data: 'nit'
-                },
-                {
-                    data: 'phone'
-                },
-                {
-                    data: 'address'
-                },
-                {
-                    data: 'actions'
-                }
-            ]
-        });
-    })
+    table = $('#items').DataTable({
+        serverSide: true,
+        ajax: {
+            url: '/api/suppliers',
+            type: 'GET',
+        },
+        columns: [{
+                data: 'code'
+            },
+            {
+                data: 'name'
+            },
+            {
+                data: 'nit'
+            },
+            {
+                data: 'phone'
+            },
+            {
+                data: 'address'
+            },
+            {
+                data: 'actions'
+            }
+        ]
+    });
+})
 
 
     //----------------------------------------------------------------------
@@ -46,7 +52,7 @@ var table = "";
         if (validate() == true) {
             let formdata = $(this).serialize()
             let url = route('storeSupplier')
-    
+
             sendData(url, formdata, this)
         }
     })
@@ -66,7 +72,7 @@ var table = "";
         if (messageslength > 0) {
             posterror.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
 
@@ -79,7 +85,7 @@ var table = "";
             document.getElementById('code').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('phone').value){
             document.getElementById('phone').classList.add('is-invalid')
             handler++
@@ -89,12 +95,12 @@ var table = "";
             document.getElementById('nit').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('address').value){
             document.getElementById('address').classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -111,7 +117,7 @@ var table = "";
 
     function update(id){
         $.ajax({
-            url: domain.getDomain('api/suppliers/' + id),
+            url: '/api/suppliers/' + id,
             type: 'get',
             dataType: 'json',
             serverSide : true,
@@ -171,20 +177,20 @@ var table = "";
         if (messageslength > 0) {
             puterror.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
-        
+
         if(!document.getElementById('uname').value){
             document.getElementById('uname').classList.add('is-invalid')
             handler++
         }
-        
+
         if(!document.getElementById('uphone').value){
             document.getElementById('uphone').classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -217,7 +223,7 @@ var table = "";
             success: function (response) {
                 Swal.fire({
                     position: 'top-end',
-                    type: 'success',
+                    icon: 'success',
                     title: 'Guardado',
                     showConfirmButton: false,
                     timer: 1500
@@ -229,7 +235,7 @@ var table = "";
             error: function (xhr, textStatus, errorMessage) {
                 Swal.fire({
                     position: 'top',
-                    type: 'error',
+                    icon: 'error',
                     html: 'Error crítico: ' + xhr.responseText,
                     showConfirmButton: true,
                 });
@@ -247,7 +253,7 @@ var table = "";
         Swal.fire({
             title: '¿Está seguro de eliminar a este proveedor?',
             text: "Se enviará a la papelera",
-            type: 'warning',
+            icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -261,17 +267,17 @@ var table = "";
                     success: function (response) {
                         Swal.fire({
                             position: 'top-end',
-                            type: 'success',
+                            icon: 'success',
                             title: 'Eliminado',
                             timer: 1500
                         });
-    
+
                         table.ajax.reload();
                     },
                     error: function (xhr, textStatus, errorMessage) {
                         Swal.fire({
                             position: 'top',
-                            type: 'error',
+                            icon: 'error',
                             html: 'Error crítico: ' + xhr.responseText,
                             showConfirmButton: true,
                         });

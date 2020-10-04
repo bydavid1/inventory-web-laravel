@@ -171,7 +171,7 @@
                 <div class="modal-body">
                     <fieldset>
                         <div class="input-group mt-1">
-                            <input class="form-control form-control-lg" v-model="searchControl" type="search" autofocus
+                            <input class="form-control form-control-lg" v-model="searchControl" v-on:keyup="searchTimer" type="search" autofocus
                                 autocomplete="off" placeholder="Buscar en el inventario">
                             <div class="input-group-append">
                                 <span class="input-group-text">
@@ -194,6 +194,9 @@
                                 <td>Agregar</td>
                             </tr>
                         </thead>
+                        <tbody>
+                            <result v-for="result in results" :key="result.id" :item="result"></result>
+                        </tbody>
                     </table>
                 </div>
             </div>
