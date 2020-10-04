@@ -63,7 +63,6 @@
 <div class="d-none">
 	<form id="destroyform" method="POST">
 		@method('PUT')
-		@csrf
 	</form>
 </div>
 
@@ -72,7 +71,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="createform" enctype="multipart/form-data">
-                @csrf
                 <div class="modal-header">
                     <h4 class="modal-title"><i class="bx bx-plus"></i> Registrar fabricante o marca</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -117,7 +115,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="editform" enctype="multipart/form-data">
-                @csrf
                 @method('PUT')
                 <div class="modal-header">
                     <h4 class="modal-title">Editar Fabricante o marca</h4>

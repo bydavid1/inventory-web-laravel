@@ -45,7 +45,6 @@
 	<div class="d-none">
 		<form id="destroyform" method="POST">
 			@method('PUT')
-			@csrf
 		</form>
 	</div>
 
@@ -61,7 +60,6 @@
             </div>
             <div class="modal-body">
 				<form id="createForm" method="POST">
-					@csrf
 					<div class="alert alert-info alert-icon-left" role="alert">
 						<strong>Tip:</strong> Click en <span class="bx bx-random"></span> para generar un codigo aleatorio
 					</div>
@@ -158,7 +156,6 @@
             <div class="modal-body">
                 <form id="editform" method="POST">
 					@method('PUT')
-					@csrf
 					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
 						Hay datos importantes que faltan
 					</div>

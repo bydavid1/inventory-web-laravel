@@ -61,7 +61,6 @@
 <div class="d-none">
 	<form id="destroyform" method="POST">
 		@method('PUT')
-		@csrf
 	</form>
 </div>
 
@@ -77,7 +76,6 @@
             </div>
             <div class="modal-body">
                 <form id="createForm" method="POST">
-                    @csrf
                     <div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
 						Hay datos importantes que hacen falta
                     </div>
@@ -119,7 +117,6 @@
             </div>
             <div class="modal-body">
                 <form id="editform" method="POST">
-                    @csrf
                     @method('PUT')
                     <div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
 						Hay datos importantes que faltan

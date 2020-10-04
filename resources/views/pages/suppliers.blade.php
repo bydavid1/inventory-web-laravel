@@ -59,7 +59,6 @@
 <div class="d-none">
 	<form id="destroyform" method="POST">
 		@method('PUT')
-		@csrf
 	</form>
 </div>
 
@@ -69,7 +68,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="createForm">
-                @csrf
                 <div class="modal-header">
                     <h4 class="modal-title"><i class="bx bx-plus"></i> Registrar nuevo proveedor</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -147,7 +145,6 @@
         <div class="modal-content">
             <form id="editform">
                 @method('PUT')
-                @csrf
                 <div class="modal-header">
                     <h4 class="modal-title"><i class="bx bx-edit"></i> Editar proveedor</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

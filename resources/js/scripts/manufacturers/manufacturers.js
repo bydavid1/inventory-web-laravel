@@ -1,14 +1,23 @@
-//import domain
-const domain = new PATH();
 var table = "";
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 //----------------------------------------------------------------------
 //-------------------------Get all items---------------------------------
 //----------------------------------------------------------------------
+
+
 $(document).ready(function () {
    table = $('#items').DataTable({
         serverSide: true,
-        ajax: domain.getDomain('api/manufacturers'),
+        ajax: {
+            url: '/api/manufacturers',
+            type: 'GET',
+        },
         columns: [{
                 data: 'image'
             },
@@ -37,7 +46,7 @@ document.getElementById('createform').addEventListener('submit', function(e){
     if (validation('name', 'posterror') == true) {
         let formData = new FormData(this)
         let url = route('storeManufacturer')
-    
+
         sendData(url, formData, this, table)
     }
 })
@@ -51,12 +60,12 @@ document.getElementById('createform').addEventListener('submit', function(e){
 function update(id) {
     $.ajax({
         type: 'GET',
-        url: domain.getDomain('api/manufacturers/' + id),
+        url: '/api/manufacturers/' + id,
         beforeSend: function () {
             if (!document.getElementById('puterror').classList.contains('d-none')) {
                 document.getElementById('puterror').classList.add('d-none')
             }
-            
+
             document.getElementById('editform').reset();
         },
         statusCode: {
@@ -64,7 +73,7 @@ function update(id) {
                 document.getElementById('uname').value = response[0].name
                 document.getElementById('put_id').value = response[0].id
                 document.getElementById('previewlogo').src = response[0].logo
-                
+
                 document.getElementById('uname').disabled = false
                 document.getElementById('ulogo').disabled = false
                 document.getElementById('editManufacturer').disabled = false
@@ -85,7 +94,7 @@ document.getElementById('editform').addEventListener('submit', function(e){
     if (validation('uname', 'puterror') == true) {
         var formData = new FormData(this)
         var url = route('updateManufacturer', {id: document.getElementById('put_id').value})
-    
+
         sendData(url, formData, this, table)
     }
 })
@@ -108,15 +117,15 @@ document.getElementById('editform').addEventListener('submit', function(e){
         if (messageslength > 0) {
             errormessage.classList.add('d-none')
             for (let x = 0; x < messageslength; x++) {
-                invalidfields[0].classList.remove('is-invalid')  
+                invalidfields[0].classList.remove('is-invalid')
             }
         }
-        
+
         if(!document.getElementById(field).value){
             document.getElementById(field).classList.add('is-invalid')
             handler++
         }
-        
+
         if(handler == 0){
             return true
         }else{
@@ -153,7 +162,7 @@ function sendData(url, formdata, form, table) {
         success: function (response) {
             Swal.fire({
                 position: 'top-end',
-                type: 'success',
+                icon: 'success',
                 title: 'Guardado',
                 showConfirmButton: false,
                 timer: 1500
@@ -165,7 +174,7 @@ function sendData(url, formdata, form, table) {
         error: function (xhr, textStatus, errorMessage) {
             Swal.fire({
                 position: 'top',
-                type: 'error',
+                icon: 'error',
                 html: 'Error crítico: ' + xhr.responseText,
                 showConfirmButton: true,
             });
@@ -183,7 +192,7 @@ function remove(id){
     Swal.fire({
         title: '¿Está seguro de eliminar a este proveedor?',
         text: "Se enviará a la papelera",
-        type: 'warning',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -197,7 +206,7 @@ function remove(id){
                 success: function (response) {
                     Swal.fire({
                         position: 'top-end',
-                        type: 'success',
+                        icon: 'success',
                         title: 'Eliminado',
                         timer: 1500
                     });
@@ -207,7 +216,7 @@ function remove(id){
                 error: function (xhr, textStatus, errorMessage) {
                     Swal.fire({
                         position: 'top',
-                        type: 'error',
+                        icon: 'error',
                         html: 'Error crítico: ' + xhr.responseText,
                         showConfirmButton: true,
                     });
