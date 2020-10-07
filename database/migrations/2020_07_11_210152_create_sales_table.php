@@ -16,8 +16,8 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('costumer_id')->nullable();
-            $table->foreign('costumer_id')->references('id')->on('costumers')->onDelete('cascade');
+            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->unsignedBigInteger('payment_id');
             $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
