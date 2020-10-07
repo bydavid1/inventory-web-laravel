@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +12,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Products routes
-
-Route::middleware('auth')->group(function () {
-
     //Api Products
 
     Route::get('products', 'ProductApiController@getRecords');
@@ -28,13 +22,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('products/search/{query}/{columns}', 'ProductApiController@byQuery');
 
-    Route::get('products/order/fetch', 'ProductApiController@pagination');
+    Route::get('pagination/fetch', 'ProductApiController@pagination');
 
-    Route::get('products/order/search/{query?}', 'ProductApiController@search');
+    Route::get('pagination/fetch/search/{query?}', 'ProductApiController@search');
 
     // Api categories
 
-    Route::get('categories', 'CategoriesController@getRecords');
+    Route::get('categories', 'CategoriesController@getRecords')->middleware('api');
 
     Route::get('categories/{id}', 'CategoriesController@show');
 
@@ -66,6 +60,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('products/kardex', 'KardexController@getProductList');
 
-});
 
 
