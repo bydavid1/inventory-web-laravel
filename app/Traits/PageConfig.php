@@ -15,7 +15,7 @@ class PageConfig
         'pageHeader' => false,
         'bodyCustomClass' => '',
         'navbarBgColor' => 'bg-white',
-        'navbarType' => 'fixed',          
+        'navbarType' => 'fixed',
         'isMenuCollapsed' => false,
         'footerType' => 'static',
         'templateTitle' => '',
@@ -24,7 +24,7 @@ class PageConfig
         'isScrollTop' => true,
         'extendApp' => false,
       ];
-      
+
       //if any key missing of array from custom.php file it will be merge and set a default value from dataDefault array and store in data variable
       $data = array_merge($dataDefault, config('custom.custom'));
 
@@ -35,7 +35,7 @@ class PageConfig
         'pageHeader' => array(false,true),
         'bodyCustomClass' => '',
         'navbarBgColor' => array('bg-white','bg-primary', 'bg-success','bg-danger','bg-info','bg-warning','bg-dark'),
-        'navbarType' => array('fixed'=>'fixed','static'=>'static','hidden'=>'hidden'),          
+        'navbarType' => array('fixed'=>'fixed','static'=>'static','hidden'=>'hidden'),
         'isMenuCollapsed' => array(false,true),
         'footerType' => array('fixed'=>'fixed','static'=>'static','hidden'=>'hidden'),
         'templateTitle' => '',
@@ -72,7 +72,7 @@ class PageConfig
         if (gettype($data[$key]) === gettype($dataDefault[$key])) {
           if (is_string($data[$key])) {
             if(is_array($value)){
-              
+
               $result = array_search($data[$key], $value);
               if (empty($result)) {
                 $data[$key] = $dataDefault[$key];
@@ -99,7 +99,7 @@ class PageConfig
         'bodyCustomClass' => $data['bodyCustomClass'],
         'navbarBgColor' => $data['navbarBgColor'],
         'navbarType' => $navbarBodyClass[$data['navbarType']],
-        'navbarClass' => $navbarClass[$data['navbarType']],          
+        'navbarClass' => $navbarClass[$data['navbarType']],
         'isMenuCollapsed' => $data['isMenuCollapsed'],
         'footerType' => $footerBodyClass[$data['footerType']],
         'footerClass' => $footerClass[$data['footerType']],

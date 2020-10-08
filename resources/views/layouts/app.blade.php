@@ -27,7 +27,7 @@
     <!-- END: Head-->
 
      @if(!empty($configData['mainLayoutType']) && isset($configData['mainLayoutType']))
-        @include(($configData['mainLayoutType'] === 'vertical-menu') ?  'layouts.verticalLayout' : 'layouts.horizontalLayout')
+        @include(($configData['mainLayoutType'] == 'vertical-menu') ?  'layouts.verticalLayout' : 'layouts.horizontalLayout')
      @else
      {{-- if mainLaoutType is empty or not set then its print below line --}}
      <h1>{{'mainLayoutType Option is empty in config custom.php file.'}}</h1>

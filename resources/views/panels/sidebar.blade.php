@@ -3,14 +3,14 @@
 {{-------------------------------------------------------------------------------------------}}
 
 @if($configData['mainLayoutType'] == 'vertical-menu')
-<div class="main-menu menu-fixed @if($configData['theme'] === 'light') {{"menu-light"}} @else {{'menu-dark'}} @endif menu-accordion menu-shadow" 
+<div class="main-menu menu-fixed @if($configData['theme'] === 'light') {{"menu-light"}} @else {{'menu-dark'}} @endif menu-accordion menu-shadow"
     data-scroll-to-active="true">
       <div class="navbar-header">
       <ul class="nav navbar-nav flex-row">
       <li class="nav-item mr-auto">
           <a class="navbar-brand" href="{{asset('/')}}">
           <div class="brand-logo">
-            <img src="{{asset('images/logo/logo.png')}}" class="logo" alt="">
+            <img src="{{asset('media/logos/logo-light.png')}}" class="logo" alt="">
           </div>
           <h2 class="brand-text mb-0">
             @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
@@ -113,7 +113,7 @@
       <li class="nav-item mr-auto">
           <a class="navbar-brand" href="{{asset('/')}}">
           <div class="brand-logo">
-            <img src="{{asset('images/logo/logo.png')}}" class="logo" alt="">
+            <img src="{{asset('media/logos/logo-light.png')}}" class="logo" alt="">
           </div>
           <h2 class="brand-text mb-0">
             @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
