@@ -26,7 +26,10 @@ class HomeController extends Controller
         $breadcrumbs = [
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
+        $pageConfigs = ["mainLayoutType" => "vertical-menu"];
+
+
         $request->user()->authorizeRoles(['user', 'admin']);
-        return view('pages.home', ['breadcrumbs'=>$breadcrumbs]);
+        return view('pages.home', compact(['breadcrumbs', 'pageConfigs']));
     }
 }

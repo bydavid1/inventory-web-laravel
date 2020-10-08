@@ -1,12 +1,29 @@
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu @if(isset($configData['navbarType']) && ($configData['navbarType'] !== "
-    navbar-hidden") ){{$configData['navbarType']}} @else {{'navbar-sticky'}}@endif 2-columns
-    @if($configData['theme']==='dark' ){{'dark-layout'}} @elseif($configData['theme']==='semi-dark'
-    ){{'semi-dark-layout'}} @else {{'light-layout'}} @endif @if($configData['isContentSidebar']===true)
-    {{'content-left-sidebar'}} @endif @if(isset($configData['footerType'])) {{$configData['footerType']}} @endif
-    {{$configData['bodyCustomClass']}} @if($configData['isCardShadow']===false){{'no-card-shadow'}}@endif"
-    data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout horizontal-menu
+    @if(isset($configData['navbarType']) && ($configData['navbarType'] !== "navbar-hidden") )
+        {{$configData['navbarType']}}
+    @else
+        {{'navbar-sticky'}}
+    @endif
+    @if($configData['theme']==='dark' )
+        {{'dark-layout'}}
+    @elseif($configData['theme']==='semi-dark')
+        {{'semi-dark-layout'}}
+    @else
+        {{'light-layout'}}
+    @endif
+    @if($configData['isContentSidebar']===true)
+        {{'content-left-sidebar'}}
+    @endif
+    @if(isset($configData['footerType']))
+        {{$configData['footerType']}}
+    @endif
+    {{$configData['bodyCustomClass']}}
+    @if($configData['isCardShadow']===false)
+        {{'no-card-shadow'}}
+    @endif
+    2-columns" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- BEGIN: Header-->
     @include('panels.horizontal-navbar')
