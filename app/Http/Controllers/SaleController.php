@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
+use App\Credit_invoice;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class SaleController extends Controller
      */
     public function getRecords()
     {
-        $query = Sales::select('id', 'created_at', 'costumer_id', 'invoice_type', 'unregistered_customer', 'total_quantity', 'subtotal', 'total')->orderBy('created_at', 'desc');;
+        $query = Sales::select('id', 'created_at', 'customer_id', 'invoice_type', 'unregistered_customer', 'total_quantity', 'subtotal', 'total')->orderBy('created_at', 'desc');;
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="float-center">
@@ -41,11 +42,11 @@ class SaleController extends Controller
         </div>')
         ->addColumn('name', function($query){
 
-            if ($query->costumer_id == null) {
+            if ($query->customer_id == null) {
                 return $query->unregistered_customer;
             } else{
-                $costumer = Customers::select('name')->where('id', $query->costumer_id)->get();
-                return $costumer[0]->name;
+                $customer = Customers::select('name')->where('id', $query->customer_id)->get();
+                return $customer[0]->name;
             }
         })
         ->editColumn('invoice_type', function($query){
@@ -102,15 +103,19 @@ class SaleController extends Controller
         try {
             if ($this->validateItems($request)) {
                 //payment info
-                $payment = Payments::create(['payment_method' => '1', 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
+                $payment = Payments::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
                 'returned' => 0.00, 'description' => 'N/A']);
 
                 //invoice headers info
                 $sale = new Sales;
                 $sale->payment_id = $payment->id;
-                $sale->invoice_type = "1";
+                $sale->invoice_type = $request->invoiceType;
                 $sale->user_id = $request->user()->id;
-                $sale->unregistered_customer = $request->name;
+                if ($request->customerId == "") {
+                    $sale->unregistered_customer = $request->customerName;
+                }else{
+                    $sale->customer_id = $request->customerId;
+                }
                 $sale->additional_discounts = $request->discountsValue;
                 $sale->additional_payments = $request->additionalPayments;
                 $sale->total_quantity = $request->quantityValue;
@@ -176,15 +181,15 @@ class SaleController extends Controller
                             $sale->delete();
                             throw new Exception("Corrupt data in item: ". $product['name'], 1);
                         }
-
-
                     }
 
-                    Simple_invoice::create(['sale_id' => $sale->id]);
-
-                    //Design invoice
-                    $invoice = $this->designInvoice($product_list, $request->name, $sale, "invoices/");
-
+                    if ($request->invoiceType == 1) {
+                        Simple_invoice::create(['sale_id' => $sale->id]);
+                        $invoice = $this->designInvoice($product_list, $request->customerName, $sale, "invoices/");
+                    }else if ($request->invoiceType == 2) {
+                        Credit_invoice::create(['sale_id' => $sale->id, 'serial' => 'N/A']);
+                        $invoice = $this->designInvoice($product_list, $request->customerName, $sale, "invoices/f_credits/");
+                    }
                     //send invoice
                     return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
 

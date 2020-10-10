@@ -44,13 +44,13 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('manufacturers/{id}', 'ManufacturersController@show');
 
-    //Api routes
+    //Api customers
 
     Route::get('customers', 'CustomerController@getRecords');
 
     Route::get('customer/{id}', 'CustomerController@show');
 
-    Route::get('costumers/search/{query}', 'CustomerController@byQuery');
+    Route::get('customers/search/{query}', 'CustomerController@byQuery');
 
     //Other routes
 
