@@ -13,7 +13,7 @@ Vue.component('item', {
     /*html*/`<div class="list-group-item p-0" :id="'item' + item.id">
                 <div class="row h-100">
                     <input type="hidden" id="productId" name="productId" v-model="item.id"/>
-                    <input type="hidden" id="amountValue" name="amountValue" value="0.00"/> 
+                    <input type="hidden" id="amountValue" name="amountValue" value="0.00"/>
                     <div class="col-md-1 py-0 h-100 my-auto">
                         <button type="button" class="btn bg-transparent" v-on:click="$emit('remove')">
                             <i class="bx bx-trash fa-2x text-danger"></i>
@@ -27,8 +27,8 @@ Vue.component('item', {
                     <div class="col-md-4 py-0 h-100 my-auto">
                         <h6>{{ item.name }}</h6>
                     </div>
-                    <div class="col-md-2 py-0 h-100 my-auto "> 
-                        <h6 class="cursor-pointer text-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" 
+                    <div class="col-md-2 py-0 h-100 my-auto ">
+                        <h6 class="cursor-pointer text-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" role="button">{{ '$' + item.price }}</h6>
                         <div class="dropdown-menu p-1">
                             <div class="row">
@@ -41,16 +41,16 @@ Vue.component('item', {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 py-0 h-100 my-auto"> 
+                    <div class="col-md-2 py-0 h-100 my-auto">
                         <h6 id="total">{{ '$' + calculateTotal }}</h6>
                         <input type="hidden" v-model="calculateTotal" id="totalValue" name="totalValue"/>
                     </div>
                 </div>
             </div>`,
-    
+
         computed : {
             calculateTotal : function () {
-                this.item.total = this.item.quantity * this.item.price
+                this.item.total = (this.item.quantity * this.item.price).toFixed(2)
                 this.$emit('datachange')
                 return this.item.total
             }

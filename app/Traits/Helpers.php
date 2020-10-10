@@ -14,17 +14,17 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 
 /**
- * 
+ *
  */
 trait Helpers
 {
 
     protected $items = array();
-    
+
     public function storedata($status, $productid, $quantity, $price, $total){
         if ($status == "new") {
 
-            for ($i=1; $i < 3; $i++) { 
+            for ($i=1; $i < 3; $i++) {
                 $kardex = new Kardex;
                 $kardex->tag = "Ingreso al inventario";
                 $kardex->tag_code = "MK";
@@ -39,7 +39,7 @@ trait Helpers
                 $kardex->tag_code = "CN";
             }
         }else if ($status == "add") {
-            
+
                 $kardex = new Kardex;
                 $kardex->tag = "Compra de producto";
                 $kardex->tag_code = "CN";
@@ -92,7 +92,7 @@ trait Helpers
                 break;
         }
 
-        for ($i=1; $i <= $numfees; $i++) { 
+        for ($i=1; $i <= $numfees; $i++) {
 
             $paymentdate = new Payments_dates;
             if ($i == 1) {
@@ -101,7 +101,7 @@ trait Helpers
                 $startdate = date('Y-m-j',strtotime($startdate."".$diff)) ;
                 $paymentdate->date = $startdate;
             }
-            
+
             $paymentdate->credit_id = $credit->id;
             $paymentdate->status = "Pendiente";
             $paymentdate->save();
@@ -114,8 +114,12 @@ trait Helpers
             throw new Exception("Debe haber al menos un item", 1);
         }
 
-        if ($request->name == "") {
+        if ($request->customerName == "") {
             throw new Exception("Nombre requerido", 1);
+        }
+
+        if ($request->customerName == "" && $request->customerId == "") {
+            throw new Exception("No hay un cliente definido", 1);
         }
 
         //$all_rules = array();
@@ -141,7 +145,7 @@ trait Helpers
 
         if ($validator->fails())
         {
-            throw new Exception("Data incorrect: " . $validator->getMessageBag(), 1);              
+            throw new Exception("Data incorrect: " . $validator->getMessageBag(), 1);
         }
 
 

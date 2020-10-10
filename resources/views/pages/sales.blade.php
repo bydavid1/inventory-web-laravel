@@ -10,23 +10,19 @@
 @section('tools')
 <a class="btn btn-info" href="{{ route('addSale') }}">
 	<i class="bx bx-plus-circle fa-2x"></i>
-	<span>Factura</span>
-</a>
-<a class="btn btn-danger" href="{{ route('addCredit') }}">
-	<i class="bx bx-plus-circle fa-2x"></i>
-	<span>Factura de credito fiscal</span>
+	<span>Nueva venta</span>
 </a>
 @endsection
 
-@section('content') 
+@section('content')
 <div class="card">
 	<div class="card-body">
 		<table class="table table-condensed table-hover table-bordered table-striped" id="items">
 				<thead>
-					<tr>				
+					<tr>
 						<th>Fecha</th>
-						<th>Cliente</th>	
-						<th>Tipo</th>						
+						<th>Cliente</th>
+						<th>Tipo</th>
 						<th>Cantidad</th>
 						<th>Subtotal</th>
 						<th>Total</th>
