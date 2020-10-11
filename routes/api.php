@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+    //Api Dashboard
+    Route::get('dashboard/tiles', 'DashboardController@getTilesData');
+
+    Route::get('dashboard/chart', 'DashboardController@getSalesChart');
+
     //Api Products
 
     Route::get('products', 'ProductApiController@getRecords');
