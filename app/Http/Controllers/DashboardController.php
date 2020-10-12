@@ -8,6 +8,8 @@ ini_set('error_reporting', E_ALL);
 
 use App\Customers;
 use App\Products;
+use App\Purchases;
+use App\Sales;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -26,14 +28,19 @@ class DashboardController extends Controller
 
     public function getSalesChart(){
         try {
-            $data = array();
-            for ($i=1; $i <= 7; $i++) {
+            $dates = array();
+            $sales = array();
+            $purchases = array();
+            for ($i=7; $i >= 1; $i--) {
                $date = date("Y-m-d", strtotime("-" . $i . " day"));
-               $curren_date = ["date" => $date, 'quantity' => $i];
-               array_push($data, $curren_date);
+               $salesCount = Sales::whereDate('created_at', $date)->count();
+               $purchasesCount = Purchases::whereDate('created_at', $date)->count();
+               array_push($dates, $date);
+               array_push($sales, $salesCount);
+               array_push($purchases, $purchasesCount);
             }
 
-            return response()->json(['data' => $data,], 200);
+            return response()->json(['labels' => $dates, 'sales' => $sales, 'purchases' => $purchases], 200);
 
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
