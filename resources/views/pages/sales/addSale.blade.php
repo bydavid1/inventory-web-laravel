@@ -190,16 +190,16 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                         <span class="invoice-subtotal-title">Cantidad total</span>
-                                        <h6 class="invoice-subtotal-value mb-0">@{{ data.quantityValue }}</h6>
+                                        <h6 class="invoice-value mb-0">@{{ data.quantityValue }}</h6>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                         <span class="invoice-subtotal-title">Sub total</span>
-                                        <h6 class="invoice-subtotal-value mb-0">@{{ '$ ' + data.subtotalValue }}
+                                        <h6 class="invoice-value mb-0">@{{ '$ ' + data.subtotalValue }}
                                         </h6>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                         <span class="invoice-subtotal-title">Descuentos</span>
-                                        <h6 class="invoice-subtotal-value mb-0">@{{ '$ ' + data.discountsValue }}
+                                        <h6 class="invoice-value mb-0">@{{ '$ ' + data.discountsValue }}
                                         </h6>
                                     </li>
                                 </ul>
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="invoice-action-btn mb-1 d-flex">
+                        <div class="mb-1 d-flex">
                             <div class="preview w-50 mr-50">
                                 <div class="dropup">
                                     <button class="btn btn-light-primary btn-block dropdown-toggle"

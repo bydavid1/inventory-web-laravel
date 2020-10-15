@@ -1,4 +1,5 @@
 import item from './components/Item.js'
+import result from './components/Result.js'
 
 var vm = new Vue({
     el : '#app',
@@ -25,7 +26,7 @@ var vm = new Vue({
         loader : false
     },
     methods : {
-        addNewProduct() {
+        addNewProduct () {
             if (this.newProduct.name != "" || this.newProduct.code != "" || this.isNumeric(this.newProduct.quantity) || this.isNumeric(this.newProduct.purchase) || this.isNumeric(this.newProduct.price)) {
                     this.newProduct.total = this.newProduct.quantity * this.newProduct.purchase
                     this.items.push(this.newProduct)
@@ -37,8 +38,44 @@ var vm = new Vue({
                 });
             }
         },
-        isNumeric(value){
+        chooseProduct (result) {
+            let product = {
+                'id' : result.id,
+                'name' : result.name,
+                'purchase' : 0.00,
+                'total' : 0.00,
+                'quantity' : 0
+            }
+
+            this.items.push(product)
+        },
+        isNumeric (value){
             return isNaN(parseFloat(value)) ? true : false
+        },
+        searchTimer () {
+            this.loader = true
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
+            }
+            this.timer = setTimeout(() => {
+                this.searchProduct()
+            }, 900);
+        },
+        searchProduct (){
+            let fields = [];
+            fields[0] = ['id','code', 'name', 'stock']
+            fields[1] = ['first_price', 'first_image']
+            axios.get(`/api/products/search/${this.searchControl}/${JSON.stringify(fields)}`)
+            .then(response => {
+                console.log(response.data)
+                this.results = response.data
+            })
+
+            .catch(error => {
+                console.log(error.response.data.message)
+            })
+            this.loader = false
         }
     },
     watch : {

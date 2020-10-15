@@ -48,7 +48,7 @@ Vue.component('Item', {
                 <strong class="text-primary align-middle">{{ '$' + item.total }}</strong>
               </div>
               <div class="col-md-4 col-12 form-group">
-                <input type="text" class="form-control invoice-item-desc" v-model="item.description">
+                <input type="text" class="form-control" v-model="item.description" placeholder="Ingrese una descripción">
               </div>
               <div class="col-md-8 col-12 form-group">
                 <span>Discount: </span><span class="discount-value mr-1">0%</span>

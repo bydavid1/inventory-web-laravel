@@ -71,15 +71,15 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Cantidad total
-                                <strong>@{{ '$' + data.grandQuantity }}</strong>
+                                <strong v-html="'$' + data.grandQuantity"></strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Sub total
-                                <strong>@{{ '$' + data.subtotal }}</strong>
+                                <strong v-html="'$' + data.subtotal"></strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Total
-                                <strong>@{{ '$' +  data.grandTotal }}</strong>
+                                <strong v-html="'$' +  data.grandTotal"></strong>
                             </li>
                         </ul>
                         <button type="submit" id="createSale" data-loading-text="Cargando..."
@@ -171,7 +171,7 @@
                 <div class="modal-body">
                     <fieldset>
                         <div class="input-group mt-1">
-                            <input class="form-control form-control-lg" v-model="searchControl" v-on:keyup="searchTimer" type="search" autofocus
+                            <input class="form-control form-control-lg" v-model="searchControl" v-on:keyup="searchTimer()" type="search" autofocus
                                 autocomplete="off" placeholder="Buscar en el inventario">
                             <div class="input-group-append">
                                 <span class="input-group-text">
@@ -183,21 +183,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>Imagen</td>
-                                <td>Codigo</td>
-                                <td>Producto</td>
-                                <td>Stock</td>
-                                <td>Precio</td>
-                                <td>Agregar</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <result v-for="result in results" :key="result.id" :item="result"></result>
-                        </tbody>
-                    </table>
+                    <results :results="results" v-if="results.length > 0" class="mt-1" v-on:choose="chooseProduct"></results>
                 </div>
             </div>
         </div>
