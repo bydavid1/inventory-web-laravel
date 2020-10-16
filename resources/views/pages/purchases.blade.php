@@ -21,9 +21,9 @@
 	<div class="card-body">
 		<table class="table table-condensed table-hover table-bordered table-striped" id="items">
 				<thead>
-					<tr>				
+					<tr>
 						<th>Fecha de factura</th>
-						<th>Proveedor</th>							
+						<th>Proveedor</th>
 						<th>Cantidad de productos</th>
 						<th>Sub total</th>
 						<th>Total</th>
@@ -63,10 +63,10 @@
 						data: 'name'
 					},
 					{
-						data: 'quantity'
+						data: 'total_quantity'
 					},
 					{
-						data: 'sub_total'
+						data: 'subtotal'
 					},
 					{
 						data: 'total'
