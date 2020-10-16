@@ -18,8 +18,8 @@ class CreatePurchasesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->float('sub_total');
+            $table->integer('total_quantity');
+            $table->float('subtotal');
             $table->float('total');
         });
     }

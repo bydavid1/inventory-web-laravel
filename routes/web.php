@@ -68,7 +68,7 @@ Route::get('sales/invoice/{id}', 'SaleController@invoice')->name('invoice')->mid
 //Purchases
 Route::get('/purchases', 'PurchaseController@index')->name('purchases')->middleware('auth');
 Route::get('purchases/create', 'PurchaseController@create')->name('addPurchase')->middleware('auth');
-Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('createPurchase')->middleware('auth');
+Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('storePurchase')->middleware('auth');
 Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getList')->middleware('auth');
 
 //Kardex
