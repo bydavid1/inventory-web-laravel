@@ -6,6 +6,13 @@
 @section('vendor-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/forms/select/select2.min.css')}}">
+
+<style>
+.invoice-item-title {
+    color: #475F7B;
+    font-weight: 500;
+}
+</style>
 @endsection
 
 @section('tools')
@@ -21,76 +28,71 @@
 
 @section('content')
 <div id="app">
-    <form id="createPurchaseForm">
-        @csrf
-        <div class="row">
-            <div class="col-sm-8">
-                <!-- card-->
-                <div class="card">
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="provider" class="control-label">Proveedor</label>
-                                        <select class="form-control" id="provider" name="provider" placeholder="Enter..."
-                                            autocomplete="off">
-                                            @foreach ($suppliers as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Proveedor</label>
+                                    <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
+                                        autocomplete="off">
+                                        @foreach ($suppliers as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="date" class="control-label">Fecha</label>
-                                        <input type="date" class="form-control">
-                                    </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="date" class="control-label">Fecha</label>
+                                    <input type="date" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <item :item="item" v-for="item in items" :key="item.id"></item>
-                        <div class="row mt-2">
-                            <div class="col-sm-6"></div>
-                            <div class="col-md-6">
-                                <textarea class="form-control" v-model="data.comments" placeholder="Comentarios adicionales"></textarea>
-                            </div>
+                    </div>
+                    <hr class="my-3">
+                    <item :item="item" v-for="item in items" :key="item.id"></item>
+                    <div class="row mt-2">
+                        <div class="col-sm-6"></div>
+                        <div class="col-md-6">
+                            <textarea class="form-control" v-model="data.comments" placeholder="Comentarios adicionales"></textarea>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
-            <div class="col-sm-4">
-                <!-- card-->
-                <div class="card card-outline card-danger">
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <h4 class="mb-3">Resumen</h4>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Cantidad total
-                                <strong v-html="'$' + data.grandQuantity"></strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Sub total
-                                <strong v-html="'$' + data.subtotal"></strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Total
-                                <strong v-html="'$' +  data.grandTotal"></strong>
-                            </li>
-                        </ul>
-                        <button type="submit" id="createSale" data-loading-text="Cargando..."
-                            class="btn btn-success btn-block mt-2">Registrar compra</button>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
+            <!-- /.card -->
         </div>
-    </form>
+        <div class="col-sm-4">
+            <!-- card-->
+            <div class="card card-outline card-danger">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <h4 class="mb-3">Resumen</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Cantidad total
+                            <strong v-html="data.quantityValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Sub total
+                            <strong v-html="'$' + data.subtotalValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total
+                            <strong v-html="'$' +  data.totalValue"></strong>
+                        </li>
+                    </ul>
+                    <button v-on:click="storePurchase()" class="btn btn-success btn-block mt-2">Registrar compra</button>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
 
     <!-- ---------------------------------------------------------------------------------- -->
     <!-- --------------------Modal-------------------- -->
@@ -117,15 +119,6 @@
                         <div class="form-group">
                             <label>Codigo</label>
                             <input type="text" class="form-control" v-model="newProduct.code" placeholder="Enter ...">
-                        </div>
-                        <!-- select -->
-                        <div class="form-group">
-                            <label>Proveedor</label>
-                            <select class="form-control" v-model="newProduct.supplier">
-                                @foreach ($suppliers as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="form-group">
                             <label>Categoría</label>
@@ -203,5 +196,6 @@
     <script>
         $('#provider').select2()
     </script>
+    @routes
     <script type="module" src="{{ asset('js/scripts/purchase/script.js') }}"></script>
 @endsection
