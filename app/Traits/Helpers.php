@@ -27,10 +27,9 @@ trait Helpers
             for ($i=1; $i < 3; $i++) {
                 $kardex = new Kardex;
                 $kardex->tag = "Ingreso al inventario";
-                $kardex->tag_code = "MK";
-                $kardex->id_product = $productid;
+                $kardex->product_id = $productid;
                 $kardex->quantity =  $quantity;
-                $kardex->value_diff = "$ -". $total;
+                $kardex->difference = "$ -". $total;
                 $kardex->unit_price = $price;
                 $kardex->total = $total;
                 $kardex->save();
@@ -42,10 +41,9 @@ trait Helpers
 
                 $kardex = new Kardex;
                 $kardex->tag = "Compra de producto";
-                $kardex->tag_code = "CN";
-                $kardex->id_product = $productid;
+                $kardex->product_id = $productid;
                 $kardex->quantity =  $quantity;
-                $kardex->value_diff = "$ -". $total;
+                $kardex->difference = "$ -". $total;
                 $kardex->unit_price = $price;
                 $kardex->total = $total;
                 $kardex->save();
@@ -108,29 +106,14 @@ trait Helpers
         }
     }
 
-    public function validateItems($request){
+    public function validateSale($request){
         $count = count($request->products);
         if ($count < 1) {
             throw new Exception("Debe haber al menos un item", 1);
         }
 
-        if ($request->customerName == "") {
-            throw new Exception("Nombre requerido", 1);
-        }
-
-        if ($request->customerName == "" && $request->customerId == "") {
-            throw new Exception("No hay un cliente definido", 1);
-        }
-
-        //$all_rules = array();
-
-        foreach ($request->products as $product) {
-            $requiredQuantity = $product['quantity'];
-            $currentId = $product['id'];
-            $currentItem = Products::select('stock', 'name')->where('id', $currentId)->first();
-            if ($requiredQuantity > $currentItem->stock) {
-                throw new Exception("Solo hay ". $currentItem->stock ." ". $currentItem->name ." y se requiren ". $requiredQuantity , 1);
-            }
+        if ($request->provider == "") {
+            throw new Exception("Proveedor requerido", 1);
         }
 
         $rules = array(
