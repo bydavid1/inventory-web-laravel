@@ -39,6 +39,7 @@
                                     <label class="control-label">Proveedor</label>
                                     <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
                                         autocomplete="off">
+                                        <option value="" disabled selected>Selecciona un proveedor</option>
                                         @foreach ($suppliers as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach

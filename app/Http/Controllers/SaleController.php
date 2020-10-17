@@ -101,7 +101,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         try {
-            if ($this->validateItems($request)) {
+            if ($this->validateSale($request)) {
                 //payment info
                 $payment = Payments::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
                 'returned' => 0.00, 'description' => 'N/A']);
