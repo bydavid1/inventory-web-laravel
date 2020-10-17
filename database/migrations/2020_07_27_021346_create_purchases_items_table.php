@@ -20,7 +20,7 @@ class CreatePurchasesItemsTable extends Migration
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->string('status');
+            $table->boolean('is_new');
             $table->integer('quantity');
             $table->float('unit_price');
             $table->float('total');
