@@ -16,6 +16,7 @@ use App\Payments;
 use App\Simple_invoice;
 use App\Kardex;
 use App\Customers;
+use App\Http\Requests\StoreSale;
 use App\Traits\Helpers;
 use Exception;
 
@@ -98,10 +99,10 @@ class SaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSale $request)
     {
         try {
-            if ($this->validateSale($request)) {
+            if ($request->validated()) {
                 //payment info
                 $payment = Payments::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
                 'returned' => 0.00, 'description' => 'N/A']);
