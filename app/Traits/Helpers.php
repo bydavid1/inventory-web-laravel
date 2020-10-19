@@ -105,33 +105,4 @@ trait Helpers
             $paymentdate->save();
         }
     }
-
-    public function validateSale($request){
-        $count = count($request->products);
-        if ($count < 1) {
-            throw new Exception("Debe haber al menos un item", 1);
-        }
-
-        if ($request->provider == "") {
-            throw new Exception("Proveedor requerido", 1);
-        }
-
-        $rules = array(
-            "products.*.id" => ["required", "numeric"],
-            "products.*.quantity" => ["required", "numeric"],
-            "products.*.tax" => ["required", "numeric"],
-            "products.*.price" => ["required", "numeric","min:0","max:999999"],
-            "products.*.total" => ["required", "numeric","min:0","max:999999"]
-        );
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails())
-        {
-            throw new Exception("Data incorrect: " . $validator->getMessageBag(), 1);
-        }
-
-
-        return true;
-    }
 }
