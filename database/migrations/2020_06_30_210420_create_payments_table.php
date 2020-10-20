@@ -20,7 +20,6 @@ class CreatePaymentsTable extends Migration
             $table->float('total');
             $table->float('payed_with');
             $table->float('returned');
-            $table->string('description');
         });
     }
 
