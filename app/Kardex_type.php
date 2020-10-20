@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Simple_invoice extends Model
+class Kardex_type extends Model
 {
-    protected $guarded = [];
+    public $timestamps = false;
 }
