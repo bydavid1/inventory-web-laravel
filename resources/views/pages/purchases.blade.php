@@ -27,7 +27,7 @@
 						<th>Cantidad de productos</th>
 						<th>Sub total</th>
 						<th>Total</th>
-						<th style="width:15%;" class="text-right">Opciones</th>
+						<th style="width:15%;">Opciones</th>
 					</tr>
 				</thead>
 			</table>

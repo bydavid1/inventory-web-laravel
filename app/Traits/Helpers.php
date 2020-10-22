@@ -21,38 +21,9 @@ trait Helpers
 
     protected $items = array();
 
-    public function storedata($status, $productid, $quantity, $price, $total){
-        if ($status == "new") {
-
-            for ($i=1; $i < 3; $i++) {
-                $kardex = new Kardex;
-                $kardex->tag = "Ingreso al inventario";
-                $kardex->product_id = $productid;
-                $kardex->quantity =  $quantity;
-                $kardex->difference = "$ -". $total;
-                $kardex->unit_price = $price;
-                $kardex->total = $total;
-                $kardex->save();
-
-                $kardex->tag = "Compra de producto";
-                $kardex->tag_code = "CN";
-            }
-        }else if ($status == "add") {
-
-                $kardex = new Kardex;
-                $kardex->tag = "Compra de producto";
-                $kardex->product_id = $productid;
-                $kardex->quantity =  $quantity;
-                $kardex->difference = "$ -". $total;
-                $kardex->unit_price = $price;
-                $kardex->total = $total;
-                $kardex->save();
-        }
-    }
-
     public function designInvoice($products, $name = null, $object, $path){
         $view = \View::make('pages.pdf.invoice', compact('object', 'products', 'name'))->render();
-        CreateInvoice::dispatch($view, $path, $object->id);
+        CreateInvoice::dispatch($view, $path, $object->invoice_num);
         return $view;
     }
 

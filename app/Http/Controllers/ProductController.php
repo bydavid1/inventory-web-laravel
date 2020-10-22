@@ -111,12 +111,14 @@ class ProductController extends Controller
                 $purchase->save();
 
                 $kardex = new Kardex;
-                $kardex->tag = "Ingreso al inventario";
+                $kardex->type_id = 1; //Ingreso a inventario
                 $kardex->product_id = $new->id;
                 $kardex->quantity =  $new->stock;
-                $kardex->difference = "- $" . $request->purchase * $new->stock;
                 $kardex->unit_price = $request->purchase;
-                $kardex->total = $request->purchase * $new->stock;
+                $kardex->value = $request->purchase * $new->stock;
+                $kardex->final_unit_value = $request->purchase;
+                $kardex->final_stock = $new->stock;
+                $kardex->final_value = $request->purchase * $new->stock;
                 $kardex->save();
 
                 return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
