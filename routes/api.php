@@ -59,12 +59,15 @@ use Illuminate\Support\Facades\Route;
     Route::get('customers/search/{query}', 'CustomerController@byQuery');
 
     //Other routes
+    Route::get('kardex/products', 'KardexController@getProducts');
+
+    Route::get('kardex/{id}/records', 'KardexController@getRecords');
 
     Route::get('sales', 'SaleController@getRecords');
 
     Route::get('purchases', 'PurchaseController@getRecords');
 
-    Route::get('products/kardex', 'KardexController@getProductList');
+
 
 
 

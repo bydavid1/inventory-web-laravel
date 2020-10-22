@@ -5,6 +5,7 @@
 
 @section('vendor-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/fileinput.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/forms/select/select2.min.css')}}">
 @endsection
 
@@ -44,7 +45,7 @@
                                         <input type="text" class="form-control" id="code"
                                             placeholder="Codigo del producto" name="code" autocomplete="ggg-ss">
                                         <div class="input-group-append">
-                                            <span class="input-group-text"><i class="bx bx-random"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-shuffle"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +55,7 @@
                                     <label for="productName" class="control-label">Nombre: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="ft-box"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-news"></i></span>
                                         </div>
                                         <input type="text" class="form-control" id="name"
                                             placeholder="Nombre del producto" name="name" autocomplete="ggg-ss">
@@ -66,7 +67,7 @@
                                     <label>Proveedor:</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-truck"></i></span>
+                                            <span class="input-group-text"><i class="bx bxs-truck"></i></span>
                                         </div>
                                         <select class="form-control" id="provider_id" name="provider_id">
                                             @foreach ($providers as $item)
@@ -81,7 +82,7 @@
                                     <label>Categoría:</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-tag"></i></span>
+                                            <span class="input-group-text"><i class="bx bxs-tag"></i></span>
                                         </div>
                                         <select class="form-control" id="category_id" name="category_id">
                                             @foreach ($categories as $item)
@@ -97,7 +98,7 @@
                                     <label for="productStatus" class="control-label">Estado: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-spinner"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-loader"></i></span>
                                         </div>
                                         <select class="form-control" id="is_available" name="is_available">
                                             <option value="1">Disponible</option>
@@ -110,7 +111,7 @@
                                     <label for="type" class="control-label">Tipo: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-asterisk"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-package"></i></span>
                                         </div>
                                         <select class="form-control" id="type" name="type">
                                             <option value="1">Fisico</option>
@@ -125,7 +126,7 @@
                                     <label for="quantity" class="control-label">Stock: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-cubes"></i></span>
+                                            <span class="input-group-text"><i class="bx bxs-component"></i></span>
                                         </div>
                                         <input type="number" class="form-control" id="quantity"
                                             placeholder="Stock" name="quantity" autocomplete="ggg-ss">
@@ -136,7 +137,7 @@
                                     <label>Fabricante:</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-industry"></i></span>
+                                            <span class="input-group-text"><i class="bx bxs-factory"></i></span>
                                         </div>
                                         <select class="form-control" id="manufacturer_id" name="manufacturer_id">
                                             @foreach ($manufacturers as $item)
@@ -217,7 +218,7 @@
                                 <div class="col-sm-12 mb-1">
                                     <div class="input-group" id="message">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-percent"></i></span>
+                                            <span class="input-group-text">%</span>
                                         </div>
                                         <select data-placeholder="Seleciona una categoría"
                                             class="custom-select" id="tax_id" name="tax_id">
@@ -228,7 +229,7 @@
                                 <div class="col-sm-12 mb-1">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-exchange"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
                                         </div>
                                         <input type="decimal" class="form-control" id="utility1"
                                             placeholder="Utilidad 1" disabled name="utility1"
@@ -239,7 +240,7 @@
                                 <div class="col-sm-12 mb-1">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-exchange"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
                                         </div>
                                         <input type="decimal" class="form-control" id="utility2"
                                             placeholder="Utilidad 2" disabled name="utility2"
@@ -250,7 +251,7 @@
                                 <div class="col-sm-12 mb-1">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-exchange"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
                                         </div>
                                         <input type="decimal" class="form-control" id="utility3"
                                             placeholder="Utilidad 3" disabled name="utility3"
@@ -261,7 +262,7 @@
                                 <div class="col-sm-12 mb-1">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-exchange"></i></span>
+                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
                                         </div>
                                         <input type="decimal" class="form-control" id="utility4"
                                             placeholder="Utilidad 4" disabled name="utility4"
@@ -277,7 +278,7 @@
                     <div class="col-sm-6">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="ft-clipboard"></i></span>
+                                <span class="input-group-text"><i class="bx bx-file"></i></span>
                             </div>
                             <textarea class="form-control" id="description"
                                 placeholder="Ingrese una descripción" name="description"></textarea>
@@ -310,6 +311,7 @@
 
 @section('vendor-scripts')
     <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/js/extensions/fileinput.min.js')}}"></script>
     <script src="{{asset('vendors/js/forms/select/select2.full.min.js')}}"></script>
 @endsection
 
@@ -332,7 +334,7 @@
         browseLabel: 'Buscar en el equipo',
         removeLabel: 'Quitar',
         browseIcon: '<i class="bx bx-folder-open"></i>',
-        removeIcon: '<i class="bx bx-remove"></i>',
+        removeIcon: '<i class="bx bx-x"></i>',
         removeTitle: 'Reiniciar',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',

@@ -17,6 +17,7 @@ use App\Simple_invoice;
 use App\Kardex;
 use App\Customers;
 use App\Http\Requests\StoreSale;
+use App\Invoice;
 use App\Traits\Helpers;
 use Exception;
 
@@ -105,7 +106,7 @@ class SaleController extends Controller
             if ($request->validated()) {
                 //payment info
                 $payment = Payments::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
-                'returned' => 0.00, 'description' => 'N/A']);
+                'returned' => 0.00]);
 
                 //invoice headers info
                 $sale = new Sales;
@@ -124,6 +125,15 @@ class SaleController extends Controller
                 $sale->total_discounts = $request->discountsValue; //we will need add discounts option for each product
                 $sale->total_tax = "0.00"; //Temporal data
                 $sale->total = $request->totalValue;
+
+                //getting last invoice num
+
+                $lastnum = Sales::latest()->first();
+                if ($lastnum) {
+                    $sale->invoice_num = str_pad($lastnum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
+                }else{
+                    $sale->invoice_num = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
+                }
 
                 if ($sale->save()) {
 
@@ -158,14 +168,21 @@ class SaleController extends Controller
 
                                     array_push($product_list, $product_items);
 
+                                    //getting las kardex record
+
+                                    $last_record = Kardex::where('product_id', $saleitem->product_id)->latest()->first();
+
                                     //Adding to Kardex
                                     $kardex = new Kardex;
-                                    $kardex->tag = "Venta de producto";
+                                    $kardex->type_id = 2; //venta en factura
                                     $kardex->product_id = $saleitem->product_id;
+                                    $kardex->invoice_ref = $sale->invoice_num;
                                     $kardex->quantity = $saleitem->quantity;
-                                    $kardex->difference = "+ $" . $saleitem->total;
                                     $kardex->unit_price = $saleitem->unit_price;
-                                    $kardex->total = $saleitem->total;
+                                    $kardex->value = $saleitem->total;
+                                    $kardex->final_unit_value = $last_record->final_unit_value;
+                                    $kardex->final_stock = $product->stock;
+                                    $kardex->final_value = $last_record->final_unit_value * $product->stock;
 
                                     if (!$kardex->save()) {
                                         throw new Exception("Could not save kardex information at product ". $product['name'], 1);
@@ -184,13 +201,9 @@ class SaleController extends Controller
                         }
                     }
 
-                    if ($request->invoiceType == 1) {
-                        Simple_invoice::create(['sale_id' => $sale->id]);
-                        $invoice = $this->designInvoice($product_list, $request->customerName, $sale, "invoices/");
-                    }else if ($request->invoiceType == 2) {
-                        Credit_invoice::create(['sale_id' => $sale->id, 'serial' => 'N/A']);
-                        $invoice = $this->designInvoice($product_list, $request->customerName, $sale, "invoices/f_credits/");
-                    }
+                    $files_path = $request->invoiceType == 1 ? "invoices/" : "invoices/f_credits/";
+                    $invoice = $this->designInvoice($product_list, $request->customerName, $sale, $files_path);
+
                     //send invoice
                     return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
 

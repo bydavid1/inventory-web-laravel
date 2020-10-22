@@ -33,11 +33,17 @@ class PurchaseController extends Controller
         $query = Purchases::select('id', 'created_at', 'supplier_id', 'total_quantity', 'subtotal', 'total');
 
         return datatables()->eloquent($query)
-        ->addColumn('actions', '<div class="btn-group float-right">
-        <button type="button" class="btn btn-info" data-toggle="modal" id="editCostumerModalBtn" data-id="{{"$id"}}" data-target="#editCostumer"><i class="fas fa-eye" style="color: white"></i></button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer" ><i class="fas fa-trash" style="color: white"></i></button>
-        <a type="button" class="btn btn-danger" href="{{ route("invoice", "$id") }}"><i class="fas fa-file-pdf" style="color: white"></i></a>
-        </div>')
+        ->addColumn('actions', '<div>
+                    <a role="button" href="{{ route("editProduct", "$id") }}">
+                        <i class="badge-circle badge-circle-success bx bx-edit font-medium-1"></i>
+                    </a>
+                    <a role="button" id="removeProductModalBtn" data-id="{{"$id"}}">
+                        <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
+                    </a>
+                    <a href="{{ route("invoice", "$id") }}">
+                        <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
+                    </a>
+                </div>')
         ->addColumn('name', function($query){
 
                 $name = Suppliers::select('name')->where('id', $query->supplier_id)->get();
@@ -118,6 +124,14 @@ class PurchaseController extends Controller
             $purchase->total_quantity = $request->quantityValue;
             $purchase->total = $request->totalValue;
             $purchase->subtotal = $request->subtotalValue;
+            $purchase->user_id = $request->user()->id;
+
+            $lastnum = Purchases::latest()->first();
+            if ($lastnum) {
+                $purchase->invoice_num = str_pad($lastnum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
+            }else{
+                $purchase->invoice_num = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
+            }
 
             if ($purchase->save()) {
 
@@ -169,31 +183,43 @@ class PurchaseController extends Controller
                         $purchase->save();
 
                         $kardex = new Kardex();
-                        $kardex->tag = "Ingreso al inventario";
+                        $kardex->type_id = 1; //ingreso a inventario
                         $kardex->product_id = $newProduct->id;
+                        $kardex->invoice_ref = $purchase->invoice_num;
                         $kardex->quantity =  $newProduct->stock;
-                        $kardex->difference = "- $" . $purchaseitem->total;
                         $kardex->unit_price = $product['purchase'];
-                        $kardex->total = $purchaseitem->total;
+                        $kardex->value = $purchaseitem->total;
+                        $kardex->final_unit_value = $product['purchase'];
+                        $kardex->final_stock = $newProduct->stock;
+                        $kardex->final_value = $purchaseitem->total;
                         $kardex->save();
 
                         $purchaseitem->product_id = $newProduct->id;
-
-                        //Adding to Kardex
-                        $this->storedata("new", $newProduct->id, $purchaseitem->quantity, $purchaseitem->unit_price, $purchaseitem->total);
                     } else {
 
                         $purchaseitem->product_id = $product['id'];
-                        //Adding to Kardex
-                        $this->storedata("add", $purchaseitem->product_id, $purchaseitem->quantity, $purchaseitem->unit_price, $purchaseitem->total);
-
                         //Update quantity
                         $product = Products::find($purchaseitem->product_id);
-
                         // Make sure we've got the Products model
                         if ($product) {
                             $product->stock = ($product->stock + $purchaseitem->quantity);
                             $product->save();
+
+                            //getting last final_value
+                            $last_record = Kardex::where('product_id', $purchaseitem->product_id)->latest()->first();
+                            $final_value = ($last_record->final_value + ($purchaseitem->quantity * $purchaseitem->unit_price)) / $product->stock;
+
+                            $kardex = new Kardex();
+                            $kardex->type_id = 3; //compra en factura
+                            $kardex->product_id = $purchaseitem->product_id;
+                            $kardex->invoice_ref = $purchase->invoice_num;
+                            $kardex->quantity =  $purchaseitem->quantity;
+                            $kardex->unit_price = $purchaseitem->unit_price;
+                            $kardex->value = $purchaseitem->total;
+                            $kardex->final_unit_value = $final_value;
+                            $kardex->final_stock = $product->stock;
+                            $kardex->final_value = $kardex->final_unit_value * $product->stock;
+                            $kardex->save();
                         }
                     }
 

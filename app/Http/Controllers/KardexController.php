@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Kardex;
 use App\Products;
 use App\Images;
+use App\Kardex_tag;
+use App\Kardex_type;
+use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 
 class KardexController extends Controller
@@ -16,7 +19,7 @@ class KardexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProductList()
+    public function getProducts()
     {
         $query = Products::select('id','code','name')
         ->with(['first_image'])
@@ -54,18 +57,47 @@ class KardexController extends Controller
      */
     public function records($id)
     {
+        $product = Products::select(['id', 'name', 'code', 'description'])->with(['first_image'])->where('id', $id)->first();
+
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Kardex"],["name" => $product->name]
         ];
-        $product = Products::select(['name', 'code', 'description', 'image'])->where('id', $id)->first();
-        return view('pages.kardex.records', compact(['id', 'product']));
+
+        return view('pages.kardex.records', compact(['id', 'breadcrumbs', 'product']));
     }
 
-    public function get_records($id)
+    public function getRecords($id)
     {
-        $records = Kardex::where('id_product', $id)->get();
-        return Datatables::of($records)
-        ->make(true);
+        $kardex = Kardex::where('product_id', $id);
+
+        return datatables()->eloquent($kardex)
+            ->editColumn('created_at', function ($model) {
+                return Carbon::parse($model->created_at)->format('d/m/Y');
+            })
+            ->addColumn('tag', function ($records){
+                $tag = Kardex_type::where('id', $records->type_id)->first();
+                return $tag->tag . ' <a href="#">' . $records->invoice_ref . '</a>';
+            })
+            ->addColumn('e_quantity', function ($records) {
+                return $records->type_id == 2 ?  : $records->quantity;
+            })
+            ->addColumn('e_price', function ($records) {
+                return $records->type_id == 2 ? '' : '$'. $records->unit_price;
+            })
+            ->addColumn('e_value', function ($records) {
+                return $records->type_id == 2 ? '' : '$'. $records->value;
+            })
+            ->addColumn('s_quantity', function ($records) {
+                return $records->type_id == 2 ? $records->quantity : '';
+            })
+            ->addColumn('s_price', function ($records) {
+                return $records->type_id == 2 ? '$'. $records->unit_price : '';
+            })
+            ->addColumn('s_value', function ($records) {
+                return $records->type_id == 2 ? '$'. $records->value : '';
+            })
+            ->rawColumns(['tag'])
+            ->toJson();
     }
 
     /**
