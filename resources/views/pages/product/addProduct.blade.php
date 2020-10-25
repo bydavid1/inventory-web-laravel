@@ -338,7 +338,7 @@
         removeTitle: 'Reiniciar',
         elErrorContainer: '#kv-avatar-errors-1',
         msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: '<img src="{{ asset("media/placeholder.png") }}" alt="Profile Image" style="width:100%;">',
+        defaultPreviewContent: '<img src="{{ asset("assets/media/placeholder.png") }}" alt="Profile Image" style="width:100%;">',
         layoutTemplates: {
             main2: '{preview} {remove} {browse}'
         },

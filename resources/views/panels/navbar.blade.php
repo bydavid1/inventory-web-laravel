@@ -40,7 +40,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <div class="user-nav d-lg-flex d-none">
                   <span class="user-name">{{ Auth::user()->username }}</span><span class="user-status">Available</span>
                 </div>
-                <span><img class="round" src="{{asset('media/user.jpg')}}" alt="avatar" height="40" width="40"></span>
+                <span><img class="round" src="{{asset('assets/media/user.jpg')}}" alt="avatar" height="40" width="40"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right pb-0">
                 <a class="dropdown-item" href=""><i class="bx bx-user mr-50"></i> Edit Profile</a>
