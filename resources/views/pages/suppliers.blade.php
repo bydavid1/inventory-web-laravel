@@ -93,7 +93,7 @@
                             <label for="name" class="control-label">Contacto: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="bx bx-address-book"></i></span>
+                                    <span class="input-group-text"><i class="bx bxs-contact"></i></span>
                                 </div>
                                 <input type="number" class="form-control" placeholder="Telefono" name="phone" id="phone"
                                     autocomplete="off"">
@@ -103,25 +103,25 @@
                             <label for="name" class="control-label">Nombre: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="bx bx-truck"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nombre" name="name" id="name" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group col-12">
-                            <label for="name" class="control-label">NIT: </label>
+                            <label for="name" class="control-label">NIT (Identificación tributaria): </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="Nombre" name="nit" id="nit" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="NIT" name="nit" id="nit" autocomplete="off">
                             </div>
                         </div>
                         <div class=" form-group col-12">
                             <label for="name" class="control-label">Direccion: </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="bx bx-building"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Direccion" name="address" id="address"
                                     autocomplete="off">
@@ -161,7 +161,7 @@
                         <label for="name" class="control-label">Contacto: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="bx bx-address-book"></i></span>
+                                <span class="input-group-text"><i class="bx bxs-contact"></i></span>
                             </div>
                             <input type="number" class="form-control" placeholder="Telefono" name="uphone" id="uphone"
                                 autocomplete="off"">
@@ -171,7 +171,7 @@
                         <label for="name" class="control-label">Nombre: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="bx bx-truck"></i></span>
+                                <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Nombre" name="uname" id="uname" autocomplete="off">
                         </div>
@@ -189,7 +189,7 @@
                         <label for="name" class="control-label">Direccion: </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="bx bx-building"></i></span>
+                                <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="Direccion" name="uaddress" id="uaddress"
                                 autocomplete="off">
