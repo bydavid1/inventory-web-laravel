@@ -2,7 +2,7 @@
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/vendors.min.css')}}">
     @yield('vendor-styles')
     <!-- END: Vendor CSS-->
 

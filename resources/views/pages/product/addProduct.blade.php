@@ -4,9 +4,9 @@
 @section('title','Agregar producto')
 
 @section('vendor-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/fileinput.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/forms/select/select2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.min.css')}}">
 @endsection
 
 @section('content')
@@ -310,9 +310,9 @@
 @endsection
 
 @section('vendor-scripts')
-    <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('vendors/js/extensions/fileinput.min.js')}}"></script>
-    <script src="{{asset('vendors/js/forms/select/select2.full.min.js')}}"></script>
+    <script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
