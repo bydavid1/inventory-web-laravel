@@ -91,10 +91,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="control-label">Descripcion: </label>
-                        <div class="input-group">
-                            <textarea name="description" class="form-control" placeholder="Ingrese una descripcion" cols="30" rows="10">
-                            </textarea>
+                        <label for="name">Descripcion: </label>
+                            <textarea class="form-control" name="description" rows="3" placeholder="Ingrese una descripcion"></textarea>
+                    </div>
+                    <div class="alert bg-rgba-primary alert-dismissible mb-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="d-flex align-items-center">
+                            <i class="bx bx-info-circle"></i>
+                            <span>
+                                La descripcion es opcional, ideal si tiene conectado su propio sitio web para mostrarle al cliente mas informacion.
+                            </span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" data-loading-text="Loading..." autocomplete="off"> <i
