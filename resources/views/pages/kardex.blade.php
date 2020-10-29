@@ -4,7 +4,7 @@
 @section('title','Kardex')
 
 @section('vendor-styles')
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
 @endsection
 
 @section('content')
@@ -24,14 +24,14 @@
 @endsection
 
 @section('vendor-scripts')
-    <script src="{{asset('vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/buttons.bootstrap.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/pdfmake.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/vfs_fonts.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/datatables.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/buttons.bootstrap.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/pdfmake.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/vfs_fonts.js')}}"></script>
 @endsection
 
 @section('page-scripts')

@@ -4,8 +4,8 @@
 @section('title','Agregar compra')
 
 @section('vendor-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/forms/select/select2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.min.css')}}">
 
 <style>
 .invoice-item-title {
@@ -187,8 +187,8 @@
 @endsection
 
 @section('vendor-scripts')
-    <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
-    <script src="{{asset('vendors/js/forms/select/select2.full.min.js')}}"></script>
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 @endsection

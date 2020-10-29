@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('vendor-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     .pos-app {
@@ -359,7 +359,7 @@
 @section('vendor-scripts')
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
-<script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')

@@ -4,8 +4,8 @@
 @section('title','Fabricantes')
 
 @section('vendor-styles')
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/sweetalert2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
 @endsection
 
 @section('tools')
@@ -161,9 +161,9 @@
 @endsection
 
 @section('vendor-scripts')
-    <script src="{{asset('vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <script src="{{asset('vendors/js/tables/datatable/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/datatables.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
