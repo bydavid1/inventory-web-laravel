@@ -1,23 +1,3 @@
-//        vertical Wizard       //
-// ------------------------------
-$(".wizard-vertical").steps({
-    headerTag: "h3",
-    bodyTag: "fieldset",
-    transitionEffect: "fade",
-    enableAllSteps: true,
-    stepsOrientation: "vertical",
-    labels: {
-      finish: 'Guardar',
-      next: 'Siguiente',
-      previous: 'Atras'
-    },
-    onFinished: function (event, currentIndex) {
-      storeProduct()
-    }
-  });
-
-
-
 //----------------------------------------------------------------------
 //-------------------------Store data---------------------------------
 //----------------------------------------------------------------------
@@ -58,7 +38,6 @@ function storeProduct() {
                     document.getElementById('submitProductForm').reset()
 
                 } else {
-                    console.log(request.responseText)
                     Swal.fire({
                         position: 'top',
                         icon: 'error',
@@ -111,14 +90,18 @@ function validate(){
 
     let j = 0
     for (let i = 1; i < 5; i++) {
-        let input = document.getElementById(`price${i}`)
-        if (input.value = "") {
-            input.classList.add('is-invalid')
+        if (!document.getElementById(`price${i}`)) {
             j++
         }
     }
 
-    if(handler == 0 && j != 4){
+    if (j === 4) {
+        posterror.textContent = "Debe haber al menos un precio"
+        posterror.classList.remove('d-none')
+        return false
+    }
+
+    if(handler == 0){
         return true
     }else{
         posterror.textContent = "Hay datos importantes que hacen falta"
