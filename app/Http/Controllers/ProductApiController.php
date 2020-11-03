@@ -34,7 +34,11 @@ class ProductApiController extends Controller
         })
         ->addColumn('prices', function($products){
                      //Make sure there is at least one price registered
-                        return "$".$products->first_price->price_incl_tax;
+                     if ($products->first_price != null) {
+                        return "$". $products->first_price->price_incl_tax;
+                     }else {
+                         return "";
+                     }
         })
         ->editColumn('is_available', function($products){
                     if ($products->is_available == 1) {

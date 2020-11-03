@@ -14,6 +14,7 @@ use App\Prices;
 use App\Images;
 use App\Purchase_prices;
 use App\Categories;
+use App\Http\Requests\StoreProduct;
 use App\Suppliers;
 use App\Manufacturers;
 use App\Kardex;
@@ -60,7 +61,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProduct $request)
     {
         try {
             $path = '';

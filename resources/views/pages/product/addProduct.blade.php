@@ -4,36 +4,39 @@
 @section('title','Agregar producto')
 
 @section('vendor-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('css/plugins/forms/wizard.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/extensions/fileinput.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/fileinput/fileinput.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.min.css')}}">
 @endsection
 
 @section('content')
 
 <div class="card">
-    <div class="card-body">
-        <form class="form-horizontal" id="submitProductForm" action="{{ route('storeProduct') }}" enctype="multipart/form-data">
-            @csrf
-            <div id="add-product-messages"></div>
+    <div class="card-content">
+        <div class="card-body">
+            <div class="alert alert-danger alert-icon-left d-none mt-1" role="alert" id="posterror">
 
-            <div class="col-12 col-md-10 container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-12">
-                        <div class="form-group">
-                            <label for="productImage" class="col-12 control-label">Imagen: </label>
-                            <div class="col-12">
-                                <div id="kv-avatar-errors-1" class="center-block" style="display:none;"></div>
-                                <div class="kv-avatar center-block">
-                                    <input type="file" class="form-control" id="image"
-                                        placeholder="Imagen del producto" name="image" class="file-loading"
-                                        style="width:auto;" />
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9 col-sm-12">
+            </div>
+            <section id="vertical-wizard">
+                <form class="wizard-vertical" id="submitProductForm" action="{{ route('storeProduct') }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <!-- step 1 -->
+                    <h3>
+                        <span class="fonticon-wrap mr-1">
+                            <i class="livicon-evo text-primary"
+                                data-options="name:notebook.svg; size: 50px; style:lines;"></i>
+                        </span>
+                        <span class="icon-title">
+                            <span class="d-block">Detalles</span>
+                            <small class="text-muted">Ingresa la informacion general del producto.</small>
+                        </span>
+                    </h3>
+                    <!-- step 1 end-->
+                    <!-- step 1 content -->
+                    <fieldset class="pt-0">
+                        <h6 class="pb-50">Informacion del producto</h6>
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -65,12 +68,28 @@
 
                                 <div class="form-group">
                                     <label>Proveedor:</label>
-                                    <div class="input-group">
+                                    <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bxs-truck"></i></span>
                                         </div>
-                                        <select class="form-control" id="provider_id" name="provider_id">
+                                        <select class="form-control select2" name="provider_id">
                                             @foreach ($providers as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /form-group-->
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Categoría:</label>
+                                    <div class="input-group flex-nowrap">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bx bxs-tag"></i></span>
+                                        </div>
+                                        <select class="form-control select2" name="category_id">
+                                            @foreach ($categories as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
@@ -79,19 +98,167 @@
                                 <!-- /form-group-->
 
                                 <div class="form-group">
-                                    <label>Categoría:</label>
-                                    <div class="input-group">
+                                    <label>Fabricante:</label>
+                                    <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bxs-tag"></i></span>
+                                            <span class="input-group-text"><i class="bx bxs-factory"></i></span>
                                         </div>
-                                        <select class="form-control" id="category_id" name="category_id">
-                                            @foreach ($categories as $item)
+                                        <select class="form-control select2" name="manufacturer_id">
+                                            @foreach ($manufacturers as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <!-- /form-group-->
+
+                                <div class="form-group">
+                                    <label>Descripcion</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bx bx-file"></i></span>
+                                        </div>
+                                        <textarea class="form-control" id="description"
+                                            placeholder="Ingrese una descripción" name="description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- step 1 content end-->
+                    <!-- step 2 -->
+                    <h3>
+                        <span class="fonticon-wrap mr-1">
+                            <i class="livicon-evo text-primary"
+                                data-options="name:us-dollar.svg; size: 50px; style:lines;"></i>
+                        </span>
+                        <span class="icon-title">
+                            <span class="d-block">Inventario</span>
+                            <small class="text-muted">Ingresa precios, cantidades y mas.</small>
+                        </span>
+                    </h3>
+                    <!-- step 2 end-->
+                    <!-- step 2 content -->
+                    <fieldset class="pt-0">
+                        <h6 class="py-50">Ingresa informacion de inventario</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group" id="message">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="purchase"
+                                                    placeholder="Precio de compra" name="purchase"
+                                                    autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="price1"
+                                                    placeholder="Precio 1" disabled name="price1"
+                                                    onkeyup="calculate('price1', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="price2"
+                                                    placeholder="Precio 2" disabled name="price2"
+                                                    onkeyup="calculate('price2', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="price3"
+                                                    placeholder="Precio 3" disabled name="price3"
+                                                    onkeyup="calculate('price3', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group" id="alert">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="price4"
+                                                    placeholder="Precio 4" disabled name="price4"
+                                                    onkeyup="calculate('price4', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                    </div>
+                                    <!------- Right column------------>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group" id="message">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                                <select data-placeholder="Seleciona una categoría" class="custom-select"
+                                                    id="tax_id" name="tax_id">
+                                                    <option value="1">13%</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-transfer"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="utility1"
+                                                    placeholder="Utilidad 1" disabled name="utility1"
+                                                    onkeyup="calculate('utility1', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-transfer"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="utility2"
+                                                    placeholder="Utilidad 2" disabled name="utility2"
+                                                    onkeyup="calculate('utility2', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-transfer"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="utility3"
+                                                    placeholder="Utilidad 3" disabled name="utility3"
+                                                    onkeyup="calculate('utility3', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                        <div class="col-sm-12 mb-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="bx bx-transfer"></i></span>
+                                                </div>
+                                                <input type="number" step=".01" min="0" class="form-control" id="utility4"
+                                                    placeholder="Utilidad 4" disabled name="utility4"
+                                                    onkeyup="calculate('utility4', 'add')" autocomplete="ggg-ss" />
+                                            </div>
+                                        </div>
+                                        <!-- /form-group-->
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -128,181 +295,45 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bxs-component"></i></span>
                                         </div>
-                                        <input type="number" class="form-control" id="quantity"
-                                            placeholder="Stock" name="quantity" autocomplete="ggg-ss">
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="form-group">
-                                    <label>Fabricante:</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bxs-factory"></i></span>
-                                        </div>
-                                        <select class="form-control" id="manufacturer_id" name="manufacturer_id">
-                                            @foreach ($manufacturers as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input type="number" class="form-control" id="quantity" placeholder="Stock"
+                                            name="quantity" autocomplete="ggg-ss">
                                     </div>
                                 </div>
                                 <!-- /form-group-->
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Bottom content-->
-                <div class="row">
-                    <div class="col-sm-6">
-                        <br>
-                        <!-- /form-group-->
+                    </fieldset>
+                    <!-- step 2 content end-->
+                    <!-- step 3 -->
+                    <h3>
+                        <span class="fonticon-wrap mr-1">
+                            <i class="livicon-evo text-primary"
+                                data-options="name:image.svg; size: 50px; style:lines;"></i>
+                        </span>
+                        <span class="icon-title">
+                            <span class="d-block">Imagenes</span>
+                            <small class="text-muted">Sube fotos de tu producto.</small>
+                        </span>
+                    </h3>
+                    <!-- step 3 end-->
+                    <!-- step 3 content -->
+                    <fieldset class="pt-0">
+                        <h6 class="py-50">Enter your photos</h6>
                         <div class="row">
-                            <!-- Left Bottom group-->
-                            <div class="col-sm-6">
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group" id="message">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="purchase"
-                                            placeholder="Precio de compra" name="purchase" autocomplete="ggg-ss" />
-                                    </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Imagen: </label>
+                                    <input type="file" class="form-control" id="image" data-msg-placeholder="Buscar"
+                                        name="image" class="file-loading" />
                                 </div>
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="price1"
-                                            placeholder="Precio 1" disabled name="price1"
-                                            onkeyup="calculate('price1', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="price2"
-                                            placeholder="Precio 2" disabled name="price2"
-                                            onkeyup="calculate('price2', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="price3"
-                                            placeholder="Precio 3" disabled name="price3"
-                                            onkeyup="calculate('price3', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group" id="alert">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="price4"
-                                            placeholder="Precio 4" disabled name="price4"
-                                            onkeyup="calculate('price4', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                            </div>
-                            <!------- Right column------------>
-                            <div class="col-sm-6">
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group" id="message">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">%</span>
-                                        </div>
-                                        <select data-placeholder="Seleciona una categoría"
-                                            class="custom-select" id="tax_id" name="tax_id">
-                                            <option value="1">13%</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="utility1"
-                                            placeholder="Utilidad 1" disabled name="utility1"
-                                            onkeyup="calculate('utility1', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="utility2"
-                                            placeholder="Utilidad 2" disabled name="utility2"
-                                            onkeyup="calculate('utility2', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="utility3"
-                                            placeholder="Utilidad 3" disabled name="utility3"
-                                            onkeyup="calculate('utility3', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="col-sm-12 mb-1">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-transfer"></i></span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="utility4"
-                                            placeholder="Utilidad 4" disabled name="utility4"
-                                            onkeyup="calculate('utility4', 'add')" autocomplete="ggg-ss" />
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
                             </div>
                         </div>
-                    </div>
-                    <!-- /left bottom group-->
-                    <!-- Right bottom group-->
-                    <div class="col-sm-6">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="bx bx-file"></i></span>
-                            </div>
-                            <textarea class="form-control" id="description"
-                                placeholder="Ingrese una descripción" name="description"></textarea>
-                        </div>
-                        <div class="alert alert-danger alert-icon-left d-none mt-1" role="alert" id="posterror">
-                            Hay datos importantes que hacen falta
-                        </div>
-                    </div>
-                    <!--/ Right bottom group-->
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"> <i
-                        class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
-
-                <button type="submit" class="btn btn-success" id="createAndClose" data-loading-text="Loading..."
-                    autocomplete="ggg-ss"> <i class="bx bx-ok-sign"></i> Guardar y salir</button>
-            </div>
-            <!-- /modal-footer -->
-        </form>
-        <!-- /.form -->
+                    </fieldset>
+                    <!-- step 3 content end-->
+                </form>
+            </section>
+        </div>
     </div>
-    <!-- /.card-body -->
 </div>
 <!-- /.card -->
 
@@ -310,40 +341,32 @@
 @endsection
 
 @section('vendor-scripts')
-    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
-    <script src="{{asset('vendors/js/extensions/fileinput.min.js')}}"></script>
-    <script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
+<script src="{{asset('vendors/steps/jquery.steps.js')}}"></script>
+<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('vendors/fileinput/fileinput.min.js')}}"></script>
+<script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
 @routes
 <script src="{{ asset('js/scripts/product/addProduct.js') }}"></script>
 <script>
+    // Basic Select2 select
+    $(".select2").select2({
+        // the following code is used to disable x-scrollbar when click in select input and
+        // take 100% width in responsive also
+        dropdownAutoWidth: true,
+        width: '100%'
+    });
 
-    //Initialize Select2 Elements
-    $('#provider_id').select2()
-    $('#category_id').select2()
-    $('#manufacturer_id').select2()
 
-
-     $("#image").fileinput({
-        overwriteInitial: true,
-        maxFileSize: 2500,
-        showClose: false,
-        showCaption: true,
-        browseLabel: 'Buscar en el equipo',
-        removeLabel: 'Quitar',
+    $("#image").fileinput({
+        showUpload: false,
+        showCancel: false,
+        previewFileType: 'any',
         browseIcon: '<i class="bx bx-folder-open"></i>',
-        removeIcon: '<i class="bx bx-x"></i>',
-        removeTitle: 'Reiniciar',
-        elErrorContainer: '#kv-avatar-errors-1',
-        msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: '<img src="{{ asset("assets/media/placeholder.png") }}" alt="Profile Image" style="width:100%;">',
-        layoutTemplates: {
-            main2: '{preview} {remove} {browse}'
-        },
-        allowedFileExtensions: ["jpg", "png", "gif", "JPG", "PNG", "GIF"]
+        removeIcon: '<i class="bx bx-trash"></i>',
+        allowedFileExtensions: ["jpg", "png"]
     })
-
 </script>
 @endsection
