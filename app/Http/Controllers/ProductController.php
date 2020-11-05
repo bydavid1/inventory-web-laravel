@@ -64,68 +64,69 @@ class ProductController extends Controller
     public function store(StoreProduct $request)
     {
         try {
-            $path = '';
 
-            if ($request->file('image')) {
-                $file = $request->file('image');
-                $path = Storage::disk('public')->put('uploads', $file);
-            }else{
-                $path = $this->photo_default;
-            }
+            if ($request->validated()) {
+                $path = '';
 
-            $new = new Products;
-            $new->code = $request->code;
-            $new->name = $request->name;
-            $new->description = $request->description;
-            $new->supplier_id = $request->provider_id;
-            $new->category_id = $request->category_id;
-            $new->manufacturer_id = $request->manufacturer_id;
-            $new->stock = $request->quantity;
-            $new->low_stock_alert = 1;
-            $new->type = $request->type;
-            $new->is_available = $request->is_available;
-            $new->is_deleted = 0;
-
-            if ($new->save()) {
-
-                for ($i=1; $i <= 4; $i++) {
-                    if ($request->{'price'.$i} != "" || $request->{'utility'.$i} != "") {
-                        $prices = new Prices;
-                        $prices->product_id = $new->id;
-                        $prices->price = $request->{'price'.$i};
-                        $prices->utility = $request->{'utility'.$i};
-                        $prices->tax_id = 1;
-                        $prices->price_incl_tax = $request->{'price'.$i};
-                        $prices->save();
-                    }
+                if ($request->file('image')) {
+                    $file = $request->file('image');
+                    $path = Storage::disk('public')->put('uploads', $file);
+                }else{
+                    $path = $this->photo_default;
                 }
 
-                $images = new Images;
-                $images->src = $path;
-                $images->product_id = $new->id;
-                $images->type = 'principal';
-                $images->save();
+                $new = new Products;
+                $new->code = $request->code;
+                $new->name = $request->name;
+                $new->description = $request->description;
+                $new->supplier_id = $request->provider_id;
+                $new->category_id = $request->category_id;
+                $new->manufacturer_id = $request->manufacturer_id;
+                $new->stock = $request->stock;
+                $new->low_stock_alert = 1;
+                $new->type = $request->type;
+                $new->is_available = $request->is_available;
+                $new->is_deleted = 0;
 
-                $purchase = new Purchase_prices;
-                $purchase->product_id = $new->id;
-                $purchase->value = $request->purchase;
-                $purchase->save();
+                if ($new->save()) {
 
-                $kardex = new Kardex;
-                $kardex->type_id = 1; //Ingreso a inventario
-                $kardex->product_id = $new->id;
-                $kardex->quantity =  $new->stock;
-                $kardex->unit_price = $request->purchase;
-                $kardex->value = $request->purchase * $new->stock;
-                $kardex->final_unit_value = $request->purchase;
-                $kardex->final_stock = $new->stock;
-                $kardex->final_value = $request->purchase * $new->stock;
-                $kardex->save();
+                    foreach ($request->prices as $key) {
+                        $prices = new Prices;
+                        $prices->product_id = $new->id;
+                        $prices->price = $key['price'];
+                        $prices->utility = $key['utility'];
+                        $prices->tax_id = 1;
+                        $prices->price_incl_tax = $key['price'];
+                        $prices->save();
+                    }
 
-                return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
+                    $images = new Images;
+                    $images->src = $path;
+                    $images->product_id = $new->id;
+                    $images->type = 'principal';
+                    $images->save();
+
+                    $purchase = new Purchase_prices;
+                    $purchase->product_id = $new->id;
+                    $purchase->value = $request->purchase;
+                    $purchase->save();
+
+                    $kardex = new Kardex;
+                    $kardex->type_id = 1; //Ingreso a inventario
+                    $kardex->product_id = $new->id;
+                    $kardex->quantity =  $new->stock;
+                    $kardex->unit_price = $request->purchase;
+                    $kardex->value = $request->purchase * $new->stock;
+                    $kardex->final_unit_value = $request->purchase;
+                    $kardex->final_stock = $new->stock;
+                    $kardex->final_value = $request->purchase * $new->stock;
+                    $kardex->save();
+
+                    return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
+                }
             }
         } catch (Exception $e) {
-            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
+            return response()->json(['message'=> $e->getMessage()], 500);
         }
     }
 

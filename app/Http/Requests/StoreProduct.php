@@ -26,7 +26,7 @@ class StoreProduct extends FormRequest
         return [
             'name' => ['required'],
             'image' => ['image'],
-            'code' => ['required'],
+            'code' => ['required', 'unique:products'],
             'provider_id' => ['required', 'numeric'],
             'category_id' => ['required', 'numeric'],
             'manufacturer_id' => ['required', 'numeric'],
@@ -37,6 +37,7 @@ class StoreProduct extends FormRequest
             'is_available' => ['required','numeric'],
             'type' => ['required','numeric'],
             'stock' => ['required','numeric'],
+
         ];
     }
 
@@ -45,9 +46,14 @@ class StoreProduct extends FormRequest
         return [
             'name.required' => 'El nombre del producto es obligatorio',
             'code.required' => 'El codigo del producto es obligatorio',
+            'code.unique' => 'El codigo ya está en uso',
             'purchase.required' => 'El precio de compra del producto es obligatorio',
             'prices.required' => 'Al menos un precio es obligatorio',
             'stock.required' => 'La cantidad en inventario es requerido',
+            'prices.*.price.numeric' => 'El precio :attribute debe ser una cantidad numerica',
+            'prices.*.price.gt' => 'El precio :attribute debe ser mayor al precio de compra',
+            'prices.*.utility.numeric' => 'La utilidad :attribute debe ser una cantidad numerica',
+            'prices.*.utility.min' => 'La utilidad :attribute debe ser mayor a 0',
         ];
     }
 }
