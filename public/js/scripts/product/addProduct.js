@@ -16,61 +16,78 @@ $(".wizard-vertical").steps({
     }
   });
 
-
+// document.getElementById('submitProductForm').addEventListener('submit', function (e) {
+//     e.preventDefault();
+//     storeProduct()
+// })
 
 //----------------------------------------------------------------------
 //-------------------------Store data---------------------------------
 //----------------------------------------------------------------------
 
-
 function storeProduct() {
     if (validate() == true) {
-        const request = new XMLHttpRequest();
         const url = route('storeProduct')
         const formdata = new FormData(document.getElementById('submitProductForm'));
 
-        request.addEventListener('progress', function(){
-            Swal.fire({
-                title: 'Guardando',
-                title: 'Por favor espere...',
-                allowOutsideClick: false,
-                onBeforeOpen: () => {
-                    Swal.showLoading()
-                },
-            })
-        })
+        //clear empty prices
 
-        request.onreadystatechange = function(){
-            var DONE = 4; // readyState 4 means the request is done.
-            var OK = 200; // status 200 is a successful return.
-
-            if (request.readyState === DONE) {
-                if (request.status === OK) {
-                    console.log(request.responseText); // 'This is the returned text.'
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Guardado',
-                        timer: 1500
-                    });
-
-                    //Clear all fields
-                    document.getElementById('submitProductForm').reset()
-
-                } else {
-                    console.log(request.responseText)
-                    Swal.fire({
-                        position: 'top',
-                        icon: 'error',
-                        text: 'Ocurrio un error en el servidor',
-                        timer: 1500
-                    });
-                }
+        for (let i = 0; i < 4; i++) {
+            if (formdata.get(`prices[${i}][price]`) == "") {
+                formdata.delete(`prices[${i}][price]`)
+                formdata.delete(`prices[${i}][utility]`)
             }
         }
 
-        request.open('POST', url)
-        request.send(formdata)
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Guardando',
+                    title: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            },
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: response.message,
+                    timer: 1500
+                });
+
+                //Clear all fields
+                document.getElementById('submitProductForm').reset()
+            },
+            error: function (xhr, textStatus, errorMessage) {
+                //creating errors
+                let errorsLog = ""
+                let responseText = JSON.parse(xhr.responseText)
+                if (responseText.hasOwnProperty('errors')) {
+                    let err = Object.values(responseText.errors);
+                    err = err.flat()
+                    err.forEach(value => {
+                        errorsLog += `<p>${value}</p>`
+                    });
+                }else{
+                    errorsLog = "<p>No errors registered</p>"
+                }
+
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title: 'Error: ' + xhr.responseJSON.message,
+                    html: errorsLog,
+                });
+            }
+        });
     }
 }
 
@@ -84,6 +101,7 @@ function validate(){
     //reset all fields messages
     const invalidfields = document.getElementsByClassName('is-invalid')
     const posterror = document.getElementById('posterror')
+    const posterrortitle = document.getElementById('posterrortitle')
 
     const messageslength = invalidfields.length
 
@@ -104,24 +122,30 @@ function validate(){
         handler++
     }
 
-    if(!document.getElementById('quantity').value){
-        document.getElementById('quantity').classList.add('is-invalid')
+    if(!document.getElementById('stock').value){
+        document.getElementById('stock').classList.add('is-invalid')
         handler++
     }
 
     let j = 0
     for (let i = 1; i < 5; i++) {
         let input = document.getElementById(`price${i}`)
-        if (input.value = "") {
+        if (input.value == "") {
             input.classList.add('is-invalid')
             j++
         }
     }
 
-    if(handler == 0 && j != 4){
-        return true
-    }else{
-        posterror.textContent = "Hay datos importantes que hacen falta"
+    if (handler === 0) {
+        if (j != 4) {
+            return true
+        } else {
+            posterrortitle.textContent = "Debe haber al menos un precio"
+            posterror.classList.remove('d-none')
+            return false
+        }
+    } else {
+        posterrortitle.textContent = "Hay datos importantes que hacen falta"
         posterror.classList.remove('d-none')
         return false
     }
@@ -129,45 +153,74 @@ function validate(){
 
 
 //----------------------------------------------------------------------
-//-----------Validate purchase price input is not null------------------
-//----------------------------------------------------------------------
-
-
-document.getElementById('purchase').addEventListener('keyup', function (input) {
-    if (input.target.value != "" && isNaN(input.target.value) == false) {
-        for (let x = 1; x < 5; x++) {
-            document.getElementById('price' + x).disabled = false
-            document.getElementById('utility' + x).disabled = false
-        }
-    }else{
-        for (let x = 1; x < 5; x++) {
-            document.getElementById('price' + x).disabled = true
-            document.getElementById('utility' + x).disabled = true
-        }
-    }
-})
-
-
-//----------------------------------------------------------------------
 //-------------------------Validate prices--------------------------------
 //----------------------------------------------------------------------
 
 
-function calculate(input, type){
+function calculate(target){
+    if (target.id === "purchase") {
+        let result = target.value != "" && isNaN(target.value) === false ? false : true
+        for (let i = 1; i < 5; i++) {
+            let price = document.getElementById('price' + i)
+            let utility = document.getElementById('utility' + i)
+            //toggle disabled property
+            price.disabled = result
+            utility.disabled = result
+            //clear couple of inputs
+            if (price.value != "") {
+                calculateField(price, utility, "clear")
+            }
+        }
+    } else {
+        let input = target.id
 
-    let purchase = document.getElementById('purchase').value
+        if (input.slice(0, -1) == "price")
+        {
+            let price = document.getElementById(input)
+            const identifier = input.slice(-1);
+            let utility = document.getElementById('utility' + identifier)
 
-    if (input.slice(0, -1) == "price") {
+            if (price.value != "") {
+                calculateField(price, utility, "sum")
+            }else {
+                calculateField(price, utility, "clear")
+            }
+        }
+        else if(input.slice(0, -1) == "utility")
+        {
+            let utility = document.getElementById(input)
+            const identifier = input.slice(-1);
+            let price = document.getElementById('price' + identifier)
 
-        let price = document.getElementById(input).value
-        let identifier = input.slice(-1);
-        document.getElementById('utility' + identifier).value = (price - purchase).toFixed(2)
-
-    }else if(input.slice(0, -1) == "utility"){
-
-        let value = document.getElementById(input).value
-        let identifier = input.slice(-1);
-        document.getElementById('price' + identifier).value = (Number(value) + Number(purchase)).toFixed(2)
-
+            if (utility.value != "") {
+                calculateField(price, utility, "sub")
+            } else {
+                calculateField(price, utility, "clear")
+            }
+        }
     }
 }
+
+/**
+ * @param {Object} price Input
+ * @param {Object} utility Input
+ * @param {string} action The string
+ */
+function calculateField(price, utility, action) {
+    switch (action) {
+        case "clear":
+            price.value = ""; utility.value = "";
+            break;
+        case "sum":
+            utility.value = (price.value - document.getElementById('purchase').value).toFixed(2)
+        break;
+        case "sub":
+            price.value = (Number(utility.value) + Number(document.getElementById('purchase').value)).toFixed(2)
+        break;
+        default:
+            console.error('Especify action: clear/sum/sub')
+            break;
+    }
+}
+
+

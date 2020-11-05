@@ -29,8 +29,12 @@ class ProductApiController extends Controller
                     </a>
                     </div>')
         ->addColumn('photo', function($products){
-                    $path = asset($products->first_image->src);
-                        return '<img class="img-round" src="'.$path.'"  style="max-height:50px; max-width:70px;"/>';
+                    if ($products->first_image != null) {
+                        $path = asset($products->first_image->src);
+                        return '<img class="img-round" src="'.$path.'" style="max-height:50px; max-width:70px;"/>';
+                    } else {
+                        return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
+                    }
         })
         ->addColumn('prices', function($products){
                      //Make sure there is at least one price registered
