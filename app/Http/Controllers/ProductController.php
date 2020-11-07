@@ -23,7 +23,7 @@ use Exception;
 class ProductController extends Controller
 {
 
-    private $photo_default = "media/photo_default.png";
+    private $photo_default = "default.png";
 
     /**
      * Display a listing of the resource.
@@ -70,7 +70,7 @@ class ProductController extends Controller
 
                 if ($request->file('image')) {
                     $file = $request->file('image');
-                    $path = Storage::disk('public')->put('uploads', $file);
+                    $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
                 }else{
                     $path = $this->photo_default;
                 }
@@ -217,7 +217,7 @@ class ProductController extends Controller
             //Update image if exist
             if ($request->file('image')) {
                 $file = $request->file('image');
-                $path = Storage::disk('public')->put('uploads', $file);
+                $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
                 $product->first_image()->update([
                     'src' => $path
                 ]);

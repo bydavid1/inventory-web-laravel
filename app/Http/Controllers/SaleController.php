@@ -5,19 +5,14 @@ namespace App\Http\Controllers;
 error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
-use App\Credit_invoice;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use App\Sales;
 use App\Sales_items;
 use App\Products;
 use App\Payments;
-use App\Simple_invoice;
 use App\Kardex;
 use App\Customers;
 use App\Http\Requests\StoreSale;
-use App\Invoice;
 use App\Traits\Helpers;
 use Exception;
 
@@ -40,7 +35,7 @@ class SaleController extends Controller
         <a href="#" role="button"  data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer">
             <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
         </a>
-        <a href="{{ route("invoice", "$id") }}"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
+        <a href="#" onclick="showInvoice({{"$id"}})"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
         </div>')
         ->addColumn('name', function($query){
 
@@ -201,7 +196,7 @@ class SaleController extends Controller
                         }
                     }
 
-                    $files_path = $request->invoiceType == 1 ? "invoices/" : "invoices/f_credits/";
+                    $files_path = $request->invoiceType == 1 ? "storage/invoices/" : "storage/invoices/credit_invoices/";
                     $invoice = $this->designInvoice($product_list, $request->customerName, $sale, $files_path);
 
                     //send invoice
@@ -220,23 +215,43 @@ class SaleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Check invoice exist
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function invoice($id)
+    public function invoice($id = null)
     {
         try {
-
-            $path = public_path() . "\invoices\\$id.pdf";
-            if (file_exists($path)) {
-                return response()->file($path);
-            }else{
-                return redirect()->back()->with('alert', 'La factura no esta guardada');
+            $num = str_pad($id, 10, '0', STR_PAD_LEFT);
+            $path = public_path() . "/storage/invoices/" .$num . ".pdf";
+            if ($id != null) {
+                if (file_exists($path)) {
+                    //return redirect()->route('showInvoice', ["path" => $path]);
+                    return response()->json(["path" => $path], 200);
+                }else{
+                    return response()->json(["message" => "No se encontró la factura 😕"], 404);
+                }
+            } else {
+                return response()->json(["message" => "Parametro vacío"], 400);
             }
         } catch (Exception $th) {
-            //throw $th;
+            return response()->json(["message" => "Ocurrió un errror al tratar de obtener la factura 😕"], 500);
+        }
+    }
+
+        /**
+     * Display the specified resource.
+     *
+     */
+    public function showInvoice($id)
+    {
+        try {
+            $num = str_pad($id, 10, '0', STR_PAD_LEFT);
+            $path = public_path() . "/storage/invoices/" .$num . ".pdf";
+            return response()->file($path);
+        } catch (Exception $th) {
+            return response()->json(["message" => "Ocurrió un errror al tratar de obtener la factura 😕"], 500);
         }
     }
 

@@ -8,12 +8,13 @@ ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
 use App\Manufacturers;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 
 class ManufacturersController extends Controller
 {
 
-    private $photo_default = "media/photo_default.png";
+    private $photo_default = "default.png";
 
         /**
      * Display a listing of the resource.
@@ -41,7 +42,7 @@ class ManufacturersController extends Controller
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
                     <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
                     </div>')
-        ->addColumn('image', '<img class="img-round" src="{{ asset($logo) }}"  style="max-height:50px; max-width:70px;"/>')
+        ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}"  style="max-height:50px; max-width:70px;"/>')
         ->addColumn('available', function($manufacturers){
             if ($manufacturers->is_available == 1) {
                 return '<i class="bx bx-check fa-2x text-success"></i>';
@@ -66,11 +67,12 @@ class ManufacturersController extends Controller
 
             if ($request->file('logo')) {
                 $file = $request->file('logo');
-                $path = Storage::disk('public')->put('uploads', $file);
+                $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
+
             }else{
                 $path = $this->photo_default;
             }
-    
+
             $new = new Manufacturers;
             $new->name = $request->name;
             $new->logo = $path;
@@ -121,10 +123,10 @@ class ManufacturersController extends Controller
 
             if ($request->file('ulogo')) {
                 $file = $request->file('ulogo');
-                $path = Storage::disk('public')->put('uploads', $file);
+                $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
                 $find->logo = $path;
             }
-            
+
             if ($find->save() && $request->file('ulogo')) {
                 if ($savedImage != $this->photo_default) {
                     unlink($savedImage);

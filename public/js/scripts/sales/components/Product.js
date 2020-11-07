@@ -4,11 +4,11 @@ export default {
 
 Vue.component('Product', {
     props : ['product'],
-    template : 
+    template :
 /*html*/`<div class="col-xl-2 col-lg-3 col-md-4">
             <div class="card cursor-pointer" v-on:click="$emit('add')" style="height: 200px">
                 <div class="card-content h-100">
-                    <div v-bind:style="{'background-image': 'url(/' + product.first_image.src + ')','background-repeat' : 'no-repeat', 
+                    <div v-bind:style="{'background-image': 'url(/storage/' + product.first_image.src + ')','background-repeat' : 'no-repeat',
                         'background-size' : 'cover', 'background-size' : 'cover', 'height' : '60%'}">
                         <div class="heading-elements">
                             <div class="float-right badge badge-primary">{{ 'Stock:' + product.stock }}</div>
@@ -20,5 +20,5 @@ Vue.component('Product', {
                     </div>
                 </div>
             </div>
-        </div>` 
+        </div>`
 })

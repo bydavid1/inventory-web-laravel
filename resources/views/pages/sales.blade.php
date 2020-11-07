@@ -4,6 +4,7 @@
 @section('title','Ventas')
 
 @section('vendor-styles')
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
 @endsection
 
@@ -38,6 +39,7 @@
 @endsection
 
 @section('vendor-scripts')
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('vendors/datatables/js/datatables.min.js')}}"></script>
     <script src="{{asset('vendors/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('vendors/datatables/js/dataTables.buttons.min.js')}}"></script>
@@ -79,15 +81,55 @@
 				]
 			})
 		})
-	</script>
-	@if (session('alert'))
+    </script>
+
 	<script>
-		Swal.fire({
-			type: 'error',
-			title: 'Oops...',
-			text: '{{ session("alert") }}',
-			footer: '<a href>¿Quiere regenerarla con los datos guardados?</a>',
-		   });
+        function showInvoice (id) {
+            let url = "{{ route('invoiceExist', ':id') }}".replace(":id", id)
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Obteniendo factura',
+                        html: 'Por favor espere...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+                },
+                success: function (response) {
+                    Swal.close()
+                    window.open("{{ route('showInvoice', ':id') }}".replace(":id", id))
+                },
+                error: function (xhr, textStatus, errorMessage) {
+                    if (xhr.status === 404) {
+                        Swal.fire({
+                            icon: 'question',
+                            html: `<h4>${xhr.responseJSON.message}</h4><p>¿Desea regenerar la factura con los datos guardados?</p>`,
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="bx bx-wrench"></i> Reparar!',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                //code
+                            }
+                        })
+                    } else if (xhr.status === 500) {
+                        Swal.fire({
+                            icon: 'error',
+                            html: `<h4>${xhr.responseJSON.message}</h4>`,
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            html: `<h4>${xhr.status}</h4><p>${xhr.responseJSON.message}</p>`,
+                        })
+                    }
+                }
+            })
+        }
 	</script>
-	@endif
+
 @endsection
