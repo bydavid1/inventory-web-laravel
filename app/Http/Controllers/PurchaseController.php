@@ -172,7 +172,7 @@ class PurchaseController extends Controller
                         $prices->save();
 
                         $images = new Images();
-                        $images->src = "media/photo_default.png";
+                        $images->src = "default.png";
                         $images->product_id = $newProduct->id;
                         $images->type = 'principal';
                         $images->save();

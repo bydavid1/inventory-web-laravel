@@ -60,9 +60,14 @@
             </div>
             <div class="modal-body">
 				<form id="createForm" method="POST">
-					<div class="alert alert-info alert-icon-left" role="alert">
-						<strong>Tip:</strong> Click en <span class="bx bx-random"></span> para generar un codigo aleatorio
-					</div>
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="bx bxs-bulb"></i>
+                            <span>
+                                <strong>Tip:</strong> Click en <span class="bx bx-shuffle"></span> para generar un codigo aleatorio
+                            </span>
+                        </div>
+                    </div>
 					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="posterror">
 						Hay datos importantes que hacen falta
 					</div>
@@ -77,7 +82,7 @@
 								<input type="text" class="form-control" placeholder="Ej: C123" name="code" id="code"
 								autocomplete="off">
 								<div class="input-group-append">
-									<button type="button" class="btn btn-outline-secondary"><i class="bx bx-random"></i></button>
+									<button type="button" class="btn btn-light-secondary"><i class="bx bx-shuffle"></i></button>
 								</div>
 							</div>
 						</div>

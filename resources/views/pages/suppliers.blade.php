@@ -86,7 +86,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="bx bx-key"></i></span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="Nombre" name="code" id="code" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Codigo" name="code" id="code" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group col-6">

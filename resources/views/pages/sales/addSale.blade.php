@@ -18,6 +18,7 @@
     .pos-content{
         height: 100%;
         display: flex;
+        overflow: auto
     }
 
     .pos-details {
@@ -345,7 +346,7 @@
                 </div>
             </div>
             <div class="inventory-results">
-                <div class="row py-2 px-1">
+                <div class="row py-2 mx-0 px-1">
                     <product v-on:add="add(product.id)" :product="product" :key="product.id"
                         v-for="product in inventory.data"></product>
                 </div>
