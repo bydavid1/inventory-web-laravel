@@ -12,65 +12,80 @@
     color: #475F7B;
     font-weight: 500;
 }
+
+.pos-app {
+        height: calc(100vh - 8.75rem);
+        display: flex;
+        flex-direction: column
+}
+
+.pos-header {
+    width: 100%;
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.pos-content{
+    height: 100%;
+    display: flex;
+    overflow: auto
+}
 </style>
 @endsection
 
-@section('tools')
-    <button class="btn btn-secondary" data-toggle="modal" data-target="#AddNewProductModal">
-        <i class="bx bx-plus fa-2x"></i>
-        <span>Nuevo producto</span>
-    </button>
-    <button class="btn btn-primary" data-toggle="modal" data-target="#SearchProducts">
-        <i class="bx bx-search fa-2x"></i>
-        <span>Buscar producto</span>
-    </button>
-@endsection
-
 @section('content')
-<div id="app">
-    <div class="row">
-        <div class="col-sm-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label">Proveedor</label>
-                                    <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
-                                        autocomplete="off">
-                                        <option value="" disabled selected>Selecciona un proveedor</option>
-                                        @foreach ($suppliers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="date" class="control-label">Fecha</label>
-                                    <input type="date" class="form-control">
-                                </div>
-                            </div>
+<div id="app" class="pos-app">
+    <div class="pos-header">
+        <div class="card mb-0 shadow-none w-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group my-auto">
+                            <label class="control-label">Proveedor</label>
+                            <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
+                                autocomplete="off">
+                                <option value="" disabled selected>Selecciona un proveedor</option>
+                                @foreach ($suppliers as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <hr class="my-3">
-                    <item :item="item" v-for="item in items" :key="item.id"></item>
-                    <div class="row mt-2">
-                        <div class="col-sm-6"></div>
-                        <div class="col-md-6">
-                            <textarea class="form-control" v-model="data.comments" placeholder="Comentarios adicionales"></textarea>
+                    <div class="col-lg-3">
+                        <div class="form-group my-auto">
+                            <label for="date" class="control-label">Fecha</label>
+                            <input type="date" class="form-control">
                         </div>
                     </div>
                 </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
         </div>
-        <div class="col-sm-4">
-            <!-- card-->
-            <div class="card card-outline card-danger">
-                <!-- /.card-header -->
+    </div>
+    <div class="pos-content">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header border-bottom">
+                        <h5 class="card-title">Detalles</h5>
+                        <div class="heading-elements">
+                            <button class="btn btn-secondary" data-toggle="modal" data-target="#AddNewProductModal">
+                                <i class="bx bx-plus fa-2x"></i>
+                                <span>Nuevo producto</span>
+                            </button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#SearchProducts">
+                                <i class="bx bx-search fa-2x"></i>
+                                <span>Buscar producto</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table_details :items="items"></table_details>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
                 <div class="card-body">
                     <h4 class="mb-3">Resumen</h4>
                     <ul class="list-group list-group-flush">
@@ -83,17 +98,87 @@
                             <strong v-html="'$' + data.subtotalValue"></strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Descuentos
+                            <strong v-html="'$' + data.discountsValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
                             Total
                             <strong v-html="'$' +  data.totalValue"></strong>
                         </li>
                     </ul>
-                    <button v-on:click="storePurchase()" class="btn btn-success btn-block mt-2">Registrar compra</button>
+                    <div class="invoice-action-btn mb-1 mt-1">
+                        <div class="dropup">
+                            <button class="btn btn-light-primary btn-block dropdown-toggle" id="additionalNote"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                <span>Agregar nota</span>
+                            </button>
+                            <div class="dropdown-menu p-1" aria-labelledby="additionalNote">
+                                <div class="row">
+                                    <div class="col-12 form-group">
+                                        <label>Nota</label>
+                                        <textarea class="form-control" v-model="data.comments"
+                                            placeholder="Nota descriptiva"></textarea>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary invoice-apply-btn"
+                                        data-dismiss="modal">
+                                        <span>Apply</span>
+                                    </button>
+                                    <button type="button" class="btn btn-light-primary ml-1"
+                                        data-dismiss="modal" v-on:click="data.note=''">
+                                        <span>Cancel</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-1 d-flex">
+                        <div class="preview w-50 mr-50">
+                            <button class="btn btn-light-primary btn-block">
+                                <span class="text-nowrap">Guardar borrador</span>
+                            </button>
+                        </div>
+                        <div class="save w-50">
+                            <div class="dropup">
+                                <button class="btn btn-light-primary btn-block dropdown-toggle"
+                                    id="additionalPayment" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false" role="button">
+                                    <span class="text-nowrap">Pago adicional</span>
+                                </button>
+                                <div class="dropdown-menu p-1" aria-labelledby="additionalPayment">
+                                    <div class="row">
+                                        <div class="col-12 form-group">
+                                            <label for="discount">Pago adicional</label>
+                                            <input type="number" class="form-control"
+                                                placeholder="0">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-primary invoice-apply-btn"
+                                            data-dismiss="modal">
+                                            <span>Apply</span>
+                                        </button>
+                                        <button type="button" class="btn btn-light-primary ml-1"
+                                            data-dismiss="modal">
+                                            <span>Cancel</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="invoice-action-btn mb-1">
+                        <button v-on:click="storePurchase()" class="btn btn-success btn-block mt-2">
+                            <i class="bx bx-save"></i>
+                            <span>Guardar compra</span>
+                        </button>
+                    </div>
                 </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
         </div>
     </div>
+
 
     <!-- ---------------------------------------------------------------------------------- -->
     <!-- --------------------Modal-------------------- -->

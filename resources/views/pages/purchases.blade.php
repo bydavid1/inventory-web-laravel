@@ -53,9 +53,11 @@
 	<script>
 		$(document).ready(function () {
 			$('#items').DataTable({
-				"serverSide": true,
-				"ajax": "{{ url('api/purchases') }}",
-				"columns": [
+				serverSide: true,
+				ajax: {
+                    url : "{{ url('api/purchases') }}",
+                },
+				columns: [
 					{
 						data: 'created_at'
 					},
@@ -78,14 +80,4 @@
 			})
 		})
 	</script>
-	@if (session('alert'))
-	<script>
-		Swal.fire({
-			type: 'error',
-			title: 'Oops...',
-			text: '{{ session("alert") }}',
-			footer: '<a href>¿Quiere regenerarla con los datos guardados?</a>',
-		   });
-	</script>
-	@endif
 @endsection
