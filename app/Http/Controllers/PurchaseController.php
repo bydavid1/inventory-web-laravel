@@ -23,32 +23,27 @@ class PurchaseController extends Controller
 
     use Helpers;
 
-        /**
+    /**
      * Get a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function getRecords()
     {
-        $query = Purchases::select('id', 'created_at', 'supplier_id', 'total_quantity', 'subtotal', 'total');
+        $query = Purchases::select(['id', 'created_at', 'supplier_id', 'total_quantity', 'subtotal', 'total']);
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div>
-                    <a role="button" href="{{ route("editProduct", "$id") }}">
-                        <i class="badge-circle badge-circle-success bx bx-edit font-medium-1"></i>
-                    </a>
-                    <a role="button" id="removeProductModalBtn" data-id="{{"$id"}}">
+                    <a role="button" data-id="{{"$id"}}">
                         <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
                     </a>
-                    <a href="{{ route("invoice", "$id") }}">
+                    <a href="{{ route("invoiceExist", "$id") }}">
                         <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
                     </a>
                 </div>')
         ->addColumn('name', function($query){
-
                 $name = Suppliers::select('name')->where('id', $query->supplier_id)->get();
                 return $name[0]->name;
-
         })
         ->editColumn('sub_total', function($query){
             return '$' . $query->subtotal;
@@ -56,7 +51,7 @@ class PurchaseController extends Controller
         ->editColumn('total', function($query){
             return '$' . $query->total;
         })
-        ->rawColumns(['actions', 'invoice_type'])
+        ->rawColumns(['actions'])
         ->toJson();
     }
 
@@ -80,13 +75,12 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Compras"],["name" => "Crear nueva"]
-        ];
+        $pageConfigs = ['pageHeader' => false, 'theme' => 'light', 'extendApp' => true, 'footerType' => 'hidden', 'navbarType' => 'static'];
+
         $categories = Categories::select(['id', 'name'])->where('is_available', 1)->get();
         $suppliers = Suppliers::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
-        return view('pages.purchases.addPurchase', compact(['categories', 'suppliers', 'breadcrumbs']));
+        return view('pages.purchases.addPurchase', compact(['categories', 'suppliers', 'pageConfigs']));
     }
 
     /**
