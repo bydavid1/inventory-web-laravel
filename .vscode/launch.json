@@ -16,7 +16,7 @@
     },
     {
         "name": "Launch localhost",
-            "type": "edge",
+            "type": "firefox",
             "request": "launch",
             "url": "http://127.0.0.1:8000",
             "webRoot": "${workspaceRoot}"
