@@ -23,6 +23,7 @@ class CreatePurchasesItemsTable extends Migration
             $table->boolean('is_new');
             $table->integer('quantity');
             $table->float('unit_price');
+            $table->float('discount')->default('0.00');
             $table->float('total');
         });
     }

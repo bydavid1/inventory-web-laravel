@@ -23,6 +23,7 @@ class CreatePurchasesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('total_quantity');
             $table->float('subtotal');
+            $table->float('discounts')->default('0.00');
             $table->float('total');
         });
     }
