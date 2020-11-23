@@ -118,6 +118,7 @@ class PurchaseController extends Controller
             $purchase->total_quantity = $request->quantityValue;
             $purchase->total = $request->totalValue;
             $purchase->subtotal = $request->subtotalValue;
+            $purchase->discounts = $request->discountsValue;
             $purchase->user_id = $request->user()->id;
 
             $lastnum = Purchases::latest()->first();
@@ -138,6 +139,7 @@ class PurchaseController extends Controller
                     $purchaseitem->is_new = $product['isNewProduct'];
                     $purchaseitem->quantity = $product['quantity'];
                     $purchaseitem->unit_price = $product['purchase'];
+                    $purchaseitem->discount = $product['discount'];
                     $purchaseitem->total = $product['total'];
 
                     if ($product['isNewProduct'] == true) {

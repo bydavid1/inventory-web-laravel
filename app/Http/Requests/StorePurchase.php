@@ -34,7 +34,7 @@ class StorePurchase extends FormRequest
             "products.*.isNewProduct" => ["required"],
             "products.*.id" => ["numeric", "required_if:products.*.isNewProduct,false", "distinct"],
             "products.*.quantity" => ["required", "numeric", "min:1"],
-            "products.*.price" => ["required_if:products.*.isNewProduct,true", "numeric", "min:0.01", "max:999999", "gt:purchase"],
+            "products.*.price" => ["required_if:products.*.isNewProduct,true", "numeric", "min:0.01", "max:999999", "gt:products.*.purchase"],
             "products.*.name" => ["required_if:products.*.isNewProduct,true"],
             "products.*.code" => ["required_if:products.*.isNewProduct,true", "unique:products"],
             "products.*.category" => ["required_if:products.*.isNewProduct,true", "numeric"],
