@@ -1,8 +1,10 @@
 /**
- * @file Simple validations: numeric, max, min, greatherThan, equalTo, required
+ * @file Simple validations: numeric, max, min, greatherThan, equalTo, required, array
  * @author Byron Jimenez
  * @version 0.1
  */
+
+import { isArray } from "lodash";
 
  class Validation {
 
@@ -22,7 +24,8 @@
             min : (field, value) => `${field} value is greather than ${value}`,
             greaterThan : (field, value) => `${field} value is not greather than ${value}`,
             equalTo : (field, value) => `${field} value is not equal to ${value}`,
-            required : (field) => `${field} is required`
+            required : (field) => `${field} is required`,
+            array : (field) => `${field} must be array`,
         }
 
     }
@@ -123,6 +126,14 @@
 
                 break
 
+            case "array":
+
+                if (!this.validateArray()) {
+                    this.setError()
+                }
+
+                break
+
             default:
                 console.warn("Validation type does not exist")
         }
@@ -186,6 +197,10 @@
         } else {
             return true
         }
+    }
+
+    validateArray() {
+        return isArray(this.currentField)
     }
 
  }

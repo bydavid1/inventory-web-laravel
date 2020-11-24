@@ -29,7 +29,7 @@ Vue.component('table_details', {
                 </tr>
             </thead>
             <tbody>
-                <item :item="item" v-for="(item, index) in items" :key="index" v-on:remove="removeItem(index)"></item>
+                <item v-for="(item, index) in items" :key="index" :item="item" v-on:remove="removeItem(index)" v-on:edit="$emit('edit', index)"></item>
             </tbody>
         </table>`
 

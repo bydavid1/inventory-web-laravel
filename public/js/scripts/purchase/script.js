@@ -6,6 +6,8 @@ window.axios.defaults.headers.common = {
 
 import table_details from './components/TableDetails.js'
 import result from './components/Result.js'
+import formatCurrency from '../utils/moneyFormat.js'
+import Validation from '../utils/validation.js'
 
 var vm = new Vue({
     el : '#app',
@@ -34,39 +36,39 @@ var vm = new Vue({
             total : 0.00, //total of purchase
             discount : 0.00
         },
+        editProduct : {
+            isNewProduct : true,
+            name : "",
+            code : "",
+            category : "",
+            quantity : 0.00,
+            purchase : 0.00,
+            price : 0.00,
+            total : 0.00, //total of purchase
+            discount : 0.00
+        },
         searchControl : "",
         loader : false
     },
     methods : {
         addNewProduct () {
-            //Falta validar si se ingresa dos veces el mismo codigo
-            if (this.newProduct.name == "" || this.newProduct.code == "" || this.newProduct.category == "") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Datos incompletos',
-                })
-            }else{
-                if (isNaN(parseFloat(this.newProduct.quantity)) || isNaN(parseFloat(this.newProduct.purchase)) || isNaN(parseFloat(this.newProduct.price))) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'La cantidad y los precios deben ser numericos',
-                    })
-                } else {
-                    if (this.newProduct.price <= this.newProduct.purchase) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'El precio debe ser mayor que el precio de compra',
-                        })
-                    } else {
-                        this.newProduct.total = this.newProduct.quantity * this.newProduct.purchase
-                        let objectClone = {
-                            ...this.newProduct //avoiding mutations
-                        }
-                        this.items.push(objectClone)
-                        Object.assign(this.newProduct, this.newProductInitialState())
-                    }
-                }
+            this.newProduct.total = this.newProduct.quantity * this.newProduct.purchase
+            let objectClone = {
+                ...this.newProduct //avoiding mutations
             }
+            this.items.push(objectClone)
+            Object.assign(this.newProduct, this.newProductInitialState())
+        },
+        editNewProduct (index) {
+            Object.assign(this.editProduct, this.items[index])
+        },
+        confirmEditProduct () {
+            this.editProduct.total = this.editProduct.quantity * this.editProduct.purchase
+            let objectClone = {
+                ...this.editProduct //avoiding mutations
+            }
+            this.items.push(objectClone)
+            Object.assign(this.editProduct, this.newProductInitialState())
         },
         newProductInitialState () { //Initial state of new product object
             return {
@@ -126,24 +128,11 @@ var vm = new Vue({
                     this.data.subtotalValue += Number(item.total)
                     this.data.discountsValue += Number(item.discount)
                 }
-                this.formatCurrency(this.data.subtotalValue)
+                formatCurrency(this.data.subtotalValue)
             }
 
             this.data.totalValue = (this.data.subtotalValue - this.data.discountsValue + Number(this.data.additionalPayments))
-            this.formatCurrency(this.data.totalValue)
-        },
-        formatCurrency (value){
-            let ret = 0;
-
-            try {
-
-                ret = new Intl.NumberFormat('en-US',{ style: 'currency', currency: 'USD' }).format(value)
-
-                return ret
-
-            } catch (error) {
-                console.error(`Ha fallado el formato a USD: ${error}`)
-            }
+            formatCurrency(this.data.totalValue)
         },
         storePurchase () {
             Swal.fire({
@@ -192,10 +181,10 @@ var vm = new Vue({
             } else {
 
                 let validatedErrors = "<ul>"
-                validation.errors.forEach(value => {
-                    validatedErrors += `<li>${value}</li>`
-                })
-                validatedErrors += "</ul>"
+                // validation.errors.forEach(value => {
+                //     validatedErrors += `<li>${value}</li>`
+                // })
+                // validatedErrors += "</ul>"
 
                 Swal.fire({
                     icon: 'warning',
@@ -205,59 +194,76 @@ var vm = new Vue({
             }
         },
         isValidated () {
-            let errors = []
-            if (this.data.supplierId == "") {
-                errors.push(`No se ha especificado el proveedor o cliente`)
+
+            let rules = [
+                {field : "supplierId", validate : { type : "required", message : "No se ha especificado el proveedor o cliente"}},
+                {field : "totalValue", validate : { type : "min", value: 0.01, message : "El total no puede ser 0 ni negativo"}},
+                {field : "items", validate : { type : "array"}},
+            ]
+
+            let validate = new Validation(rules, this.data)
+
+            let result = validate.validate()
+
+            console.log(result)
+
+            return {
+                response : false,
             }
 
-            if (this.data.totalValue < 1) {
-                errors.push(`El total no puede ser 0 ni negativo`)
-            }
+            // let errors = []
+            // if (this.data.supplierId == "") {
+            //     errors.push(`No se ha especificado el proveedor o cliente`)
+            // }
 
-            for (const item of this.items) {
-                if (item.name == "") {
-                    errors.push(`El nombre no puede estar vacío, revise los datos`)
-                    item.name = "Nombre indefinido"
-                }
+            // if (this.data.totalValue < 1) {
+            //     errors.push(`El total no puede ser 0 ni negativo`)
+            // }
 
-                if (item.purchase == "" || item.purchase == 0) {
-                    errors.push(`El precio de compra de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-                }
+            // for (const item of this.items) {
+            //     if (item.name == "") {
+            //         errors.push(`El nombre no puede estar vacío, revise los datos`)
+            //         item.name = "Nombre indefinido"
+            //     }
 
-                if (item.quantity == "" || item.quantity == 0) {
-                    errors.push(`La cantidad de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-                }
+            //     if (item.purchase == "" || item.purchase == 0) {
+            //         errors.push(`El precio de compra de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+            //     }
 
-                if (item.total == "" || item.total == 0) {
-                    errors.push(`El precio total de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-                }
+            //     if (item.quantity == "" || item.quantity == 0) {
+            //         errors.push(`La cantidad de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+            //     }
 
-                if (item.isNewProduct == true) {
-                    if (item.price < item.purchase) {
-                        errors.push(`El precio venta ($${item.price}) de <strong>${item.name}</strong> no puede ser menor al precio de compra ($${item.purchase})`)
-                    }
+            //     if (item.total == "" || item.total == 0) {
+            //         errors.push(`El precio total de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+            //     }
 
-                    if (item.code == "") {
-                        errors.push(`El codigo de <strong>${item.name}</strong> no puede estar vacío`)
-                    }
+            //     if (item.isNewProduct == true) {
+            //         if (item.price < item.purchase) {
+            //             errors.push(`El precio venta ($${item.price}) de <strong>${item.name}</strong> no puede ser menor al precio de compra ($${item.purchase})`)
+            //         }
 
-                    if (item.category == "") {
-                        errors.push(`La categoría de <strong>${item.name}</strong> es requerida`)
-                    }
+            //         if (item.code == "") {
+            //             errors.push(`El codigo de <strong>${item.name}</strong> no puede estar vacío`)
+            //         }
 
-                }
-            }
+            //         if (item.category == "") {
+            //             errors.push(`La categoría de <strong>${item.name}</strong> es requerida`)
+            //         }
 
-            if (errors.length > 0) {
-                return {
-                    response : false,
-                    errors : errors
-                }
-            } else {
-                return {
-                    response : true,
-                }
-            }
+            //     }
+            // }
+
+            // if (errors.length > 0) {
+            //     return {
+            //         response : false,
+            //         errors : errors
+            //     }
+            // } else {
+            //     return {
+            //         response : true,
+            //     }
+            // }
         }
     },
     watch : {
