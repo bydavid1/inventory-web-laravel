@@ -68,7 +68,7 @@
                     <div class="card-header border-bottom">
                         <h5 class="card-title">Detalles</h5>
                         <div class="heading-elements">
-                            <button class="btn btn-secondary" data-toggle="modal" data-target="#AddNewProductModal">
+                            <button class="btn btn-secondary" data-toggle="modal" data-target="#addNewProductModal">
                                 <i class="bx bx-plus fa-2x"></i>
                                 <span>Nuevo producto</span>
                             </button>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table_details :items="items"></table_details>
+                        <table_details :items="items" v-on:edit="editNewProduct"></table_details>
                     </div>
                 </div>
             </div>
@@ -181,9 +181,9 @@
 
 
     <!-- ---------------------------------------------------------------------------------- -->
-    <!-- --------------------Modal-------------------- -->
+    <!-- --------------------Create new product modal-------------------- -->
     <!-- ---------------------------------------------------------------------------------- -->
-    <div class="modal fade right" role="dialog" tabindex="-1" id="AddNewProductModal">
+    <div class="modal fade right" role="dialog" tabindex="-1" id="addNewProductModal">
         <div class="modal-dialog modal-full-height modal-right">
             <div class="modal-content">
                 <div class="modal-header">
@@ -216,17 +216,17 @@
                         </div>
                         <div class="form-group">
                             <label>Cantidad</label>
-                            <input type="number" class="form-control" v-model="newProduct.quantity" placeholder="Enter ...">
+                            <input type="number" class="form-control" v-model.number="newProduct.quantity" placeholder="Enter ...">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
                                 de compra</label>
-                            <input type="number" class="form-control" v-model="newProduct.purchase" placeholder="Enter ...">
+                            <input type="number" class="form-control" v-model.number="newProduct.purchase" placeholder="Enter ...">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
                                 principal</label>
-                            <input type="number" class="form-control" v-model="newProduct.price" placeholder="Enter ...">
+                            <input type="number" class="form-control" v-model.number="newProduct.price" placeholder="Enter ...">
                         </div>
                     </form>
                 </div>
@@ -237,8 +237,61 @@
         </div>
     </div>
 
+
     <!-- ---------------------------------------------------------------------------------- -->
-    <!-- --------------------Modal-------------------- -->
+    <!-- --------------------Edit info modal-------------------- -->
+    <!-- ---------------------------------------------------------------------------------- -->
+    <div class="modal fade right" role="dialog" tabindex="-1" id="editNewProductModal">
+        <div class="modal-dialog modal-full-height modal-right">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="mx-auto">Editar informacion del producto</h4>
+                    <button class="close ml-2" data-dismiss="modal" arial-label="close"><span
+                            aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="newProductForm">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" v-model="editProduct.name" placeholder="Enter ...">
+                        </div>
+                        <div class="form-group">
+                            <label>Codigo</label>
+                            <input type="text" class="form-control" v-model="editProduct.code" placeholder="Enter ...">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <select class="form-control" v-model="editProduct.category">
+                                @foreach ($categories as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control" v-model.number="editProduct.quantity" placeholder="Enter ...">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
+                                de compra</label>
+                            <input type="number" class="form-control" v-model.number="editProduct.purchase" placeholder="Enter ...">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
+                                principal</label>
+                            <input type="number" class="form-control" v-model.number="editProduct.price" placeholder="Enter ...">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" v-on:click="confirmEditProduct()" class="btn btn-primary btn-block">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------------------------------------------------- -->
+    <!-- --------------------Search product modal-------------------- -->
     <!-- ---------------------------------------------------------------------------------- -->
     <div class="modal fade" role="dialog" tabindex="-1" id="SearchProducts">
         <div class="modal-dialog modal-lg">
