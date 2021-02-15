@@ -1,36 +1,55 @@
 <!DOCTYPE html>
-{{-- pageConfigs variable pass to Helper's updatePageConfig function to update page configuration  --}}
-@isset($pageConfigs)
-  {!! App\Traits\PageConfig::updatePageConfig($pageConfigs) !!}
-@endisset
+<html lang="en">
+<head>
+    <title>Portal - Bootstrap 5 Admin Dashboard Template For Developers</title>
 
-@php
-  $configData = App\Traits\PageConfig::applClasses();
-@endphp
-
-<html class="loading" lang="es">
-  <!-- BEGIN: Head-->
-
-    <head>
-    <meta charset="UTF-8">
+    <!-- Meta -->
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title')</title>
-    <!--<link rel="apple-touch-icon" href="{{asset('images/ico/apple-icon-120.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/ico/favicon.ico')}}">-->
+    <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+    <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+    <link rel="shortcut icon" href="favicon.ico">
 
-    {{-- Include core + vendor Styles --}}
-    @include('panels.styles')
-    </head>
-    <!-- END: Head-->
+    <!-- FontAwesome JS-->
+    <script defer src="{{ asset('plugins/fontawesome/js/all.min.js') }}"></script>
 
-     @if(!empty($configData['mainLayoutType']) && isset($configData['mainLayoutType']))
-        @include(($configData['mainLayoutType'] == 'vertical-menu') ?  'layouts.verticalLayout' : 'layouts.horizontalLayout')
-     @else
-     {{-- if mainLaoutType is empty or not set then its print below line --}}
-     <h1>{{'mainLayoutType Option is empty in config custom.php file.'}}</h1>
-     @endif
+    <!-- App CSS -->
+    <link id="theme-style" rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <!-- Vendor styles -->
+    @yield('vendor-styles')
+
+</head>
+<body>
+    @include('sections.menu')
+    <div class="app-wrapper">
+	    <div class="app-content pt-3 p-md-3 p-lg-4">
+		    <div class="container-xl">
+                <h1 class="app-page-title">@yield('title')</h1>
+                @yield('content')
+            </div>
+        </div>
+        @include('sections.footer')
+    </div>
+
+    <!-- Javascript -->
+    <script src="{{ asset('plugins/popper.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!-- Charts JS -->
+    <script src="{{ asset('plugins/chart.js/chart.min.js') }}"></script>
+    <script src="{{ asset('js/index-charts.js')}}"></script>
+
+    <!-- Vendor scripts -->
+    @yield('vendor-scripts')
+
+    <!-- Page scripts -->
+    @yield('page-scripts')
+
+    <!-- Page Specific JS -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+</body>
 </html>
