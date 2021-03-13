@@ -6,8 +6,7 @@
 @endsection
 
 @section('tools')
-    <button class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
-        <i class="fa fa-plus-circle fa-2x"></i>
+    <button class="btn app-btn-primary" data-toggle="modal" data-target="#addCategoryModal">
         <span>Agregar Categoría</span>
     </button>
 @endsection

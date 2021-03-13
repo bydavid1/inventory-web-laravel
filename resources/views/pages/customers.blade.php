@@ -9,8 +9,7 @@
 @endsection
 
 @section('tools')
-	<button class="btn btn-success" data-toggle="modal" data-target="#addCostumer">
-		<i class="bx bx-plus-circle fa-2x"></i>
+	<button class="btn app-btn-primary" data-toggle="modal" data-target="#addCostumer">
 		<span>Nuevo Cliente</span>
 	</button>
 @endsection

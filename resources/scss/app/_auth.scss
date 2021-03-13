@@ -1,7 +1,7 @@
 .app-login {
-	
+
 	.auth-background-holder {
-		background: url("../images/background/background-1.jpg") no-repeat center center;
+		background: url("assets/images/background/background-1.jpg") no-repeat center center;
 		@include background-size(cover);
 		height: 100vh;
 		min-height: 100%;
@@ -10,7 +10,7 @@
 
 .app-signup {
 	.auth-background-holder {
-		background: url("../images/background/background-2.jpg") no-repeat center center;
+		background: url("assets/images/background/background-2.jpg") no-repeat center center;
 		@include background-size(cover);
 		height: 100vh;
 		min-height: 100%;
@@ -20,7 +20,7 @@
 
 .app-reset-password {
 	.auth-background-holder {
-		background: url("../images/background/background-3.jpg") no-repeat center center;
+		background: url("assets/images/background/background-3.jpg") no-repeat center center;
 		@include background-size(cover);
 		height: 100vh;
 		min-height: 100%;
@@ -49,13 +49,13 @@
 	left: 0;
 	top: 0;
 	z-index: 11;
-	
+
 	.overlay-title {
 		color: #fff;
 		font-size: 1rem;
 		font-weight: bold;
 	}
-	
+
 	.overlay-content {
 		background: rgba($theme-text-color-primary, 0.6);
 		color: #fff;
@@ -78,12 +78,12 @@
 .app-auth-wrapper {
 	background: white;
 	height: 100vh;
-	
+
 	.app-auth-body {
 		width: 360px;
 	}
-	
-	
+
+
 	.app-logo{
 		.logo-icon {
 			width: 60px;
@@ -93,15 +93,15 @@
 	.auth-heading {
 		font-size: 1.5rem;
 	}
-	
+
 	.form-control {
-        @include placeholder($theme-text-color-light); 
+        @include placeholder($theme-text-color-light);
 	}
-	
-	
+
+
 	.legal-note {
 	    font-size: 0.875rem;
-	}    
+	}
 
 
 	.extra {
@@ -114,20 +114,20 @@
 			}
 		}
 	}
-	
+
 	.auth-heading-desc {
 		font-weight: 500;
 		font-size: 1.125rem;
 	}
-	
+
 	.legal-note {
 		font-size: 0.75rem;
 	}
-	
+
 	.auth-option {
 		font-size: 0.875rem;
 	}
-	
+
 }
 
 .app-auth-footer {
@@ -138,13 +138,13 @@
 
 
 // Small devices (landscape phones, less than 768px)
-@media (max-width: 767.98px) { 
+@media (max-width: 767.98px) {
 	.auth-background-col {
 		display: none;
 	}
-	
+
 	.app-auth-wrapper .app-auth-body{
 		width: 100%;
 	}
-	
+
  }

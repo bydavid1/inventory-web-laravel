@@ -3,6 +3,7 @@ require('dotenv').config();
 
 
 mix.sass('resources/scss/portal.scss', 'public/css/app.css')
+mix.copyDirectory('resources/assets', 'public/assets');
 
 
 // mix.then(() => {

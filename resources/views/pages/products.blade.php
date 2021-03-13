@@ -8,8 +8,7 @@
 @endsection
 
 @section('tools')
-<a class="btn btn-success" href="{{ route('addProduct') }}">
-    <i class="bx bx-plus-circle fa-2x"></i>
+<a class="btn app-btn-primary" href="{{ route('addProduct') }}">
     <span>Nuevo producto</span>
 </a>
 @endsection

@@ -9,8 +9,7 @@
 @endsection
 
 @section('tools')
-    <button class="btn btn-primary" data-toggle="modal" data-target="#addProviderModal">
-        <i class="fa fa-plus-circle fa-2x"></i>
+    <button class="btn app-btn-primary" data-toggle="modal" data-target="#addProviderModal">
         <span>Agregar Proveedor</span>
     </button>
 @endsection
