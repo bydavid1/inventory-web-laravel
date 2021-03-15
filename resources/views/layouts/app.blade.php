@@ -27,12 +27,7 @@
 
     </div>
 
-    <!-- Javascript -->
-    <script src="{{ asset('plugins/popper.min.js') }}"></script>
-    <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-
     <!-- Page Specific JS -->
-    <script src="{{ asset('js/actions.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
