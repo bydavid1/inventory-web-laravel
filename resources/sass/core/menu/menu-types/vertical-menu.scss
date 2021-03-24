@@ -35,9 +35,6 @@
               width: 1.6rem !important; // give important bcz it takes default 60px from it's vendor js
               margin-right: 1rem;
               float: left;
-
-              &:not(.menu-livicon) {
-                  font-size: 1.4rem;
               }
           }
 

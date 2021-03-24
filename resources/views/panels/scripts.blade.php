@@ -4,9 +4,6 @@
         var assetBaseUrl = "{{ asset('') }}";
     </script>
     <script src="{{asset('vendors/vendors.min.js')}}"></script>
-    <script src="{{asset('assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js')}}"></script>
-    <script src="{{asset('assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js')}}"></script>
-    <script src="{{asset('assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
