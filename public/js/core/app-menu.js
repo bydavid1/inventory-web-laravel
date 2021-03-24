@@ -493,42 +493,6 @@
       $('div[data-menu="menu-wrapper"]').html('');
       $('div[data-menu="menu-wrapper"]').html(menuWrapper_el);
 
-      // Destroy Icons when screen size changes
-      $('.menu-livicon').removeLiviconEvo();
-
-      // Initialize Menu Icons with configs
-      $.each($('.menu-livicon'), function (i) {
-        var $this = $(this),
-          icon = $this.data('icon'),
-          iconStyle = $('#main-menu-navigation').data("icon-style");
-
-        $this.addLiviconEvo({
-          name: icon,
-          style: iconStyle,
-          duration: 0.85,
-          strokeWidth: '1.3px',
-          eventOn: 'parent',
-          strokeColor: menuIconColorsObj.iconStrokeColor,
-          solidColor: menuIconColorsObj.iconSolidColor,
-          fillColor: menuIconColorsObj.iconFillColor,
-          strokeColorAlt: menuIconColorsObj.iconStrokeColorAlt,
-          afterAdd: function () {
-            if (i === $(".main-menu-content .menu-livicon").length - 1) {
-              // When hover over any menu item, start animation and stop all other animation
-              $(".main-menu-content .nav-item a").on("mouseenter", function () {
-                if ($(".main-menu-content .menu-livicon").length) {
-                  $(".main-menu-content .menu-livicon").stopLiviconEvo()
-                  $(this)
-                    .find(".menu-livicon")
-                    .playLiviconEvo()
-                }
-              })
-            }
-          }
-        });
-
-      });
-
       var menuWrapper = $('div[data-menu="menu-wrapper"]'),
         menuContainer = $('div[data-menu="menu-container"]'),
         menuNavigation = $('ul[data-menu="menu-navigation"]'),
@@ -602,24 +566,6 @@
 
       $(".main-menu-content").find('li.active').parents('li').addClass('sidebar-group-active');
 
-      function updateLivicon(el) {
-        el.updateLiviconEvo({
-          strokeColor: menuActiveIconColorsObj.iconStrokeColor,
-          solidColor: menuActiveIconColorsObj.iconSolidColor,
-          fillColor: menuActiveIconColorsObj.iconFillColor,
-          strokeColorAlt: menuActiveIconColorsObj.iconStrokeColorAlt
-        })
-      }
-
-      // Update Active Menu item Icon with active color
-      if ($('.nav-item.active .menu-livicon').length) {
-        updateLivicon($('.nav-item.active .menu-livicon'))
-      }
-
-      // Update Active sidebar group menu icon with active ccolor
-      if ($(".main-menu-content li.sidebar-group-active .menu-livicon").length) {
-        updateLivicon($(".main-menu-content li.sidebar-group-active .menu-livicon"))
-      }
     },
 
     toggle: function () {

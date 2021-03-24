@@ -30,8 +30,7 @@
                     <!-- step 1 -->
                     <h3>
                         <span class="fonticon-wrap mr-1">
-                            <i class="livicon-evo text-primary"
-                                data-options="name:notebook.svg; size: 50px; style:lines;"></i>
+                            <i class='bx bxs-collection bx-lg'></i>
                         </span>
                         <span class="icon-title">
                             <span class="d-block">Detalles</span>
@@ -134,8 +133,7 @@
                     <!-- step 2 -->
                     <h3>
                         <span class="fonticon-wrap mr-1">
-                            <i class="livicon-evo text-primary"
-                                data-options="name:us-dollar.svg; size: 50px; style:lines;"></i>
+                            <i class='bx bxs-spreadsheet bx-lg'></i>
                         </span>
                         <span class="icon-title">
                             <span class="d-block">Inventario</span>
@@ -306,8 +304,7 @@
                     <!-- step 3 -->
                     <h3>
                         <span class="fonticon-wrap mr-1">
-                            <i class="livicon-evo text-primary"
-                                data-options="name:image.svg; size: 50px; style:lines;"></i>
+                            <i class='bx bxs-image bx-lg'></i>
                         </span>
                         <span class="icon-title">
                             <span class="d-block">Imagenes</span>

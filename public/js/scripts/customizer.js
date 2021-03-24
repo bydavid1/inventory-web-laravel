@@ -90,16 +90,6 @@
       selectedTextColor = currentColor[selectedColor],
       selectedLogo = LogoPosition[selectedColor];
 
-    // Update livicon colors
-    function updateLivicon(el){
-      el.updateLiviconEvo({
-        strokeColor: selectedTextColor,
-        solidColor: selectedTextColor,
-        fillColor: selectedTextColor,
-        strokeColorAlt: selectedTextColor
-        })
-    }
-
     // main-menu
     if (mainMenuContent.find("li.active").length) {
       mainMenuContent.find("li.active a").css(
@@ -123,10 +113,6 @@
           "border-color": selectedTextColor
         }
       );
-      // Update Active Menu item Icon with active color
-      if($('li.sidebar-group-active .menu-livicon').length){
-        updateLivicon($('li.sidebar-group-active .menu-livicon'));
-      }
     }
     else {
       mainMenu.find(".nav-item.active a").css(
@@ -140,12 +126,8 @@
           "color": selectedTextColor
         }
       );
-      // Update Active Menu item Icon with active color
-      if($('.nav-item.active .menu-livicon').length){
-        updateLivicon($('.nav-item.active .menu-livicon'));
-      }
     }
-    
+
   });
 
   /***** Theme Layout Options *****/
@@ -179,19 +161,6 @@
   // checks right radio if layout type matches
   var layout = body.data("layout");
   $(".layout-name[data-layout='" + layout + "']").prop('checked', true);
-  
-  /***** icon animation switch *****/
-  iconAnimation.on("click", function () {
-    if($(this).is(':checked')){
-      $('#main-menu-navigation .menu-livicon').updateLiviconEvo({
-        animated: true
-      });
-    } else {
-      $('#main-menu-navigation .menu-livicon').updateLiviconEvo({
-        animated: false
-      });
-    }
-  });
 
   /***** Collapse menu switch *****/
   collapseSidebar.on("click", function () {

@@ -44,47 +44,6 @@
 
       $.app.menu.init(compactMenu)
 
-      // Livioncs are initialized for vertical menu
-      $.each($(".menu-livicon"), function (i) {
-        var $this = $(this),
-          icon = $this.data("icon"),
-          iconStyle = $("#main-menu-navigation").data("icon-style")
-
-        $this.addLiviconEvo({
-          name: icon,
-          style: iconStyle,
-          duration: 0.85,
-          strokeWidth: "1.3px",
-          eventOn: "none",
-          strokeColor: menuIconColorsObj.iconStrokeColor,
-          solidColor: menuIconColorsObj.iconSolidColor,
-          fillColor: menuIconColorsObj.iconFillColor,
-          strokeColorAlt: menuIconColorsObj.iconStrokeColorAlt,
-          afterAdd: function () {
-            if (i === $(".main-menu-content .menu-livicon").length - 1) {
-              // When hover over any menu item, start animation and stop all other animation
-              $(".main-menu-content .nav-item a").on("mouseenter", function () {
-                if ($(".main-menu-content .menu-livicon").length) {
-                  $(".main-menu-content .menu-livicon").stopLiviconEvo()
-                  $(this)
-                    .find(".menu-livicon")
-                    .playLiviconEvo()
-                }
-              })
-            }
-          }
-        })
-      })
-
-      function updateLivicon(el) {
-        el.updateLiviconEvo({
-          strokeColor: menuActiveIconColorsObj.iconStrokeColor,
-          solidColor: menuActiveIconColorsObj.iconSolidColor,
-          fillColor: menuActiveIconColorsObj.iconFillColor,
-          strokeColorAlt: menuActiveIconColorsObj.iconStrokeColorAlt
-        })
-      }
-
       // Navigation configurations
       var config = {
         speed: 300 // set speed to expand / collpase menu
@@ -244,18 +203,6 @@
         .find("li.active")
         .parents("li")
         .addClass("sidebar-group-active")
-
-      // Update Active Menu item Icon with active color
-      if ($(".nav-item.active .menu-livicon").length) {
-        updateLivicon($(".nav-item.active .menu-livicon"))
-      }
-
-      // Update Active sidebar group menu icon with active ccolor
-      if ($(".main-menu-content li.sidebar-group-active .menu-livicon").length) {
-        updateLivicon(
-          $(".main-menu-content li.sidebar-group-active .menu-livicon")
-        )
-      }
 
       // Add open class to parent list item if subitem is active except compact menu
       var menuType = $body.data("menu")

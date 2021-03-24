@@ -34,65 +34,49 @@
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('home') }}">
-              <i class="menu-livicon livicon-evo-holder" data-icon="desktop"
-                  style="visibility: visible; width: 60px;">
-              </i>
+            <i class='bx bxs-dashboard'></i>
               <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('suppliers') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="list"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-purchase-tag' ></i>
                 <span>Propiedades</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('products') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="thumbnails-big"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-package'></i>
                 <span>Inventario</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('customers') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="users"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-user-detail' ></i>
                 <span>Clientes</span>
             </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('sales') }}">
-              <i class="menu-livicon livicon-evo-holder" data-icon="shoppingcart"
-                  style="visibility: visible; width: 60px;">
-              </i>
+            <i class='bx bxs-cart-alt' ></i>
               <span>Ventas</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('purchases') }}">
-              <i class="menu-livicon livicon-evo-holder" data-icon="us-dollar"
-                  style="visibility: visible; width: 60px;">
-              </i>
+            <i class='bx bxs-dollar-circle' ></i>
               <span>Compras</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('kardex') }}">
-              <i class="menu-livicon livicon-evo-holder" data-icon="truck"
-                  style="visibility: visible; width: 60px;">
-              </i>
+            <i class='bx bxs-layer' ></i>
               <span>Kardex</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('home') }}">
-              <i class="menu-livicon livicon-evo-holder" data-icon="pie-chart"
-                  style="visibility: visible; width: 60px;">
-              </i>
+            <i class='bx bx-stats' ></i>
               <span>Reportes</span>
           </a>
         </li>
@@ -137,65 +121,49 @@
       <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="filled">
           <li class="nav-item sidebar-group-active active">
               <a class="nav-link" href="{{ route('home') }}">
-                  <i class="menu-livicon livicon-evo-holder" data-icon="desktop"
-                      style="visibility: visible; width: 60px;">
-                  </i>
+                <i class='bx bxs-dashboard'></i>
                   <span>Dashboard</span>
               </a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="{{ route('suppliers') }}">
-                  <i class="menu-livicon livicon-evo-holder" data-icon="list"
-                      style="visibility: visible; width: 60px;">
-                  </i>
+                <i class='bx bxs-purchase-tag' ></i>
                   <span>Propiedades</span>
               </a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="{{ route('products') }}">
-                  <i class="menu-livicon livicon-evo-holder" data-icon="thumbnails-big"
-                      style="visibility: visible; width: 60px;">
-                  </i>
+                <i class='bx bxs-package'></i>
                   <span>Inventario</span>
               </a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="{{ route('customers') }}">
-                  <i class="menu-livicon livicon-evo-holder" data-icon="users"
-                      style="visibility: visible; width: 60px;">
-                  </i>
+                <i class='bx bxs-user-detail' ></i>
                   <span>Clientes</span>
               </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('sales') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="shoppingcart"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-cart-alt' ></i>
                 <span>Ventas</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('purchases') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="us-dollar"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-dollar-circle' ></i>
                 <span>Compras</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('kardex') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="truck"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bxs-layer' ></i>
                 <span>Kardex</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('home') }}">
-                <i class="menu-livicon livicon-evo-holder" data-icon="pie-chart"
-                    style="visibility: visible; width: 60px;">
-                </i>
+                <i class='bx bx-stats' ></i>
                 <span>Reportes</span>
             </a>
           </li>
