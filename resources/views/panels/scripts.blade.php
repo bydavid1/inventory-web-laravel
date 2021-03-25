@@ -3,7 +3,7 @@
     <script>
         var assetBaseUrl = "{{ asset('') }}";
     </script>
-    <script src="{{asset('vendors/vendors.min.js')}}"></script>
+    <script src="{{asset('js/libs/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
@@ -12,15 +12,12 @@
 
     <!-- BEGIN: Theme JS-->
     @if($configData['mainLayoutType'] == 'vertical-menu')
-    <script src="{{asset('js/scripts/configs/vertical-menu-light.js')}}"></script>
+    <script src="{{asset('js/vertical-menu-light.js')}}"></script>
     @else
-    <script src="{{asset('js/scripts/configs/horizontal-menu.js')}}"></script>
+    <script src="{{asset('js/horizontal-menu.js')}}"></script>
     @endif
-    <script src="{{asset('js/core/app-menu.js')}}"></script>
-    <script src="{{asset('js/core/app.js')}}"></script>
-    <script src="{{asset('js/scripts/components.js')}}"></script>
-    <script src="{{asset('js/scripts/footer.js')}}"></script>
-    <script src="{{asset('js/scripts/customizer.js')}}"></script>
+    <script src="{{asset('js/app.js')}}"></script>
+
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

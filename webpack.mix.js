@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const exec = require('child_process').exec;
 require('dotenv').config();
 
 /*
@@ -12,48 +11,6 @@ require('dotenv').config();
  | file for the application as well as bundling up all the JS files.
  |
  */
-
-const glob = require('glob')
-const path = require('path')
-
-/*
- |--------------------------------------------------------------------------
- | Vendor assets
- |--------------------------------------------------------------------------
- */
-
-function mixAssetsDir(query, cb) {
-  (glob.sync('resources/' + query) || []).forEach(f => {
-    f = f.replace(/[\\\/]+/g, '/');
-    cb(f, f.replace('resources', 'public'));
-  });
-}
-
-
-// themes Core stylesheets
-mixAssetsDir('sass/core/**/!(_)*.scss', (src, dest) => mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css')));
-
-// pages Core stylesheets
-mixAssetsDir('sass/pages/**/!(_)*.scss', (src, dest) => mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css')));
-
-// Themescss task
-mixAssetsDir('sass/plugins/**/!(_)*.scss', (src, dest) => mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css')));
-
-// Core stylesheets
-mixAssetsDir('sass/themes/**/!(_)*.scss', (src, dest) => mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css')));
-
-// custom blank file for users
-mixAssetsDir('assets/scss/**/!(_)*.scss', (src, dest) => mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/(\\|\/)scss(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css')));
-
-// script js
-mixAssetsDir('js/core/**/*.js', (src, dest) => mix.scripts(src, dest));
-
-// custom script js
-mixAssetsDir('js/scripts/**/*.js', (src, dest) => mix.scripts(src, dest));
-
-// custom script js for users
-mixAssetsDir('assets/js/**/*.js', (src, dest) => mix.scripts(src, dest));
-
 /*
  |--------------------------------------------------------------------------
  | Application assets
@@ -61,26 +18,19 @@ mixAssetsDir('assets/js/**/*.js', (src, dest) => mix.scripts(src, dest));
  */
 
 mix.copyDirectory('resources/assets', 'public/assets');
-//mix.copyDirectory('resources/vendors', 'public/vendors');
+mix.copyDirectory('resources/js/libs', 'public/js/libs');
+mix.copyDirectory('resources/js/scripts', 'public/js/scripts');
 
 
+let jssrc = 'resources/js/core/';
 
-mix.sass('resources/sass/bootstrap-extended.scss', 'public/css')
-  .sass('resources/sass/bootstrap.scss', 'public/css')
-  .sass('resources/sass/colors.scss', 'public/css')
-  .sass('resources/sass/components.scss', 'public/css')
+mix.sass('resources/sass/app.scss', 'public/css')
+  .sass('resources/sass/core/menu/menu-types/vertical-menu.scss', 'public/css')
+  .sass('resources/sass/core/menu/menu-types/horizontal-menu.scss', 'public/css')
+  .combine([jssrc + 'app-menu.js', jssrc + 'app.js', jssrc + 'components.js', jssrc + 'footer.js', jssrc + 'customizer.js'], 'public/js/app.js')
+  .copy('resources/js/core/menu/horizontal-menu.js', 'public/js')
+  .copy('resources/js/core/menu/vertical-menu-light.js', 'public/js')
 
-mix.then(() => {
-  if (process.env.MIX_CONTENT_DIRECTION === "rtl") {
-    let command = `node ${path.resolve('node_modules/rtlcss/bin/rtlcss.js')} -d -e ".css" ./public/css/ ./public/css/`;
-    exec(command, function (err, stdout, stderr) {
-      if (err !== null) {
-        console.log(err);
-      }
-    });
-    // exec('./node_modules/rtlcss/bin/rtlcss.js -d -e ".css" ./public/css/ ./public/css/');
-  }
-});
 // if (mix.inProduction()) {
 //   mix.version();
 //   mix.webpackConfig({
