@@ -9,15 +9,15 @@ ini_set('error_reporting', E_ALL);
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
-use App\Products;
-use App\Prices;
-use App\Images;
-use App\Purchase_prices;
-use App\Categories;
+use App\Models\Products;
+use App\Models\Prices;
+use App\Models\Images;
+use App\Models\Purchase_prices;
+use App\Models\Categories;
 use App\Http\Requests\StoreProduct;
-use App\Suppliers;
-use App\Manufacturers;
-use App\Kardex;
+use App\Models\Suppliers;
+use App\Models\Manufacturers;
+use App\Models\Kardex;
 use Exception;
 
 class ProductController extends Controller

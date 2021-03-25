@@ -1,5 +1,14 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KardexController;
+use App\Http\Controllers\ManufacturersController;
+use App\Http\Controllers\ProductApiController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,58 +23,58 @@ use Illuminate\Support\Facades\Route;
 */
 
     //Api Dashboard
-    Route::get('dashboard/tiles', 'DashboardController@getTilesData');
+    Route::get('dashboard/tiles', [DashboardController::class, 'getTilesData']);
 
-    Route::get('dashboard/chart', 'DashboardController@getSalesChart');
+    Route::get('dashboard/chart', [DashboardController::class, 'getSalesChart']);
 
     //Api Products
 
-    Route::get('products', 'ProductApiController@getRecords');
+    Route::get('products', [ProductApiController::class, 'getRecords']);
 
-    Route::get('products/{id}/{columns}', 'ProductApiController@byId');
+    Route::get('products/{id}/{columns}', [ProductApiController::class, 'byId']);
 
-    Route::get('products/code/{code}/{columns}', 'ProductApiController@byCode');
+    Route::get('products/code/{code}/{columns}', [ProductApiController::class, 'byCode']);
 
-    Route::get('products/search/{query}/{columns}', 'ProductApiController@byQuery');
+    Route::get('products/search/{query}/{columns}', [ProductApiController::class, 'byQuery']);
 
-    Route::get('pagination/fetch', 'ProductApiController@pagination');
+    Route::get('pagination/fetch', [ProductApiController::class, 'pagination']);
 
-    Route::get('pagination/fetch/search/{query?}', 'ProductApiController@search');
+    Route::get('pagination/fetch/search/{query?}', [ProductApiController::class, 'search']);
 
     // Api categories
 
-    Route::get('categories', 'CategoriesController@getRecords')->middleware('api');
+    Route::get('categories', [CategoriesController::class, 'getRecords'])->middleware('api');
 
-    Route::get('categories/{id}', 'CategoriesController@show');
+    Route::get('categories/{id}', [CategoriesController::class, 'show']);
 
     // Api suppliers
 
-    Route::get('suppliers', 'SupplierController@getRecords');
+    Route::get('suppliers', [SupplierController::class, 'getRecords']);
 
-    Route::get('suppliers/{id}', 'SupplierController@show');
+    Route::get('suppliers/{id}', [SupplierController::class, 'show']);
 
     // Api manufacturers
 
-    Route::get('manufacturers',  'ManufacturersController@getRecords');
+    Route::get('manufacturers', [ManufacturersController::class, 'getRecords']);
 
-    Route::get('manufacturers/{id}', 'ManufacturersController@show');
+    Route::get('manufacturers/{id}', [ManufacturersController::class, 'show']);
 
     //Api customers
 
-    Route::get('customers', 'CustomerController@getRecords');
+    Route::get('customers', [CustomerController::class, 'getRecords']);
 
-    Route::get('customer/{id}', 'CustomerController@show');
+    Route::get('customer/{id}', [CustomerController::class, 'show']);
 
-    Route::get('customers/search/{query}', 'CustomerController@byQuery');
+    Route::get('customers/search/{query}', [CustomerController::class, 'byQuery']);
 
     //Other routes
-    Route::get('kardex/products', 'KardexController@getProducts');
+    Route::get('kardex/products', [KardexController::class, 'getProducts']);
 
-    Route::get('kardex/{id}/records', 'KardexController@getRecords');
+    Route::get('kardex/{id}/records', [KardexController::class, 'getRecords']);
 
-    Route::get('sales', 'SaleController@getRecords');
+    Route::get('sales', [SaleController::class, 'getRecords']);
 
-    Route::get('purchases', 'PurchaseController@getRecords');
+    Route::get('purchases', [PurchaseController::class, 'getRecords']);
 
 
 

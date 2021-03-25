@@ -8,12 +8,12 @@ ini_set('error_reporting', E_ALL);
 
 
 use Illuminate\Http\Request;
-use App\Sales;
-use App\Sales_items;
-use App\Products;
-use App\Payments;
-use App\Credit_invoice;
-use App\Kardex;
+use App\Models\Sales;
+use App\Models\Sales_items;
+use App\Models\Products;
+use App\Models\Payments;
+use App\Models\Credit_invoice;
+use App\Models\Kardex;
 use App\Traits\Helpers;
 use Exception;
 
@@ -38,7 +38,7 @@ class CreditController extends Controller
     public function create()
     {
         $pageConfigs = ['pageHeader' => false, 'theme' => 'light', 'extendApp' => true, 'footerType' => 'hidden', 'navbarType' => 'static'];
-        
+
         $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
         return \view('pages.sales.addCredit', compact(['products', 'pageConfigs']));
     }
@@ -56,7 +56,7 @@ class CreditController extends Controller
             if ($this->validateItems($request)) {
                 $payment = Payments::create(['payment_method' => '1', 'total' => $request->grandtotalvalue, 'payed_with' => $request->grandtotalvalue,
                 'returned' => 0.00, 'description' => 'N/A']);
-    
+
                 //invoice headers info
                 $sale = new Sales;
                 $sale->payment_id = $payment->id;
@@ -71,7 +71,7 @@ class CreditController extends Controller
                 $sale->total_discounts = $request->discountsvalue;
                 $sale->total_tax = "0.00"; //Temporal data
                 $sale->total = $request->grandtotalvalue;
-        
+
                 if ($sale->save()) {
 
                     $id = $sale->id;
@@ -92,7 +92,7 @@ class CreditController extends Controller
                         } //for $j
 
                         if ($saleitem->save()) {
-                            //Update quantity 
+                            //Update quantity
                             $product = Products::find($saleitem->product_id);
                             // Make sure we've got the Products model
                             if ($product) {
@@ -120,21 +120,21 @@ class CreditController extends Controller
                                     $kardex->total = $saleitem->total;
 
                                     if (!$kardex->save()) {
-                                        throw new Exception("Could not save kardex information at product ". $i, 1);  
+                                        throw new Exception("Could not save kardex information at product ". $i, 1);
                                     }
                                 }else{
-                                    throw new Exception("Could not update stock of product " . $i, 1);  
+                                    throw new Exception("Could not update stock of product " . $i, 1);
                                 }
 
                             } else {
-                                throw new Exception("Product " . $i . "not exist", 1);    
+                                throw new Exception("Product " . $i . "not exist", 1);
                             }
 
                         } else {
                             $sale->delete();
                             throw new Exception("Corrupt data in item: ". $i, 1);
                         }
-                        
+
                     } //for $i
 
                     Credit_invoice::create(['sale_id' => $sale->id, 'serial' => 'N/A']);
@@ -146,14 +146,14 @@ class CreditController extends Controller
                     return response()->json(['message' => 'Factura guardada', 'data' => compact('invoice')]);
 
                 }
-        
+
                 return response()->json(['message'=>'Ocurrió un error al registrar la información'], 500);
             }
-            
+
             } catch (Exception $e) {
-    
+
                 return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
-    
+
             }
     }
 }

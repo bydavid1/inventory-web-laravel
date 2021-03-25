@@ -1,6 +1,8 @@
 <?php
 
-use App\Kardex_type;
+namespace Database\Seeders;
+
+use App\Models\Kardex_type;
 use Illuminate\Database\Seeder;
 
 class KardexSeeder extends Seeder
