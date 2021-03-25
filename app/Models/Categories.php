@@ -8,6 +8,6 @@ class Categories extends Model
 {
     public function products()
     {
-        return $this->belongsTo('App\Products');
+        return $this->belongsTo('App\Models\Products');
     }
 }

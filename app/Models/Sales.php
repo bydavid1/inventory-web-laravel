@@ -8,6 +8,6 @@ class Sales extends Model
 {
 
     public function invoice(){
-        return $this->hasOne('App\Invoices', 'sale_id');
+        return $this->hasOne('App\Models\Invoices', 'sale_id');
     }
 }
