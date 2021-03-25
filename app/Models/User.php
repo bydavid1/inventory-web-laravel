@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -58,12 +58,12 @@ class User extends Authenticatable
             }
         } else {
             if ($this->hasRole($roles)) {
-                 return true; 
-            }   
+                 return true;
+            }
         }
         return false;
     }
-    
+
     public function hasRole($role)
     {
         if ($this->roles()->where('name', $role)->first()) {

@@ -6,12 +6,12 @@ error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
-use App\Sales;
-use App\Sales_items;
-use App\Products;
-use App\Payments;
-use App\Kardex;
-use App\Customers;
+use App\Models\Sales;
+use App\Models\Sales_items;
+use App\Models\Products;
+use App\Models\Payments;
+use App\Models\Kardex;
+use App\Models\Customers;
 use App\Http\Requests\StoreSale;
 use App\Traits\Helpers;
 use Exception;
