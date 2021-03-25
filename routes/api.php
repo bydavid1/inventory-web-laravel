@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('products', [ProductApiController::class, 'getRecords']);
 
-    Route::get('products/{id}/{columns}', [ProductApiController::class, 'getRecbyIdords']);
+    Route::get('products/{id}/{columns}', [ProductApiController::class, 'byId']);
 
     Route::get('products/code/{code}/{columns}', [ProductApiController::class, 'byCode']);
 
