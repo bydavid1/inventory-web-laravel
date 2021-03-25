@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Kardex_type;
+use App\Models\Kardex_type;
 use Illuminate\Database\Seeder;
 
 class KardexSeeder extends Seeder
