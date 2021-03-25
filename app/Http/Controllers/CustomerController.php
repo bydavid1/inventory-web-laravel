@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use App\Customers;
 
 class CustomerController extends Controller
 {
