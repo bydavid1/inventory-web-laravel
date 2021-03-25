@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('vendor-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/fileinput/fileinput.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('js/libs/fileinput/fileinput.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.min.css')}}">
 @endsection
 
 @section('content')
@@ -275,9 +275,9 @@
 @endsection
 
 @section('vendor-scripts')
-<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
-<script src="{{asset('vendors/fileinput/fileinput.min.js')}}"></script>
-<script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
+<script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('js/libs/fileinput/fileinput.min.js')}}"></script>
+<script src="{{asset('js/libs/select2/select2.full.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')

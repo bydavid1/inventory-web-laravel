@@ -2,24 +2,19 @@
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendors/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('js/libs/vendors.min.css')}}">
     @yield('vendor-styles')
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-extended.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/colors.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/components.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/themes/dark-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/themes/semi-dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
     @if($configData['mainLayoutType'] == 'horizontal-menu')
-    <link rel="stylesheet" type="text/css" href="{{asset('css/core/menu/menu-types/horizontal-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/horizontal-menu.css')}}">
     @else
-    <link rel="stylesheet" type="text/css" href="{{asset('css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/vertical-menu.css')}}">
     @endif
     @yield('page-styles')
     <!-- END: Page CSS-->
