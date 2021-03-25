@@ -1,7 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\Tax_rules;
+use App\Models\Tax_rules;
 
 class TaxSeeder extends Seeder
 {

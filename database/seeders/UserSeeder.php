@@ -1,8 +1,10 @@
 <?php
 
-use App\Role;
+namespace Database\Seeders;
+
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use App\User;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {

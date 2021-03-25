@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Categories;
 use App\Http\Requests\StorePurchase;
-use App\Images;
-use App\Kardex;
-use App\Prices;
-use App\Products;
-use App\Purchase_prices;
-use App\Suppliers;
-use App\Purchases;
-use App\Purchases_item;
-use App\Purchases_items;
+use App\Models\Categories;
+use App\Models\Images;
+use App\Models\Kardex;
+use App\Models\Prices;
+use App\Models\Products;
+use App\Models\Purchase_prices;
+use App\Models\Suppliers;
+use App\Models\Purchases;
+use App\Models\Purchases_items;
 use App\Traits\Helpers;
 use Exception;
 use Illuminate\Http\Request;

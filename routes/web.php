@@ -1,5 +1,15 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CreditController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\KardexController;
+use App\Http\Controllers\ManufacturersController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,57 +35,75 @@ Route::get('/register', function(){
 })->name('register');
 
 //Product Routes
-Route::get('/products', 'ProductController@index')->name('products')->middleware('auth');
-Route::get('product/create', 'ProductController@create')->name('addProduct')->middleware('auth');
-Route::post('product/store', 'ProductController@store')->name('storeProduct')->middleware('auth');
-Route::get('product/edit/{id}', 'ProductController@edit')->name('editProduct');
-Route::put('product/update/{id}', 'ProductController@update')->name('updateProduct')->middleware('auth');
-Route::get('product/show/{id}', 'ProductController@show')->name('showProduct')->middleware('auth');
-Route::put('product/delete', 'ProductController@delete')->name('deleteProduct')->middleware('auth'); //update
-//Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products')->middleware('auth');
+    Route::get('/create', [ProductController::class, 'create'])->name('addProduct')->middleware('auth');
+    Route::post('/store', [ProductController::class, 'store'])->name('storeProduct')->middleware('auth');
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('editProduct');
+    Route::put('/update/{id}', [ProductController::class, 'update'])->name('updateProduct')->middleware('auth');
+    Route::get('/show/{id}', [ProductController::class, 'show'])->name('showProduct')->middleware('auth');
+    Route::put('/delete', [ProductController::class, 'delete'])->name('deleteProduct')->middleware('auth'); //update
+    //Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
+});
 
 //Categories Routes
-Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth'); //index
-Route::post('categories/store', 'CategoriesController@store')->name('storeCategory')->middleware('auth'); //store
-Route::put('categories/update/{id}', 'CategoriesController@update')->name('updateCategory')->middleware('auth'); //update
-Route::put('categories/delete/{id}', 'CategoriesController@delete')->name('deleteCategory')->middleware('auth'); //update
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])->name('categories')->middleware('auth'); //index
+    Route::post('/store', [CategoriesController::class, 'store'])->name('storeCategory')->middleware('auth'); //store
+    Route::put('/update/{id}', [CategoriesController::class, 'update'])->name('updateCategory')->middleware('auth'); //update
+    Route::put('/delete/{id}', [CategoriesController::class, 'delete'])->name('deleteCategory')->middleware('auth'); //update
+});
 
 //Suppliers Routes
-Route::get('/suppliers', 'SupplierController@index')->name('suppliers')->middleware('auth'); //index
-Route::post('suppliers/store', 'SupplierController@store')->name('storeSupplier')->middleware('auth'); //store
-Route::put('suppliers/update/{id}', 'SupplierController@update')->name('updateSupplier')->middleware('auth'); //update
-Route::put('suppliers/delete/{id}', 'SupplierController@delete')->name('deleteSupplier')->middleware('auth'); //delete (trash)
+Route::prefix('suppliers')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('suppliers')->middleware('auth'); //index
+    Route::post('/store', [SupplierController::class, 'store'])->name('storeSupplier')->middleware('auth'); //store
+    Route::put('/update/{id}', [SupplierController::class, 'update'])->name('updateSupplier')->middleware('auth'); //update
+    Route::put('/delete/{id}', [SupplierController::class, 'delete'])->name('deleteSupplier')->middleware('auth'); //delete (trash)
+});
 
 //manufacturers Routes
-Route::get('/manufacturers', 'ManufacturersController@index')->name('manufacturers')->middleware('auth'); //index
-Route::post('manufacturers/store', 'ManufacturersController@store')->name('storeManufacturer')->middleware('auth'); //store
-Route::put('manufacturers/update/{id}', 'ManufacturersController@update')->name('updateManufacturer')->middleware('auth'); //update
-Route::put('manufacturers/delete/{id}', 'ManufacturersController@delete')->name('deleteManufacturer')->middleware('auth'); //update
+Route::prefix('manufacturers')->group(function () {
+    Route::get('/', [ManufacturersController::class, 'index'])->name('manufacturers')->middleware('auth'); //index
+    Route::post('/store', [ManufacturersController::class, 'store'])->name('storeManufacturer')->middleware('auth'); //store
+    Route::put('/update/{id}', [ManufacturersController::class, 'update'])->name('updateManufacturer')->middleware('auth'); //update
+    Route::put('/delete/{id}', [ManufacturersController::class, 'delete'])->name('deleteManufacturer')->middleware('auth'); //update
+});
 
-//Costumer routes´
-Route::get('/customers', 'CustomerController@index')->name('customers')->middleware('auth'); //index view
-Route::post('customer/store', 'CustomerController@store')->name('storeCustomer')->middleware('auth'); //store
-Route::put('customer/update/{id}', 'CustomerController@update')->name('updateCustomer')->middleware('auth'); //update
-Route::put('customer/delete/{id}', 'CustomerController@delete')->name('deleteCustomer')->middleware('auth'); //delete (trash)
-//Route::delete('customer/remove/{id}', 'CostumerController@destroy')->name('deleteCostumer')->middleware('auth');
+//Customer routes´
+Route::prefix('customers')->group(function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customers')->middleware('auth'); //index view
+    Route::post('/store', [CustomerController::class, 'store'])->name('storeCustomer')->middleware('auth'); //store
+    Route::put('/update/{id}', [CustomerController::class, 'update'])->name('updateCustomer')->middleware('auth'); //update
+    Route::put('/delete/{id}', [CustomerController::class, 'delete'])->name('deleteCustomer')->middleware('auth'); //delete (trash)
+    //Route::delete('customer/remove/{id}', 'CostumerController@destroy')->name('deleteCostumer')->middleware('auth');
+});
 
 //Sales Routes
-Route::get('/sales', 'SaleController@index')->name('sales')->middleware('auth');
-Route::get('sales/create', 'SaleController@create')->name('addSale')->middleware('auth');
-Route::post('sales/create/store', 'SaleController@store')->name('storeSale')->middleware('auth');
-Route::get('sales/invoice/{id?}', 'SaleController@invoice')->name('invoiceExist')->middleware('auth');
-Route::get('sales/invoice/show/{id}', 'SaleController@showInvoice')->name('showInvoice')->middleware('auth');
+Route::prefix('sales')->group(function () {
+    Route::get('/', [SaleController::class, 'index'])->name('sales')->middleware('auth');
+    Route::get('/create', [SaleController::class, 'create'])->name('addSale')->middleware('auth');
+    Route::post('/create/store', [SaleController::class, 'store'])->name('storeSale')->middleware('auth');
+    Route::get('/invoice/{id?}', [SaleController::class, 'invoice'])->name('invoiceExist')->middleware('auth');
+    Route::get('/invoice/show/{id}', [SaleController::class, 'showInvoice'])->name('showInvoice')->middleware('auth');
+});
 
 //Purchases
-Route::get('/purchases', 'PurchaseController@index')->name('purchases')->middleware('auth');
-Route::get('purchases/create', 'PurchaseController@create')->name('addPurchase')->middleware('auth');
-Route::post('purchases/create/makePurchase', 'PurchaseController@store')->name('storePurchase')->middleware('auth');
-Route::get('purchase/create/getlist', 'PurchaseController@GetList')->name('getList')->middleware('auth');
+Route::prefix('purchases')->group(function () {
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchases')->middleware('auth');
+    Route::get('/create', [PurchaseController::class, 'create'])->name('addPurchase')->middleware('auth');
+    Route::post('/create/makePurchase', [PurchaseController::class, 'store'])->name('storePurchase')->middleware('auth');
+    Route::get('/create/getlist', [PurchaseController::class, 'GetList'])->name('getList')->middleware('auth');
+});
 
 //Kardex
-Route::get('/kardex', 'KardexController@index')->name('kardex')->middleware('auth');
-Route::get('kardex/records/{id}', 'KardexController@records')->name('records')->middleware('auth');
+Route::prefix('kardex')->group(function () {
+    Route::get('/', [KardexController::class, 'index'])->name('kardex')->middleware('auth');
+    Route::get('/records/{id}', [KardexController::class, 'records'])->name('records')->middleware('auth');
+});
 
 //Credits
-Route::get('credits/create', 'CreditController@create')->name('addCredit');
-Route::post('credits/create/store', 'CreditController@store')->name('storeCredit');
+Route::prefix('credits')->group(function () {
+    Route::get('/create', [CreditController::class, 'create'])->name('addCredit');
+    Route::post('/create/store', [CreditController::class, 'store'])->name('storeCredit');
+});

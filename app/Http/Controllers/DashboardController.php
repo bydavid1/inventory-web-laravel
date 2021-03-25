@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
-use App\Customers;
-use App\Products;
-use App\Purchases;
-use App\Sales;
+use App\Models\Customers;
+use App\Models\Products;
+use App\Models\Purchases;
+use App\Models\Sales;
 use Exception;
 use Illuminate\Http\Request;
 

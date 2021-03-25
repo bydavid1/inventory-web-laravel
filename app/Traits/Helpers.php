@@ -4,12 +4,12 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Kardex;
+use App\Models\Kardex;
 use App\Jobs\CreateInvoice;
-use App\Payments_dates;
-use App\Credits;
-use App\Products;
-use App\Sales_items;
+use App\Models\Payments_dates;
+use App\Models\Credits;
+use App\Models\Products;
+use App\Models\Sales_items;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 
