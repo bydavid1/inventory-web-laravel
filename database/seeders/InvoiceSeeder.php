@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Invoice_type;
 use Illuminate\Database\Seeder;
 
