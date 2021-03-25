@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Kardex_type;
 use Illuminate\Database\Seeder;
 
