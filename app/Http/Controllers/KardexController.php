@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Kardex;
-use App\Products;
-use App\Images;
-use App\Kardex_tag;
-use App\Kardex_type;
+use App\Models\Kardex;
+use App\Models\Products;
+use App\Models\Images;
+use App\Models\Kardex_tag;
+use App\Models\Kardex_type;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 
