@@ -10,6 +10,7 @@ use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Purchases;
 use App\Models\Sales;
+use App\Models\Sales_items;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,15 @@ class DashboardController extends Controller
 
             return response()->json(['labels' => $dates, 'sales' => $sales, 'purchases' => $purchases], 200);
 
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getLastSales(){
+        try {
+            $items = Sales_items::select('quantity', 'total', 'products.name')->join('products', 'products.id', 'sales_items.product_id')->take(5)->get();
+            return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
