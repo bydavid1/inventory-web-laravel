@@ -59,8 +59,8 @@
               <span><img class="round" src="{{asset('assets/media/user.jpg')}}" alt="avatar" height="40" width="40"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right pb-0">
-                <a class="dropdown-item" href=""><i class="bx bx-user mr-50"></i> Edit Profile</a>
-                <a class="dropdown-item" href=""><i class="bx bx-building mr-50"></i> Edit bussines</a>
+                {{-- <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Edit Profile</a> --}}
+                {{-- <a class="dropdown-item" href=""><i class="bx bx-building mr-50"></i> Edit bussines</a> --}}
                 <div class="dropdown-divider mb-0"></div>
                 <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="bx bx-power-off mr-50"></i> Logout

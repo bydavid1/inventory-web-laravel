@@ -17,12 +17,12 @@
           <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
             <div class="card-header pb-1">
               <div class="card-title">
-                <h4 class="text-center mb-2">Welcome Back</h4>
+                <h4 class="text-center mb-2">Bienvenido</h4>
               </div>
             </div>
             <div class="card-content">
               <div class="card-body">
-                <div class="d-flex flex-md-row flex-column justify-content-around">
+                {{-- <div class="d-flex flex-md-row flex-column justify-content-around">
                   <a href="#" class="btn btn-social btn-google btn-block font-small-3 mr-md-1 mb-md-0 mb-1">
                     <i class="bx bxl-google font-medium-3"></i>
                     <span class="pl-50 d-block text-center">Google</span>
@@ -31,12 +31,12 @@
                     <i class="bx bxl-facebook-square font-medium-3"></i>
                     <span class="pl-50 d-block text-center">Facebook</span>
                   </a>
-                </div>
-                <div class="divider">
+                </div> --}}
+                {{-- <div class="divider">
                   <div class="divider-text text-uppercase text-muted">
                     <small>or login with email</small>
                   </div>
-                </div>
+                </div> --}}
                 {{-- form  --}}
                 <form method="POST" action="{{ route('login') }}">
                   @csrf
@@ -58,7 +58,7 @@
                       </span>
                      @enderror
                   </div>
-                  <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
+                  {{-- <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
                     <div class="text-left">
                       <div class="checkbox checkbox-sm">
                         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -70,16 +70,16 @@
                     <div class="text-right">
                       <a href="#" class="card-link"><small>Forgot Password?</small></a>
                     </div>
-                  </div>
+                  </div> --}}
                   <button type="submit" class="btn btn-primary glow w-100 position-relative">Login
                     <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
                   </button>
                 </form>
                 <hr>
-                <div class="text-center">
+                {{-- <div class="text-center">
                   <small class="mr-25">Don't have an account?</small>
                   <a href="{{route('register')}}"><small>Sign up</small></a>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@
         <!-- right section image -->
         <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
           <div class="card-content">
-            <img class="img-fluid" src="{{asset('images/pages/login.png')}}" alt="branding logo">
+            <img class="img-fluid" src="{{asset('assets/media/login.png')}}" alt="branding logo">
           </div>
         </div>
       </div>
