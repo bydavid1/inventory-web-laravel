@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 class ManufacturersController extends Controller
 {
 
-    private $photo_default = "default.png";
+    private $photo_default = "default";
 
         /**
      * Display a listing of the resource.
@@ -42,7 +42,13 @@ class ManufacturersController extends Controller
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
                     <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
                     </div>')
-        ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}"  style="max-height:50px; max-width:70px;"/>')
+        ->addColumn('image', function($manufacturers){
+            if ($manufacturers->logo != 'default') {
+                return '<img class="img-round" src="'.$manufacturers->logo.'" style="max-height:50px; max-width:70px;"/>';
+            } else {
+                return '<img class="img-round" src="/assets/media/photo_default.png" style="max-height:50px; max-width:70px;"/>';
+            }
+        })
         ->addColumn('available', function($manufacturers){
             if ($manufacturers->is_available == 1) {
                 return '<i class="bx bx-check fa-2x text-success"></i>';

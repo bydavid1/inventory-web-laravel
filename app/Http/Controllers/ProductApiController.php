@@ -29,11 +29,11 @@ class ProductApiController extends Controller
                     </a>
                     </div>')
         ->addColumn('photo', function($products){
-                    if ($products->first_image != null) {
+                    if ($products->first_image != null && $products->first_image->src != 'default') {
                         $path = asset('storage/' . $products->first_image->src);
                         return '<img class="img-round" src="'.$path.'" style="max-height:50px; max-width:70px;"/>';
                     } else {
-                        return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
+                        return '<img class="img-round" src="/assets/media/photo_default.png" style="max-height:50px; max-width:70px;"/>';
                     }
         })
         ->addColumn('prices', function($products){

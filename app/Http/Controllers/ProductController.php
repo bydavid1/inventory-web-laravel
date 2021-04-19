@@ -23,7 +23,7 @@ use Exception;
 class ProductController extends Controller
 {
 
-    private $photo_default = "default.png";
+    private $photo_default = "default";
 
     /**
      * Display a listing of the resource.
