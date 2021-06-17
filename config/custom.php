@@ -12,7 +12,7 @@ return [
         'isMenuCollapsed' => false, // options:true or false(default)  Warning:this option is not applicable for horizontal-menu template
         'footerType' => 'static', //options:fixed,static,hidden
         'templateTitle' => 'Mokpos', //template Title can be changed, default(Frest)
-        'isCustomizer' => true, //If True customizer available or false its not available
+        'isCustomizer' => false, //If True customizer available or false its not available
         'isCardShadow' => true, // Option: true(default) and false ( remove card shadow)
         'isScrollTop' => true, // Option: true and false (Hide Scroll To Top)
         'extendApp' => false, // Option: hide content-wrapper class

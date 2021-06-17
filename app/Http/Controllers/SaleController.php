@@ -200,7 +200,7 @@ class SaleController extends Controller
                     $invoice = $this->designInvoice($product_list, $request->customerName, $sale, $files_path);
 
                     //send invoice
-                    return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
+                    return response()->json(['message' => 'Factura guardada', 'body' => compact('invoice')]);
 
                 }else{
                     throw new Exception("Error guardando la informacion de la venta", 1);

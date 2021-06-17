@@ -128,14 +128,16 @@ var vm = new Vue({
                         title: response.data.message,
                         showConfirmButton: false,
                     });
-                    this.print(response.data.invoice.invoice) //!!!!!!!!!!!!!!!!fix this response
+                    console.log(response.data)
+                    this.print(response.data.body.invoice) //!!!!!!!!!!!!!!!!fix this response
                     Object.assign(this.$data, this.initialState());
                     this.getInventory()
                 })
                 .catch(error => {
+                    console.log(error)
                     Swal.fire({
                         icon: 'error',
-                        html: error.response.data.message,
+                        html: error.data,
                         showConfirmButton: true,
                     });
                 })
@@ -143,8 +145,9 @@ var vm = new Vue({
         print(invoice) {
             let target = window.open('', 'PRINT', 'height=800,width=800');
             target.document.write(invoice);
+            target.document.close();
+            target.focus();
             target.print();
-            target.close();
         },
         initialState () {
             return {
