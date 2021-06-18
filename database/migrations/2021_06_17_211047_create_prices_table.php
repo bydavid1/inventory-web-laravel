@@ -20,6 +20,7 @@ class CreatePricesTable extends Migration
             $table->decimal('price');
             $table->decimal('utility');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

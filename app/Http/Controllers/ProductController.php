@@ -98,7 +98,7 @@ class ProductController extends Controller
                     }
 
                     $photo = new Photo;
-                    $photo->src = $path;
+                    $photo->source = $path;
                     $photo->product_id = $new->id;
                     $photo->type = 'principal';
                     $photo->save();

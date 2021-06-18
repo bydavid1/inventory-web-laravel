@@ -23,6 +23,7 @@ class CreateDistributionsTable extends Migration
             $table->integer('low_stock');
             $table->boolean('is_available');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -17,6 +17,7 @@ class CreateTaxesTable extends Migration
             $table->id();
             $table->decimal('percentage');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

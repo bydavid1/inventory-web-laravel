@@ -21,8 +21,8 @@ class CreateProductsTable extends Migration
             $table->foreignId('brand_id')->constrained('brands');
             $table->foreignId('category_id')->constrained('categories');
             $table->boolean('is_available');
-            $table->boolean('is_deleted');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
