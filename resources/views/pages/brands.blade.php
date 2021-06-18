@@ -17,12 +17,6 @@
 
 @section('content')
 
-    <div class="container">
-        @if ( session('mensaje') )
-        <div class="alert alert-success">{{ session('mensaje') }}</div>
-         @endif
-    </div>
-
     <div class="card mt-2">
         <div class="card-body">
             <ul class="nav nav-tabs justify-content-center" role="tablist">
@@ -39,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item current">
-                    <a class="nav-link active" id="account-tab-center" href="{{ route('manufacturers') }}"
+                    <a class="nav-link active" id="account-tab-center" href="{{ route('brands') }}"
                         aria-controls="account-center" role="tab" aria-selected="false">
                         Fabricantes
                     </a>
@@ -62,7 +56,7 @@
 <!-- Delete form-->
 <div class="d-none">
 	<form id="destroyform" method="POST">
-		@method('PUT')
+		@method('DELETE')
 	</form>
 </div>
 
@@ -168,5 +162,5 @@
 
 @section('page-scripts')
     @routes
-    <script src="{{ asset('js/scripts/manufacturers/manufacturers.js') }}"></script>
+    <script src="{{ asset('js/scripts/brands/brands.js') }}"></script>
 @endsection

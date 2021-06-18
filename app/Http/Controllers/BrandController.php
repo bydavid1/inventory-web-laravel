@@ -6,6 +6,7 @@ use App\Models\Brand;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class BrandController extends Controller
 {
@@ -18,10 +19,8 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Inventario"],["name" => "Marcas"]
-        ];
-        return view('pages.manufacturers', ['breadcrumbs'=>$breadcrumbs]);
+        $breadcrumbs = [["link" => "/", "name" => "Home"],["link" => "#", "name" => "Inventario"],["name" => "Marcas"]];
+        return view('pages.brands', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -29,24 +28,26 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecords()
+    public function getRecords(Request $request)
     {
-        $brand = Brand::where('is_deleted', '0');
-        return datatables()->eloquent($brand)
-        ->addColumn('actions', '<div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
-                    <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
-                    </div>')
-        ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}"  style="max-height:50px; max-width:70px;"/>')
-        ->addColumn('available', function($brand){
-            if ($brand->is_available == 1) {
-                return '<i class="bx bx-check fa-2x text-success"></i>';
-            }else{
-                return '<i class="bx bx-times fa-2x text-danger"></i>';
-            }
-        })
-        ->rawColumns(['actions', 'available', 'image'])
-        ->toJson();
+        if ($request->ajax()) {
+            $brand = Brand::latest()->get();
+            return DataTables::of($brand)
+            ->addColumn('actions', '<div class="btn-group float-right">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
+                        <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
+                        </div>')
+            ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}"  style="max-height:50px; max-width:70px;"/>')
+            ->addColumn('available', function($brand){
+                if ($brand->is_available == 1) {
+                    return '<i class="bx bx-check fa-2x text-success"></i>';
+                }else{
+                    return '<i class="bx bx-times fa-2x text-danger"></i>';
+                }
+            })
+            ->rawColumns(['actions', 'available', 'image'])
+            ->toJson();
+        }
     }
 
     /**
@@ -72,12 +73,11 @@ class BrandController extends Controller
             $new->name = $request->name;
             $new->logo = $path;
             $new->is_available = 1;
-            $new->is_deleted = 0;
 
             if ($new->save()) {
-                return response()->json(['success'=>'true', 'message'=>'Guardado']);
+                return response()->json(['success'=>'true', 'message'=>'Guardado'], 200);
             }else{
-                return response()->json(['success'=>'false', 'message'=>'No se pudo guardar']);
+                return response()->json(['success'=>'false', 'message'=>'No se pudo guardar'], 500);
             }
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
@@ -92,12 +92,12 @@ class BrandController extends Controller
      */
     public function show($id)
     {
-        $result = Brand::where('id', $id)->get();
+        $result = Brand::find($id);
 
-        if ($result->count() > 0) {
+        if ($result) {
             return response($result, 200);
         }else{
-            return response('Recurso no encontrado', 404);
+            return response()->json(['success'=>'false', 'message'=>'No se pudo guardar'], 500);
         }
     }
 
@@ -128,7 +128,7 @@ class BrandController extends Controller
                 }
             }
 
-            return response()->json(['success' => 'true', 'message' => 'Actualizado']);
+            return response()->json(['success' => 'true', 'message' => 'Actualizado'], 200);
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
         }
@@ -142,13 +142,12 @@ class BrandController extends Controller
      */
     public function delete($id)
     {
-        $supplier = Brand::find($id);
-        $supplier->is_deleted = 1;
+        $brand = Brand::find($id)->delete();
 
-        if ($supplier->save()) {
-            return response(200);
+        if ($brand) {
+            return response()->json(["message"=>"Enviado a la papelera"], 200);
         }else{
-            return response(500);
+            return response()->json(["message"=>"Error al procesar la peticion"], 500);
         }
     }
 }

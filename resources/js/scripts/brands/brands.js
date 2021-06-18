@@ -15,7 +15,7 @@ $(document).ready(function () {
    table = $('#items').DataTable({
         serverSide: true,
         ajax: {
-            url: '/api/manufacturers',
+            url: '/api/brands',
             type: 'GET',
         },
         columns: [{
@@ -45,7 +45,7 @@ document.getElementById('createform').addEventListener('submit', function(e){
 
     if (validation('name', 'posterror') == true) {
         let formData = new FormData(this)
-        let url = route('storeManufacturer')
+        let url = route('storeBrand')
 
         sendData(url, formData, this, table)
     }
@@ -60,7 +60,7 @@ document.getElementById('createform').addEventListener('submit', function(e){
 function update(id) {
     $.ajax({
         type: 'GET',
-        url: '/api/manufacturers/' + id,
+        url: '/api/brands/' + id,
         beforeSend: function () {
             if (!document.getElementById('puterror').classList.contains('d-none')) {
                 document.getElementById('puterror').classList.add('d-none')
@@ -70,9 +70,10 @@ function update(id) {
         },
         statusCode: {
             200: function (response) {
-                document.getElementById('uname').value = response[0].name
-                document.getElementById('put_id').value = response[0].id
-                document.getElementById('previewlogo').src = response[0].logo
+                console.log(response)
+                document.getElementById('uname').value = response.name
+                document.getElementById('put_id').value = response.id
+                document.getElementById('previewlogo').src = response.logo
 
                 document.getElementById('uname').disabled = false
                 document.getElementById('ulogo').disabled = false
@@ -93,7 +94,7 @@ document.getElementById('editform').addEventListener('submit', function(e){
     e.preventDefault();
     if (validation('uname', 'puterror') == true) {
         var formData = new FormData(this)
-        var url = route('updateManufacturer', {id: document.getElementById('put_id').value})
+        var url = route('updateBrand', {id: document.getElementById('put_id').value})
 
         sendData(url, formData, this, table)
     }
@@ -200,7 +201,7 @@ function remove(id){
         }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: route('deleteManufacturer', {id: id}),
+                url: route('deleteBrand', {id: id}),
                 type: 'POST',
                 data: $('#destroyform').serialize(),
                 success: function (response) {
