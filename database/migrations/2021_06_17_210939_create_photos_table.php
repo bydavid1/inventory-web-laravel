@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKardexTypesTable extends Migration
+class CreatePhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateKardexTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('kardex_types', function (Blueprint $table) {
+        Schema::create('photos', function (Blueprint $table) {
             $table->id();
-            $table->string('tag');
+            $table->foreignId('product_id');
+            $table->string('source');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateKardexTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kardex_types');
+        Schema::dropIfExists('photos');
     }
 }

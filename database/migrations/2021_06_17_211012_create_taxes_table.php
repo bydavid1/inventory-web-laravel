@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInvoiceTypeTable extends Migration
+class CreateTaxesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateInvoiceTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_type', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->decimal('percentage');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ class CreateInvoiceTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_type');
+        Schema::dropIfExists('taxes');
     }
 }

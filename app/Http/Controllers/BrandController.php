@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-//error reporting
-error_reporting(E_ALL);
-ini_set('error_reporting', E_ALL);
-
-use Illuminate\Http\Request;
-use App\Models\Manufacturers;
+use App\Models\Brand;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ManufacturersController extends Controller
+class BrandController extends Controller
 {
-
     private $photo_default = "default.png";
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -24,7 +19,7 @@ class ManufacturersController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Inventario"],["name" => "Marcas"]
         ];
         return view('pages.manufacturers', ['breadcrumbs'=>$breadcrumbs]);
     }
@@ -36,15 +31,15 @@ class ManufacturersController extends Controller
      */
     public function getRecords()
     {
-        $manufacturers = Manufacturers::where('is_deleted', '0');
-        return datatables()->eloquent($manufacturers)
+        $brand = Brand::where('is_deleted', '0');
+        return datatables()->eloquent($brand)
         ->addColumn('actions', '<div class="btn-group float-right">
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editManufacturerModal" onclick="update({{ $id }})"><i class="bx bx-edit" style="color: white"></i></button>
                     <button type="button" class="btn btn-warning" onclick="remove({{ $id }})"><i class="bx bx-trash" style="color: white"></i></button>
                     </div>')
         ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}"  style="max-height:50px; max-width:70px;"/>')
-        ->addColumn('available', function($manufacturers){
-            if ($manufacturers->is_available == 1) {
+        ->addColumn('available', function($brand){
+            if ($brand->is_available == 1) {
                 return '<i class="bx bx-check fa-2x text-success"></i>';
             }else{
                 return '<i class="bx bx-times fa-2x text-danger"></i>';
@@ -73,7 +68,7 @@ class ManufacturersController extends Controller
                 $path = $this->photo_default;
             }
 
-            $new = new Manufacturers;
+            $new = new Brand;
             $new->name = $request->name;
             $new->logo = $path;
             $new->is_available = 1;
@@ -97,7 +92,7 @@ class ManufacturersController extends Controller
      */
     public function show($id)
     {
-        $result = Manufacturers::where('id', $id)->get();
+        $result = Brand::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
@@ -116,7 +111,7 @@ class ManufacturersController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $find = Manufacturers::find($id);
+            $find = Brand::find($id);
             $find->name = $request->uname;
             //getLogo
             $savedImage = $find->logo;
@@ -147,7 +142,7 @@ class ManufacturersController extends Controller
      */
     public function delete($id)
     {
-        $supplier = Manufacturers::find($id);
+        $supplier = Brand::find($id);
         $supplier->is_deleted = 1;
 
         if ($supplier->save()) {

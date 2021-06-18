@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
 use Illuminate\Http\Request;
-use App\Models\Suppliers;
 
 class SupplierController extends Controller
 {
@@ -27,7 +27,7 @@ class SupplierController extends Controller
      */
     public function getRecords()
     {
-        return datatables()->eloquent(Suppliers::where('is_deleted', '0'))
+        return datatables()->eloquent(Supplier::where('is_deleted', '0'))
         ->addColumn('actions', '<div class="btn-group float-right">
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
                     <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
@@ -54,7 +54,7 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        $supplier = new Suppliers;
+        $supplier = new Supplier;
         $supplier->code = $request->code;
         $supplier->name = $request->name;
         $supplier->nit = $request->nit;
@@ -76,7 +76,7 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        $result = Suppliers::where('id', $id)->get();
+        $result = Supplier::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
@@ -94,7 +94,7 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $costumer = Suppliers::find($id);
+        $costumer = Supplier::find($id);
         $costumer->name = $request->uname;
         $costumer->nit = $request->unit;
         $costumer->address = $request->uaddress;
@@ -115,7 +115,7 @@ class SupplierController extends Controller
      */
     public function delete($id)
     {
-        $supplier = Suppliers::find($id);
+        $supplier = Supplier::find($id);
         $supplier->is_deleted = 1;
 
         if ($supplier->save()) {

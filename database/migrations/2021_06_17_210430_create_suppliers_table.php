@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePurchasePricesTable extends Migration
+class CreateSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreatePurchasePricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_prices', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
+            $table->string('name')->unique();
+            $table->string('phone');
+            $table->string('nit');
+            $table->string('address')->nullable();
+            $table->boolean('is_deleted');
             $table->timestamps();
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->float('value');
         });
     }
 
@@ -29,6 +32,6 @@ class CreatePurchasePricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_prices');
+        Schema::dropIfExists('suppliers');
     }
 }

@@ -7,17 +7,14 @@ error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Products;
-use App\Models\Prices;
-use App\Models\Images;
-use App\Models\Purchase_prices;
-use App\Models\Categories;
 use App\Http\Requests\StoreProduct;
-use App\Models\Suppliers;
-use App\Models\Manufacturers;
-use App\Models\Kardex;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Photo;
+use App\Models\Price;
+use App\Models\Product;
+use App\Models\Supplier;
 use Exception;
 
 class ProductController extends Controller
@@ -33,7 +30,7 @@ class ProductController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Inventario"],["name" => "Productos y servicios"]
         ];
         return view('pages.products', ['breadcrumbs'=>$breadcrumbs]);
     }
@@ -48,9 +45,9 @@ class ProductController extends Controller
         $breadcrumbs = [
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
-        $categories = Categories::select(['id','name'])->where('is_available', 1)->get();
-        $providers = Suppliers::select(['id','name'])->where('is_available', 1)->get();
-        $manufacturers = Manufacturers::select(['id','name'])->where('is_available', 1)->get();
+        $categories = Category::select(['id','name'])->where('is_available', 1)->get();
+        $providers = Supplier::select(['id','name'])->where('is_available', 1)->get();
+        $manufacturers = Brand::select(['id','name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
         return view('pages.product.addProduct', compact(['categories','providers', 'manufacturers', 'breadcrumbs']));
     }
@@ -75,7 +72,7 @@ class ProductController extends Controller
                     $path = $this->photo_default;
                 }
 
-                $new = new Products;
+                $new = new Product;
                 $new->code = $request->code;
                 $new->name = $request->name;
                 $new->description = $request->description;
@@ -91,7 +88,7 @@ class ProductController extends Controller
                 if ($new->save()) {
 
                     foreach ($request->prices as $key) {
-                        $prices = new Prices;
+                        $prices = new Price;
                         $prices->product_id = $new->id;
                         $prices->price = $key['price'];
                         $prices->utility = $key['utility'];
@@ -100,27 +97,27 @@ class ProductController extends Controller
                         $prices->save();
                     }
 
-                    $images = new Images;
-                    $images->src = $path;
-                    $images->product_id = $new->id;
-                    $images->type = 'principal';
-                    $images->save();
+                    $photo = new Photo;
+                    $photo->src = $path;
+                    $photo->product_id = $new->id;
+                    $photo->type = 'principal';
+                    $photo->save();
 
-                    $purchase = new Purchase_prices;
-                    $purchase->product_id = $new->id;
-                    $purchase->value = $request->purchase;
-                    $purchase->save();
+                    // $purchase = new Purchase_prices;
+                    // $purchase->product_id = $new->id;
+                    // $purchase->value = $request->purchase;
+                    // $purchase->save();
 
-                    $kardex = new Kardex;
-                    $kardex->type_id = 1; //Ingreso a inventario
-                    $kardex->product_id = $new->id;
-                    $kardex->quantity =  $new->stock;
-                    $kardex->unit_price = $request->purchase;
-                    $kardex->value = $request->purchase * $new->stock;
-                    $kardex->final_unit_value = $request->purchase;
-                    $kardex->final_stock = $new->stock;
-                    $kardex->final_value = $request->purchase * $new->stock;
-                    $kardex->save();
+                    // $kardex = new Kardex;
+                    // $kardex->type_id = 1; //Ingreso a inventario
+                    // $kardex->product_id = $new->id;
+                    // $kardex->quantity =  $new->stock;
+                    // $kardex->unit_price = $request->purchase;
+                    // $kardex->value = $request->purchase * $new->stock;
+                    // $kardex->final_unit_value = $request->purchase;
+                    // $kardex->final_stock = $new->stock;
+                    // $kardex->final_value = $request->purchase * $new->stock;
+                    // $kardex->save();
 
                     return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
                 }
@@ -141,7 +138,7 @@ class ProductController extends Controller
         $breadcrumbs = [
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
-        $product = Products::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         return view('pages.product.showProduct', compact('product', 'breadcrumbs'));
     }
@@ -157,10 +154,10 @@ class ProductController extends Controller
         $breadcrumbs = [
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
-        $categories = Categories::select(['id','name'])->where('is_available', '1')->get();
-        $suppliers = Suppliers::select(['id','name'])->where('is_available', '1')->get();
-        $manufacturers = Manufacturers::select(['id','name'])->where('is_available', '1')->get();
-        $product = Products::with(['prices' => function($query){
+        $categories = Category::select(['id','name'])->where('is_available', '1')->get();
+        $suppliers = Supplier::select(['id','name'])->where('is_available', '1')->get();
+        $manufacturers = Brand::select(['id','name'])->where('is_available', '1')->get();
+        $product = Product::with(['prices' => function($query){
             $query->select('id','product_id','price','price_incl_tax','utility');
         },
         'images' => function($query){
@@ -191,7 +188,7 @@ class ProductController extends Controller
                 'purchase' => 'required'
             ]);
 
-            $product = Products::find($id);
+            $product = Product::find($id);
             $savedImage = $product->first_image->src; //Salvo el path de la imagen por si luego es necesario eliminarlo
             $product->code = $request->code;
             $product->name = $request->name;
@@ -246,7 +243,7 @@ class ProductController extends Controller
      */
     public function delete(Request $request)
     {
-        $product = Products::find($request->identifier);
+        $product = Product::find($request->identifier);
         $product->is_deleted = 1;
         $product->save();
 
@@ -267,7 +264,7 @@ class ProductController extends Controller
     {
         $id=$request->input('id_product');
 
-        $product = Products::findOrFail($id);
+        $product = Product::findOrFail($id);
         $product->delete();
 
         return back()->with('mensaje', "Eliminado correctamente");

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Categories;
+use App\Models\Category;
 
-class CategoriesController extends Controller
+class CategoryController extends Controller
 {
 
     /**
@@ -14,7 +14,7 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
     */
     public function getRecords(){
-        $query = Categories::where('is_deleted', '0');
+        $query = Category::where('is_deleted', '0');
 
         return datatables()->eloquent($query)
         ->addColumn('actions', '<div class="btn-group float-right">
@@ -63,7 +63,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Categories;
+        $category = new Category;
         $category->name = $request->name;
         $category->description = $request->description;
         $category->is_available = 1;
@@ -83,7 +83,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $result = Categories::where('id', $id)->get();
+        $result = Category::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
@@ -101,7 +101,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $costumer = Categories::find($id);
+        $costumer = Category::find($id);
         $costumer->name = $request->uname;
         $costumer->description = $request->udescription;
 
@@ -120,7 +120,7 @@ class CategoriesController extends Controller
      */
     public function delete($id)
     {
-        $category = Categories::find($id);
+        $category = Category::find($id);
         $category->is_deleted = 1;
 
         if ($category->save()) {

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\MeasurementUnit;
 use Illuminate\Database\Seeder;
-use App\Models\Tax;
 
-class TaxSeeder extends Seeder
+class UnitsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class TaxSeeder extends Seeder
      */
     public function run()
     {
-        $seed = new Tax();
-        $seed->percentage = "13";
-        $seed->save();
+        $unit = new MeasurementUnit();
+        $unit->name = "Unidad";
+        $unit->prefix = "u";
     }
 }

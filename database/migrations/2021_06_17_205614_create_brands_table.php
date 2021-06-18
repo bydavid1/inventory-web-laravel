@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxRulesTable extends Migration
+class CreateBrandsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTaxRulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tax_rules', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('logo');
             $table->timestamps();
-            $table->decimal('percentage');
         });
     }
 
@@ -27,6 +28,6 @@ class CreateTaxRulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tax_rules');
+        Schema::dropIfExists('brands');
     }
 }

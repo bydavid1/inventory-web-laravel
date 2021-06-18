@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCreditsTable extends Migration
+class CreatePricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateCreditsTable extends Migration
      */
     public function up()
     {
-        Schema::create('credits', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('distribution_id')->constrained('distributions');
+            $table->foreignId('tax_id')->constrained('taxes');
+            $table->decimal('price');
+            $table->decimal('utility');
             $table->timestamps();
-            $table->unsignedBigInteger('sale_id');
-            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
-            $table->integer('fees');
-            $table->float('interest');
-            $table->decimal('interest_per');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateCreditsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('credits');
+        Schema::dropIfExists('prices');
     }
 }
