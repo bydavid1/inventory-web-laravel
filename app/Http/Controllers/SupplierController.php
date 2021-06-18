@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class SupplierController extends Controller
 {
@@ -14,9 +15,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
-        ];
+        $breadcrumbs = [["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]];
         return view('pages.suppliers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
@@ -25,25 +24,18 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecords()
+    public function getRecords(Request $request)
     {
-        return datatables()->eloquent(Supplier::where('is_deleted', '0'))
-        ->addColumn('actions', '<div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
-                    <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
-                    </div>')
-        ->rawColumns(['actions'])
-        ->toJson();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if ($request->ajax()) {
+            $query = Supplier::latest()->get();
+            return DataTables::of($query)
+            ->addColumn('actions', '<div class="btn-group float-right">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
+                        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
+                        </div>')
+            ->rawColumns(['actions'])
+            ->make();
+        }
     }
 
     /**
@@ -60,12 +52,10 @@ class SupplierController extends Controller
         $supplier->nit = $request->nit;
         $supplier->phone = $request->phone;
         $supplier->address = $request->address;
-        $supplier->is_available = 1;
-        $supplier->is_deleted = 0;
 
-        $supplier->save();
-
-        return back()->with('mensaje', 'Guardado');
+        if ($supplier->save()) {
+            return response()->json(["message"=>"Guardado satisfactoriamente"], 200);
+        }
     }
 
     /**
@@ -76,12 +66,12 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        $result = Supplier::where('id', $id)->get();
+        $result = Supplier::find($id);
 
-        if ($result->count() > 0) {
+        if ($result) {
             return response($result, 200);
         }else{
-            return response('Recurso no encontrado', 404);
+            return response()->json(["message"=>"Recurso no encontrado"], 404);
         }
     }
 
@@ -101,9 +91,9 @@ class SupplierController extends Controller
         $costumer->phone = $request->uphone;
 
         if ($costumer->save()) {
-            return response(200);
+            return response()->json(["message"=>"Actualizado satisfactoriamente"], 200);
         }else{
-            return response(500);
+            return response()->json(["message"=>"Error al procesar la peticion"], 500);
         }
     }
 
@@ -115,13 +105,12 @@ class SupplierController extends Controller
      */
     public function delete($id)
     {
-        $supplier = Supplier::find($id);
-        $supplier->is_deleted = 1;
+        $supplier = Supplier::find($id)->delete();
 
-        if ($supplier->save()) {
-            return response(200);
+        if ($supplier) {
+            return response()->json(["message"=>"Eliminado satisfactoriamente"], 200);
         }else{
-            return response(500);
+            return response()->json(["message"=>"Error al procesar la peticion"], 500);
         }
     }
 }

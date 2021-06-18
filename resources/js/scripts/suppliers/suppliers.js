@@ -131,11 +131,11 @@ $(document).ready(function () {
             statusCode: {
                 200: function(response) {
                     //set data
-                    document.getElementById('uname').value = response[0].name
-                    document.getElementById('uphone').value = response[0].phone
-                    document.getElementById('unit').value = response[0].nit
-                    document.getElementById('uaddress').value = response[0].address
-                    document.getElementById('put_id').value = response[0].id
+                    document.getElementById('uname').value = response.name
+                    document.getElementById('uphone').value = response.phone
+                    document.getElementById('unit').value = response.nit
+                    document.getElementById('uaddress').value = response.address
+                    document.getElementById('put_id').value = response.id
                 },
                 404: function(){
                     //show error
