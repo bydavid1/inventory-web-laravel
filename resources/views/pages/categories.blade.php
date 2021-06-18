@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="account-tab-center" href="{{ route('manufacturers') }}"
+                    <a class="nav-link" id="account-tab-center" href="{{ route('brands') }}"
                         aria-controls="account-center" role="tab" aria-selected="false">
                         Fabricantes
                     </a>
@@ -60,7 +60,7 @@
 <!-- Delete form-->
 <div class="d-none">
 	<form id="destroyform" method="POST">
-		@method('PUT')
+		@method('DELETE')
 	</form>
 </div>
 

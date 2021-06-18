@@ -13,6 +13,7 @@ $.ajaxSetup({
 $(document).ready(function () {
     table = $('#items').DataTable({
         serverSide: true,
+        processing: true,
         ajax: {
             url: '/api/categories',
             type: 'GET',
@@ -25,10 +26,13 @@ $(document).ready(function () {
                 data: 'name'
             },
             {
-                data: 'is_available'
+                data: 'is_available',
+                searchable: false
             },
             {
-                data: 'actions'
+                data: 'actions',
+                orderable: false,
+                searchable: false
             }
         ]
     })
@@ -104,9 +108,9 @@ $(document).ready(function () {
             statusCode: {
                 200: function(response) {
                     //set data
-                    document.getElementById('uname').value = response[0].name
-                    document.getElementById('udescription').value = response[0].description
-                    document.getElementById('put_id').value = response[0].id
+                    document.getElementById('uname').value = response.name
+                    document.getElementById('udescription').value = response.description
+                    document.getElementById('put_id').value = response.id
                 },
                 404: function(){
                     //show error

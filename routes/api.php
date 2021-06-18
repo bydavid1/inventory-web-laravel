@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KardexController;
-use App\Http\Controllers\ManufacturersController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductApiController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
@@ -43,9 +43,9 @@ use Illuminate\Support\Facades\Route;
 
     // Api categories
 
-    Route::get('categories', [CategoriesController::class, 'getRecords'])->middleware('api');
+    Route::get('categories', [CategoryController::class, 'getRecords'])->middleware('api');
 
-    Route::get('categories/{id}', [CategoriesController::class, 'show']);
+    Route::get('categories/{id}', [CategoryController::class, 'show']);
 
     // Api suppliers
 
@@ -55,9 +55,9 @@ use Illuminate\Support\Facades\Route;
 
     // Api manufacturers
 
-    Route::get('manufacturers', [ManufacturersController::class, 'getRecords']);
+    Route::get('brands', [BrandController::class, 'getRecords']);
 
-    Route::get('manufacturers/{id}', [ManufacturersController::class, 'show']);
+    Route::get('brands/{id}', [BrandController::class, 'show']);
 
     //Api customers
 
