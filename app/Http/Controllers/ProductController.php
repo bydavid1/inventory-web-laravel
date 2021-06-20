@@ -43,7 +43,7 @@ class ProductController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Inicio"],["link" => "#", "name" => "Inventario"],["link" => "#", "name" => "Productos"],["name" => "Crear"]
         ];
         $categories = Category::select(['id','name'])->where('is_available', 1)->get();
         $providers = Supplier::select(['id','name'])->where('is_available', 1)->get();
