@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -9,13 +10,18 @@ use Yajra\DataTables\DataTables;
 class SupplierController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Show view and send breadcrumb.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $breadcrumbs = [["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]];
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Home"],
+            ["link" => "#", "name" => "Components"],
+            ["name" => "Alerts"]
+        ];
+
         return view('pages.suppliers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
@@ -30,8 +36,18 @@ class SupplierController extends Controller
             $query = Supplier::latest()->get();
             return DataTables::of($query)
             ->addColumn('actions', '<div class="btn-group float-right">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editSupplierModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
-                        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
+                            <button type="button" 
+                                class="btn btn-danger" 
+                                data-toggle="modal" 
+                                data-target="#editSupplierModal" 
+                                onclick="update({{"$id"}})">
+                                <i class="bx bx-edit" style="color: white"></i>
+                            </button>
+                            <button type="button" 
+                                class="btn btn-warning" 
+                                onclick="remove({{"$id"}})">
+                                <i class="bx bx-trash" style="color: white"></i>
+                            </button>
                         </div>')
             ->rawColumns(['actions'])
             ->make();
@@ -46,15 +62,20 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        $supplier = new Supplier;
-        $supplier->code = $request->code;
-        $supplier->name = $request->name;
-        $supplier->nit = $request->nit;
-        $supplier->phone = $request->phone;
-        $supplier->address = $request->address;
+        try {
+            $supplier = new Supplier;
+            $supplier->code = $request->code;
+            $supplier->name = $request->name;
+            $supplier->nit = $request->nit;
+            $supplier->phone = $request->phone;
+            $supplier->address = $request->address;
+    
+            if ($supplier->save()) {
+                return response()->json(["message" => "Guardado satisfactoriamente"], 200);
+            }
 
-        if ($supplier->save()) {
-            return response()->json(["message"=>"Guardado satisfactoriamente"], 200);
+        } catch (Exception $e) {
+            return response()->json(["message" => "Error al procesar la peticion"], 500);
         }
     }
 
@@ -105,11 +126,13 @@ class SupplierController extends Controller
      */
     public function delete($id)
     {
-        $supplier = Supplier::find($id)->delete();
-
-        if ($supplier) {
-            return response()->json(["message"=>"Eliminado satisfactoriamente"], 200);
-        }else{
+        try {
+            $supplier = Supplier::find($id)->delete();
+    
+            if ($supplier) {
+                return response()->json(["message"=>"Eliminado satisfactoriamente"], 200);
+            }
+        } catch (\Throwable $th) {
             return response()->json(["message"=>"Error al procesar la peticion"], 500);
         }
     }

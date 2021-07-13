@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
 use Exception;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class CategoryController extends Controller
 {
+
+    /**
+     * Show view and send breadcrumb.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $breadcrumbs = [
+            ["link" => "/", "name" => "Inicio"],
+            ["link" => "#", "name" => "Inventario"],
+            ["name" => "Categorías"]
+        ];
+
+        return view('pages.categories', ['breadcrumbs'=>$breadcrumbs]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -21,8 +37,18 @@ class CategoryController extends Controller
 
             return DataTables::of($query)
             ->addColumn('actions', '<div class="btn-group float-right">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editCategoryModal" onclick="update({{"$id"}})"><i class="bx bx-edit" style="color: white"></i></button>
-                        <button type="button" class="btn btn-warning" onclick="remove({{"$id"}})"><i class="bx bx-trash" style="color: white"></i></button>
+                            <button type="button" 
+                                class="btn btn-danger" 
+                                data-toggle="modal" 
+                                data-target="#editCategoryModal" 
+                                onclick="update({{"$id"}})">
+                                <i class="bx bx-edit" style="color: white"></i>
+                            </button>
+                            <button type="button" 
+                                class="btn btn-warning" 
+                                onclick="remove({{"$id"}})">
+                                <i class="bx bx-trash" style="color: white"></i>
+                            </button>
                         </div>')
             ->editColumn('is_available', function($category){
                 if ($category->is_available == 1) {
@@ -34,17 +60,6 @@ class CategoryController extends Controller
             ->rawColumns(['actions', 'is_available'])
             ->make();
         }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $breadcrumbs = [["link" => "/", "name" => "Inicio"],["link" => "#", "name" => "Inventario"],["name" => "Categorías"]];
-        return view('pages.categories', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -82,7 +97,7 @@ class CategoryController extends Controller
         if ($result) {
             return response($result, 200);
         }else{
-            return response()->json(["message"=>"Recurso no encontrado"], 404);
+            return response()->json(["message" => "Recurso no encontrado"], 404);
         }
     }
 
@@ -100,9 +115,9 @@ class CategoryController extends Controller
         $costumer->description = $request->udescription;
 
         if ($costumer->save()) {
-            return response()->json(["message"=>"Actualizacion satisfactoria"], 200);
+            return response()->json(["message" => "Actualizacion satisfactoria"], 200);
         }else{
-            return response()->json(["message"=>"Error al procesar los datos"], 500);
+            return response()->json(["message" => "Error al procesar los datos"], 500);
         }
     }
 
@@ -114,12 +129,15 @@ class CategoryController extends Controller
      */
     public function delete($id)
     {
-        $category = Category::find($id)->delete();
+        try {
+            $category = Category::find($id)->delete();
 
-        if ($category) {
-            return response()->json(["message"=>"Enviado a la papelera"], 200);
-        }else{
-            return response()->json(["message"=>"Error al procesar la peticion"], 500);
+            if ($category) {
+                return response()->json(["message" => "Enviado a la papelera"], 200);
+            }
+
+        } catch (Exception $e) {
+            return response()->json(["message" => "Error al procesar la peticion"], 500);
         }
     }
 }
