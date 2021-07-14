@@ -10,4 +10,7 @@ class Price extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    //Allow mass assigment
+    protected $guarded = [];
 }

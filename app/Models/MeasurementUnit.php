@@ -10,4 +10,7 @@ class MeasurementUnit extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $table = 'measurement_units';
+    public $timestamps = false;
 }

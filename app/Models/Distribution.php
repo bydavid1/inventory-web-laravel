@@ -10,4 +10,16 @@ class Distribution extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    //Allow mass assigment
+    protected $guarded = [];
+
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'distribution_id');
+    }
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }
