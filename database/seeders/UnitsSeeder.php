@@ -17,5 +17,6 @@ class UnitsSeeder extends Seeder
         $unit = new MeasurementUnit();
         $unit->name = "Unidad";
         $unit->prefix = "u";
+        $unit->save();
     }
 }

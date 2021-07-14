@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Branch;
 use Illuminate\Database\Seeder;
 
-class BrachSeeder extends Seeder
+class BranchSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,5 +18,6 @@ class BrachSeeder extends Seeder
         $branch->name = "Main brach";
         $branch->address = "";
         $branch->contact = "";
+        $branch->save();
     }
 }
