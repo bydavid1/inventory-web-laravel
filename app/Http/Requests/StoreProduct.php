@@ -24,12 +24,12 @@ class StoreProduct extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
+            'name' => ['required', 'unique:products'],
             'image' => ['image'],
             'code' => ['required', 'unique:products'],
-            'provider_id' => ['required', 'numeric'],
+            'supplier_id' => ['required', 'numeric'],
             'category_id' => ['required', 'numeric'],
-            'manufacturer_id' => ['required', 'numeric'],
+            'brand_id' => ['required', 'numeric'],
             'purchase' => ['required', 'numeric'],
             'prices' => ['required', 'array', 'min:1'],
             'prices.*.price' => ['numeric', 'gt:purchase'],
@@ -45,6 +45,7 @@ class StoreProduct extends FormRequest
     {
         return [
             'name.required' => 'El nombre del producto es obligatorio',
+            'name.unique' => 'El nombre ya está en uso',
             'code.required' => 'El codigo del producto es obligatorio',
             'code.unique' => 'El codigo ya está en uso',
             'purchase.required' => 'El precio de compra del producto es obligatorio',

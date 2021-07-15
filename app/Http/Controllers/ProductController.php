@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProduct;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Stock;
 use App\Models\Photo;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\Supplier;
+use Error;
 use Exception;
 
 class ProductController extends Controller
@@ -30,26 +32,33 @@ class ProductController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Inventario"],["name" => "Productos y servicios"]
+            ["link" => "/", "name" => "Home"],
+            ["link" => "#", "name" => "Inventario"],
+            ["name" => "Productos y servicios"]
         ];
-        return view('pages.products', ['breadcrumbs'=>$breadcrumbs]);
+
+        return view('pages.products', ['breadcrumbs' => $breadcrumbs]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Inicio"],["link" => "#", "name" => "Inventario"],["link" => "#", "name" => "Productos"],["name" => "Crear"]
+            ["link" => "/", "name" => "Inicio"],
+            ["link" => "#", "name" => "Inventario"],
+            ["link" => "#", "name" => "Productos"],
+            ["name" => "Crear"]
         ];
+
         $categories = Category::select(['id','name'])->where('is_available', 1)->get();
-        $providers = Supplier::select(['id','name'])->where('is_available', 1)->get();
-        $manufacturers = Brand::select(['id','name'])->where('is_available', 1)->get();
-        //->where('is_available', 1);
-        return view('pages.product.addProduct', compact(['categories','providers', 'manufacturers', 'breadcrumbs']));
+        $suppliers = Supplier::select(['id','name'])->where('is_available', 1)->get();
+        $brands = Brand::select(['id','name'])->where('is_available', 1)->get();
+
+        return view('pages.product.addProduct', compact(['categories','suppliers', 'brands', 'breadcrumbs']));
     }
 
     /**
@@ -61,9 +70,9 @@ class ProductController extends Controller
     public function store(StoreProduct $request)
     {
         try {
-
             if ($request->validated()) {
                 $path = '';
+
 
                 if ($request->file('image')) {
                     $file = $request->file('image');
@@ -72,55 +81,61 @@ class ProductController extends Controller
                     $path = $this->photo_default;
                 }
 
-                $new = new Product;
-                $new->code = $request->code;
-                $new->name = $request->name;
-                $new->description = $request->description;
-                $new->supplier_id = $request->provider_id;
-                $new->category_id = $request->category_id;
-                $new->manufacturer_id = $request->manufacturer_id;
-                $new->stock = $request->stock;
-                $new->low_stock_alert = 1;
-                $new->type = $request->type;
-                $new->is_available = $request->is_available;
-                $new->is_deleted = 0;
+                $product = new Product;
+                $product->code = $request->code;
+                $product->name = $request->name;
+                $product->description = $request->description;
+                $product->is_service = $request->type;
+                $product->brand_id = $request->brand_id;
+                $product->unit_measure_id = 1; //temporally default
+                $product->category_id = $request->category_id;
+                $product->is_available = $request->is_available;
+                $product->save();
 
-                if ($new->save()) {
+                /**** Saving stock ****/
+                $product->stock()->attach(1, [
+                    "stock" => $request->stock,
+                    "low_stock" => 2 //temporaly default
+                ]);
 
-                    foreach ($request->prices as $key) {
-                        $prices = new Price;
-                        $prices->product_id = $new->id;
-                        $prices->price = $key['price'];
-                        $prices->utility = $key['utility'];
-                        $prices->tax_id = 1;
-                        $prices->price_incl_tax = $key['price'];
-                        $prices->save();
-                    }
+                /**** Saving prices ****/
+                $prices = array();
 
-                    $photo = new Photo;
-                    $photo->source = $path;
-                    $photo->product_id = $new->id;
-                    $photo->type = 'principal';
-                    $photo->save();
+                foreach ($request->prices as $item) {
+                    $price = new Price([
+                        "branch_id" => 1,
+                        "price" => $item['price'],
+                        "price_w_tax" => ($item['price'] * 0.13) + $item['price'],
+                        "utility" => $item['utility'],
+                        "tax_id" => 1
+                    ]);
 
-                    // $purchase = new Purchase_prices;
-                    // $purchase->product_id = $new->id;
-                    // $purchase->value = $request->purchase;
-                    // $purchase->save();
-
-                    // $kardex = new Kardex;
-                    // $kardex->type_id = 1; //Ingreso a inventario
-                    // $kardex->product_id = $new->id;
-                    // $kardex->quantity =  $new->stock;
-                    // $kardex->unit_price = $request->purchase;
-                    // $kardex->value = $request->purchase * $new->stock;
-                    // $kardex->final_unit_value = $request->purchase;
-                    // $kardex->final_stock = $new->stock;
-                    // $kardex->final_value = $request->purchase * $new->stock;
-                    // $kardex->save();
-
-                    return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
+                    array_push($prices, $price);
                 }
+
+                $product->prices()->saveMany($prices);
+
+                /**** Saving photo ****/
+
+                $product->photo()->save(new Photo([
+                    "source" => $path
+                ]));
+
+                return response()->json(['message' => "Si se guardo"], 201);
+
+                //     // $kardex = new Kardex;
+                //     // $kardex->type_id = 1; //Ingreso a inventario
+                //     // $kardex->product_id = $new->id;
+                //     // $kardex->quantity =  $new->stock;
+                //     // $kardex->unit_price = $request->purchase;
+                //     // $kardex->value = $request->purchase * $new->stock;
+                //     // $kardex->final_unit_value = $request->purchase;
+                //     // $kardex->final_stock = $new->stock;
+                //     // $kardex->final_value = $request->purchase * $new->stock;
+                //     // $kardex->save();
+
+                //     return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
+                // }
             }
         } catch (Exception $e) {
             return response()->json(['message'=> $e->getMessage()], 500);

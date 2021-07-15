@@ -12,4 +12,8 @@ class Branch extends Model
     use SoftDeletes;
 
     public $timestamps = false;
+
+    public function getProducts() {
+        return $this->belongsToMany(Product::class, 'stock');
+    }
 }

@@ -11,15 +11,19 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function distributions() {
-        return $this->hasMany(Distribution::class, 'product_id');
+    public function stock() {
+        return $this->belongsToMany(Branch::class, 'stock');
+    }
+
+    public function prices() {
+        return $this->hasMany(Price::class);
     }
 
     public function images() {
         return $this->hasMany(Photo::class, 'product_id');
     }
 
-    public function first_image() {
+    public function photo() {
         return $this->hasOne(Photo::class, 'product_id');
     }
 
