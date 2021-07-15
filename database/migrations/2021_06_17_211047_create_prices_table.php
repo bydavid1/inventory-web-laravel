@@ -15,9 +15,11 @@ class CreatePricesTable extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('distribution_id')->constrained('distributions');
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('branch_id')->constrained('branches');
             $table->foreignId('tax_id')->constrained('taxes');
             $table->decimal('price');
+            $table->decimal('price_w_tax');
             $table->decimal('utility');
             $table->timestamps();
             $table->softDeletes();

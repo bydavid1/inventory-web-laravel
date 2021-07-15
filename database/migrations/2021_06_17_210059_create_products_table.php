@@ -18,9 +18,11 @@ class CreateProductsTable extends Migration
             $table->string('code')->unique();
             $table->string('name')->unique();
             $table->string('description')->nullable();
+            $table->boolean('is_service')->default(false);
             $table->foreignId('brand_id')->constrained('brands');
             $table->foreignId('category_id')->constrained('categories');
-            $table->boolean('is_available');
+            $table->foreignId('unit_measure_id')->constrained('measurement_units');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

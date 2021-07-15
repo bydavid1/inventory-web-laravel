@@ -18,6 +18,7 @@ class CreateBranchesTable extends Migration
             $table->string('name');
             $table->string('address')->nullable();
             $table->string('contact')->nullable();
+            $table->boolean('is_available')->default(true);
             $table->softDeletes();
         });
     }

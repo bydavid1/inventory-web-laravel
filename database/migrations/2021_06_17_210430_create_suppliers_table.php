@@ -20,6 +20,7 @@ class CreateSuppliersTable extends Migration
             $table->string('phone');
             $table->string('nit');
             $table->string('address')->nullable();
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
