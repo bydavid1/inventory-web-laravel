@@ -10,4 +10,8 @@ class Supplier extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function products() {
+        return $this->belongsToMany(Product::class);
+    }
 }

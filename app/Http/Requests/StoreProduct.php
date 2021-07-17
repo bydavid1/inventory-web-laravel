@@ -35,7 +35,6 @@ class StoreProduct extends FormRequest
             'prices.*.price' => ['numeric', 'gt:purchase'],
             'prices.*.utility' => ['numeric', 'min:0'],
             'is_available' => ['required','numeric'],
-            'type' => ['required','numeric'],
             'stock' => ['required','numeric'],
 
         ];

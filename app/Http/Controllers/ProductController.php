@@ -85,7 +85,7 @@ class ProductController extends Controller
                 $product->code = $request->code;
                 $product->name = $request->name;
                 $product->description = $request->description;
-                $product->is_service = $request->type;
+                $product->is_service = $request->has('is_service');
                 $product->brand_id = $request->brand_id;
                 $product->unit_measure_id = 1; //temporally default
                 $product->category_id = $request->category_id;

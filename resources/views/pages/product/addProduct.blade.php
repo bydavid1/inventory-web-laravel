@@ -40,7 +40,19 @@
                     <!-- step 1 end-->
                     <!-- step 1 content -->
                     <fieldset class="pt-0">
-                        <h6 class="pb-50">Informacion del producto</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="pb-50">Informacion del producto</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="custom-control custom-switch custom-control-inline mb-1">
+                                    <input type="checkbox" class="custom-control-input" name="is_service" id="customSwitch1">
+                                    <label class="custom-control-label mr-1" for="customSwitch1"></label>
+                                    <span>Guardar como servicio</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -76,8 +88,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bxs-truck"></i></span>
                                         </div>
-                                        <select class="form-control select2" name="provider_id">
-                                            @foreach ($providers as $item)
+                                        <select class="form-control select2" name="supplier_id">
+                                            @foreach ($suppliers as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
@@ -106,12 +118,12 @@
                                     <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bxs-factory"></i></span>
+                                            <select class="form-control select2" name="brand_id">
+                                                @foreach ($brands as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select class="form-control select2" name="manufacturer_id">
-                                            @foreach ($manufacturers as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                 </div>
                                 <!-- /form-group-->
@@ -267,20 +279,6 @@
                                         <select class="form-control" id="is_available" name="is_available">
                                             <option value="1">Disponible</option>
                                             <option value="0">No disponible</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-                                <div class="form-group">
-                                    <label for="type" class="control-label">Tipo: </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-package"></i></span>
-                                        </div>
-                                        <select class="form-control" id="type" name="type">
-                                            <option value="1">Fisico</option>
-                                            <option value="2">Servicio</option>
-                                            <option value="3">No especificado</option>
                                         </select>
                                     </div>
                                 </div>
