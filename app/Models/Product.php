@@ -12,14 +12,20 @@ class Product extends Model
     use SoftDeletes;
 
     public function stock() {
-        return $this->belongsToMany(Branch::class, 'stock');
+        return $this->belongsToMany(Branch::class, 'stock')
+            ->withPivot('stock')
+            ->wherePivot('branch_id', 1);
     }
 
     public function prices() {
         return $this->hasMany(Price::class);
     }
 
-    public function images() {
+    public function price() {
+        return $this->hasOne(Price::class);
+    }
+
+    public function photos() {
         return $this->hasMany(Photo::class, 'product_id');
     }
 
@@ -27,4 +33,15 @@ class Product extends Model
         return $this->hasOne(Photo::class, 'product_id');
     }
 
+    public function suppliers() {
+        return $this->belongsToMany(Supplier::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class)->withDefault(['name' => 'Desconocido']);
+    }
+
+    public function brand() {
+        return $this->belongsTo(Brand::class)->withDefault(['name' => 'Desconocido']);
+    }
 }

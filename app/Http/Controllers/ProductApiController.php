@@ -12,10 +12,7 @@ class ProductApiController extends Controller
     public function getRecords(Request $request)
     {
         if ($request->ajax()) {
-            $query = Product::select('products.id','products.code','products.name','products.is_available', 'brands.name as brand_name', 'categories.name as name_category')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->with(['first_price', 'first_image']);
+            $query = Product::with(['price', 'photo', 'stock', 'brand', 'category']);
 
             return DataTables::of($query)
             ->addColumn('actions', '<div>
@@ -29,28 +26,39 @@ class ProductApiController extends Controller
                             <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
                         </a>
                         </div>')
-            ->addColumn('photo', function($products){
-                        if ($products->first_image != null) {
-                            $path = asset('storage/' . $products->first_image->src);
-                            return '<img class="img-round" src="'.$path.'" style="max-height:50px; max-width:70px;"/>';
-                        } else {
-                            return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
-                        }
-            })
             ->addColumn('prices', function($products){
-                         //Make sure there is at least one price registered
-                         if ($products->first_price != null) {
-                            return "$". $products->first_price->price_incl_tax;
-                         }else {
-                             return "";
-                         }
+                //Make sure there is at least one price registered
+                if ($products->price != null) {
+                return "$". $products->price->price_w_tax;
+                }else {
+                    return "";
+                }
+            })
+            ->addColumn('photo', function($products){
+                if ($products->photo != null) {
+                    $path = asset('storage/' . $products->photo->src);
+                    return '<img class="img-round" src="'.$path.'" style="max-height:50px; max-width:70px;"/>';
+                } else {
+                    return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
+                }
+            })
+            ->editColumn('stock', function($products) {
+                foreach ($products->stock as $i) {
+                    return $i->pivot->stock;
+                }
+            })
+            ->editColumn('brand', function($products){
+                return $products->brand->name;
+            })
+            ->editColumn('category', function($products){
+                return $products->category->name;
             })
             ->editColumn('is_available', function($products){
-                        if ($products->is_available == 1) {
-                            return '<i class="bx bx-check text-success"></i>';
-                        }else{
-                            return '<i class="bx bx-times text-danger"></i>';
-                        }
+                if ($products->is_available == 1) {
+                    return '<i class="bx bx-check text-success"></i>';
+                }else{
+                    return '<i class="bx bx-times text-danger"></i>';
+                }
             })
             ->rawColumns(['actions', 'photo', 'is_available'])
             ->toJson();

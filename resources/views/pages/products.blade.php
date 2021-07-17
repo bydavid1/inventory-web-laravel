@@ -27,7 +27,7 @@
                     <th>Precios</th>
                     <th>Cantidad</th>
                     <th>Categoria</th>
-                    <th>Fabricante</th>
+                    <th>Marca</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -107,10 +107,10 @@
                         data: 'stock'
                     },
                     {
-                        data: 'name_category'
+                        data: 'category'
                     },
                     {
-                        data: 'name_supplier'
+                        data: 'brand'
                     },
                     {
                         data: 'is_available'
