@@ -88,11 +88,19 @@
     <script>
         $(document).ready(function () {
             $('#items').DataTable({
-                "serverSide": true,
-                "ajax": "{{ url('api/products') }}",
-                "columns": [
+                serverSide: true,
+                ajax: "{{ url('api/products') }}",
+                processing: true,
+                dom: "Bfrtip",
+                buttons: [
+                    { extend: "pdfHtml5", exportOptions: { columns: [0, ":visible"] } },
+                    { extend: "print", exportOptions: { columns: [0, ":visible"] } },
+                ],
+                columns: [
                     {
-                        data: 'photo'
+                        data: 'photo',
+                        searchable: false,
+                        orderable: false
                     },
                     {
                         data: 'code'
@@ -101,23 +109,33 @@
                         data: 'name'
                     },
                     {
-                        data: 'prices'
+                        data: 'prices',
+                        searchable: false,
+                        orderable: false
                     },
                     {
-                        data: 'stock'
+                        data: 'stock',
+                        searchable: false,
+                        orderable: false
                     },
                     {
-                        data: 'category'
+                        data: 'category',
+                        searchable: false,
+                        orderable: false
                     },
                     {
-                        data: 'brand'
+                        data: 'brand',
+                        searchable: false,
+                        orderable: false
                     },
                     {
-                        data: 'is_available'
+                        data: 'is_available',
+                        searchable: false
                     },
                     {
-                        "searchable" : false,
-                       data: 'actions'
+                        data: 'actions',
+                        searchable : false,
+                        orderable: false
                     },
                 ]
             })
