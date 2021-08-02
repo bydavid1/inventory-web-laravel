@@ -1,25 +1,41 @@
+// ------------------------------
 //        vertical Wizard       //
 // ------------------------------
-$(".wizard-vertical").steps({
+
+let wizard = $(".product-wizard");
+let form = wizard.show();
+wizard.steps({
     headerTag: "h3",
     bodyTag: "fieldset",
     transitionEffect: "fade",
-    enableAllSteps: true,
-    stepsOrientation: "vertical",
+    titleTemplate: '<span class="step">#index#</span> #title#',
     labels: {
-      finish: 'Guardar',
-      next: 'Siguiente',
-      previous: 'Atras'
+        finish: 'Guardar',
+        next: 'Siguiente',
+        previous: 'Atras'
+    },
+    onStepChanging: function (event, currentIndex, newIndex) {
+        return true;
+    },
+    onFinishing: function (event, currentIndex) {
+
     },
     onFinished: function (event, currentIndex) {
-      storeProduct()
+        storeProduct()
     }
-  });
+});
 
-// document.getElementById('submitProductForm').addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     storeProduct()
-// })
+// Icon color change on state change
+$(document).ready(function () {
+    $(".current").find(".step-icon").addClass("bx bx-time-five");
+});
+// Icon change on state
+// if click on next button icon change
+$(".actions [href='#next']").click(function () {
+    $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
+    $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
+})
+
 
 //----------------------------------------------------------------------
 //-------------------------Store data---------------------------------
@@ -31,7 +47,6 @@ function storeProduct() {
         const formdata = new FormData(document.getElementById('submitProductForm'));
 
         //clear empty prices
-
         for (let i = 0; i < 4; i++) {
             if (formdata.get(`prices[${i}][price]`) == "") {
                 formdata.delete(`prices[${i}][price]`)
@@ -90,7 +105,6 @@ function storeProduct() {
         });
     }
 }
-
 
 //-----------------Validate function-------------------
 
@@ -223,4 +237,18 @@ function calculateField(price, utility, action) {
     }
 }
 
+//----------------------------------------------------------------------
+//-------------------------Service toogle--------------------------------
+//----------------------------------------------------------------------
+
+function serviceToogle() {
+    let switchService = document.getElementById("is_service")
+    let stock = document.getElementById("stock").closest(".form-group");
+
+    if (switchService.checked == true) {
+        stock.classList.add("d-none")
+    } else if (switchService.checked == false) {
+        stock.classList.remove("d-none")
+    }
+}
 

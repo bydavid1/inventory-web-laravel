@@ -7,13 +7,17 @@
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/wizard/wizard.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/fileinput/fileinput.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.css')}}">
+
 @endsection
 
 @section('content')
 
 <div class="card">
     <div class="card-content">
+        <div class="card-header">
+            <h3 class="d-none">Crear producto</h3>
+        </div>
         <div class="card-body">
             <div class="alert alert-danger alert-dismissible d-none mt-1" role="alert" id="posterror">
                 <div class="d-flex align-items-center">
@@ -23,36 +27,22 @@
                     </span>
                 </div>
             </div>
-            <section id="vertical-wizard">
-                <form class="wizard-vertical" id="submitProductForm" action="{{ route('storeProduct') }}"
+            <section id="wizard">
+                <form class="product-wizard" id="submitProductForm" action="{{ route('storeProduct') }}"
                     enctype="multipart/form-data">
                     @csrf
                     <!-- step 1 -->
                     <h3>
-                        <span class="fonticon-wrap mr-1">
-                            <i class='bx bxs-collection bx-lg'></i>
+                        <i class="step-icon"></i>
+                        <span class="fonticon-wrap">
+                            <i class='bx bxs-package bx-md' ></i>
                         </span>
-                        <span class="icon-title">
-                            <span class="d-block">Detalles</span>
-                            <small class="text-muted">Ingresa la informacion general del producto.</small>
-                        </span>
+                        <span>Presentacion</span>
                     </h3>
                     <!-- step 1 end-->
                     <!-- step 1 content -->
                     <fieldset class="pt-0">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="pb-50">Informacion del producto</h6>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="custom-control custom-switch custom-control-inline mb-1">
-                                    <input type="checkbox" class="custom-control-input" name="is_service" id="customSwitch1">
-                                    <label class="custom-control-label mr-1" for="customSwitch1"></label>
-                                    <span>Guardar como servicio</span>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
+                        <hr class="my-2"/>
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -118,12 +108,12 @@
                                     <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bxs-factory"></i></span>
-                                            <select class="form-control select2" name="brand_id">
-                                                @foreach ($brands as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
                                         </div>
+                                        <select class="form-control select2" name="brand_id">
+                                            @foreach ($brands as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <!-- /form-group-->
@@ -142,21 +132,54 @@
                         </div>
                     </fieldset>
                     <!-- step 1 content end-->
+
                     <!-- step 2 -->
                     <h3>
-                        <span class="fonticon-wrap mr-1">
-                            <i class='bx bxs-spreadsheet bx-lg'></i>
+                        <i class="step-icon"></i>
+                        <span class="fonticon-wrap">
+                            <i class='bx bxs-barcode bx-md'></i>
                         </span>
-                        <span class="icon-title">
-                            <span class="d-block">Inventario</span>
-                            <small class="text-muted">Ingresa precios, cantidades y mas.</small>
-                        </span>
+                        <span>Inventario</span>
                     </h3>
                     <!-- step 2 end-->
                     <!-- step 2 content -->
                     <fieldset class="pt-0">
-                        <h6 class="py-50">Ingresa informacion de inventario</h6>
+                        <hr class="my-2">
                         <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="custom-control custom-switch custom-control-inline mb-1">
+                                    <input type="checkbox" class="custom-control-input" name="is_service" id="is_service" onchange="serviceToogle()">
+                                    <label class="custom-control-label mr-1" for="is_service"></label>
+                                    <span>Guardar como servicio</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productStatus" class="control-label">Estado: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bx bx-loader"></i></span>
+                                        </div>
+                                        <select class="form-control" id="is_available" name="is_available">
+                                            <option value="1">Disponible</option>
+                                            <option value="0">No disponible</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /form-group-->
+                                <div class="form-group">
+                                    <label for="stock" class="control-label">Stock: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bx bxs-component"></i></span>
+                                        </div>
+                                        <input type="number" class="form-control" id="stock" placeholder="Stock"
+                                            name="stock" autocomplete="ggg-ss">
+                                    </div>
+                                </div>
+                                <!-- /form-group-->
+                            </div>
+
+                            {{-- prices table --}}
+
                             <div class="col-lg-6">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -246,68 +269,19 @@
                                                 onkeyup="calculate(this)" autocomplete="ggg-ss" disabled/>
                                         </div>
                                     </div>
-                                    <!-- /form-group-->
-                                    <div class="col-sm-6 mb-1">
-                                        <div class="input-group" id="alert">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                                            </div>
-                                            <input type="number" step=".01" min="0" class="form-control" placeholder="Precio 4" id="price4" name="prices[3][price]"
-                                                onkeyup="calculate(this)" autocomplete="ggg-ss" disabled/>
-                                        </div>
-                                    </div>
-                                    <!-- /form-group-->
-                                    <div class="col-sm-6 mb-1">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="bx bx-transfer"></i></span>
-                                            </div>
-                                            <input type="number" step=".01" min="0" class="form-control" placeholder="Utilidad 4" id="utility4" name="prices[3][utility]"
-                                                onkeyup="calculate(this)" autocomplete="ggg-ss" disabled/>
-                                        </div>
-                                    </div>
-                                    <!-- /form-group-->
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="productStatus" class="control-label">Estado: </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bx-loader"></i></span>
-                                        </div>
-                                        <select class="form-control" id="is_available" name="is_available">
-                                            <option value="1">Disponible</option>
-                                            <option value="0">No disponible</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
-
-                                <div class="form-group">
-                                    <label for="quantity" class="control-label">Stock: </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bx bxs-component"></i></span>
-                                        </div>
-                                        <input type="number" class="form-control" id="stock" placeholder="Stock"
-                                            name="stock" autocomplete="ggg-ss">
-                                    </div>
-                                </div>
-                                <!-- /form-group-->
                             </div>
                         </div>
                     </fieldset>
                     <!-- step 2 content end-->
+
                     <!-- step 3 -->
                     <h3>
-                        <span class="fonticon-wrap mr-1">
-                            <i class='bx bxs-image bx-lg'></i>
+                        <i class="step-icon"></i>
+                        <span class="fonticon-wrap">
+                            <i class='bx bxs-image-add bx-md'></i>
                         </span>
-                        <span class="icon-title">
-                            <span class="d-block">Imagenes</span>
-                            <small class="text-muted">Sube fotos de tu producto.</small>
-                        </span>
+                        <span>Imagenes</span>
                     </h3>
                     <!-- step 3 end-->
                     <!-- step 3 content -->
@@ -338,13 +312,15 @@
 <script src="{{asset('js/libs/steps/jquery.steps.js')}}"></script>
 <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('js/libs/fileinput/fileinput.min.js')}}"></script>
-<script src="{{asset('js/libs/select2/select2.full.min.js')}}"></script>
+<script src="{{asset('js/libs/select2/select2.full.js')}}"></script>
+<script src="{{asset('js/libs/forms/validation/form-validation.js')}}"></script>
 @endsection
 
 @section('page-scripts')
 @routes
 <script src="{{ asset('js/scripts/product/addProduct.js') }}"></script>
 <script>
+
     // Basic Select2 select
     $(".select2").select2({
         // the following code is used to disable x-scrollbar when click in select input and
