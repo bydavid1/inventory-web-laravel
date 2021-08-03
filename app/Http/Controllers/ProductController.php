@@ -81,31 +81,38 @@ class ProductController extends Controller
                     $path = $this->photo_default;
                 }
 
+                $is_service = $request->has('is_service');
+
                 $product = new Product;
                 $product->code = $request->code;
                 $product->name = $request->name;
                 $product->description = $request->description;
-                $product->is_service = $request->has('is_service');
+                $product->is_service = $is_service;
                 $product->brand_id = $request->brand_id;
                 $product->unit_measure_id = 1; //temporally default
                 $product->category_id = $request->category_id;
                 $product->is_available = $request->is_available;
                 $product->save();
 
+                /**** Saving supplier ****/
+                $product->suppliers()->attach($request->supplier_id);
+
                 /**** Saving stock ****/
                 $product->stock()->attach(1, [
-                    "stock" => $request->stock,
-                    "low_stock" => 2 //temporaly default
+                    "stock" => $is_service ? 1 :  $request->stock,
+                    "low_stock" => $is_service ? 1 : 2 //temporaly default
                 ]);
 
                 /**** Saving prices ****/
                 $prices = array();
 
+                $temporalDefaultTax = 0.13; ///Its temporal!!
+
                 foreach ($request->prices as $item) {
                     $price = new Price([
                         "branch_id" => 1,
                         "price" => $item['price'],
-                        "price_w_tax" => ($item['price'] * 0.13) + $item['price'],
+                        "price_w_tax" => ($item['price'] * $temporalDefaultTax) + $item['price'],
                         "utility" => $item['utility'],
                         "tax_id" => 1
                     ]);
@@ -121,7 +128,7 @@ class ProductController extends Controller
                     "source" => $path
                 ]));
 
-                return response()->json(['message' => "Si se guardo"], 201);
+                return response()->json(['message' => "Producto guardado"], 201);
 
                 //     // $kardex = new Kardex;
                 //     // $kardex->type_id = 1; //Ingreso a inventario

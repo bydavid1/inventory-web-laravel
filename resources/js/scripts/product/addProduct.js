@@ -18,7 +18,7 @@ wizard.steps({
         return true;
     },
     onFinishing: function (event, currentIndex) {
-
+        return true;
     },
     onFinished: function (event, currentIndex) {
         storeProduct()
@@ -114,13 +114,10 @@ function validate(){
 
     //reset all fields messages
     const invalidfields = document.getElementsByClassName('is-invalid')
-    const posterror = document.getElementById('posterror')
-    const posterrortitle = document.getElementById('posterrortitle')
 
     const messageslength = invalidfields.length
 
     if (messageslength > 0) {
-        posterror.classList.add('d-none')
         for (let x = 0; x < messageslength; x++) {
             invalidfields[0].classList.remove('is-invalid')
         }
@@ -142,7 +139,7 @@ function validate(){
     }
 
     let j = 0
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 4; i++) {
         let input = document.getElementById(`price${i}`)
         if (input.value == "") {
             input.classList.add('is-invalid')
@@ -154,13 +151,11 @@ function validate(){
         if (j != 4) {
             return true
         } else {
-            posterrortitle.textContent = "Debe haber al menos un precio"
-            posterror.classList.remove('d-none')
+            toastr.error('Debe haber al menos un precio', 'Error');
             return false
         }
     } else {
-        posterrortitle.textContent = "Hay datos importantes que hacen falta"
-        posterror.classList.remove('d-none')
+        toastr.error('Faltan datos importantes', 'Error');
         return false
     }
 }
@@ -173,8 +168,10 @@ function validate(){
 
 function calculate(target){
     if (target.id === "purchase") {
-        let result = target.value != "" && isNaN(target.value) === false ? false : true
-        for (let i = 1; i < 5; i++) {
+        let result = target.value != "" && isNaN(target.value) === false ? false : true;
+
+
+        for (let i = 1; i < 4; i++) {
             let price = document.getElementById('price' + i)
             let utility = document.getElementById('utility' + i)
             //toggle disabled property
@@ -243,12 +240,15 @@ function calculateField(price, utility, action) {
 
 function serviceToogle() {
     let switchService = document.getElementById("is_service")
-    let stock = document.getElementById("stock").closest(".form-group");
+    let stock = document.getElementById("stock");
+    let stockParent = stock.closest(".form-group")
 
     if (switchService.checked == true) {
-        stock.classList.add("d-none")
+        stock.value = 0
+        stockParent.classList.add("d-none")
     } else if (switchService.checked == false) {
-        stock.classList.remove("d-none")
+        stock.value = ""
+        stockParent.classList.remove("d-none")
     }
 }
 

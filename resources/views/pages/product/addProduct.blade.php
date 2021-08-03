@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/fileinput/fileinput.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.css')}}">
-
+<link rel="stylesheet" type="text/css" href="{{asset('js/libs/toastr/toastr.css')}}">
 @endsection
 
 @section('content')
@@ -19,14 +19,6 @@
             <h3 class="d-none">Crear producto</h3>
         </div>
         <div class="card-body">
-            <div class="alert alert-danger alert-dismissible d-none mt-1" role="alert" id="posterror">
-                <div class="d-flex align-items-center">
-                    <i class="bx bx-error"></i>
-                    <span id="posterrortitle">
-
-                    </span>
-                </div>
-            </div>
             <section id="wizard">
                 <form class="product-wizard" id="submitProductForm" action="{{ route('storeProduct') }}"
                     enctype="multipart/form-data">
@@ -313,7 +305,7 @@
 <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('js/libs/fileinput/fileinput.min.js')}}"></script>
 <script src="{{asset('js/libs/select2/select2.full.js')}}"></script>
-<script src="{{asset('js/libs/forms/validation/form-validation.js')}}"></script>
+<script src="{{asset('js/libs/toastr/toastr.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
