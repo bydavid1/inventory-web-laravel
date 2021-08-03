@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProduct;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Stock;
 use App\Models\Photo;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\Supplier;
-use Error;
 use Exception;
+
+use function PHPUnit\Framework\fileExists;
 
 class ProductController extends Controller
 {
 
-    private $photo_default = "default.png";
+    private $photo_default = "photo_default.png";
 
     /**
      * Display a listing of the resource.
@@ -158,7 +158,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Home"],
+            ["link" => "#", "name" => "Inventario"],
+            ["link" => "#", "name" => "Productos y servicios"],
+            ["name" => "Alerts"]
         ];
         $product = Product::findOrFail($id);
 
@@ -173,25 +176,21 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
-        ];
         $categories = Category::select(['id','name'])->where('is_available', '1')->get();
-        $suppliers = Supplier::select(['id','name'])->where('is_available', '1')->get();
-        $manufacturers = Brand::select(['id','name'])->where('is_available', '1')->get();
-        $product = Product::with(['prices' => function($query){
-            $query->select('id','product_id','price','price_incl_tax','utility');
-        },
-        'images' => function($query){
-            $query->select('id','product_id','src');
-        },
-        'purchase_prices' => function($query){
-            $query->select('id','product_id','value');
-        }])
-        ->where('id', $id)->get();
+        $brands = Brand::select(['id','name'])->where('is_available', '1')->get();
+
+        $product = Product::find($id);
+
+        $breadcrumbs = [
+            ["link" => route("home"), "name" => "Home"],
+            ["link" => route("products"), "name" => "Inventario"],
+            ["link" => route("products"), "name" => "Productos y servicios"],
+            ["link" => "#", "name" => $product->name],
+            ["name" => "Editar"]
+        ];
 
         //return response($product, 200);
-        return view('pages.product.editProduct', compact(['product', 'categories', 'suppliers', 'manufacturers', 'breadcrumbs']));
+        return view('pages.product.editProduct', compact(['product', 'categories', 'brands', 'breadcrumbs']));
     }
 
     /**
@@ -205,55 +204,54 @@ class ProductController extends Controller
         try {
             $request->validate([
                 'code' => 'required',
-                'name' => 'required',
-                'stock' => 'required',
-                'purchase' => 'required'
+                'name' => 'required'
             ]);
 
             $product = Product::find($id);
-            $savedImage = $product->first_image->src; //Salvo el path de la imagen por si luego es necesario eliminarlo
             $product->code = $request->code;
             $product->name = $request->name;
             $product->description = $request->description;
-            $product->supplier_id = $request->provider_id;
             $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->type = $request->type;
             $product->is_available = $request->is_available;
 
-            //Update purchase_prices
-            $product->first_purchase_price()->update([
-                'value' => $request->purchase
-            ]);
-
-            //Update prices
-            $prices = $product->prices();
-            $prices->each(function($item) use($request){
-                $id = $item->id;
-                $item->update(array('price' => $request->{'price'.$id}, 'utility' => $request->{'utility'.$id}));
-            });
+            //Salvo el path de la imagen por si luego es necesario eliminarlo
+            $savedImage = "";
+            if ($product->photo) {
+                $savedImage = $product->photo->source;
+            }
 
             //Update image if exist
             if ($request->file('image')) {
                 $file = $request->file('image');
                 $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
-                $product->first_image()->update([
-                    'src' => $path
-                ]);
-            }
 
-            $product->save();
-
-            if ($request->file('image')) {
-                if ($savedImage != $this->photo_default) {
-                    unlink($savedImage);
+                if ($savedImage != "") {
+                    //Update photo
+                    $product->photo()->update([
+                        'source' => $path
+                    ]);
+                    //Delete old photo
+                    if ($savedImage != $this->photo_default) {
+                        $imageFullPath = public_path() . "/storage/" . $savedImage;
+                        if (file_exists($imageFullPath)) {
+                            unlink($imageFullPath);
+                        }
+                    }
+                } else {
+                    //Create new photo if old is empty
+                    $product->photo()->save(new Photo([
+                        "source" => $path
+                    ]));
                 }
             }
 
-        return back()->with('mensaje', 'Registro actualizado exitosamente');
+
+            $product->save();
+
+            return response()->json(['message' => "Producto actualizado"], 201);
 
         } catch (Exception $th) {
-            return back()->with('error', $th->getMessage());
+            return response()->json(['message' => "Error: " . $th->getMessage()], 500);
         }
     }
 
