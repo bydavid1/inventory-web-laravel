@@ -15,16 +15,19 @@ class ProductApiController extends Controller
             $query = Product::with(['price', 'photo', 'stock', 'brand', 'category']);
 
             return DataTables::of($query)
-            ->addColumn('actions', '<div>
-                        <a role="button" href="{{ route("editProduct", "$id") }}">
-                            <i class="badge-circle badge-circle-success bx bx-edit font-medium-1"></i>
-                        </a>
-                        <a role="button" id="removeProductModalBtn" data-id="{{"$id"}}">
-                            <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
-                        </a>
-                        <a href="{{ route("showProduct", "$id") }}">
-                            <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
-                        </a>
+            ->addColumn('actions', '
+                        <div class="btn-group dropdown mb-1">
+                            <a role="button" href="{{ route("editProduct", "$id") }}" class="btn btn-secondary">Editar</a>
+                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                data-reference="parent">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+                                <a class="dropdown-item" id="editPricesModalBtn" data-id="{{"$id"}}">Editar precios</a>
+                                <a class="dropdown-item" id="removeProductModalBtn" data-id="{{"$id"}}">Eliminar</a>
+                                <a class="dropdown-item" href="{{ route("showProduct", "$id") }}">Ver producto</a>
+                            </div>
                         </div>')
             ->addColumn('prices', function($products){
                 //Make sure there is at least one price registered
