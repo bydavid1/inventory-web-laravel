@@ -36,8 +36,16 @@ class ProductApiController extends Controller
             })
             ->addColumn('photo', function($products){
                 if ($products->photo != null) {
-                    $path = asset('storage/' . $products->photo->src);
-                    return '<img class="img-round" src="'.$path.'" style="max-height:50px; max-width:70px;"/>';
+
+                    $path = "";
+
+                    if ($products->photo->source == "photo_default.png") {
+                        $path = asset('assets/media/' . $products->photo->source);
+                    } else {
+                        $path = asset('storage/' . $products->photo->source);
+                    }
+
+                    return '<img class="img-round" src="'.$path.'" style="max-height:40px; max-width:50px;"/>';
                 } else {
                     return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
                 }
