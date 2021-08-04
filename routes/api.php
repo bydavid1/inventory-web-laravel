@@ -31,15 +31,19 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('products', [ProductApiController::class, 'getRecords']);
 
-    Route::get('products/{id}/{columns}', [ProductApiController::class, 'byId']);
+    Route::get('products/id/{id}/{columns}', [ProductApiController::class, 'byId']);
 
     Route::get('products/code/{code}/{columns}', [ProductApiController::class, 'byCode']);
 
-    Route::get('products/search/{query}/{columns}', [ProductApiController::class, 'byQuery']);
+    Route::get('products/query/{query}/{columns}', [ProductApiController::class, 'byQuery']);
+
+    Route::get('products/prices/{id}', [ProductApiController::class, 'prices'])->name('api:prices');
 
     Route::get('pagination/fetch', [ProductApiController::class, 'pagination']);
 
     Route::get('pagination/fetch/search/{query?}', [ProductApiController::class, 'search']);
+
+    Route::put('products/prices/{id}/update', [ProductApiController::class, 'updatePrices'])->name('api:updatePrices');
 
     // Api categories
 

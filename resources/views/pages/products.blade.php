@@ -5,6 +5,7 @@
 
 @section('vendor-styles')
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/datatables/css/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('js/libs/toastr/toastr.css')}}">
 @endsection
 
 @section('tools')
@@ -38,8 +39,6 @@
 </div>
 <!-- /.card -->
 
-
-
 <!-------------------------------------Remove Product ------------------------------------------->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeProductModal">
     <div class="modal-dialog">
@@ -71,6 +70,34 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-------------------------------------Remove Product ------------------------------------------->
+<div class="modal fade" tabindex="-1" role="dialog" id="editPricesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<h4 class="modal-title"><i class="bx bx-cube"></i> Editar precios</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+            </div>
+            <form id="pricesForm">
+                <div class="modal-body" method="POST">
+					@method('PUT')
+                    <div id="pricesFormInputs">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Actualizar</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @endsection
 
 @section('vendor-scripts')
@@ -82,6 +109,7 @@
     <script src="{{asset('js/libs/datatables/js/buttons.bootstrap.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/vfs_fonts.js')}}"></script>
+    <script src="{{asset('js/libs/toastr/toastr.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
@@ -148,5 +176,88 @@
             $('#identifier').val(id);
             $('#removeProductModal').modal('show');
         });
+
+        function getPrices(id) {
+            let url = `{{ route('api:prices', ':id') }}`
+            $.ajax({
+                url: url.replace(':id', id),
+                beforeSend: function () {
+                    console.log('Obteniendo...')
+                },
+                success: function (response) {
+                    let html = `<div class="row">`;
+
+                    response.forEach((item, index) => {
+                        html += `<div class="col-sm-4 mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                </div>
+                                <input type="number" step=".01" min="0" value="${item.price}"
+                                    class="form-control" placeholder="Precio ${index}"
+                                    id="price${item.id}" name="prices[${item.id}][price]"
+                                    autocomplete="ggg-ss"/>
+                            </div>
+                        </div>`;
+
+                        html += `<div class="col-sm-4 mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="bx bx-transfer"></i></span>
+                                </div>
+                                <input type="number" step=".01" min="0" value="${item.utility}"
+                                    class="form-control" placeholder="Utilidad ${index}"
+                                    id="utility${item.id}" name="prices[${item.id}][utility]"
+                                    autocomplete="ggg-ss"/>
+                            </div>
+                        </div>`
+
+                        html += `<div class="col-sm-4 mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class='bx bxs-offer'></i></span>
+                                </div>
+                                <input type="number" step=".01" min="0" value="${item.price_w_tax}"
+                                    class="form-control" placeholder="Precio con impuesto"
+                                    autocomplete="ggg-ss" disabled/>
+                            </div>
+                        </div>`
+                    });
+
+                    html += `<input type="hidden" value="${id}" id="product_id" name="product_id"></div>`
+
+                    $('#pricesFormInputs').html(html);
+                },
+                error: function (xhr, textStatus, errorMessage) {
+                    console.log(xhr.responseJSON.message)
+                }
+            });
+
+            $('#editPricesModal').modal('show');
+        }
+
+        document.getElementById('pricesForm').addEventListener('submit', function(e) {
+
+            e.preventDefault();
+            let formdata = $(this).serialize();
+            let url = `{{ route('api:updatePrices', ':id') }}`;
+
+            $.ajax({
+                type: 'POST',
+                url: url.replace(':id', document.getElementById('product_id').value),
+                data: formdata,
+                beforeSend: function () {
+                    console.log('Actualizando')
+                },
+                success: function (response) {
+                    toastr.success('Precios actualizados', 'Hecho!');
+                    $('#editPricesModal').modal('hide');
+                },
+                error: function (xhr, textStatus, errorMessage) {
+                    toastr.error(xhr.responseText, 'Error');
+                }
+            });
+        })
+
     </script>
 @endsection

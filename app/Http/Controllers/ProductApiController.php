@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Price;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ProductApiController extends Controller
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                                <a class="dropdown-item" id="editPricesModalBtn" data-id="{{"$id"}}">Editar precios</a>
+                                <button class="dropdown-item" onclick="getPrices({{"$id"}})">Editar precios</button>
                                 <a class="dropdown-item" id="removeProductModalBtn" data-id="{{"$id"}}">Eliminar</a>
                                 <a class="dropdown-item" href="{{ route("showProduct", "$id") }}">Ver producto</a>
                             </div>
@@ -139,5 +140,53 @@ class ProductApiController extends Controller
         }
 
         return response($products, 200);
+    }
+
+    /**
+     * Get all prices
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function prices($id)
+    {
+        $product = Product::find($id);
+
+        if ($product) {
+            return response($product->prices, 200);
+        } else {
+            return response()->json(["message" => "Producto no encontrado"], 404);
+        }
+    }
+
+    /**
+     * Update prices
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePrices(Request $request, $id)
+    {
+        try {
+            $product = Product::find($id);
+
+            //Updating prices
+            $temporalDefaultTax = 0.13; ///Its temporal!!
+
+            foreach ($request->prices as $key => $item) {
+                $price = [
+                    "price" => $item['price'],
+                    "price_w_tax" => ($item['price'] * $temporalDefaultTax) + $item['price'],
+                    "utility" => $item['utility'],
+                ];
+                $product->prices()->updateOrCreate(["id" => $key], $price);
+            }
+
+            if ($product->save()) {
+                return response()->json(["message" => "Precios actualizados"], 201);
+            } else {
+                return response()->json(["message" => "Ocurrio un error"], 400);
+            }
+        } catch (Exception $th) {
+            return response()->json(["message" => "Ocurrio un error: " . $th->getMessage()], 500);
+        }
     }
 }

@@ -17,8 +17,6 @@ use App\Models\Product;
 use App\Models\Supplier;
 use Exception;
 
-use function PHPUnit\Framework\fileExists;
-
 class ProductController extends Controller
 {
 
