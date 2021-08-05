@@ -259,32 +259,17 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $product = Product::find($request->identifier);
-        $product->is_deleted = 1;
-        $product->save();
+        try {
+            $product = Product::find($id);
 
-        if ($product->save()) {
-            return back()->with('mensaje', "Se movió a la papelera");
-        }else{
-            return back()->with('error', "No se pudo eliminar");
+            $product->delete();
+
+            return response()->json(["message" => "Eliminado correcto"], 200);
+
+        } catch (Exception $th) {
+            return response()->json(["message" => "Ocurrió un error al eliminar"], 500);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
-        $id=$request->input('id_product');
-
-        $product = Product::findOrFail($id);
-        $product->delete();
-
-        return back()->with('mensaje', "Eliminado correctamente");
     }
 }

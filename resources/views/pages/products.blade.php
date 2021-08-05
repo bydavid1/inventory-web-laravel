@@ -6,6 +6,7 @@
 @section('vendor-styles')
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/datatables/css/datatables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/toastr/toastr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}"
 @endsection
 
 @section('tools')
@@ -29,7 +30,7 @@
                     <th>Cantidad</th>
                     <th>Categoria</th>
                     <th>Marca</th>
-                    <th>Estado</th>
+                    <th>Disponible</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -39,39 +40,7 @@
 </div>
 <!-- /.card -->
 
-<!-------------------------------------Remove Product ------------------------------------------->
-<div class="modal fade" tabindex="-1" role="dialog" id="removeProductModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-				<h4 class="modal-title"><i class="bx bx-cube"></i> Eliminar producto</h4>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-            </div>
-            <div class="modal-body">
-
-                <form action="{{ route('deleteProduct') }}" method="POST">
-					@method('PUT')
-					@csrf
-					<p id="message">¿Realmente deseas eliminar el producto? Se movera a la palera</p>
-					<input type="hidden" name="identifier" id="identifier">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"> <i
-                                class="bx bx-times"></i> Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
-                                class="bx bx-trash"></i> Eliminar</button>
-                    </div>
-				</form>
-			</div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<!-------------------------------------Remove Product ------------------------------------------->
+<!------------------------------------- Update prices modal ------------------------------------------->
 <div class="modal fade" tabindex="-1" role="dialog" id="editPricesModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -98,6 +67,14 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-- Delete form-->
+<div class="d-none">
+	<form id="destroyform" method="POST">
+		@method('DELETE')
+        @csrf
+	</form>
+</div>
 @endsection
 
 @section('vendor-scripts')
@@ -110,6 +87,7 @@
     <script src="{{asset('js/libs/datatables/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/vfs_fonts.js')}}"></script>
     <script src="{{asset('js/libs/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
@@ -171,12 +149,6 @@
     </script>
 
     <script>
-        $(document).on('click','#removeProductModalBtn',function(){
-            var id=$(this).attr('data-id');
-            $('#identifier').val(id);
-            $('#removeProductModal').modal('show');
-        });
-
         function getPrices(id) {
             let url = `{{ route('api:prices', ':id') }}`
             $.ajax({
@@ -258,6 +230,51 @@
                 }
             });
         })
+
+    //----------------------------------------------------------------------
+    //-------------------------Delete product ---------------------------------
+    //----------------------------------------------------------------------
+
+
+    function remove(id){
+        let url = `{{ route('deleteProduct', ':id') }}`;
+
+        Swal.fire({
+            title: '¿Está seguro de eliminar este producto?',
+            text: "Se moverá a la papelera",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar'
+          }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: url.replace(':id', id),
+                    type: 'POST',
+                    data: $('#destroyform').serialize(),
+                    success: function (response) {
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Eliminado',
+                            timer: 1500
+                        });
+
+                        table.ajax.reload();
+                    },
+                    error: function (xhr, textStatus, errorMessage) {
+                        Swal.fire({
+                            position: 'top',
+                            icon: 'error',
+                            html: xhr.responseText,
+                            showConfirmButton: true,
+                        });
+                    }
+                })
+            }
+        })
+    }
 
     </script>
 @endsection

@@ -26,7 +26,7 @@ class ProductApiController extends Controller
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
                                 <button class="dropdown-item" onclick="getPrices({{"$id"}})">Editar precios</button>
-                                <a class="dropdown-item" id="removeProductModalBtn" data-id="{{"$id"}}">Eliminar</a>
+                                <button class="dropdown-item" onclick="remove({{"$id"}})">Eliminar</button>
                                 <a class="dropdown-item" href="{{ route("showProduct", "$id") }}">Ver producto</a>
                             </div>
                         </div>')
@@ -67,9 +67,9 @@ class ProductApiController extends Controller
             })
             ->editColumn('is_available', function($products){
                 if ($products->is_available == 1) {
-                    return '<i class="bx bx-check text-success"></i>';
+                    return '<i class="bx bxs-check-circle text-success"></i>';
                 }else{
-                    return '<i class="bx bx-times text-danger"></i>';
+                    return '<i class="bx bxs-x-circle text-danger"></i>';
                 }
             })
             ->rawColumns(['actions', 'photo', 'is_available'])

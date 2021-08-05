@@ -42,7 +42,7 @@ Route::prefix('products')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('editProduct');
     Route::put('/update/{id}', [ProductController::class, 'update'])->name('updateProduct')->middleware('auth');
     Route::get('/show/{id}', [ProductController::class, 'show'])->name('showProduct')->middleware('auth');
-    Route::put('/delete', [ProductController::class, 'delete'])->name('deleteProduct')->middleware('auth'); //update
+    Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('deleteProduct')->middleware('auth'); //update
     //Route::delete('product/delete', 'ProductController@destroy')->name('deleteProduct')->middleware('auth');
 });
 
