@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customers;
+use App\Models\Customer;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
@@ -14,22 +16,29 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecords()
+    public function getRecords(Request $request)
     {
-        return datatables()->eloquent(Customers::where('is_deleted', '0'))
-        ->addColumn('actions', '<div>
-        <a href="" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer">
-            <i class="badge-circle badge-circle-success bx bx-edit font-medium-1" style="color: white"></i>
-        </a>
-        <a href="#" onclick="remove({{"$id"}})"><i class="badge-circle badge-circle-danger bx bx-trash font-medium-1" style="color: white"></i></a>
-        </div>')
-        ->rawColumns(['actions'])
-        ->toJson();
+        if ($request->ajax()) {
+            $query = Customer::latest()->get();
+
+            return DataTables::of($query)
+                ->addColumn('actions', '<div>
+                    <a href="" data-toggle="modal" onclick="update({{"$id"}})" data-target="#editCostumer">
+                        <i class="badge-circle badge-circle-success bx bx-edit font-medium-1" style="color: white"></i>
+                    </a>
+                    <a href="#" onclick="remove({{"$id"}})"><i class="badge-circle badge-circle-danger bx bx-trash font-medium-1" style="color: white"></i></a>
+                    </div>')
+                ->editColumn('created_at', function($customer) {
+                    return Carbon::parse($customer->created_at)->format("d-m-Y");
+                })
+                ->rawColumns(['actions'])
+                ->make();
+        }
     }
 
     public function byQuery($query)
     {
-        $result = Customers::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
+        $result = Customer::select('id', 'name', 'nit')->where('name', 'like', "%". $query ."%")->get();
 
         if ($result->count() > 0) {
            return response()->json(['success' => true, 'data' => $result], 200);
@@ -60,14 +69,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $costumer = new Customers;
+        $costumer = new Customer;
         $costumer->code = $request->code;
         $costumer->name = $request->name;
         $costumer->phone = $request->phone;
         $costumer->email = $request->email;
         $costumer->address = $request->address;
         $costumer->nit = $request->nit;
-        $costumer->is_deleted = '0';
 
         if($costumer->save()){
             return back()->with('mensaje', 'Cliente creado');
@@ -86,7 +94,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $result = Customers::where('id', $id)->get();
+        $result = Customer::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
@@ -104,7 +112,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $costumer = Customers::find($id);
+        $costumer = Customer::find($id);
         $costumer->email = $request->uemail;
         $costumer->address = $request->uaddress;
         $costumer->phone = $request->uphone;
@@ -124,27 +132,13 @@ class CustomerController extends Controller
      */
     public function delete($id)
     {
-        $costumer = Customers::find($id);
-        $costumer->is_deleted = 1;
+        try {
+            $costumer = Customer::find($id);
+            $costumer->delete();
 
-        if ($costumer->save()) {
-            return response(200);
-        }else{
-            return response(500);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $costumer = Customers::find($id);
-        if ($costumer->delete()) {
-            return back()->with('mensaje', 'Cliente editado');
+            return response()->json(["message" => "Cliente eliminado"], 201);
+        } catch (Exception $th) {
+            return response()->json(["message" => "Error al procesar la peticion"], 500);
         }
     }
 }
