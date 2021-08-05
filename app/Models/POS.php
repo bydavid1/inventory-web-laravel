@@ -10,4 +10,7 @@ class POS extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $table = 'pos';
+    public $timestamps = false;
 }
