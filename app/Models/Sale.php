@@ -10,4 +10,12 @@ class Sale extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function customer() {
+        return $this->hasOne(Customer::class);
+    }
+
+    public function invoice() {
+        return $this->morphOne(Invoice::class, 'invoiceable');
+    }
 }

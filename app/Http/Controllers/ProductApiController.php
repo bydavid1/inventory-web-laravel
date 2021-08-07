@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Price;
 use App\Models\Product;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -120,9 +121,20 @@ class ProductApiController extends Controller
      */
     public function pagination(Request $request)
     {
-        if($request->ajax()){
-            $products = Product::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-            return response($products, 200);
+        try {
+            if($request->ajax()){
+                $products = Product::has('price')->whereHas('stock', function(Builder $query) {
+                    $query->where('stock.stock', '>', '0');
+                })->with(['photo','stock' => function($query) {
+                    $query->select('stock.stock');
+                },'price' => function($query) {
+                    $query->select('id', 'price_w_tax', 'product_id');
+                }])->paginate(15);
+
+                return response($products, 200);
+            }
+        } catch (Exception $th) {
+            return response()->json(['message' => 'Error: ' . $th->getMessage()], 500);
         }
     }
 

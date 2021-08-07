@@ -6,15 +6,16 @@ error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
-use App\Models\Sales;
-use App\Models\Sales_items;
-use App\Models\Products;
-use App\Models\Payments;
 use App\Models\Kardex;
-use App\Models\Customers;
 use App\Http\Requests\StoreSale;
+use App\Models\Customer;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Traits\Helpers;
 use Exception;
+use Yajra\DataTables\Facades\DataTables;
 
 class SaleController extends Controller
 {
@@ -26,41 +27,44 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecords()
+    public function getRecords(Request $request)
     {
-        $query = Sales::select('id', 'created_at', 'customer_id', 'invoice_type', 'unregistered_customer', 'total_quantity', 'subtotal', 'total')->orderBy('created_at', 'desc');;
+        if ($request->ajax()) {
+            $query = Sale::latest()->get();
 
-        return datatables()->eloquent($query)
-        ->addColumn('actions', '<div class="float-center">
-        <a href="#" role="button"  data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer">
-            <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
-        </a>
-        <a href="#" onclick="showInvoice({{"$id"}})"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
-        </div>')
-        ->addColumn('name', function($query){
+            return DataTables::of($query)
+            ->addColumn('actions', '<div class="float-center">
+                <a href="#" role="button"  data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer">
+                    <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
+                </a>
+                <a href="#" onclick="showInvoice({{"$id"}})"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
+                </div>')
+            ->addColumn('name', function($sale){
 
-            if ($query->customer_id == null) {
-                return $query->unregistered_customer;
-            } else{
-                $customer = Customers::select('name')->where('id', $query->customer_id)->get();
-                return $customer[0]->name;
-            }
-        })
-        ->editColumn('invoice_type', function($query){
-            if($query->invoice_type == '1'){
-                return '<span class="badge badge-success">Factura</span>';
-            }else{
-                return '<span class="badge badge-danger">Credito fiscal</span>';
-            }
-        })
-        ->editColumn('subtotal', function($query){
-            return '$' . $query->subtotal;
-        })
-        ->editColumn('total', function($query){
-            return '$' . $query->total;
-        })
-        ->rawColumns(['actions', 'invoice_type'])
-        ->toJson();
+                if ($sale->customer_id == null) {
+                    return $sale->unregistered_customer;
+                } else{
+                    return $sale->customer->name;
+                }
+            })
+            ->editColumn('invoice_type', function($sale){
+                if($sale->invoice->invoice_type == 'FCF'){
+                    return '<span class="badge badge-success">Factura</span>';
+                }else if($sale->invoice->invoice_type == 'CF'){
+                    return '<span class="badge badge-danger">Credito fiscal</span>';
+                }else {
+                    return '<span class="badge badge-warnign">Desconocido</span>';
+                }
+            })
+            ->editColumn('subtotal', function($query){
+                return '$' . $query->subtotal;
+            })
+            ->editColumn('total', function($query){
+                return '$' . $query->total;
+            })
+            ->rawColumns(['actions', 'is_available'])
+            ->make();
+        }
     }
 
     /**
@@ -83,10 +87,14 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $pageConfigs = ['pageHeader' => false, 'theme' => 'light', 'extendApp' => true, 'footerType' => 'hidden', 'navbarType' => 'static'];
-
-        $products = Products::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-        return view('pages.sales.addSale', compact(['products', 'pageConfigs']));
+        $pageConfigs = [
+            'pageHeader' => false,
+            'theme' => 'light',
+            'extendApp' => true,
+            'footerType' => 'hidden',
+            'navbarType' => 'static'
+        ];
+        return view('pages.sales.addSale', compact(['pageConfigs']));
     }
 
     /**
@@ -100,11 +108,11 @@ class SaleController extends Controller
         try {
             if ($request->validated()) {
                 //payment info
-                $payment = Payments::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
+                $payment = Payment::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
                 'returned' => 0.00]);
 
                 //invoice headers info
-                $sale = new Sales;
+                $sale = new Sale();
                 $sale->payment_id = $payment->id;
                 $sale->invoice_type = $request->invoiceType;
                 $sale->user_id = $request->user()->id;
@@ -123,7 +131,7 @@ class SaleController extends Controller
 
                 //getting last invoice num
 
-                $lastnum = Sales::latest()->first();
+                $lastnum = Sale::latest()->first();
                 if ($lastnum) {
                     $sale->invoice_num = str_pad($lastnum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
                 }else{
@@ -136,7 +144,7 @@ class SaleController extends Controller
                     $product_list = array();
 
                     foreach ($request->products as $product) {
-                        $saleitem = new Sales_items;
+                        $saleitem = new SaleItem();
                         $saleitem->sale_id = $id;
                         $saleitem->product_id = $product['id'];
                         $saleitem->quantity = $product['quantity'];
@@ -146,7 +154,7 @@ class SaleController extends Controller
 
                         if ($saleitem->save()) {
                             //Update quantity
-                            $product = Products::find($saleitem->product_id);
+                            $product = Product::find($saleitem->product_id);
                             // Make sure we've got the Products model
                             if ($product) {
                                 $product->stock = ($product->stock - $saleitem->quantity);

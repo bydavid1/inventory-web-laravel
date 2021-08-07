@@ -17,6 +17,10 @@ class Product extends Model
             ->wherePivot('branch_id', 1);
     }
 
+    public function branches() {
+        return $this->belongsToMany(Branch::class, 'stock');
+    }
+
     public function prices() {
         return $this->hasMany(Price::class);
     }

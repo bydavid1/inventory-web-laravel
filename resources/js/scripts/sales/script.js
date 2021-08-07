@@ -46,11 +46,13 @@ var vm = new Vue({
             this.loader = true
             axios.get('/api/pagination/fetch?page=' + page)
             .then(response => {
+                console.log(response);
                 this.inventory = response.data;
                 this.loader = false
             })
-            .catch(err => {
+            .catch(error => {
                 //make alert for error
+                console.log(error.response)
                 this.loader = false
             })
 
