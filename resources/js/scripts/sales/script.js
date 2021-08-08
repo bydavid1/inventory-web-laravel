@@ -62,22 +62,27 @@ var vm = new Vue({
                 this.loader = true
                 let fields = []
                 fields[0] = ['id', 'code', 'name']
-                fields[1] = ['prices']
-                axios.get('/api/products/' + id + '/' + JSON.stringify(fields))
+                fields[1] = ['prices:id,product_id,price_w_tax']
+                axios.get('/api/products/id/' + id + '/' + JSON.stringify(fields))
                 .then(response => {
-                    let data = response.data[0]
+                    console.log(response)
+                    let data = response.data.product
                     let item = {
                         'id' : data.id,
                         'code' : data.code,
                         'name' : data.name,
                         'prices' : data.prices,
                         'tax' : 0.00,
-                        'price' : data.prices[0].price_incl_tax,
+                        'price' : data.prices[0].price_w_tax,
                         'quantity' : 1,
-                        'total' : data.prices[0].price_incl_tax
+                        'total' : data.prices[0].price_w_tax
                     }
 
                     this.items.push(item)
+                    this.loader = false
+                })
+                .catch(error => {
+                    console.log(error.response)
                     this.loader = false
                 })
             }
@@ -93,11 +98,10 @@ var vm = new Vue({
                     this.data.quantityValue += Number(item.quantity)
                     this.data.subtotalValue += Number(item.total)
                 }
-                this.formatCurrency(this.data.subtotalValue)
+                this.data.subtotalValue = (this.data.subtotalValue).toFixed(2)
             }
 
-            this.data.totalValue = (this.data.subtotalValue - this.data.discountsValue + Number(this.data.additionalPayments))
-            this.formatCurrency(this.data.totalValue)
+            this.data.totalValue = (this.data.subtotalValue - this.data.discountsValue + Number(this.data.additionalPayments)).toFixed(2)
         },
         addDiscount () {
             this.data.discountsValue = this.discountControl

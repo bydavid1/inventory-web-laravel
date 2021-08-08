@@ -6,6 +6,7 @@ use App\Models\Price;
 use App\Models\Product;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -103,14 +104,14 @@ class ProductApiController extends Controller
     public function byId($id, $columns){
         try {
             $fields = json_decode($columns);
-            $product = Product::select($fields[0])->with($fields[1])->where('id', $id)->get();
-            if ($product->count() > 0) {
-                return response($product, 200);
-            }else{
-                return response('', 204);
-            }
+            $product = Product::select($fields[0])->with($fields[1])->findOrFail($id);
+
+            return response()->json(['product' => $product], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message'=> $e->getMessage()], 404);
         } catch (Exception $e) {
-            return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
+            return response()->json(['message'=> $e->getMessage()], 500);
         }
     }
 
@@ -143,15 +144,36 @@ class ProductApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($query = null)
+    public function search(Request $request, $query = null)
     {
-        if ($query != null) {
-            $products = Product::select('id','code','name','stock','description')->with(['first_price', 'first_image'])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->paginate(15);
-        }else{
-            $products = Product::with(['first_image','first_price'])->where('is_deleted', '0')->where('stock','>','0')->paginate(15);
-        }
 
-        return response($products, 200);
+        try {
+            if($request->ajax()){
+                if ($query != null) {
+                    $products = Product::has('price')->whereHas('stock', function(Builder $query) {
+                        $query->where('stock.stock', '>', '0');
+                    })->with(['photo','stock' => function($query) {
+                        $query->select('stock.stock');
+                    },'price' => function($query) {
+                        $query->select('id', 'price_w_tax', 'product_id');
+                    }])
+                    ->where("code", "like", "%". $query ."%")
+                    ->orWhere("name", "like", "%". $query ."%")->paginate(15);
+                }else{
+                    $products = Product::has('price')->whereHas('stock', function(Builder $query) {
+                        $query->where('stock.stock', '>', '0');
+                    })->with(['photo','stock' => function($query) {
+                        $query->select('stock.stock');
+                    },'price' => function($query) {
+                        $query->select('id', 'price_w_tax', 'product_id');
+                    }])->paginate(15);
+                }
+
+                return response($products, 200);
+            }
+        } catch (Exception $th) {
+            return response()->json(['message' => 'Error: ' . $th->getMessage()], 500);
+        }
     }
 
     /**

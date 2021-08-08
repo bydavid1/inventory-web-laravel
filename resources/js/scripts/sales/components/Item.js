@@ -35,7 +35,7 @@ Vue.component('item', {
                                 <div class="col-12 form-group">
                                     <label for="prices">Precios registrados</label>
                                     <select class="form-control" v-model="item.price">
-                                        <option v-for="price in item.prices" :value="price.price_incl_tax">{{ '$' + price.price_incl_tax }}</option>
+                                        <option v-for="price in item.prices" :value="price.price_w_tax">{{ '$' + price.price_w_tax }}</option>
                                     </select>
                                 </div>
                             </div>
