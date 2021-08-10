@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Kardex;
 use App\Http\Requests\StoreSale;
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
@@ -19,9 +20,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SaleController extends Controller
 {
-    use Helpers;
-
-
         /**
      * Display a listing of the resource.
      *
@@ -48,9 +46,9 @@ class SaleController extends Controller
                 }
             })
             ->editColumn('invoice_type', function($sale){
-                if($sale->invoice->invoice_type == 'FCF'){
+                if($sale->invoice->invoice_type == '1'){
                     return '<span class="badge badge-success">Factura</span>';
-                }else if($sale->invoice->invoice_type == 'CF'){
+                }else if($sale->invoice->invoice_type == '2'){
                     return '<span class="badge badge-danger">Credito fiscal</span>';
                 }else {
                     return '<span class="badge badge-warnign">Desconocido</span>';
@@ -107,20 +105,17 @@ class SaleController extends Controller
     {
         try {
             if ($request->validated()) {
-                //payment info
-                $payment = Payment::create(['payment_method' => $request->paymentMethod, 'total' => $request->totalValue, 'payed_with' => $request->totalValue,
-                'returned' => 0.00]);
+                //payment info, some data is temporally
+                $payment = new Payment();
+                $payment->method = $request->paymentMethod;
+                $payment->total = $request->totalValue;
+                $payment->payed_with = $request->totalValue;
+                $payment->returned = 0.00;
+                $payment->save();
 
                 //invoice headers info
                 $sale = new Sale();
-                $sale->payment_id = $payment->id;
-                $sale->invoice_type = $request->invoiceType;
-                $sale->user_id = $request->user()->id;
-                if ($request->customerId == "") {
-                    $sale->unregistered_customer = $request->customerName;
-                }else{
-                    $sale->customer_id = $request->customerId;
-                }
+                $sale->pos_id = 1; //temporally default
                 $sale->additional_discounts = $request->discountsValue;
                 $sale->additional_payments = $request->additionalPayments;
                 $sale->total_quantity = $request->quantityValue;
@@ -128,84 +123,78 @@ class SaleController extends Controller
                 $sale->total_discounts = $request->discountsValue; //we will need add discounts option for each product
                 $sale->total_tax = "0.00"; //Temporal data
                 $sale->total = $request->totalValue;
+                $sale->user_id = $request->user()->id;
+                if ($request->customerId == "") {
+                    $sale->unregistered_customer = $request->customerName;
+                }else{
+                    $customer = Customer::find($request->customerId);
+                    if ($customer) {
+                        $sale->customer()->associate($customer);
+                    } else {
+                        $payment->delete();
+                        throw new Exception("Customer doesn't exist");
+                    }
+                }
+
+                $sale->payment()->associate($payment);
+                $sale->save();
 
                 //getting last invoice num
+                $lastNum = Invoice::latest()->where('invoice_type', $request->invoiceType)->first();
+                $newNum = 0;
 
-                $lastnum = Sale::latest()->first();
-                if ($lastnum) {
-                    $sale->invoice_num = str_pad($lastnum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
+                if ($lastNum) {
+                    $newNum = str_pad($lastNum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
                 }else{
-                    $sale->invoice_num = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
+                    $newNum = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
                 }
+
+                //Creating new Invoice
+                $invoice = new Invoice();
+                $invoice->invoice_num = $newNum;
+                $invoice->invoice_type = $request->invoiceType;
+
+                $sale->invoice()->save($invoice);
+
+                //Creating items
+                $items = array();
+                foreach ($request->products as $product) {
+                   $saleItem = new SaleItem([
+                       "product_id" => $product['id'],
+                       "quantity" => $product['quantity'],
+                       "unit_price" => $product['price'],
+                       "unit_tax" => $product['tax'],
+                       "discount" => 0.00, //temporally default
+                       "total" => $product['total'],
+                   ]);
+
+                   Product::updateStock($product['id'], $product['quantity']);
+
+                    // //getting las kardex record
+
+                    // $last_record = Kardex::where('product_id', $saleitem->product_id)->latest()->first();
+
+                    // //Adding to Kardex
+                    // $kardex = new Kardex;
+                    // $kardex->type_id = 2; //venta en factura
+                    // $kardex->product_id = $saleitem->product_id;
+                    // $kardex->invoice_ref = $sale->invoice_num;
+                    // $kardex->quantity = $saleitem->quantity;
+                    // $kardex->unit_price = $saleitem->unit_price;
+                    // $kardex->value = $saleitem->total;
+                    // $kardex->final_unit_value = $last_record->final_unit_value;
+                    // $kardex->final_stock = $product->stock;
+                    // $kardex->final_value = $last_record->final_unit_value * $product->stock;
+
+                   array_push($items, $saleItem);
+                }
+
+                $sale->items()->saveMany($items);
 
                 if ($sale->save()) {
 
-                    $id = $sale->id;
-                    $product_list = array();
-
-                    foreach ($request->products as $product) {
-                        $saleitem = new SaleItem();
-                        $saleitem->sale_id = $id;
-                        $saleitem->product_id = $product['id'];
-                        $saleitem->quantity = $product['quantity'];
-                        $saleitem->unit_price = $product['price'];
-                        $saleitem->unit_tax = $product['tax'];
-                        $saleitem->total = $product['total'];
-
-                        if ($saleitem->save()) {
-                            //Update quantity
-                            $product = Product::find($saleitem->product_id);
-                            // Make sure we've got the Products model
-                            if ($product) {
-                                $product->stock = ($product->stock - $saleitem->quantity);
-
-                                if ($product->save()) {
-                                    //Adding $saleitems to -> $invoice_products array
-                                    $product_items = array(
-                                        'code' => $product['code'],
-                                        'name' => $product['name'],
-                                        'quantity' => $saleitem->quantity,
-                                        'price' => $saleitem->unit_price,
-                                        'total' => $saleitem->total
-                                    );
-
-                                    array_push($product_list, $product_items);
-
-                                    //getting las kardex record
-
-                                    $last_record = Kardex::where('product_id', $saleitem->product_id)->latest()->first();
-
-                                    //Adding to Kardex
-                                    $kardex = new Kardex;
-                                    $kardex->type_id = 2; //venta en factura
-                                    $kardex->product_id = $saleitem->product_id;
-                                    $kardex->invoice_ref = $sale->invoice_num;
-                                    $kardex->quantity = $saleitem->quantity;
-                                    $kardex->unit_price = $saleitem->unit_price;
-                                    $kardex->value = $saleitem->total;
-                                    $kardex->final_unit_value = $last_record->final_unit_value;
-                                    $kardex->final_stock = $product->stock;
-                                    $kardex->final_value = $last_record->final_unit_value * $product->stock;
-
-                                    if (!$kardex->save()) {
-                                        throw new Exception("Could not save kardex information at product ". $product['name'], 1);
-                                    }
-                                }else{
-                                    throw new Exception("Could not update stock of product " . $product['name'], 1);
-                                }
-
-                            } else {
-                                throw new Exception("Product " . $product['name'] . "not exist", 1);
-                            }
-
-                        } else {
-                            $sale->delete();
-                            throw new Exception("Corrupt data in item: ". $product['name'], 1);
-                        }
-                    }
-
-                    $files_path = $request->invoiceType == 1 ? "storage/invoices/" : "storage/invoices/credit_invoices/";
-                    $invoice = $this->designInvoice($product_list, $request->customerName, $sale, $files_path);
+                    $filePath = $request->invoiceType == 1 ? "storage/invoices/" : "storage/invoices/credit_invoices/";
+                    $invoice = Invoice::invoiceToPDF($items, $sale, $request->customerName, $filePath, $invoice->invoice_num);
 
                     //send invoice
                     return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
