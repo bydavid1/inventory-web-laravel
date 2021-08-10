@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Traits\Helpers;
+use Carbon\Carbon;
 use Exception;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,13 +46,15 @@ class SaleController extends Controller
                     return $sale->customer->name;
                 }
             })
-            ->editColumn('invoice_type', function($sale){
-                if($sale->invoice->invoice_type == '1'){
-                    return '<span class="badge badge-success">Factura</span>';
-                }else if($sale->invoice->invoice_type == '2'){
-                    return '<span class="badge badge-danger">Credito fiscal</span>';
-                }else {
-                    return '<span class="badge badge-warnign">Desconocido</span>';
+            ->addColumn('invoice_type', function($sale){
+                if ($sale->invoice) {
+                    if($sale->invoice->invoice_type == '1'){
+                        return '<span class="badge badge-success">Factura</span>';
+                    }else if($sale->invoice->invoice_type == '2'){
+                        return '<span class="badge badge-warning">Credito fiscal</span>';
+                    }
+                } else {
+                    return '<span class="badge badge-danger">Desconocido</span>';
                 }
             })
             ->editColumn('subtotal', function($query){
@@ -60,7 +63,10 @@ class SaleController extends Controller
             ->editColumn('total', function($query){
                 return '$' . $query->total;
             })
-            ->rawColumns(['actions', 'is_available'])
+            ->editColumn('created_at', function($customer) {
+                return Carbon::parse($customer->created_at)->format("d-m-Y");
+            })
+            ->rawColumns(['actions', 'invoice_type'])
             ->make();
         }
     }
