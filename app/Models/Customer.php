@@ -10,4 +10,8 @@ class Customer extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function sales() {
+        return $this->hasMany(Sale::class);
+    }
 }

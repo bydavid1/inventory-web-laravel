@@ -10,4 +10,11 @@ class Payment extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    //Allow mass assigment
+    protected $guarded = [];
+
+    public function sale() {
+        return $this->hasOne(Sale::class);
+    }
 }

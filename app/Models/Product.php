@@ -48,4 +48,13 @@ class Product extends Model
     public function brand() {
         return $this->belongsTo(Brand::class)->withDefault(['name' => 'Desconocido']);
     }
+
+    public static function updateStock($id, $quantity) {
+        $product = self::find($id);
+        foreach ($product->stock as $i) {
+            $product->stock()->updateExistingPivot(1, [
+                'stock' => $i->pivot->stock - $quantity
+            ]);
+        }
+    }
 }

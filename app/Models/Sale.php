@@ -12,10 +12,18 @@ class Sale extends Model
     use SoftDeletes;
 
     public function customer() {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function invoice() {
         return $this->morphOne(Invoice::class, 'invoiceable');
+    }
+
+    public function items() {
+        return $this->hasMany(SaleItem::class);
+    }
+
+    public function payment() {
+        return $this->belongsTo(Payment::class);
     }
 }
