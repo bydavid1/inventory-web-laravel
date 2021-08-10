@@ -21,12 +21,6 @@ trait Helpers
 
     protected $items = array();
 
-    public function designInvoice($products, $name = null, $object, $path){
-        $view = \View::make('pages.pdf.invoice', compact('object', 'products', 'name'))->render();
-        CreateInvoice::dispatch($view, $path, $object->invoice_num);
-        return $view;
-    }
-
     // public function createCredit($numfees, $startdate, $rangefees, $interestper, $total, $id){
 
     //     $credit = new Credits;

@@ -15,17 +15,17 @@ class CreateInvoice implements ShouldQueue
 
     protected $view;
     protected $path;
-    protected $id;
+    protected $fileName;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($view, $path, $id)
+    public function __construct($view, $path, $fileName)
     {
         $this->view = $view;
         $this->path = $path;
-        $this->id = $id;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -35,6 +35,6 @@ class CreateInvoice implements ShouldQueue
      */
     public function handle()
     {
-        PDF::loadHTML($this->view)->save(public_path($this->path) . $this->id . '.pdf');
+        PDF::loadHTML($this->view)->save(public_path($this->path) . $this->fileName . '.pdf');
     }
 }
