@@ -18,6 +18,7 @@ class CreateInvoicesTable extends Migration
             $table->string('invoice_num');
             //invoice_type: compra, conumidor final, credito fiscal.
             $table->string('invoice_type');
+            $table->string('filename');
             $table->integer('invoiceable_id');
             $table->string('invoiceable_type');
             $table->timestamps();
