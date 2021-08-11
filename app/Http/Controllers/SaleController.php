@@ -29,14 +29,14 @@ class SaleController extends Controller
     public function getRecords(Request $request)
     {
         if ($request->ajax()) {
-            $query = Sale::latest()->get();
+            $query = Sale::latest();
 
             return DataTables::of($query)
             ->addColumn('actions', '<div class="float-center">
                 <a href="#" role="button"  data-toggle="modal" id="destroyCostumerModalBtn" data-destroy-id="{{"$id"}}" data-target="#removeCostumer">
                     <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
                 </a>
-                <a href="#" onclick="showInvoice({{"$id"}})"><i class="badge-circle badge-circle-info bx bxs-file-pdf font-medium-1"></i></a>
+                <a href="#" onclick="showInvoice({{"$id"}})"><i class="badge-circle badge-circle-info bx bx-link-external font-medium-1"></i></a>
                 </div>')
             ->addColumn('name', function($sale){
 
