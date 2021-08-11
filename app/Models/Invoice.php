@@ -17,12 +17,12 @@ class Invoice extends Model
         return $this->morphTo();
     }
 
-    public static function invoiceToPDF($products, $object, $customer, $path, $fileName) {
+    public static function invoiceToPDF($products, $object, $customer, $fileName) {
 
         //Render invoice
         $view = View::make('pages.pdf.invoice', compact('object', 'products', 'customer'))->render();
         //Creating PDF
-        CreateInvoice::dispatch($view, $path, $fileName);
+        CreateInvoice::dispatch($view, $fileName);
         return $view;
     }
 }

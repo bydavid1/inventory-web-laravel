@@ -14,17 +14,15 @@ class CreateInvoice implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $view;
-    protected $path;
     protected $fileName;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($view, $path, $fileName)
+    public function __construct($view, $fileName)
     {
         $this->view = $view;
-        $this->path = $path;
         $this->fileName = $fileName;
     }
 
@@ -35,6 +33,6 @@ class CreateInvoice implements ShouldQueue
      */
     public function handle()
     {
-        PDF::loadHTML($this->view)->save(public_path($this->path) . $this->fileName . '.pdf');
+        PDF::loadHTML($this->view)->save(public_path('storage/invoices/') . $this->fileName . '.pdf');
     }
 }

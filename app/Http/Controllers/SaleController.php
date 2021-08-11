@@ -162,10 +162,14 @@ class SaleController extends Controller
                     $newNum = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
                 }
 
+                //generating prefix for filename
+                $prefix = $request->invoiceType == 1 ? "consumidor_final_" : "credito_fiscal_";
+
                 //Creating new Invoice
                 $invoice = new Invoice();
                 $invoice->invoice_num = $newNum;
                 $invoice->invoice_type = $request->invoiceType;
+                $invoice->filename = $prefix . $newNum;
 
                 $sale->invoice()->save($invoice);
 
@@ -206,8 +210,7 @@ class SaleController extends Controller
 
                 if ($sale->save()) {
 
-                    $filePath = $request->invoiceType == 1 ? "storage/invoices/" : "storage/invoices/credit_invoices/";
-                    $invoice = Invoice::invoiceToPDF($items, $sale, $request->customerName, $filePath, $invoice->invoice_num);
+                    $invoice = Invoice::invoiceToPDF($items, $sale, $request->customerName, $invoice->filename);
 
                     //send invoice
                     return response()->json(['message' => 'Factura guardada', 'invoice' => compact('invoice')]);
@@ -230,41 +233,20 @@ class SaleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function invoice($id = null)
-    {
-        try {
-            $num = str_pad($id, 10, '0', STR_PAD_LEFT);
-            $path = public_path() . "/storage/invoices/" .$num . ".pdf";
-            if ($id != null) {
-                if (file_exists($path)) {
-                    //return redirect()->route('showInvoice', ["path" => $path]);
-                    return response()->json(["path" => $path], 200);
-                }else{
-                    return response()->json(["message" => "No se encontró la factura 😕"], 404);
-                }
-            } else {
-                return response()->json(["message" => "Parametro vacío"], 400);
-            }
-        } catch (Exception $th) {
-            return response()->json(["message" => "Ocurrió un errror al tratar de obtener la factura 😕"], 500);
-        }
-    }
-
-        /**
-     * Display the specified resource.
-     *
-     */
     public function showInvoice($id)
     {
         try {
-            $num = str_pad($id, 10, '0', STR_PAD_LEFT);
-            $path = public_path() . "/storage/invoices/" .$num . ".pdf";
-            return response()->file($path);
+            $sale = Sale::find($id);
+            $path = public_path() . "/storage/invoices/" . $sale->invoice->filename . ".pdf";
+            if (file_exists($path)) {
+                return response()->file($path);
+            }else{
+                return response()->json(["message" => "No se encontró la factura 😕"], 404);
+            }
         } catch (Exception $th) {
-            return response()->json(["message" => "Ocurrió un errror al tratar de obtener la factura 😕"], 500);
+            return response()->json(["message" => "" + $th->getMessage()], 500);
         }
     }
-
     /**
      * Show the form for editing the specified resource.
      *

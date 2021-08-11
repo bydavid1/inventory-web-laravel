@@ -89,10 +89,14 @@
 
 	<script>
         function showInvoice (id) {
-            let url = "{{ route('invoiceExist', ':id') }}".replace(":id", id)
+            let url = "{{ route('showInvoice', ':id') }}".replace(":id", id)
+
             $.ajax({
                 type: 'GET',
                 url: url,
+                xhrFields: {
+                    responseType: 'arraybuffer'
+                },
                 beforeSend: function () {
                     Swal.fire({
                         title: 'Obteniendo factura',
@@ -104,14 +108,18 @@
                     })
                 },
                 success: function (response) {
+                    let blob = new Blob([response], {
+                        type: 'application/pdf'
+                    });
+                    let fileURL = window.URL.createObjectURL(blob);
+                    window.open(fileURL)
                     Swal.close()
-                    window.open("{{ route('showInvoice', ':id') }}".replace(":id", id))
                 },
                 error: function (xhr, textStatus, errorMessage) {
                     if (xhr.status === 404) {
                         Swal.fire({
                             icon: 'question',
-                            html: `<h4>${xhr.responseJSON.message}</h4><p>¿Desea regenerar la factura con los datos guardados?</p>`,
+                            html: `<h4>Factura no encontrada</h4><p>¿Desea regenerar la factura con los datos guardados?</p>`,
                             showCancelButton: true,
                             confirmButtonText: '<i class="bx bx-wrench"></i> Reparar!',
                             cancelButtonText: 'Cancelar',
@@ -123,12 +131,12 @@
                     } else if (xhr.status === 500) {
                         Swal.fire({
                             icon: 'error',
-                            html: `<h4>${xhr.responseJSON.message}</h4>`,
+                            html: `<h4>${xhr.statusText}</h4>`,
                         })
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            html: `<h4>${xhr.status}</h4><p>${xhr.responseJSON.message}</p>`,
+                            html: `<h4>${xhr.statusText}</h4>`,
                         })
                     }
                 }

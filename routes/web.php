@@ -84,7 +84,6 @@ Route::prefix('sales')->group(function () {
     Route::get('/', [SaleController::class, 'index'])->name('sales')->middleware('auth');
     Route::get('/create', [SaleController::class, 'create'])->name('addSale')->middleware('auth');
     Route::post('/create/store', [SaleController::class, 'store'])->name('storeSale')->middleware('auth');
-    Route::get('/invoice/{id?}', [SaleController::class, 'invoice'])->name('invoiceExist')->middleware('auth');
     Route::get('/invoice/show/{id}', [SaleController::class, 'showInvoice'])->name('showInvoice')->middleware('auth');
 });
 
