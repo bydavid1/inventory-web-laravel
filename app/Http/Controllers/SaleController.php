@@ -57,6 +57,13 @@ class SaleController extends Controller
                     return '<span class="badge badge-danger">Desconocido</span>';
                 }
             })
+            ->addColumn('invoice_num', function($sale) {
+                if ($sale->invoice) {
+                    return $sale->invoice->invoice_num;
+                } else {
+                    return '';
+                }
+            })
             ->editColumn('subtotal', function($query){
                 return '$' . $query->subtotal;
             })

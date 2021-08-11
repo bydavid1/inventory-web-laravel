@@ -22,6 +22,7 @@
 				<thead>
 					<tr>
 						<th>Fecha</th>
+                        <th>Factura</th>
 						<th>Cliente</th>
 						<th>Tipo</th>
 						<th>Cantidad</th>
@@ -59,6 +60,9 @@
 				"columns": [
 					{
 						data: 'created_at'
+					},
+                    {
+						data: 'invoice_num'
 					},
 					{
 						data: 'name'
