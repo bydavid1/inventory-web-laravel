@@ -14,35 +14,34 @@
 }
 
 .pos-app {
-        height: calc(100vh - 8.75rem);
-        display: flex;
-        flex-direction: column
+    height: calc(100vh - 8.75rem);
+    display: flex;
+    flex-direction: column
 }
 
 .pos-header {
     width: 100%;
     display: flex;
-    margin-bottom: 2rem;
 }
 
 .pos-content{
     height: 100%;
     display: flex;
-    overflow: auto
+    overflow: auto;
 }
 </style>
 @endsection
 
 @section('content')
 <div id="app" class="pos-app">
-    <div class="pos-header">
+    <div class="pos-header border-bottom">
         <div class="card mb-0 shadow-none w-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="form-group my-auto">
                             <label class="control-label">Proveedor</label>
-                            <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
+                            <select class="form-control select2" id="supplier" v-model="data.supplierId" placeholder="Enter..."
                                 autocomplete="off">
                                 <option value="" disabled selected>Selecciona un proveedor</option>
                                 @foreach ($suppliers as $item)
@@ -51,22 +50,24 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="form-group my-auto">
                             <label for="date" class="control-label">Fecha</label>
                             <input type="date" class="form-control">
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="pos-content">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-header border-bottom">
-                        <h5 class="card-title">Detalles</h5>
+                    <div class="col-lg-2">
+                        <div class="form-group my-auto">
+                            <label for="date" class="control-label">Estado de entrega</label>
+                            <select class="form-control">
+                                <option value="1">Entregado</option>
+                                <option value="2">Pendiente</option>
+                                <option value="3">Completado</option>
+                                <option value="3">Falta pago</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
                         <div class="heading-elements">
                             <button class="btn btn-secondary" data-toggle="modal" data-target="#addNewProductModal">
                                 <i class="bx bx-plus fa-2x"></i>
@@ -78,30 +79,29 @@
                             </button>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table_details :items="items" v-on:edit="editNewProduct"></table_details>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="pos-content">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="mb-3">Resumen</h4>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="p-1 border-right align-items-center d-flex h-100">
+                <div class="w-100">
+                    <h4>Resumen</h4>
+                    <ul class="list-group list-group-flush py-1 bg-transparent">
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
                             Cantidad total
                             <strong v-html="data.quantityValue"></strong>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
                             Sub total
                             <strong v-html="'$' + data.subtotalValue"></strong>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
                             Descuentos
                             <strong v-html="'$' + data.discountsValue"></strong>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
                             Total
                             <strong v-html="'$' +  data.totalValue"></strong>
                         </li>
@@ -177,6 +177,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-8">
+            <div class="p-1">
+                <div class="table-responsive">
+                    <table_details :items="items" v-on:edit="editNewProduct"></table_details>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -214,19 +221,25 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Cantidad</label>
-                            <input type="number" class="form-control" v-model.number="newProduct.quantity" placeholder="Enter ...">
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="ppurchase"><i class="fas fa-dollar-sign"></i>Precio
-                                de compra</label>
-                            <input type="number" class="form-control" v-model.number="newProduct.purchase" placeholder="Enter ...">
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
-                                principal</label>
-                            <input type="number" class="form-control" v-model.number="newProduct.price" placeholder="Enter ...">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Cantidad</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.quantity" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label"><i class="fas fa-dollar-sign"></i>Precio
+                                        principal</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.price" placeholder="Enter ...">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-form-label"><i class="fas fa-dollar-sign"></i>Precio
+                                        de compra</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.purchase" placeholder="Enter ...">
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -332,9 +345,6 @@
 @endsection
 
 @section('page-scripts')
-    <script>
-        $('#provider').select2()
-    </script>
     @routes
     <script type="module" src="{{ asset('js/scripts/purchase/script.js') }}"></script>
 @endsection
