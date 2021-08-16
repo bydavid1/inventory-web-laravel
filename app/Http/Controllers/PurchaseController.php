@@ -11,17 +11,13 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Supplier;
-use App\Traits\Helpers;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Symfony\Component\Process\ExecutableFinder;
 use Yajra\Datatables\Datatables;
 
 class PurchaseController extends Controller
 {
-
-    use Helpers;
 
     /**
      * Get a listing of the resource.
@@ -39,7 +35,7 @@ class PurchaseController extends Controller
                     <a role="button" data-id="{{"$id"}}">
                         <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
                     </a>
-                    <a href="#">
+                    <a href="#" onclick="showInvoice({{"$id"}})">
                         <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
                     </a>
                 </div>')
@@ -87,23 +83,6 @@ class PurchaseController extends Controller
         $suppliers = Supplier::select(['id', 'name'])->where('is_available', 1)->get();
         //->where('is_available', 1);
         return view('pages.purchases.addPurchase', compact(['categories', 'suppliers', 'pageConfigs']));
-    }
-
-    /**
-     * Get product List
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function GetList()
-    {
-        $list = Product::select(['id', 'name', 'quantity', 'purchase', 'price1'])->get();
-
-        return Datatables::of($list)
-            ->addColumn('action', '<div style="display: inline-flex">
-            <button class="btn btn-primary btn-sm mr-1" onclick="add({{ $id }})"><i class="fas fa-plus"></i>Agregar</button>
-            </div>')
-            ->rawColumns(['action'])
-            ->make(true);
     }
 
     /**
@@ -160,6 +139,7 @@ class PurchaseController extends Controller
                             $newProduct->code = $product['code'];
                             $newProduct->name = $product['name'];
                             $newProduct->category_id = $product['category'];
+                            $newProduct->unit_measure_id = 1; //temporally
                             $newProduct->brand_id = '1'; ///<----------Fix this
                             $newProduct->is_service = 2;
                             $newProduct->is_available = 1;
@@ -239,50 +219,5 @@ class PurchaseController extends Controller
             return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
 
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
