@@ -4,11 +4,11 @@
 @section('title','Agregar producto')
 
 @section('vendor-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/wizard/wizard.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/fileinput/fileinput.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('js/libs/toastr/toastr.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/wizard/wizard.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/fileinput/fileinput.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/toastr/toastr.css')}}">
 @endsection
 
 @section('content')
@@ -301,11 +301,11 @@
 @endsection
 
 @section('vendor-scripts')
-<script src="{{asset('js/libs/steps/jquery.steps.js')}}"></script>
-<script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
-<script src="{{asset('js/libs/fileinput/fileinput.min.js')}}"></script>
-<script src="{{asset('js/libs/select2/select2.full.js')}}"></script>
-<script src="{{asset('js/libs/toastr/toastr.min.js')}}"></script>
+<script src="{{asset('vendors/steps/jquery.steps.js')}}"></script>
+<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('vendors/fileinput/fileinput.min.js')}}"></script>
+<script src="{{asset('vendors/select2/select2.full.js')}}"></script>
+<script src="{{asset('vendors/toastr/toastr.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
