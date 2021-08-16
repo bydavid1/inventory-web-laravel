@@ -11,7 +11,7 @@ class Purchase extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function Supplier() {
+    public function supplier() {
         return $this->belongsTo(Supplier::class);
     }
 

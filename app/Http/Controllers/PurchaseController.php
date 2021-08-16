@@ -12,6 +12,7 @@ use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Supplier;
 use App\Traits\Helpers;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\ExecutableFinder;
@@ -38,14 +39,17 @@ class PurchaseController extends Controller
                     <a role="button" data-id="{{"$id"}}">
                         <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
                     </a>
-                    <a href="{{ route("invoiceExist", "$id") }}">
+                    <a href="#">
                         <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
                     </a>
                 </div>')
             ->addColumn('name', function($query){
                 return $query->supplier->name;
             })
-            ->editColumn('sub_total', function($query){
+            ->editColumn('created_at', function($query) {
+                return Carbon::parse($query->created_at)->format('d-m-Y');
+            })
+            ->editColumn('subtotal', function($query){
                 return '$' . $query->subtotal;
             })
             ->editColumn('total', function($query){
