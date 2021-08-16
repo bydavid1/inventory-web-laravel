@@ -10,4 +10,11 @@ class PurchaseItem extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    //Allow mass assigment
+    protected $guarded = [];
+
+    public function purchase() {
+        return $this->belongsTo(Purchase::class);
+    }
 }

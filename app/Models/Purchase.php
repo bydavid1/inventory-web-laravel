@@ -10,4 +10,16 @@ class Purchase extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function Supplier() {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function invoice() {
+        return $this->morphOne(Invoice::class, 'invoiceable');
+    }
+
+    public function items() {
+        return $this->hasMany(PurchaseItem::class);
+    }
 }
