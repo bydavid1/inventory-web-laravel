@@ -25,4 +25,17 @@ class Invoice extends Model
         CreateInvoice::dispatch($view, $fileName);
         return $view;
     }
+
+    public static function getLastInvoiceNumber($invoiceType) {
+        $lastInvoice = Invoice::latest()->where('invoice_type', $invoiceType)->first();
+        $newNumber = 0;
+
+        if ($lastInvoice) {
+            $newNumber = str_pad($lastInvoice->invoice_num + 1, 10, '0', STR_PAD_LEFT);
+        }else{
+            $newNumber = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
+        }
+
+        return $newNumber;
+    }
 }
