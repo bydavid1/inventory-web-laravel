@@ -6,8 +6,6 @@ window.axios.defaults.headers.common = {
 
 import table_details from './components/TableDetails.js'
 import result from './components/Result.js'
-import formatCurrency from '../utils/moneyFormat.js'
-import Validation from '../utils/validation.js'
 
 var vm = new Vue({
     el : '#app',
@@ -107,10 +105,11 @@ var vm = new Vue({
         },
         searchProduct (){
             let fields = [];
-            fields[0] = ['id','code', 'name', 'stock']
-            fields[1] = ['first_price', 'first_image']
-            axios.get(`/api/products/search/${this.searchControl}/${JSON.stringify(fields)}`)
+            fields[0] = ['id','code','name']
+            fields[1] = ['price:id,price_w_tax,product_id', 'stock', 'photo']
+            axios.get(`/api/products/query/${this.searchControl}/${JSON.stringify(fields)}`)
             .then(response => {
+                console.log(response)
                 this.results = response.data
             })
             .catch(error => {
@@ -128,11 +127,11 @@ var vm = new Vue({
                     this.data.subtotalValue += Number(item.total)
                     this.data.discountsValue += Number(item.discount)
                 }
-                formatCurrency(this.data.subtotalValue)
+                this.data.subtotalValue = (this.data.subtotalValue).toFixed(2);
             }
 
             this.data.totalValue = (this.data.subtotalValue - this.data.discountsValue + Number(this.data.additionalPayments))
-            formatCurrency(this.data.totalValue)
+            this.data.totalValue = (this.data.totalValue).toFixed(2);
         },
         storePurchase () {
             Swal.fire({
@@ -143,10 +142,6 @@ var vm = new Vue({
                     Swal.showLoading()
                 },
             })
-
-            const validation = this.isValidated()
-
-            if (validation.response == true) {
 
                 this.data.products = this.items;
 
@@ -178,93 +173,79 @@ var vm = new Vue({
                         html : errorsLog,
                     });
                 })
-            } else {
-
-                let validatedErrors = "<ul>"
-                // validation.errors.forEach(value => {
-                //     validatedErrors += `<li>${value}</li>`
-                // })
-                // validatedErrors += "</ul>"
-
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Se encontraron errores en los datos',
-                    html : validatedErrors,
-                });
-            }
         },
-        isValidated () {
+        // isValidated () {
 
-            let rules = [
-                {field : "supplierId", validate : { type : "required", message : "No se ha especificado el proveedor o cliente"}},
-                {field : "totalValue", validate : { type : "min", value: 0.01, message : "El total no puede ser 0 ni negativo"}},
-                {field : "items", validate : { type : "array"}},
-            ]
+        //     let rules = [
+        //         {field : "supplierId", validate : { type : "required", message : "No se ha especificado el proveedor o cliente"}},
+        //         {field : "totalValue", validate : { type : "min", value: 0.01, message : "El total no puede ser 0 ni negativo"}},
+        //         {field : "items", validate : { type : "array"}},
+        //     ]
 
-            let validate = new Validation(rules, this.data)
+        //     let validate = new Validation(rules, this.data)
 
-            let result = validate.validate()
+        //     let result = validate.validate()
 
-            console.log(result)
+        //     console.log(result)
 
-            return {
-                response : false,
-            }
+        //     return {
+        //         response : false,
+        //     }
 
-            // let errors = []
-            // if (this.data.supplierId == "") {
-            //     errors.push(`No se ha especificado el proveedor o cliente`)
-            // }
+        //     // let errors = []
+        //     // if (this.data.supplierId == "") {
+        //     //     errors.push(`No se ha especificado el proveedor o cliente`)
+        //     // }
 
-            // if (this.data.totalValue < 1) {
-            //     errors.push(`El total no puede ser 0 ni negativo`)
-            // }
+        //     // if (this.data.totalValue < 1) {
+        //     //     errors.push(`El total no puede ser 0 ni negativo`)
+        //     // }
 
-            // for (const item of this.items) {
-            //     if (item.name == "") {
-            //         errors.push(`El nombre no puede estar vacío, revise los datos`)
-            //         item.name = "Nombre indefinido"
-            //     }
+        //     // for (const item of this.items) {
+        //     //     if (item.name == "") {
+        //     //         errors.push(`El nombre no puede estar vacío, revise los datos`)
+        //     //         item.name = "Nombre indefinido"
+        //     //     }
 
-            //     if (item.purchase == "" || item.purchase == 0) {
-            //         errors.push(`El precio de compra de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-            //     }
+        //     //     if (item.purchase == "" || item.purchase == 0) {
+        //     //         errors.push(`El precio de compra de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+        //     //     }
 
-            //     if (item.quantity == "" || item.quantity == 0) {
-            //         errors.push(`La cantidad de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-            //     }
+        //     //     if (item.quantity == "" || item.quantity == 0) {
+        //     //         errors.push(`La cantidad de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+        //     //     }
 
-            //     if (item.total == "" || item.total == 0) {
-            //         errors.push(`El precio total de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
-            //     }
+        //     //     if (item.total == "" || item.total == 0) {
+        //     //         errors.push(`El precio total de <strong>${item.name}</strong> no debe de estar vacio o debe ser mayor a 0`)
+        //     //     }
 
-            //     if (item.isNewProduct == true) {
-            //         if (item.price < item.purchase) {
-            //             errors.push(`El precio venta ($${item.price}) de <strong>${item.name}</strong> no puede ser menor al precio de compra ($${item.purchase})`)
-            //         }
+        //     //     if (item.isNewProduct == true) {
+        //     //         if (item.price < item.purchase) {
+        //     //             errors.push(`El precio venta ($${item.price}) de <strong>${item.name}</strong> no puede ser menor al precio de compra ($${item.purchase})`)
+        //     //         }
 
-            //         if (item.code == "") {
-            //             errors.push(`El codigo de <strong>${item.name}</strong> no puede estar vacío`)
-            //         }
+        //     //         if (item.code == "") {
+        //     //             errors.push(`El codigo de <strong>${item.name}</strong> no puede estar vacío`)
+        //     //         }
 
-            //         if (item.category == "") {
-            //             errors.push(`La categoría de <strong>${item.name}</strong> es requerida`)
-            //         }
+        //     //         if (item.category == "") {
+        //     //             errors.push(`La categoría de <strong>${item.name}</strong> es requerida`)
+        //     //         }
 
-            //     }
-            // }
+        //     //     }
+        //     // }
 
-            // if (errors.length > 0) {
-            //     return {
-            //         response : false,
-            //         errors : errors
-            //     }
-            // } else {
-            //     return {
-            //         response : true,
-            //     }
-            // }
-        }
+        //     // if (errors.length > 0) {
+        //     //     return {
+        //     //         response : false,
+        //     //         errors : errors
+        //     //     }
+        //     // } else {
+        //     //     return {
+        //     //         response : true,
+        //     //     }
+        //     // }
+        // }
     },
     watch : {
         items : {
