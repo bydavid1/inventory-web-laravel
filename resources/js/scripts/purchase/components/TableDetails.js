@@ -20,7 +20,7 @@ Vue.component('table_details', {
 /*html*/`<table class="table">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Eliminar</th>
                     <th>Item</th>
                     <th>Precio de compra</th>
                     <th>Cantidad</th>

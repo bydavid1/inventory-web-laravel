@@ -65,7 +65,7 @@
 						data: 'name'
 					},
 					{
-						data: 'total_quantity'
+						data: 'quantity'
 					},
 					{
 						data: 'subtotal'

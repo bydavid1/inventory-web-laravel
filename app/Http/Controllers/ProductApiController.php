@@ -94,7 +94,7 @@ class ProductApiController extends Controller
     {
         try {
             $fields = json_decode($columns);
-            $products = Product::select($fields[0])->with($fields[1])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
+            $products = Product::has('price')->select($fields[0])->with($fields[1])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
             return response($products, 200);
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);
