@@ -9,6 +9,8 @@
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/fileinput/fileinput.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/toastr/toastr.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/plugins/toastr.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/plugins/wizard.css')}}">
 @endsection
 
 @section('content')

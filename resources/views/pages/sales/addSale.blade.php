@@ -358,14 +358,13 @@
 @endsection
 
 @section('vendor-scripts')
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
 @endsection
 
 @section('page-scripts')
 @routes
-<script type="module" src="{{ asset('js/scripts/sales/script.js') }}"></script>
+<script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
 <script>
     $(document).on('click', '.dropdown-menu', function (e) {
         e.stopPropagation();

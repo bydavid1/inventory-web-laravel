@@ -1,13 +1,14 @@
+import Vue from 'vue'
 //set token to axios header
 window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 };
 
-import item from './components/Item.js'
-import product from "./components/Product.js"
-import pagination from "./components/Pagination.js"
-import new_customer from "./components/NewCustomer.js"
+Vue.component('item', require('./components/Item.vue').default)
+Vue.component('product', require('./components/Product.vue').default)
+Vue.component('pagination', require('./components/Pagination.vue').default)
+Vue.component('new_customer', require('./components/NewCustomer.vue').default)
 
 
 var vm = new Vue({

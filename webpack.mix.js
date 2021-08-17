@@ -27,10 +27,9 @@ function mixAssetsDir(path, callback) {
 }
 
 // Scrips
-mixAssetsDir('js/scripts/**/*.js', (src, dest) => {
-    mix.scripts(src, dest)
+mixAssetsDir('js/scripts/**/!(_)*.js', (src, dest) => {
+    mix.js(src, dest);
 });
-
 
 // Menus
 mixAssetsDir('js/core/menu/!(_)*.js', (src, dest) => {
@@ -61,6 +60,9 @@ mix.sass('resources/sass/app.scss', 'public/css')
     jssrc + 'footer.js',
     jssrc + 'customizer.js'],
     'public/js/core/app.js')
+
+// Compiling vue files
+mix.vue('resources/js/scripts/sales/_addSale.js', 'public/js/scripts/sales/addSale.js');
 
 // if (mix.inProduction()) {
 //   mix.version();
