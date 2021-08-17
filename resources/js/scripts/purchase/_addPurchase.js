@@ -1,11 +1,12 @@
+import Vue from 'vue'
 //set token to axios header
 window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 };
 
-import table_details from './components/TableDetails.js'
-import result from './components/Result.js'
+Vue.component('table_details', require('./components/TableDetails.vue').default)
+Vue.component('result', require('./components/Result.vue').default)
 
 var vm = new Vue({
     el : '#app',

@@ -263,7 +263,7 @@
                             aria-hidden="true">x</span></button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" id="newProductForm">
+                    <form role="form" id="editProductForm">
                         <div class="form-group">
                             <label>Nombre</label>
                             <input type="text" class="form-control" v-model="editProduct.name" placeholder="Enter ...">
@@ -328,7 +328,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <results :results="results" v-if="results.length > 0" class="mt-1" v-on:choose="chooseProduct"></results>
+                    <result :results="results" v-if="results.length > 0" class="mt-1" v-on:choose="chooseProduct"></result>
                 </div>
             </div>
         </div>
@@ -340,11 +340,10 @@
 @section('vendor-scripts')
     <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 @endsection
 
 @section('page-scripts')
     @routes
-    <script type="module" src="{{ asset('js/scripts/purchase/script.js') }}"></script>
+    <script src="{{ asset('js/scripts/purchase/addPurchase.js') }}"></script>
 @endsection
