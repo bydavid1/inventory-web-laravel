@@ -153,23 +153,16 @@ class SaleController extends Controller
                 $sale->save();
 
                 //getting last invoice num
-                $lastNum = Invoice::latest()->where('invoice_type', $request->invoiceType)->first();
-                $newNum = 0;
-
-                if ($lastNum) {
-                    $newNum = str_pad($lastNum->invoice_num + 1, 10, '0', STR_PAD_LEFT);
-                }else{
-                    $newNum = str_pad('1', 10, '0', STR_PAD_LEFT); //first invoice
-                }
+                $invoiceNumber = Invoice::getLastInvoiceNumber($request->invoiceType);
 
                 //generating prefix for filename
                 $prefix = $request->invoiceType == 1 ? "consumidor_final_" : "credito_fiscal_";
 
                 //Creating new Invoice
                 $invoice = new Invoice();
-                $invoice->invoice_num = $newNum;
+                $invoice->invoice_num = $invoiceNumber;
                 $invoice->invoice_type = $request->invoiceType;
-                $invoice->filename = $prefix . $newNum;
+                $invoice->filename = $prefix . $invoiceNumber;
 
                 $sale->invoice()->save($invoice);
 
