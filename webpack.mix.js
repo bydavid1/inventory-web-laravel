@@ -28,7 +28,7 @@ function mixAssetsDir(path, callback) {
 
 // Scrips
 mixAssetsDir('js/scripts/**/!(_)*.js', (src, dest) => {
-    mix.js(src, dest);
+    mix.scripts(src, dest);
 });
 
 // Menus
