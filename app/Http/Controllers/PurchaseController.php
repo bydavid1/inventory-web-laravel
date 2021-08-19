@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePurchase;
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\KardexItem;
+use App\Models\KardexReport;
 use App\Models\Photo;
 use App\Models\Price;
 use App\Models\Product;
@@ -115,6 +117,16 @@ class PurchaseController extends Controller
 
                 if ($purchase->save()) {
 
+                    //Creating invoice
+                    $invoiceNumber = Invoice::getLastInvoiceNumber(3); //3 = purchase invoice
+
+                    $invoice = new Invoice();
+                    $invoice->invoice_num = $invoiceNumber;
+                    $invoice->invoice_type = 3;
+                    $invoice->filename = 'compra_' . $invoiceNumber;
+
+                    $purchase->invoice()->save($invoice);
+
                     $items = array();
 
                     foreach ($request->products as $product) {
@@ -173,6 +185,24 @@ class PurchaseController extends Controller
                             //Setting product_id to purchase item
                             $purchaseitem['product_id'] = $newProduct->id;
 
+                            //Generating kardex report
+                            $kardexReport = new KardexReport();
+                            $kardexReport->start_date = date('Y-m-d');
+
+                            $newProduct->kardexReport()->save($kardexReport);
+
+                            $kardexItem = new KardexItem();
+                            $kardexItem->product_id = $newProduct->id;
+                            $kardexItem->is_initial = 1;
+                            $kardexItem->quantity =  $product['quantity'];
+                            $kardexItem->unit_value = $product['purchase'];
+                            $kardexItem->value = $product['purchase'] * $product['quantity'];
+                            $kardexItem->final_stock = $product['quantity'];
+                            $kardexItem->final_unit_value = $product['purchase'];
+                            $kardexItem->final_value = $product['purchase'] * $product['quantity'];
+
+                            $kardexReport->records()->save($kardexItem);
+
                         } else {
                             //Update quantity
                             $existingProduct = Product::find($product['id']);
@@ -190,22 +220,30 @@ class PurchaseController extends Controller
 
                             //Setting product_id to purchase item
                             $purchaseitem['product_id'] = $product['id'];
+
+                            //Generating kardex report
+                            $report = KardexReport::getOpenedReport($product['id']);
+
+                            if ($report) {
+                                $final_unit_value = ($report->lastItem->final_value + ($product['quantity'] * $product['purchase'])) / $product['quantity'];
+
+                                $kardexItem = new KardexItem();
+                                $kardexItem->invoice_id = $invoice->id;
+                                $kardexItem->product_id = $product['id'];
+                                $kardexItem->quantity = $product['quantity'];
+                                $kardexItem->unit_value = $product['purchase'];
+                                $kardexItem->value = $product['total'];
+                                $kardexItem->final_stock = $product['quantity']; //CAMBIARLO POR CURRENT STOCK
+                                $kardexItem->final_unit_value = $final_unit_value;
+                                $kardexItem->final_value = $kardexItem->final_unit_value * $product['quantity'];
+                                $report->records()->save($kardexItem);
+                            }
                         }
 
                         array_push($items, $purchaseitem);
                     }
 
                     $purchase->items()->saveMany($items);
-
-                    $invoiceNumber = Invoice::getLastInvoiceNumber(3); //3 = purchase invoice
-
-                    //Creating invoice
-                    $invoice = new Invoice();
-                    $invoice->invoice_num = $invoiceNumber;
-                    $invoice->invoice_type = 3;
-                    $invoice->filename = 'compra_' . $invoiceNumber;
-
-                    $purchase->invoice()->save($invoice);
 
                     Invoice::invoiceToPDF($items, $purchase, $supplier->name, $invoice->filename);
 
