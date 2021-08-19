@@ -49,6 +49,10 @@ class Product extends Model
         return $this->belongsTo(Brand::class)->withDefault(['name' => 'Desconocido']);
     }
 
+    public function kardexReport() {
+        return $this->hasMany(KardexReport::class);
+    }
+
     public static function updateStock($id, $quantity, $sum = false) {
         $product = self::find($id);
         foreach ($product->stock as $i) {
