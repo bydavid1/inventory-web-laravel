@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProduct;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\KardexItem;
+use App\Models\KardexReport;
 use App\Models\Photo;
 use App\Models\Price;
 use App\Models\Product;
@@ -126,21 +128,26 @@ class ProductController extends Controller
                     "source" => $path
                 ]));
 
+                /**** Creating kardex report ****/
+
+                $kardexReport = new KardexReport();
+                $kardexReport->start_date = date('Y-m-d');
+
+                $product->kardexReport()->save($kardexReport);
+
+                $kardexItem = new KardexItem();
+                $kardexItem->product_id = $product->id;
+                $kardexItem->is_initial = 1;
+                $kardexItem->quantity =  $request->stock;
+                $kardexItem->unit_value = $request->purchase;
+                $kardexItem->value = $request->purchase * $request->stock;
+                $kardexItem->final_stock = $request->stock;
+                $kardexItem->final_unit_value = $request->purchase;
+                $kardexItem->final_value = $request->purchase * $request->stock;
+
+                $kardexReport->records()->save($kardexItem);
+
                 return response()->json(['message' => "Producto guardado"], 201);
-
-                //     // $kardex = new Kardex;
-                //     // $kardex->type_id = 1; //Ingreso a inventario
-                //     // $kardex->product_id = $new->id;
-                //     // $kardex->quantity =  $new->stock;
-                //     // $kardex->unit_price = $request->purchase;
-                //     // $kardex->value = $request->purchase * $new->stock;
-                //     // $kardex->final_unit_value = $request->purchase;
-                //     // $kardex->final_stock = $new->stock;
-                //     // $kardex->final_value = $request->purchase * $new->stock;
-                //     // $kardex->save();
-
-                //     return response()->json(['success'=>'true', 'message'=>'Producto guardado'], 200);
-                // }
             }
         } catch (Exception $e) {
             return response()->json(['message'=> $e->getMessage()], 500);
