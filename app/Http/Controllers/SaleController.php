@@ -10,6 +10,8 @@ use App\Models\Kardex;
 use App\Http\Requests\StoreSale;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\KardexItem;
+use App\Models\KardexReport;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
@@ -168,13 +170,14 @@ class SaleController extends Controller
 
                 //Creating items
                 $items = array();
+
                 foreach ($request->products as $product) {
                    $saleItem = new SaleItem([
                        "product_id" => $product['id'],
                        "quantity" => $product['quantity'],
                        "unit_price" => $product['price'],
                        "unit_tax" => $product['tax'],
-                       "discount" => 0.00, //temporally default
+                       "discount" => 0.00, //temp default
                        "total" => $product['total'],
                    ]);
 
@@ -197,6 +200,22 @@ class SaleController extends Controller
                     // $kardex->final_value = $last_record->final_unit_value * $product->stock;
 
                    array_push($items, $saleItem);
+
+                   //Generating kardex report
+                   $report = KardexReport::getOpenedReport($product['id']);
+
+                   if ($report) {
+                        $kardexItem = new KardexItem();
+                        $kardexItem->invoice_id = $invoice->id;
+                        $kardexItem->product_id = $product['id'];
+                        $kardexItem->quantity = $product['quantity'];
+                        $kardexItem->unit_value = $product['price'];
+                        $kardexItem->value = $product['total'];
+                        $kardexItem->final_stock = $product['quantity']; //CAMBIARLO POR CURRENT STOCK
+                        $kardexItem->final_unit_value = $report->lastItem->final_unit_value;
+                        $kardexItem->final_value = $report->lastItem->final_unit_value * $product['quantity'];
+                        $report->records()->save($kardexItem);
+                   }
                 }
 
                 $sale->items()->saveMany($items);
