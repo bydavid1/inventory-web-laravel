@@ -98,7 +98,7 @@ Route::prefix('purchases')->group(function () {
 //Kardex
 Route::prefix('kardex')->group(function () {
     Route::get('/', [KardexController::class, 'index'])->name('kardex')->middleware('auth');
-    Route::get('/records/{id}', [KardexController::class, 'records'])->name('records')->middleware('auth');
+    Route::get('/product/{id}', [KardexController::class, 'report'])->name('productReport')->middleware('auth');
 });
 
 //Credits

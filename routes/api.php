@@ -74,7 +74,7 @@ use Illuminate\Support\Facades\Route;
     //Other routes
     Route::get('kardex/products', [KardexController::class, 'getProducts']);
 
-    Route::get('kardex/{id}/records', [KardexController::class, 'getRecords']);
+    Route::get('kardex/product/{id}/report', [KardexController::class, 'getProductReport'])->name('getProductReport');
 
     Route::get('sales', [SaleController::class, 'getRecords']);
 
