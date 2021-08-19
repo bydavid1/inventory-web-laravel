@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-2">
-                <img src="/{{ $product->first_image->src }}" alt="Product image"
+                <img src="/{{ $product->photo->source }}" alt="Product image"
                     style="max-width: 80%; max-height: 80%;">
             </div>
             <div class="col-lg-4">
@@ -39,12 +39,9 @@
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Registros</h3>
-        </div>
         <div class="card-body">
-            <table class="table table-striped table-bordered" id="items">
-                <thead class="table-success">
+            <table class="table table-responsive table-striped table-bordered" id="items">
+                <thead>
                   <tr>
                       <th colspan="3">Descripcion</th>
                       <th colspan="3">Entradas</th>
@@ -89,7 +86,7 @@
         $('#items').DataTable({
             serverSide: true,
             ajax: {
-                url : "/api/kardex/{{$id}}/records"
+                url : "{{route('getProductReport', $id)}}"
             },
             columns: [
                 {
@@ -105,7 +102,7 @@
                     data: 'e_quantity'
                 },
                 {
-                    data: 'e_price'
+                    data: 'e_unit_value'
                 },
                 {
                     data: 'e_value'
@@ -114,7 +111,7 @@
                     data: 's_quantity'
                 },
                 {
-                    data: 's_price'
+                    data: 's_unit_value'
                 },
                 {
                     data: 's_value'
