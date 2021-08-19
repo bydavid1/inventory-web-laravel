@@ -205,6 +205,8 @@ class PurchaseController extends Controller
                     $invoice->invoice_type = 3;
                     $invoice->filename = 'compra_' . $invoiceNumber;
 
+                    $purchase->invoice()->save($invoice);
+
                     Invoice::invoiceToPDF($items, $purchase, $supplier->name, $invoice->filename);
 
                     return response()->json(['message' => 'Factura guardada']);
