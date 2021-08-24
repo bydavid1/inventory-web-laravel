@@ -14,13 +14,13 @@
             <h4 class="card-title">Seleccione un producto para ver sus registros</h4>
         </div>
         <div class="card-body">
-            <table class="table" id="items">
+            <table class="table table-hover table-bordered" id="items">
                 <thead>
                     <tr>
-                        <th style="width:10%;">Imagen</th>
+                        <th>Imagen</th>
                         <th>Codigo</th>
                         <th>Nombre del producto</th>
-                        <th style="width:15%;" class="text-right">Opciones</th>
+                        <th class="text-right">Opciones</th>
                     </tr>
                 </thead>
             </table>

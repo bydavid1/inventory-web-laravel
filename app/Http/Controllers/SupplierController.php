@@ -35,19 +35,23 @@ class SupplierController extends Controller
         if ($request->ajax()) {
             $query = Supplier::latest()->get();
             return DataTables::of($query)
-            ->addColumn('actions', '<div class="btn-group float-right">
-                            <button type="button" 
-                                class="btn btn-danger" 
-                                data-toggle="modal" 
-                                data-target="#editSupplierModal" 
-                                onclick="update({{"$id"}})">
-                                <i class="bx bx-edit" style="color: white"></i>
-                            </button>
-                            <button type="button" 
-                                class="btn btn-warning" 
+            ->addColumn('actions', '
+                        <div class="float-right">
+                            <a href="#"
+                                onclick="update({{"$id"}})"
+                                data-toggle="modal"
+                                data-target="#editSupplierModal">
+                                <i class="badge-circle badge-circle-success
+                                    bx bx-edit font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
+                            <a href="#"
                                 onclick="remove({{"$id"}})">
-                                <i class="bx bx-trash" style="color: white"></i>
-                            </button>
+                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
                         </div>')
             ->rawColumns(['actions'])
             ->make();
@@ -69,7 +73,7 @@ class SupplierController extends Controller
             $supplier->nit = $request->nit;
             $supplier->phone = $request->phone;
             $supplier->address = $request->address;
-    
+
             if ($supplier->save()) {
                 return response()->json(["message" => "Guardado satisfactoriamente"], 200);
             }
@@ -128,7 +132,7 @@ class SupplierController extends Controller
     {
         try {
             $supplier = Supplier::find($id)->delete();
-    
+
             if ($supplier) {
                 return response()->json(["message"=>"Eliminado satisfactoriamente"], 200);
             }

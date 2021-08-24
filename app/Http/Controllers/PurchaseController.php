@@ -33,14 +33,14 @@ class PurchaseController extends Controller
 
             return Datatables::of($query)
             ->addColumn('actions', '
-                <div>
-                    <a role="button" data-id="{{"$id"}}">
-                        <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
-                    </a>
-                    <a href="#" onclick="showInvoice({{"$id"}})">
-                        <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
-                    </a>
-                </div>')
+                        <div class="float-right">
+                            <a role="button" data-id="{{"$id"}}">
+                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"></i>
+                            </a>
+                            <a href="#" onclick="showInvoice({{"$id"}})">
+                                <i class="badge-circle badge-circle-info bx bx-arrow-to-right font-medium-1"></i>
+                            </a>
+                        </div>')
             ->addColumn('name', function($query){
                 return $query->supplier->name;
             })

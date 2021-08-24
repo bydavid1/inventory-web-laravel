@@ -23,7 +23,7 @@
     .sorting_desc {
       &:before,
       &:after {
-        top: 8px;
+        top: 2px;
         right: 3px;
       }
     }
@@ -47,6 +47,10 @@
       }
     }
   }
+}
+
+table.table-bordered.dataTable tbody td {
+    border-bottom-width: 1px;
 }
 
 // Datatable Search, Labels

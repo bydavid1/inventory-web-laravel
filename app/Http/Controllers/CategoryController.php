@@ -36,19 +36,23 @@ class CategoryController extends Controller
             $query = Category::latest()->get();
 
             return DataTables::of($query)
-            ->addColumn('actions', '<div class="btn-group float-right">
-                            <button type="button" 
-                                class="btn btn-danger" 
-                                data-toggle="modal" 
-                                data-target="#editCategoryModal" 
-                                onclick="update({{"$id"}})">
-                                <i class="bx bx-edit" style="color: white"></i>
-                            </button>
-                            <button type="button" 
-                                class="btn btn-warning" 
+            ->addColumn('actions', '
+                        <div class="float-right">
+                            <a href="#"
+                                onclick="update({{"$id"}})"
+                                data-toggle="modal"
+                                data-target="#editCategoryModal">
+                                <i class="badge-circle badge-circle-success
+                                    bx bx-edit font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
+                            <a href="#"
                                 onclick="remove({{"$id"}})">
-                                <i class="bx bx-trash" style="color: white"></i>
-                            </button>
+                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
                         </div>')
             ->editColumn('is_available', function($category){
                 if ($category->is_available == 1) {

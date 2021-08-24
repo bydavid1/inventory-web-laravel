@@ -19,12 +19,11 @@ class ProductApiController extends Controller
 
             return DataTables::of($query)
             ->addColumn('actions', '
-                        <div class="btn-group dropdown mb-1">
-                            <a role="button" href="{{ route("editProduct", "$id") }}" class="btn btn-secondary">Editar</a>
-                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                        <div class="btn-group dropdown">
+                            <a role="button" href="{{ route("editProduct", "$id") }}" class="btn btn-info btn-sm">Editar</a>
+                            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"
                                 id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 data-reference="parent">
-                                <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
                                 <button class="dropdown-item" onclick="getPrices({{"$id"}})">Editar precios</button>
@@ -94,7 +93,12 @@ class ProductApiController extends Controller
     {
         try {
             $fields = json_decode($columns);
-            $products = Product::has('price')->select($fields[0])->with($fields[1])->where("code", "like", "%". $query ."%")->orWhere("name", "like", "%". $query ."%")->get();
+            $products = Product::has('price')
+                ->select($fields[0])
+                ->with($fields[1])
+                ->where("code", "like", "%". $query ."%")
+                ->orWhere("name", "like", "%". $query ."%")
+                ->get();
             return response($products, 200);
         } catch (Exception $e) {
             return response()->json(['message'=> 'Error: '. $e->getMessage()], 500);

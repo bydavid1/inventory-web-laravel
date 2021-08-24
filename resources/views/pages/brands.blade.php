@@ -10,7 +10,7 @@
 
 @section('tools')
     <button class="btn btn-primary" data-toggle="modal" data-target="#addManufacturer">
-        <i class="fa fa-plus-circle fa-2x"></i>
+        <i class="bx bx-plus-circle fa-2x"></i>
         <span>Agregar Fabricante</span>
     </button>
 @endsection
@@ -39,7 +39,7 @@
                     </a>
                 </li>
             </ul>
-            <table class="table table-condensed table-hover table-bordered table-striped" id="items">
+            <table class="table table-hover table-bordered" id="items">
                 <thead>
                     <tr>
                         <th>Logo</th>

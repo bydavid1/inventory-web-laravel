@@ -40,7 +40,7 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-responsive table-striped table-bordered" id="items">
+            <table class="table table-hover table-bordered" style="width: 100%" id="items">
                 <thead>
                   <tr>
                       <th colspan="3">Descripcion</th>
@@ -52,13 +52,13 @@
                       <th>Fecha</th>
                       <th>Detalle</th>
                       <th>Valor Uni.</th>
-                      <th>Cantidad</th>
+                      <th>Cant.</th>
                       <th>Precio Unit.</th>
                       <th>Valor</th>
-                      <th>Cantidad</th>
+                      <th>Cant.</th>
                       <th>Precio Unit.</th>
                       <th>Valor</th>
-                      <th>Cantidad</th>
+                      <th>Cant.</th>
                       <th>Valor</th>
                   </tr>
                 </thead>

@@ -14,9 +14,6 @@
 
 /* toast container opacity */
 #toast-container > div {
-    opacity: 0.9;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=90);
-    filter: alpha(opacity=90);
     max-width: none;
 }
 
@@ -27,17 +24,17 @@
 
 /* toast background colors starts */
 .toast {
-    background-color: $primary;
+    background-color: $primary !important;
 }
 .toast-success {
-    background-color: $success;
+    background-color: $success !important;
 }
 .toast-error {
-    background-color: $danger;
+    background-color: $danger !important;
 }
 .toast-info {
-    background-color: $info;
+    background-color: $info !important;
 }
 .toast-warning {
-    background-color: $warning;
+    background-color: $warning !important;
 }

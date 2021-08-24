@@ -19,7 +19,7 @@
 
 <div class="card">
 	<div class="card-body">
-		<table class="table table-condensed table-hover table-bordered table-striped" id="items">
+		<table class="table table-hover table-bordered" id="items">
 				<thead>
 					<tr>
 						<th>Fecha de factura</th>
@@ -27,7 +27,7 @@
 						<th>Cantidad de productos</th>
 						<th>Sub total</th>
 						<th>Total</th>
-						<th style="width:15%;">Opciones</th>
+						<th class="text-right">Opciones</th>
 					</tr>
 				</thead>
 			</table>

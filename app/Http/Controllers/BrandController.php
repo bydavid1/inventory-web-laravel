@@ -38,19 +38,23 @@ class BrandController extends Controller
         if ($request->ajax()) {
             $brand = Brand::latest()->get();
             return DataTables::of($brand)
-            ->addColumn('actions', '<div class="btn-group float-right">
-                            <button type="button" 
-                                class="btn btn-danger" 
-                                data-toggle="modal" 
-                                data-target="#editManufacturerModal" 
-                                onclick="update({{ $id }})">
-                                <i class="bx bx-edit" style="color: white"></i>
-                            </button>
-                            <button type="button" 
-                                class="btn btn-warning" 
-                                onclick="remove({{ $id }})">
-                                <i class="bx bx-trash" style="color: white"></i>
-                            </button>
+            ->addColumn('actions', '
+                        <div class="float-right">
+                            <a href="#"
+                                onclick="update({{"$id"}})"
+                                data-toggle="modal"
+                                data-target="#editManufacturerModal">
+                                <i class="badge-circle badge-circle-success
+                                    bx bx-edit font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
+                            <a href="#"
+                                onclick="remove({{"$id"}})">
+                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
                         </div>')
             ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}" style="max-height:50px; max-width:70px;"/>')
             ->addColumn('available', function($brand){

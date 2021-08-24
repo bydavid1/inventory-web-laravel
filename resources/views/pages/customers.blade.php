@@ -18,10 +18,7 @@
 @section('content')
 	<div class="card">
 		<div class="card-body">
-			@if ( session('mensaje') )
-			<div class="alert alert-success col-lg-8 mx-auto">{{ session('mensaje') }}</div>
-			@endif
-			<table class="table table-condensed table-hover table-bordered table-striped" id="items">
+			<table class="table table-hover table-bordered" id="items">
 				<thead>
 					<tr>
 						<th>Codigo</th>
@@ -31,7 +28,7 @@
 						<th>Email</th>
 						<th>Dirección</th>
 						<th>Fecha de registro</th>
-						<th>Opciones</th>
+						<th class="text-right">Opciones</th>
 					</tr>
 				</thead>
 			</table>
