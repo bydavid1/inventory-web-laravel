@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+<<<<<<< HEAD
 use App\Models\Tax_rules;
+=======
+use App\Models\Tax;
+>>>>>>> database
 
 class TaxSeeder extends Seeder
 {
@@ -14,7 +18,11 @@ class TaxSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         $seed = new Tax_rules();
+=======
+        $seed = new Tax();
+>>>>>>> database
         $seed->percentage = "13";
         $seed->save();
     }

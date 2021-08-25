@@ -1,7 +1,12 @@
 <footer class="footer footer-light @if(isset($configData['footerType'])){{$configData['footerClass']}}@endif">
   <p class="clearfix mb-0">
+<<<<<<< HEAD
     <span class="float-left d-inline-block">2020 &copy; Byron Jimenez</span>
     <span class="float-right d-sm-inline-block d-none">Template
+=======
+    <span class="float-left d-inline-block">2020 &copy; PIXINVENT</span>
+    <span class="float-right d-sm-inline-block d-none">Crafted with
+>>>>>>> database
       <i class="bx bxs-heart pink mx-50 font-small-3"></i>by
       <a class="text-uppercase" href="https://1.envato.market/pixinvent_portfolio" target="_blank">Pixinvent</a>
     </span>

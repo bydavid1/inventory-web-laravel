@@ -24,18 +24,30 @@ class StoreProduct extends FormRequest
     public function rules()
     {
         return [
+<<<<<<< HEAD
             'name' => ['required'],
             'image' => ['image'],
             'code' => ['required', 'unique:products'],
             'provider_id' => ['required', 'numeric'],
             'category_id' => ['required', 'numeric'],
             'manufacturer_id' => ['required', 'numeric'],
+=======
+            'name' => ['required', 'unique:products'],
+            'image' => ['image'],
+            'code' => ['required', 'unique:products'],
+            'supplier_id' => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'brand_id' => ['required', 'numeric'],
+>>>>>>> database
             'purchase' => ['required', 'numeric'],
             'prices' => ['required', 'array', 'min:1'],
             'prices.*.price' => ['numeric', 'gt:purchase'],
             'prices.*.utility' => ['numeric', 'min:0'],
             'is_available' => ['required','numeric'],
+<<<<<<< HEAD
             'type' => ['required','numeric'],
+=======
+>>>>>>> database
             'stock' => ['required','numeric'],
 
         ];
@@ -45,6 +57,10 @@ class StoreProduct extends FormRequest
     {
         return [
             'name.required' => 'El nombre del producto es obligatorio',
+<<<<<<< HEAD
+=======
+            'name.unique' => 'El nombre ya está en uso',
+>>>>>>> database
             'code.required' => 'El codigo del producto es obligatorio',
             'code.unique' => 'El codigo ya está en uso',
             'purchase.required' => 'El precio de compra del producto es obligatorio',

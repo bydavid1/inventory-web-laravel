@@ -11,7 +11,10 @@ use App\Models\Credits;
 use App\Models\Products;
 use App\Models\Sales_items;
 use Illuminate\Support\Facades\Validator;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\View;
+=======
+>>>>>>> database
 use Symfony\Component\Console\Input\Input;
 
 /**
@@ -22,12 +25,15 @@ trait Helpers
 
     protected $items = array();
 
+<<<<<<< HEAD
     public function designInvoice($products, $name = null, $object, $path){
         $view = View::make('pages.pdf.invoice', compact('object', 'products', 'name'))->render();
         CreateInvoice::dispatch($view, $path, $object->invoice_num);
         return $view;
     }
 
+=======
+>>>>>>> database
     // public function createCredit($numfees, $startdate, $rangefees, $interestper, $total, $id){
 
     //     $credit = new Credits;

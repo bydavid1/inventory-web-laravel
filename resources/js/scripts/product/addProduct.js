@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //        vertical Wizard       //
 // ------------------------------
 $(".wizard-vertical").steps({
@@ -20,6 +21,46 @@ $(".wizard-vertical").steps({
 //     e.preventDefault();
 //     storeProduct()
 // })
+=======
+// ------------------------------
+//        vertical Wizard       //
+// ------------------------------
+
+let wizard = $(".product-wizard");
+let form = wizard.show();
+wizard.steps({
+    headerTag: "h3",
+    bodyTag: "fieldset",
+    transitionEffect: "fade",
+    titleTemplate: '<span class="step">#index#</span> #title#',
+    labels: {
+        finish: 'Guardar',
+        next: 'Siguiente',
+        previous: 'Atras'
+    },
+    onStepChanging: function (event, currentIndex, newIndex) {
+        return true;
+    },
+    onFinishing: function (event, currentIndex) {
+        return true;
+    },
+    onFinished: function (event, currentIndex) {
+        storeProduct()
+    }
+});
+
+// Icon color change on state change
+$(document).ready(function () {
+    $(".current").find(".step-icon").addClass("bx bx-time-five");
+});
+// Icon change on state
+// if click on next button icon change
+$(".actions [href='#next']").click(function () {
+    $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
+    $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
+})
+
+>>>>>>> database
 
 //----------------------------------------------------------------------
 //-------------------------Store data---------------------------------
@@ -31,7 +72,10 @@ function storeProduct() {
         const formdata = new FormData(document.getElementById('submitProductForm'));
 
         //clear empty prices
+<<<<<<< HEAD
 
+=======
+>>>>>>> database
         for (let i = 0; i < 4; i++) {
             if (formdata.get(`prices[${i}][price]`) == "") {
                 formdata.delete(`prices[${i}][price]`)
@@ -91,7 +135,10 @@ function storeProduct() {
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> database
 //-----------------Validate function-------------------
 
 function validate(){
@@ -100,13 +147,19 @@ function validate(){
 
     //reset all fields messages
     const invalidfields = document.getElementsByClassName('is-invalid')
+<<<<<<< HEAD
     const posterror = document.getElementById('posterror')
     const posterrortitle = document.getElementById('posterrortitle')
+=======
+>>>>>>> database
 
     const messageslength = invalidfields.length
 
     if (messageslength > 0) {
+<<<<<<< HEAD
         posterror.classList.add('d-none')
+=======
+>>>>>>> database
         for (let x = 0; x < messageslength; x++) {
             invalidfields[0].classList.remove('is-invalid')
         }
@@ -128,7 +181,11 @@ function validate(){
     }
 
     let j = 0
+<<<<<<< HEAD
     for (let i = 1; i < 5; i++) {
+=======
+    for (let i = 1; i < 4; i++) {
+>>>>>>> database
         let input = document.getElementById(`price${i}`)
         if (input.value == "") {
             input.classList.add('is-invalid')
@@ -140,6 +197,7 @@ function validate(){
         if (j != 4) {
             return true
         } else {
+<<<<<<< HEAD
             posterrortitle.textContent = "Debe haber al menos un precio"
             posterror.classList.remove('d-none')
             return false
@@ -147,6 +205,13 @@ function validate(){
     } else {
         posterrortitle.textContent = "Hay datos importantes que hacen falta"
         posterror.classList.remove('d-none')
+=======
+            toastr.error('Debe haber al menos un precio', 'Error');
+            return false
+        }
+    } else {
+        toastr.error('Faltan datos importantes', 'Error');
+>>>>>>> database
         return false
     }
 }
@@ -159,8 +224,15 @@ function validate(){
 
 function calculate(target){
     if (target.id === "purchase") {
+<<<<<<< HEAD
         let result = target.value != "" && isNaN(target.value) === false ? false : true
         for (let i = 1; i < 5; i++) {
+=======
+        let result = target.value != "" && isNaN(target.value) === false ? false : true;
+
+
+        for (let i = 1; i < 4; i++) {
+>>>>>>> database
             let price = document.getElementById('price' + i)
             let utility = document.getElementById('utility' + i)
             //toggle disabled property
@@ -223,4 +295,24 @@ function calculateField(price, utility, action) {
     }
 }
 
+<<<<<<< HEAD
+=======
+//----------------------------------------------------------------------
+//-------------------------Service toogle--------------------------------
+//----------------------------------------------------------------------
+
+function serviceToogle() {
+    let switchService = document.getElementById("is_service")
+    let stock = document.getElementById("stock");
+    let stockParent = stock.closest(".form-group")
+
+    if (switchService.checked == true) {
+        stock.value = 0
+        stockParent.classList.add("d-none")
+    } else if (switchService.checked == false) {
+        stock.value = ""
+        stockParent.classList.remove("d-none")
+    }
+}
+>>>>>>> database
 

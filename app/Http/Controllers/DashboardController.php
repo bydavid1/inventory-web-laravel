@@ -10,7 +10,10 @@ use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Purchases;
 use App\Models\Sales;
+<<<<<<< HEAD
 use App\Models\Sales_items;
+=======
+>>>>>>> database
 use Exception;
 use Illuminate\Http\Request;
 
@@ -47,6 +50,7 @@ class DashboardController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+<<<<<<< HEAD
 
     public function getLastSales(){
         try {
@@ -56,4 +60,6 @@ class DashboardController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+=======
+>>>>>>> database
 }

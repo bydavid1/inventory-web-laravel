@@ -13,6 +13,10 @@ $.ajaxSetup({
 $(document).ready(function () {
     table = $('#items').DataTable({
         serverSide: true,
+<<<<<<< HEAD
+=======
+        processing: true,
+>>>>>>> database
         ajax: {
             url: '/api/categories',
             type: 'GET',
@@ -25,10 +29,20 @@ $(document).ready(function () {
                 data: 'name'
             },
             {
+<<<<<<< HEAD
                 data: 'is_available'
             },
             {
                 data: 'actions'
+=======
+                data: 'is_available',
+                searchable: false
+            },
+            {
+                data: 'actions',
+                orderable: false,
+                searchable: false
+>>>>>>> database
             }
         ]
     })
@@ -104,9 +118,15 @@ $(document).ready(function () {
             statusCode: {
                 200: function(response) {
                     //set data
+<<<<<<< HEAD
                     document.getElementById('uname').value = response[0].name
                     document.getElementById('udescription').value = response[0].description
                     document.getElementById('put_id').value = response[0].id
+=======
+                    document.getElementById('uname').value = response.name
+                    document.getElementById('udescription').value = response.description
+                    document.getElementById('put_id').value = response.id
+>>>>>>> database
                 },
                 404: function(){
                     //show error

@@ -4,13 +4,22 @@
 @section('title','Proveedores')
 
 @section('vendor-styles')
+<<<<<<< HEAD
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/datatables/css/datatables.min.css')}}">
+=======
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
+>>>>>>> database
 @endsection
 
 @section('tools')
     <button class="btn btn-primary" data-toggle="modal" data-target="#addProviderModal">
+<<<<<<< HEAD
         <i class="fa fa-plus-circle fa-2x"></i>
+=======
+        <i class="bx bx-plus-circle fa-2x"></i>
+>>>>>>> database
         <span>Agregar Proveedor</span>
     </button>
 @endsection
@@ -33,13 +42,21 @@
                 </a>
             </li>
             <li class="nav-item">
+<<<<<<< HEAD
                 <a class="nav-link" id="account-tab-center" href="{{ route('manufacturers') }}"
+=======
+                <a class="nav-link" id="account-tab-center" href="{{ route('brands') }}"
+>>>>>>> database
                     aria-controls="account-center" role="tab" aria-selected="false">
                     Fabricantes
                 </a>
             </li>
         </ul>
+<<<<<<< HEAD
         <table class="table table-condensed table-hover table-bordered table-striped" id="items">
+=======
+        <table class="table table-hover table-bordered" id="items">
+>>>>>>> database
             <thead>
                 <tr>
                     <th>Codigo</th>
@@ -47,7 +64,11 @@
                     <th>NIT</th>
                     <th>Telefono</th>
                     <th>Direccion</th>
+<<<<<<< HEAD
                     <th style="width:15%;" class="text-right">Opciones</th>
+=======
+                    <th class="text-right">Opciones</th>
+>>>>>>> database
                 </tr>
             </thead>
         </table>
@@ -208,9 +229,15 @@
 @endsection
 
 @section('vendor-scripts')
+<<<<<<< HEAD
     <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/datatables.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+=======
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/datatables.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+>>>>>>> database
 @endsection
 
 @section('page-scripts')

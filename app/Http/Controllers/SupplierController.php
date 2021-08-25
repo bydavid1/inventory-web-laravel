@@ -2,21 +2,40 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use Illuminate\Http\Request;
 use App\Models\Suppliers;
+=======
+use Exception;
+use App\Models\Supplier;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+>>>>>>> database
 
 class SupplierController extends Controller
 {
     /**
+<<<<<<< HEAD
      * Display a listing of the resource.
+=======
+     * Show view and send breadcrumb.
+>>>>>>> database
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $breadcrumbs = [
+<<<<<<< HEAD
             ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
         ];
+=======
+            ["link" => "/", "name" => "Home"],
+            ["link" => "#", "name" => "Components"],
+            ["name" => "Alerts"]
+        ];
+
+>>>>>>> database
         return view('pages.suppliers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
@@ -25,6 +44,7 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function getRecords()
     {
         return datatables()->eloquent(Suppliers::where('is_deleted', '0'))
@@ -44,6 +64,34 @@ class SupplierController extends Controller
     public function create()
     {
         //
+=======
+    public function getRecords(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Supplier::latest()->get();
+            return DataTables::of($query)
+            ->addColumn('actions', '
+                        <div class="float-right">
+                            <a href="#"
+                                onclick="update({{"$id"}})"
+                                data-toggle="modal"
+                                data-target="#editSupplierModal">
+                                <i class="badge-circle badge-circle-success
+                                    bx bx-edit font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
+                            <a href="#"
+                                onclick="remove({{"$id"}})">
+                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
+                                    style="color: white">
+                                </i>
+                            </a>
+                        </div>')
+            ->rawColumns(['actions'])
+            ->make();
+        }
+>>>>>>> database
     }
 
     /**
@@ -54,6 +102,7 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         $supplier = new Suppliers;
         $supplier->code = $request->code;
         $supplier->name = $request->name;
@@ -66,6 +115,23 @@ class SupplierController extends Controller
         $supplier->save();
 
         return back()->with('mensaje', 'Guardado');
+=======
+        try {
+            $supplier = new Supplier;
+            $supplier->code = $request->code;
+            $supplier->name = $request->name;
+            $supplier->nit = $request->nit;
+            $supplier->phone = $request->phone;
+            $supplier->address = $request->address;
+
+            if ($supplier->save()) {
+                return response()->json(["message" => "Guardado satisfactoriamente"], 200);
+            }
+
+        } catch (Exception $e) {
+            return response()->json(["message" => "Error al procesar la peticion"], 500);
+        }
+>>>>>>> database
     }
 
     /**
@@ -76,12 +142,21 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
+<<<<<<< HEAD
         $result = Suppliers::where('id', $id)->get();
 
         if ($result->count() > 0) {
             return response($result, 200);
         }else{
             return response('Recurso no encontrado', 404);
+=======
+        $result = Supplier::find($id);
+
+        if ($result) {
+            return response($result, 200);
+        }else{
+            return response()->json(["message"=>"Recurso no encontrado"], 404);
+>>>>>>> database
         }
     }
 
@@ -94,16 +169,26 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
+<<<<<<< HEAD
         $costumer = Suppliers::find($id);
+=======
+        $costumer = Supplier::find($id);
+>>>>>>> database
         $costumer->name = $request->uname;
         $costumer->nit = $request->unit;
         $costumer->address = $request->uaddress;
         $costumer->phone = $request->uphone;
 
         if ($costumer->save()) {
+<<<<<<< HEAD
             return response(200);
         }else{
             return response(500);
+=======
+            return response()->json(["message"=>"Actualizado satisfactoriamente"], 200);
+        }else{
+            return response()->json(["message"=>"Error al procesar la peticion"], 500);
+>>>>>>> database
         }
     }
 
@@ -115,6 +200,7 @@ class SupplierController extends Controller
      */
     public function delete($id)
     {
+<<<<<<< HEAD
         $supplier = Suppliers::find($id);
         $supplier->is_deleted = 1;
 
@@ -122,6 +208,16 @@ class SupplierController extends Controller
             return response(200);
         }else{
             return response(500);
+=======
+        try {
+            $supplier = Supplier::find($id)->delete();
+
+            if ($supplier) {
+                return response()->json(["message"=>"Eliminado satisfactoriamente"], 200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(["message"=>"Error al procesar la peticion"], 500);
+>>>>>>> database
         }
     }
 }

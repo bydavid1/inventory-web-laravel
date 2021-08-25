@@ -22,14 +22,21 @@ var vm = new Vue({
             {
                 name: 'Compras',
                 data: []
+<<<<<<< HEAD
             }],
             lastSales: []
+=======
+            }]
+>>>>>>> database
         }
     },
     mounted () {
         this.getTilesData()
         this.getCharData()
+<<<<<<< HEAD
         this.getLastSales()
+=======
+>>>>>>> database
     },
     methods : {
         getTilesData () {
@@ -65,6 +72,7 @@ var vm = new Vue({
                 console.error(error)
             })
         },
+<<<<<<< HEAD
         getLastSales(){
             axios.get('/api/dashboard/sales/last')
             .then(response => {
@@ -74,5 +82,7 @@ var vm = new Vue({
                 console.error(error.response)
             })
         }
+=======
+>>>>>>> database
     }
 })

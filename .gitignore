@@ -1,6 +1,10 @@
 /node_modules
+<<<<<<< HEAD
 /public/hot
 /public/storage
+=======
+/public
+>>>>>>> database
 /storage/*.key
 /vendor
 .env
@@ -10,3 +14,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+<<<<<<< HEAD
+=======
+public/js
+>>>>>>> database

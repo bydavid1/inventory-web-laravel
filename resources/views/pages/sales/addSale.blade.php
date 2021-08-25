@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('vendor-styles')
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
+=======
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+>>>>>>> database
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     .pos-app {
@@ -358,14 +362,23 @@
 @endsection
 
 @section('vendor-scripts')
+<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
+=======
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+>>>>>>> database
 @endsection
 
 @section('page-scripts')
 @routes
+<<<<<<< HEAD
 <script type="module" src="{{ asset('js/scripts/sales/script.js') }}"></script>
+=======
+<script src="{{ asset('js/scripts/sales/addSale.js') }}"></script>
+>>>>>>> database
 <script>
     $(document).on('click', '.dropdown-menu', function (e) {
         e.stopPropagation();

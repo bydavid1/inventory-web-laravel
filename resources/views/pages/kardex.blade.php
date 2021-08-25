@@ -4,6 +4,7 @@
 @section('title','Kardex')
 
 @section('vendor-styles')
+<<<<<<< HEAD
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/datatables/css/datatables.min.css')}}">
 @endsection
 
@@ -20,10 +21,35 @@
             </tr>
         </thead>
     </table>
+=======
+    <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
+@endsection
+
+@section('content')
+<div class="card">
+    <div class="card-content">
+        <div class="card-header">
+            <h4 class="card-title">Seleccione un producto para ver sus registros</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered" id="items">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Codigo</th>
+                        <th>Nombre del producto</th>
+                        <th class="text-right">Opciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+>>>>>>> database
 </div>
 @endsection
 
 @section('vendor-scripts')
+<<<<<<< HEAD
     <script src="{{asset('js/libs/datatables/js/datatables.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/dataTables.buttons.min.js')}}"></script>
@@ -32,6 +58,10 @@
     <script src="{{asset('js/libs/datatables/js/buttons.bootstrap.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('js/libs/datatables/js/vfs_fonts.js')}}"></script>
+=======
+    <script src="{{asset('vendors/datatables/js/datatables.min.js')}}"></script>
+    <script src="{{asset('vendors/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+>>>>>>> database
 @endsection
 
 @section('page-scripts')

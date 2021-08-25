@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <title>A simple, clean, and responsive HTML invoice template</title>
 
     <style>
@@ -14,6 +15,21 @@
     .invoice-header {
         height: 30mm;
         width: 100%
+=======
+    <title>Factura</title>
+
+    <style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+>>>>>>> database
     }
 
     .invoice-box table {
@@ -81,6 +97,23 @@
             text-align: center;
         }
     }
+<<<<<<< HEAD
+=======
+
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+
+    .rtl table {
+        text-align: right;
+    }
+
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+>>>>>>> database
     </style>
 </head>
 
@@ -117,7 +150,11 @@
 
                             <td>
                                 Acme Corp.<br>
+<<<<<<< HEAD
                                 {{ $name }}<br>
+=======
+                                {{ $customer }}<br>
+>>>>>>> database
                                 john@example.com
                             </td>
                         </tr>

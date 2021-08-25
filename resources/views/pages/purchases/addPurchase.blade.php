@@ -4,8 +4,13 @@
 @section('title','Agregar compra')
 
 @section('vendor-styles')
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.min.css')}}">
+=======
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.min.css')}}">
+>>>>>>> database
 
 <style>
 .invoice-item-title {
@@ -14,35 +19,56 @@
 }
 
 .pos-app {
+<<<<<<< HEAD
         height: calc(100vh - 8.75rem);
         display: flex;
         flex-direction: column
+=======
+    height: calc(100vh - 8.75rem);
+    display: flex;
+    flex-direction: column
+>>>>>>> database
 }
 
 .pos-header {
     width: 100%;
     display: flex;
+<<<<<<< HEAD
     margin-bottom: 2rem;
+=======
+>>>>>>> database
 }
 
 .pos-content{
     height: 100%;
     display: flex;
+<<<<<<< HEAD
     overflow: auto
+=======
+    overflow: auto;
+>>>>>>> database
 }
 </style>
 @endsection
 
 @section('content')
 <div id="app" class="pos-app">
+<<<<<<< HEAD
     <div class="pos-header">
+=======
+    <div class="pos-header border-bottom">
+>>>>>>> database
         <div class="card mb-0 shadow-none w-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="form-group my-auto">
                             <label class="control-label">Proveedor</label>
+<<<<<<< HEAD
                             <select class="form-control" v-model="data.supplierId" placeholder="Enter..."
+=======
+                            <select class="form-control select2" id="supplier" v-model="data.supplierId" placeholder="Enter..."
+>>>>>>> database
                                 autocomplete="off">
                                 <option value="" disabled selected>Selecciona un proveedor</option>
                                 @foreach ($suppliers as $item)
@@ -51,12 +77,17 @@
                             </select>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="col-lg-3">
+=======
+                    <div class="col-lg-2">
+>>>>>>> database
                         <div class="form-group my-auto">
                             <label for="date" class="control-label">Fecha</label>
                             <input type="date" class="form-control">
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>
             </div>
         </div>
@@ -67,6 +98,20 @@
                 <div class="card-content">
                     <div class="card-header border-bottom">
                         <h5 class="card-title">Detalles</h5>
+=======
+                    <div class="col-lg-2">
+                        <div class="form-group my-auto">
+                            <label for="date" class="control-label">Estado de entrega</label>
+                            <select class="form-control">
+                                <option value="1">Entregado</option>
+                                <option value="2">Pendiente</option>
+                                <option value="3">Completado</option>
+                                <option value="3">Falta pago</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+>>>>>>> database
                         <div class="heading-elements">
                             <button class="btn btn-secondary" data-toggle="modal" data-target="#addNewProductModal">
                                 <i class="bx bx-plus fa-2x"></i>
@@ -78,6 +123,7 @@
                             </button>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="table-responsive">
                         <table_details :items="items" v-on:edit="editNewProduct"></table_details>
                     </div>
@@ -102,6 +148,31 @@
                             <strong v-html="'$' + data.discountsValue"></strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
+=======
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pos-content">
+        <div class="col-md-4">
+            <div class="p-1 border-right align-items-center d-flex h-100">
+                <div class="w-100">
+                    <h4>Resumen</h4>
+                    <ul class="list-group list-group-flush py-1 bg-transparent">
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
+                            Cantidad total
+                            <strong v-html="data.quantityValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
+                            Sub total
+                            <strong v-html="'$' + data.subtotalValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
+                            Descuentos
+                            <strong v-html="'$' + data.discountsValue"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between border-0 pb-0 bg-transparent">
+>>>>>>> database
                             Total
                             <strong v-html="'$' +  data.totalValue"></strong>
                         </li>
@@ -177,6 +248,16 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+        <div class="col-md-8">
+            <div class="p-1">
+                <div class="table-responsive">
+                    <table_details :items="items" v-on:edit="editNewProduct"></table_details>
+                </div>
+            </div>
+        </div>
+>>>>>>> database
     </div>
 
 
@@ -214,6 +295,7 @@
                                 @endforeach
                             </select>
                         </div>
+<<<<<<< HEAD
                         <div class="form-group">
                             <label>Cantidad</label>
                             <input type="number" class="form-control" v-model.number="newProduct.quantity" placeholder="Enter ...">
@@ -227,6 +309,27 @@
                             <label class="col-form-label" for="price"><i class="fas fa-dollar-sign"></i>Precio
                                 principal</label>
                             <input type="number" class="form-control" v-model.number="newProduct.price" placeholder="Enter ...">
+=======
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Cantidad</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.quantity" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label"><i class="fas fa-dollar-sign"></i>Precio
+                                        principal</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.price" placeholder="Enter ...">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-form-label"><i class="fas fa-dollar-sign"></i>Precio
+                                        de compra</label>
+                                    <input type="number" class="form-control" v-model.number="newProduct.purchase" placeholder="Enter ...">
+                                </div>
+                            </div>
+>>>>>>> database
                         </div>
                     </form>
                 </div>
@@ -250,7 +353,11 @@
                             aria-hidden="true">x</span></button>
                 </div>
                 <div class="modal-body">
+<<<<<<< HEAD
                     <form role="form" id="newProductForm">
+=======
+                    <form role="form" id="editProductForm">
+>>>>>>> database
                         <div class="form-group">
                             <label>Nombre</label>
                             <input type="text" class="form-control" v-model="editProduct.name" placeholder="Enter ...">
@@ -315,7 +422,11 @@
                             </div>
                         </div>
                     </fieldset>
+<<<<<<< HEAD
                     <results :results="results" v-if="results.length > 0" class="mt-1" v-on:choose="chooseProduct"></results>
+=======
+                    <result :results="results" v-if="results.length > 0" class="mt-1" v-on:choose="chooseProduct"></result>
+>>>>>>> database
                 </div>
             </div>
         </div>
@@ -325,16 +436,26 @@
 @endsection
 
 @section('vendor-scripts')
+<<<<<<< HEAD
     <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('js/libs/select2/select2.full.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+=======
+    <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
+>>>>>>> database
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
 @endsection
 
 @section('page-scripts')
+<<<<<<< HEAD
     <script>
         $('#provider').select2()
     </script>
     @routes
     <script type="module" src="{{ asset('js/scripts/purchase/script.js') }}"></script>
+=======
+    @routes
+    <script src="{{ asset('js/scripts/purchase/addPurchase.js') }}"></script>
+>>>>>>> database
 @endsection

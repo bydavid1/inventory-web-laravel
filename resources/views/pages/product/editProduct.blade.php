@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('vendor-styles')
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/fileinput/fileinput.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('js/libs/select2/select2.min.css')}}">
@@ -38,6 +39,33 @@
             <div class="col-12 col-md-10 container">
                 <div class="row">
                     <div class="col-md-3 col-sm-12">
+=======
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/fileinput/fileinput.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/select2/select2.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/toastr/toastr.css')}}">
+@endsection
+
+@section('title', $product->name )
+
+@section('tools')
+<button type="button" class="btn btn-success" onclick="updateProduct()">
+    <i class='bx bx-refresh'></i>
+    Actualizar
+</button>
+@endsection
+
+@section('content')
+<div class="card">
+    <div class="card-body">
+        <form class="form-horizontal" id="submitProductForm" action="{{ route('updateProduct', $product->id) }}"
+                enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+>>>>>>> database
                         <div class="form-group">
                             <label for="productImage" class="col-12 control-label">Imagen: </label>
                                 <input type="file" class="form-control" id="image"
@@ -45,7 +73,11 @@
                                     style="width:auto;" />
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="col-md-9 col-sm-12">
+=======
+                    <div class="col-md-9">
+>>>>>>> database
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -54,9 +86,15 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bx-key"></i></span>
                                         </div>
+<<<<<<< HEAD
                                         <input type="text" class="form-control @error('code') is-invalid @enderror" id="code"
                                             placeholder="Codigo del producto" name="code"
                                             autocomplete="ggg-ss" value="{{ $product[0]->code }}">
+=======
+                                        <input type="text" class="form-control" id="code"
+                                            placeholder="Codigo del producto" name="code"
+                                            autocomplete="ggg-ss" value="{{ $product->code }}">
+>>>>>>> database
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i
                                                     class="bx bx-shuffle"></i></span>
@@ -70,6 +108,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bx bx-news"></i></span>
                                         </div>
+<<<<<<< HEAD
                                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                             placeholder="Nombre del producto" name="name"
                                             autocomplete="ggg-ss" value="{{ $product[0]->name }}">
@@ -92,6 +131,11 @@
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
+=======
+                                        <input type="text" class="form-control" id="name"
+                                            placeholder="Nombre del producto" name="name"
+                                            autocomplete="ggg-ss" value="{{ $product->name }}">
+>>>>>>> database
                                     </div>
                                 </div>
                                 <!-- /form-group-->
@@ -103,7 +147,11 @@
                                         </div>
                                         <select class="form-control select2" id="category_id" name="category_id">
                                             @foreach ($categories as $item)
+<<<<<<< HEAD
                                             @if ($item->id == $product[0]->category_id)
+=======
+                                            @if ($item->id == $product->category_id)
+>>>>>>> database
                                             <option value="{{ $item->id }}" selected>{{ $item->name }}
                                                 (Seleccionado)</option>
                                             @endif
@@ -123,11 +171,19 @@
                                                     class="bx bx-loader"></i></span>
                                         </div>
                                         <select class="form-control" id="is_available" name="is_available">
+<<<<<<< HEAD
                                             @if ($product[0]->is_available == 1)
                                             <option value="1" selected>Disponible (Seleccionado)</option>
                                             @endif
                                             @if ($product[0]->is_available == 0)
                                             <option value="0" selected>No disponible (Seleccionado)</option>
+=======
+                                            @if ($product->is_available == 1)
+                                                <option value="1" selected>Disponible (Seleccionado)</option>
+                                            @endif
+                                            @if ($product->is_available == 0)
+                                                <option value="0" selected>No disponible (Seleccionado)</option>
+>>>>>>> database
                                             @endif
                                             <option value="1">Disponible</option>
                                             <option value="0">No disponible</option>
@@ -136,6 +192,7 @@
                                 </div>
                                 <!-- /form-group-->
                                 <div class="form-group">
+<<<<<<< HEAD
                                     <label for="type" class="control-label">Tipo: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -161,6 +218,8 @@
                                 </div>
                                 <!-- /form-group-->
                                 <div class="form-group">
+=======
+>>>>>>> database
                                     <label>Fabricante:</label>
                                     <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
@@ -169,17 +228,27 @@
                                         </div>
                                         <select class="form-control select2" id="manufacturer_id"
                                             name="manufacturer_id">
+<<<<<<< HEAD
                                             @foreach ($manufacturers as $item)
                                                 @if ($item->id == $product[0]->manufacturer_id)
                                                 <option value="{{ $item->id }}" selected>{{ $item->name }}
                                                     (Seleccionado)</option>
                                                 @endif
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
+=======
+                                            @foreach ($brands as $item)
+                                                @if ($item->id == $product->manufacturer_id)
+                                                    <option value="{{ $item->id }}" selected>{{ $item->name }}
+                                                        (Seleccionado)</option>
+                                                @endif
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+>>>>>>> database
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <!-- /form-group-->
+<<<<<<< HEAD
                             </div>
                         </div>
                     </div>
@@ -267,6 +336,25 @@
                     autocomplete="ggg-ss"> <i class="bx bx-ok-sign"></i> Guardar</button>
             </div>
             <!-- /modal-footer -->
+=======
+                                <div class="form-group">
+                                    <label>Descripcion</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bx bx-file"></i></span>
+                                        </div>
+                                        <textarea class="form-control" id="description" placeholder="Ingrese una descripción"
+                                            name="description">
+                                            {{ $product->description }}
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+>>>>>>> database
         </form>
         <!-- /.form -->
     </div>
@@ -275,9 +363,16 @@
 @endsection
 
 @section('vendor-scripts')
+<<<<<<< HEAD
 <script src="{{asset('js/libs/sweetalert/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('js/libs/fileinput/fileinput.min.js')}}"></script>
 <script src="{{asset('js/libs/select2/select2.full.min.js')}}"></script>
+=======
+<script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('vendors/fileinput/fileinput.min.js')}}"></script>
+<script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
+<script src="{{asset('vendors/toastr/toastr.min.js')}}"></script>
+>>>>>>> database
 @endsection
 
 @section('page-scripts')
@@ -286,12 +381,16 @@
 <script>
     // Basic Select2 select
     $(".select2").select2({
+<<<<<<< HEAD
         // the following code is used to disable x-scrollbar when click in select input and
         // take 100% width in responsive also
+=======
+>>>>>>> database
         dropdownAutoWidth: true,
         width: '100%'
     });
 
+<<<<<<< HEAD
 
     $("#image").fileinput({
         showUpload: false,
@@ -301,6 +400,32 @@
         removeIcon: '<i class="bx bx-trash"></i>',
         allowedFileExtensions: ["jpg", "png"]
     })
+=======
+    let previewImage = null;
+
+    if (`{{ $product->photo != null }}`) {
+
+        if (`{{ $product->photo->source == "photo_default.png" }}`) {
+            previewImage = `{{ asset('assets/media/' . $product->photo->source)  }}`
+        } else {
+            previewImage = `{{ asset('storage/' . $product->photo->source) }}`
+        }
+    }
+
+    console.log(previewImage)
+
+    $("#image").fileinput({
+        overwriteInitial: true,
+        defaultPreviewContent: `<img src="${previewImage}" alt="placeholder" style="width:100%;">`,
+        browseClass: "btn btn-success",
+        allowedFileExtensions: ["jpg", "png"],
+        showUpload: false,
+        showCancel: false,
+        browseIcon: '<i class="bx bx-folder-open"></i>',
+        removeIcon: '<i class="bx bx-trash"></i>',
+    })
+
+>>>>>>> database
 </script>
 @endsection
 
