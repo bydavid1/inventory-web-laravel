@@ -54,6 +54,7 @@ mix.copyDirectory('resources/vendors', 'public/vendors');
 let jssrc = 'resources/js/core/';
 
 mix.sass('resources/sass/app.scss', 'public/css')
+.sass('resources/sass/bootstrap.scss', 'public/css')
   .combine([jssrc + 'app-menu.js',
     jssrc + 'app.js',
     jssrc + 'components.js',

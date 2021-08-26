@@ -3,6 +3,7 @@
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.css')}}">
     @yield('vendor-styles')
     <!-- END: Vendor CSS-->
 
