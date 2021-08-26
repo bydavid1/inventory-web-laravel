@@ -69,18 +69,6 @@
         @endif
     </div>
     <!-- END: Content-->
-    @if($configData['isCustomizer'] === true && isset($configData['isCustomizer']))
-    <!-- BEGIN: Customizer-->
-    <div class="customizer d-none d-md-block">
-        <a class="customizer-close" href="#"><i class="bx bx-x"></i></a>
-        <a class="customizer-toggle" href="#"><i class="bx bx-cog bx bx-spin white"></i></a>
-        @include('panels.customizer-content')
-    </div>
-    <!-- End: Customizer-->
-    @endif
-
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
 
     <!-- BEGIN: Footer-->
     @include('panels.footer')

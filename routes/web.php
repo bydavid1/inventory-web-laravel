@@ -5,6 +5,7 @@ use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
@@ -99,6 +100,11 @@ Route::prefix('purchases')->group(function () {
 Route::prefix('kardex')->group(function () {
     Route::get('/', [KardexController::class, 'index'])->name('kardex')->middleware('auth');
     Route::get('/product/{id}', [KardexController::class, 'report'])->name('productReport')->middleware('auth');
+});
+
+//Configuration
+Route::prefix('config')->group(function () {
+    Route::get('/', [ConfigurationController::class, 'index'])->name('configuration')->middleware('auth');
 });
 
 //Credits

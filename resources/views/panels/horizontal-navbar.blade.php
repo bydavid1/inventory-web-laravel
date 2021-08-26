@@ -54,16 +54,16 @@
           <li class="dropdown dropdown-user nav-item">
             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
               <div class="user-nav d-lg-flex d-none">
-                <span class="user-name">{{ Auth::user()->username }}</span><span class="user-status">Available</span>
+                <span class="user-name">{{ Auth::user()->username }}</span><span class="user-status">Activo</span>
               </div>
               <span><img class="round" src="{{asset('assets/media/user.jpg')}}" alt="avatar" height="40" width="40"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right pb-0">
-                <a class="dropdown-item" href=""><i class="bx bx-user mr-50"></i> Edit Profile</a>
-                <a class="dropdown-item" href=""><i class="bx bx-building mr-50"></i> Edit bussines</a>
+                <a class="dropdown-item disabled" href=""><i class="bx bx-user mr-50"></i> Editar perfil</a>
+                <a class="dropdown-item" href="{{ route('configuration') }}"><i class="bx bx-building mr-50"></i> Configuración</a>
                 <div class="dropdown-divider mb-0"></div>
                 <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="bx bx-power-off mr-50"></i> Logout
+                    <i class="bx bx-power-off mr-50"></i> Salir
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                     style="display: none;">
