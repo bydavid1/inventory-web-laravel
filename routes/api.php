@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('dashboard/chart', [DashboardController::class, 'getSalesChart']);
 
+    Route::get('dashboard/items', [DashboardController::class, 'getLastItems']);
+
     //Api Products
 
     Route::get('products', [ProductApiController::class, 'getRecords']);

@@ -22,12 +22,16 @@ var vm = new Vue({
             {
                 name: 'Compras',
                 data: []
-            }]
+            }],
+            items: {
+
+            }
         }
     },
     mounted () {
         this.getTilesData()
         this.getCharData()
+        this.getLastItems()
     },
     methods : {
         getTilesData () {
@@ -43,7 +47,6 @@ var vm = new Vue({
         getCharData () {
             axios.get('/api/dashboard/chart')
             .then(response => {
-                console.info(response)
                 let data = response.data
                 this.series = [{
                     data : data.sales
@@ -58,6 +61,16 @@ var vm = new Vue({
                     },
                 }
 
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        },
+        getLastItems () {
+            axios.get('/api/dashboard/items')
+            .then(response => {
+                console.info(response)
+                this.items = response.data.items;
             })
             .catch(error => {
                 console.error(error)

@@ -13,4 +13,8 @@ class SaleItem extends Model
 
     //Allow mass assigment
     protected $guarded = [];
+
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
 }
