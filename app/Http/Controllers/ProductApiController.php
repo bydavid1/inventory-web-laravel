@@ -74,7 +74,7 @@ class ProductApiController extends Controller
                 }
             })
             ->rawColumns(['actions', 'photo', 'is_available'])
-            ->toJson();
+            ->make();
         }
     }
 

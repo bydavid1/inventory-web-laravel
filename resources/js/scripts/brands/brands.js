@@ -28,7 +28,9 @@ $(document).ready(function () {
                 data: 'available'
             },
             {
-                data: 'actions'
+                data: 'actions',
+                orderable: false,
+                searchable: false
             }
         ]
     })

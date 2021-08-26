@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 
 use Illuminate\Http\Request;
-use App\Models\Kardex;
 use App\Http\Requests\StoreSale;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -16,7 +15,6 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
-use App\Traits\Helpers;
 use Carbon\Carbon;
 use Exception;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,7 +29,7 @@ class SaleController extends Controller
     public function getRecords(Request $request)
     {
         if ($request->ajax()) {
-            $query = Sale::latest();
+            $query = Sale::with(['invoice'])->latest();
 
             return DataTables::of($query)
             ->addColumn('actions', '

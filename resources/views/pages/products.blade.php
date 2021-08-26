@@ -105,8 +105,8 @@
                 columns: [
                     {
                         data: 'photo',
-                        searchable: false,
-                        orderable: false
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'code'
