@@ -97,7 +97,9 @@ class SaleController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/home", "name" => "Home"],
+            ["link" => "#", "name" => "POS"],
+            ["name" => "Ventas"]
         ];
         return view('pages.sales', ['breadcrumbs'=>$breadcrumbs]);
     }

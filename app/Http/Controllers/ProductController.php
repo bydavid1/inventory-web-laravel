@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],
+            ["link" => "/home", "name" => "Home"],
             ["link" => "#", "name" => "Inventario"],
             ["name" => "Productos y servicios"]
         ];
@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Inicio"],
+            ["link" => "/home", "name" => "Inicio"],
             ["link" => "#", "name" => "Inventario"],
             ["link" => "#", "name" => "Productos"],
             ["name" => "Crear"]
@@ -163,7 +163,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],
+            ["link" => "/home", "name" => "Home"],
             ["link" => "#", "name" => "Inventario"],
             ["link" => "#", "name" => "Productos y servicios"],
             ["name" => "Alerts"]

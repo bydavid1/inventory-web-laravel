@@ -68,7 +68,8 @@ class CustomerController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/home", "name" => "Home"],
+            ["name" => "Clientes"]
         ];
         return view('pages.customers', ['breadcrumbs'=>$breadcrumbs]);
     }

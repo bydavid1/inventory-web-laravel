@@ -47,7 +47,7 @@ class KardexController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],
+            ["link" => "/home", "name" => "Home"],
             ["link" => "#", "name" => "Kardex"],
             ["name" => "Reportes"]
         ];

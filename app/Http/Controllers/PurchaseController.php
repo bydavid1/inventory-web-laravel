@@ -66,7 +66,7 @@ class PurchaseController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],
+            ["link" => "/home", "name" => "Home"],
             ["name" => "Compras"]
         ];
         return \view('pages.purchases', ['breadcrumbs'=>$breadcrumbs]);
