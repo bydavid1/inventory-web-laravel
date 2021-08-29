@@ -1,9 +1,5 @@
 const mix = require('laravel-mix');
-<<<<<<< HEAD
-=======
 const glob = require('glob')
-const path = require('path')
->>>>>>> database
 require('dotenv').config();
 
 /*
@@ -22,12 +18,6 @@ require('dotenv').config();
  |--------------------------------------------------------------------------
  */
 
-<<<<<<< HEAD
-mix.copyDirectory('resources/assets', 'public/assets');
-mix.copyDirectory('resources/js/libs', 'public/js/libs');
-mix.copyDirectory('resources/js/scripts', 'public/js/scripts');
-
-=======
 function mixAssetsDir(path, callback) {
     (glob.sync('resources/' + path) || []).forEach(file => {
         file = file.replace(/[\\\/]+/g, '/');
@@ -59,18 +49,11 @@ mixAssetsDir('sass/core/**/!(_)*.scss', (src, dest) => {
 mix.copyDirectory('resources/assets', 'public/assets');
 // Copy vendors
 mix.copyDirectory('resources/vendors', 'public/vendors');
->>>>>>> database
 
 let jssrc = 'resources/js/core/';
 
 mix.sass('resources/sass/app.scss', 'public/css')
-<<<<<<< HEAD
-  .sass('resources/sass/core/menu/menu-types/vertical-menu.scss', 'public/css')
-  .sass('resources/sass/core/menu/menu-types/horizontal-menu.scss', 'public/css')
-  .combine([jssrc + 'app-menu.js', jssrc + 'app.js', jssrc + 'components.js', jssrc + 'footer.js', jssrc + 'customizer.js'], 'public/js/app.js')
-  .copy('resources/js/core/menu/horizontal-menu.js', 'public/js')
-  .copy('resources/js/core/menu/vertical-menu-light.js', 'public/js')
-=======
+.sass('resources/sass/bootstrap.scss', 'public/css')
   .combine([jssrc + 'app-menu.js',
     jssrc + 'app.js',
     jssrc + 'components.js',
@@ -81,7 +64,6 @@ mix.sass('resources/sass/app.scss', 'public/css')
 // Compiling vue files
 mix.vue('resources/js/scripts/sales/_addSale.js', 'public/js/scripts/sales/addSale.js');
 mix.vue('resources/js/scripts/purchase/_addPurchase.js', 'public/js/scripts/purchase/addPurchase.js');
->>>>>>> database
 
 // if (mix.inProduction()) {
 //   mix.version();

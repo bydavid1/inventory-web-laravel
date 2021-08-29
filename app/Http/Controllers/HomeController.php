@@ -24,7 +24,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],["link" => "#", "name" => "Components"],["name" => "Alerts"]
+            ["link" => "/", "name" => "Home"],
+            ["name" => "Dashboard"]
         ];
         $pageConfigs = ["mainLayoutType" => "vertical-menu"];
 

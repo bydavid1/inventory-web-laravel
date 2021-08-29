@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Inicio"],
+            ["link" => "/home", "name" => "Home"],
             ["link" => "#", "name" => "Inventario"],
             ["name" => "Categorías"]
         ];

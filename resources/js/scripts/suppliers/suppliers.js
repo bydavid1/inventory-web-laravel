@@ -35,7 +35,9 @@ $(document).ready(function () {
                 data: 'address'
             },
             {
-                data: 'actions'
+                data: 'actions',
+                orderable: false,
+                searchable: false
             }
         ]
     });

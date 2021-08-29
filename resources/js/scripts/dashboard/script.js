@@ -1,4 +1,3 @@
-
 Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
@@ -22,21 +21,16 @@ var vm = new Vue({
             {
                 name: 'Compras',
                 data: []
-<<<<<<< HEAD
             }],
-            lastSales: []
-=======
-            }]
->>>>>>> database
+            items: {
+
+            }
         }
     },
     mounted () {
         this.getTilesData()
         this.getCharData()
-<<<<<<< HEAD
-        this.getLastSales()
-=======
->>>>>>> database
+        this.getLastItems()
     },
     methods : {
         getTilesData () {
@@ -52,7 +46,6 @@ var vm = new Vue({
         getCharData () {
             axios.get('/api/dashboard/chart')
             .then(response => {
-                console.info(response)
                 let data = response.data
                 this.series = [{
                     data : data.sales
@@ -72,17 +65,15 @@ var vm = new Vue({
                 console.error(error)
             })
         },
-<<<<<<< HEAD
-        getLastSales(){
-            axios.get('/api/dashboard/sales/last')
+        getLastItems () {
+            axios.get('/api/dashboard/items')
             .then(response => {
-                this.lastSales = response.data;
+                console.info(response)
+                this.items = response.data.items;
             })
             .catch(error => {
-                console.error(error.response)
+                console.error(error)
             })
-        }
-=======
->>>>>>> database
+        },
     }
 })

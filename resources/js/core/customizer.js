@@ -1,12 +1,3 @@
-/*=========================================================================================
-  File Name: customizer.js
-  Description: Template customizer js.
-  ----------------------------------------------------------------------------------------
-  Item Name: Frest HTML Admin Template
-  Version: 1.0
-  Author: Pixinvent
-  Author URL: hhttp://www.themeforest.net/user/pixinvent
-==========================================================================================*/
 
 (function (window, document, $) {
   'use strict';
@@ -64,20 +55,20 @@
     brandLogo = $(".brand-logo");
 
   // Customizer toggle & close button click events  [Remove customizer code from production]
-  $('.customizer-toggle').on('click', function (e) {
-    e.preventDefault();
-    $(customizer).toggleClass('open');
-  });
-  $('.customizer-close').on('click', function () {
-    $(customizer).removeClass('open');
-  });
+//   $('.customizer-toggle').on('click', function (e) {
+//     e.preventDefault();
+//     $(customizer).toggleClass('open');
+//   });
+//   $('.customizer-close').on('click', function () {
+//     $(customizer).removeClass('open');
+//   });
 
-  // perfect scrollbar for customizer
-  if ($('.customizer-content').length > 0) {
-    var customizer_content = new PerfectScrollbar('.customizer-content', {
-      wheelPropagation: false
-    });
-  }
+//   // perfect scrollbar for customizer
+//   if ($('.customizer-content').length > 0) {
+//     var customizer_content = new PerfectScrollbar('.customizer-content', {
+//       wheelPropagation: false
+//     });
+//   }
 
   /***** Theme Colors Options *****/
   $(document).on("click", "#customizer-theme-colors .color-box", function () {
@@ -190,10 +181,11 @@
     collapseSidebar.prop("checked", false);
   }
 
-  /***** Navbar Color Options *****/
+  /***** Check if horizontal layout is active *****/
   if ($(body).hasClass("horizontal-layout")) {
     $("#customizer-navbar-colors .color-box.bg-white").removeClass('selected').hide();
     $("#customizer-navbar-colors .color-box.bg-primary").addClass('selected');
+    $(".theme-layouts .hidden-ele").hide();
     $('#customizer-theme-colors').hide();
     $('.navbar-type .hidden-ele').hide();
   }
@@ -203,6 +195,7 @@
   if($(body).hasClass("boxicon-layout")){
     $('#menu-icon-animation').hide();
   }
+    /***** Change navbar color *****/
   $("#customizer-navbar-colors .color-box").on("click", function () {
     var $this = $(this);
     $this.siblings().removeClass('selected');

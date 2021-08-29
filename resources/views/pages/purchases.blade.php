@@ -101,7 +101,9 @@
 						data: 'total'
 					},
 					{
-						data: 'actions'
+						data: 'actions',
+                        orderable: false,
+                        searchable: false
 					}
 				]
 			})

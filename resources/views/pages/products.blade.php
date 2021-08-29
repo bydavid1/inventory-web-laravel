@@ -4,13 +4,9 @@
 @section('title','Inventario')
 
 @section('vendor-styles')
-<<<<<<< HEAD
-    <link rel="stylesheet" type="text/css" href="{{asset('js/libs/datatables/css/datatables.min.css')}}">
-=======
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/datatables/css/datatables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/toastr/toastr.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/sweetalert/sweetalert2.min.css')}}"
->>>>>>> database
 @endsection
 
 @section('tools')
@@ -24,11 +20,7 @@
 
 <div class="card">
     <div class="card-body">
-<<<<<<< HEAD
-        <table class="table table-condensed table-hover table-bordered table-striped" id="items">
-=======
         <table class="table table-hover table-bordered" id="items">
->>>>>>> database
             <thead>
                 <tr>
                     <th>Imagen</th>
@@ -37,13 +29,8 @@
                     <th>Precios</th>
                     <th>Cantidad</th>
                     <th>Categoria</th>
-<<<<<<< HEAD
-                    <th>Fabricante</th>
-                    <th>Estado</th>
-=======
                     <th>Marca</th>
                     <th>Disponible</th>
->>>>>>> database
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -53,44 +40,16 @@
 </div>
 <!-- /.card -->
 
-<<<<<<< HEAD
-
-
-<!-------------------------------------Remove Product ------------------------------------------->
-<div class="modal fade" tabindex="-1" role="dialog" id="removeProductModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-				<h4 class="modal-title"><i class="bx bx-cube"></i> Eliminar producto</h4>
-=======
 <!------------------------------------- Update prices modal ------------------------------------------->
 <div class="modal fade" tabindex="-1" role="dialog" id="editPricesModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
 				<h4 class="modal-title"><i class="bx bx-cube"></i> Editar precios</h4>
->>>>>>> database
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
             </div>
-<<<<<<< HEAD
-            <div class="modal-body">
-
-                <form action="{{ route('deleteProduct') }}" method="POST">
-					@method('PUT')
-					@csrf
-					<p id="message">¿Realmente deseas eliminar el producto? Se movera a la palera</p>
-					<input type="hidden" name="identifier" id="identifier">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"> <i
-                                class="bx bx-times"></i> Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="removeProductBtn" data-loading-text="Loading..."> <i
-                                class="bx bx-trash"></i> Eliminar</button>
-                    </div>
-				</form>
-			</div>
-=======
             <form id="pricesForm">
                 <div class="modal-body" method="POST">
 					@method('PUT')
@@ -102,26 +61,12 @@
                     <button type="submit" class="btn btn-success">Actualizar</button>
                 </div>
             </form>
->>>>>>> database
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<<<<<<< HEAD
-@endsection
-
-@section('vendor-scripts')
-    <script src="{{asset('js/libs/datatables/js/datatables.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/buttons.bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/pdfmake.min.js')}}"></script>
-    <script src="{{asset('js/libs/datatables/js/vfs_fonts.js')}}"></script>
-=======
 
 <!-- Delete form-->
 <div class="d-none">
@@ -143,20 +88,12 @@
     <script src="{{asset('vendors/datatables/js/vfs_fonts.js')}}"></script>
     <script src="{{asset('vendors/toastr/toastr.min.js')}}"></script>
     <script src="{{asset('vendors/sweetalert/sweetalert2.all.min.js')}}"></script>
->>>>>>> database
 @endsection
 
 @section('page-scripts')
     <script>
         $(document).ready(function () {
             $('#items').DataTable({
-<<<<<<< HEAD
-                "serverSide": true,
-                "ajax": "{{ url('api/products') }}",
-                "columns": [
-                    {
-                        data: 'photo'
-=======
                 serverSide: true,
                 ajax: "{{ url('api/products') }}",
                 processing: true,
@@ -168,9 +105,8 @@
                 columns: [
                     {
                         data: 'photo',
-                        searchable: false,
-                        orderable: false
->>>>>>> database
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'code'
@@ -179,25 +115,6 @@
                         data: 'name'
                     },
                     {
-<<<<<<< HEAD
-                        data: 'prices'
-                    },
-                    {
-                        data: 'stock'
-                    },
-                    {
-                        data: 'name_category'
-                    },
-                    {
-                        data: 'name_supplier'
-                    },
-                    {
-                        data: 'is_available'
-                    },
-                    {
-                        "searchable" : false,
-                       data: 'actions'
-=======
                         data: 'prices',
                         searchable: false,
                         orderable: false
@@ -225,7 +142,6 @@
                         data: 'actions',
                         searchable : false,
                         orderable: false
->>>>>>> database
                     },
                 ]
             })
@@ -233,13 +149,6 @@
     </script>
 
     <script>
-<<<<<<< HEAD
-        $(document).on('click','#removeProductModalBtn',function(){
-            var id=$(this).attr('data-id');
-            $('#identifier').val(id);
-            $('#removeProductModal').modal('show');
-        });
-=======
         function getPrices(id) {
             let url = `{{ route('api:prices', ':id') }}`
             $.ajax({
@@ -249,7 +158,6 @@
                 },
                 success: function (response) {
                     let html = `<div class="row">`;
-
                     response.forEach((item, index) => {
                         html += `<div class="col-sm-4 mb-1">
                             <div class="input-group">
@@ -262,7 +170,6 @@
                                     autocomplete="ggg-ss"/>
                             </div>
                         </div>`;
-
                         html += `<div class="col-sm-4 mb-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -274,7 +181,6 @@
                                     autocomplete="ggg-ss"/>
                             </div>
                         </div>`
-
                         html += `<div class="col-sm-4 mb-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -286,25 +192,19 @@
                             </div>
                         </div>`
                     });
-
                     html += `<input type="hidden" value="${id}" id="product_id" name="product_id"></div>`
-
                     $('#pricesFormInputs').html(html);
                 },
                 error: function (xhr, textStatus, errorMessage) {
                     console.log(xhr.responseJSON.message)
                 }
             });
-
             $('#editPricesModal').modal('show');
         }
-
         document.getElementById('pricesForm').addEventListener('submit', function(e) {
-
             e.preventDefault();
             let formdata = $(this).serialize();
             let url = `{{ route('api:updatePrices', ':id') }}`;
-
             $.ajax({
                 type: 'POST',
                 url: url.replace(':id', document.getElementById('product_id').value),
@@ -321,15 +221,11 @@
                 }
             });
         })
-
     //----------------------------------------------------------------------
     //-------------------------Delete product ---------------------------------
     //----------------------------------------------------------------------
-
-
     function remove(id){
         let url = `{{ route('deleteProduct', ':id') }}`;
-
         Swal.fire({
             title: '¿Está seguro de eliminar este producto?',
             text: "Se moverá a la papelera",
@@ -351,7 +247,6 @@
                             title: 'Eliminado',
                             timer: 1500
                         });
-
                         table.ajax.reload();
                     },
                     error: function (xhr, textStatus, errorMessage) {
@@ -366,7 +261,5 @@
             }
         })
     }
-
->>>>>>> database
     </script>
 @endsection

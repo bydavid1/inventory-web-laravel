@@ -20,7 +20,7 @@ class BrandController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ["link" => "/", "name" => "Home"],
+            ["link" => "/home", "name" => "Home"],
             ["link" => "#", "name" => "Inventario"],
             ["name" => "Marcas"]
         ];

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+{{-- page title --}}
+@section('title','Categorías')
+
 @section('vendor-styles')
 <<<<<<< HEAD
     <link rel="stylesheet" type="text/css" href="{{asset('js/libs/sweetalert/sweetalert2.min.css')}}">
@@ -22,12 +25,6 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        @if ( session('mensaje') )
-        <div class="alert alert-success">{{ session('mensaje') }}</div>
-        @endif
-    </div>
-
     <div class="card card-info mt-2">
         <!-- /.card-header -->
         <div class="card-body">
