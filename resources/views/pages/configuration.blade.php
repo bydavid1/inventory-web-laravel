@@ -10,6 +10,22 @@
 
 @section('content')
 <div class="container">
+    @if ( session('message') )
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            {{ session('message') }}
+        </div>
+    @endif
+    @if ( session('error-message') )
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            {{ session('error-message') }}
+        </div>
+    @endif
     <!-- account setting page start -->
     <section id="page-account-settings">
         <div class="row">

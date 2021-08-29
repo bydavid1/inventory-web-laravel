@@ -105,6 +105,7 @@ Route::prefix('kardex')->group(function () {
 //Configuration
 Route::prefix('config')->group(function () {
     Route::get('/', [ConfigurationController::class, 'index'])->name('configuration')->middleware('auth');
+    Route::post('/', [ConfigurationController::class, 'store'])->name('storeConfig')->middleware('auth');
 });
 
 //Credits

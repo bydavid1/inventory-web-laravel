@@ -16,13 +16,14 @@
     </div>
 </div>
 <hr>
-<form novalidate>
+<form action="{{ route('storeConfig') }}" method="POST">
+    @csrf
     <div class="row">
         <div class="col-12">
             <div class="form-group">
                 <div class="controls">
                     <label>Nombre</label>
-                    <input name="name" type="text" class="form-control"
+                    <input name="name" type="text" class="form-control" value="{{ $siteinfo->name }}"
                         placeholder="Ingrese el nombre de la empresa/negocio" required>
                 </div>
             </div>
@@ -31,7 +32,11 @@
             <div class="form-group">
                 <div class="controls">
                     <label>Descripcion</label>
-                    <textarea name="description" class="form-control" cols="30" rows="3"></textarea>
+                    <textarea name="description"
+                        class="form-control"
+                        cols="30"
+                        rows="3">{{ $siteinfo->description }}
+                    </textarea>
                 </div>
             </div>
         </div>
@@ -39,8 +44,9 @@
             <div class="form-group">
                 <div class="controls">
                     <label>Direccion</label>
-                    <input name="name" type="text" class="form-control"
-                        placeholder="Ingrese la direccion de la empresa/negocio">
+                    <input name="address" type="text" class="form-control"
+                        placeholder="Ingrese la direccion de la empresa/negocio"
+                        value="{{ $siteinfo->address }}">
                 </div>
             </div>
         </div>
@@ -48,8 +54,9 @@
             <div class="form-group">
                 <div class="controls">
                     <label>Email</label>
-                    <input name="name" type="text" class="form-control"
-                        placeholder="Ingrese el email de contacto de la empresa/negocio">
+                    <input name="email" type="text" class="form-control"
+                        placeholder="Ingrese el email de contacto de la empresa/negocio"
+                        value="{{ $siteinfo->contact_email }}">
                 </div>
             </div>
         </div>
@@ -57,8 +64,9 @@
             <div class="form-group">
                 <div class="controls">
                     <label>Contacto</label>
-                    <input name="name" type="text" class="form-control"
-                        placeholder="Ingrese un numero de contacto de la empresa/negocio">
+                    <input name="contact" type="text" class="form-control"
+                        placeholder="Ingrese un numero de contacto de la empresa/negocio"
+                        value="{{ $siteinfo->phone }}">
                 </div>
             </div>
         </div>
