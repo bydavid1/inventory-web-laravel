@@ -20,7 +20,5 @@ class DatabaseSeeder extends Seeder
         $this->call(BranchSeeder::class);
         $this->call(UnitsSeeder::class);
         $this->call(POSSeeder::class);
-        // $this->call(InvoiceSeeder::class);
-        // $this->call(KardexSeeder::class);
     }
 }

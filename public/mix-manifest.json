@@ -1,6 +1,6 @@
 {
-    "/js/scripts/purchase/addPurchase.js": "/js/scripts/purchase/addPurchase.js?id=e8a848acac27510258b8",
-    "/js/scripts/sales/addSale.js": "/js/scripts/sales/addSale.js?id=017f904396506f4e1f38",
+    "/js/scripts/purchase/addPurchase.js": "/js/scripts/purchase/addPurchase.js?id=66e626a7055e3815158c",
+    "/js/scripts/sales/addSale.js": "/js/scripts/sales/addSale.js?id=145c2954195ca5ab2ded",
     "/css/plugins/toastr.css": "/css/plugins/toastr.css?id=60948c1416fe168a962d",
     "/css/plugins/wizard.css": "/css/plugins/wizard.css?id=5612e3b84b5bcaae39d5",
     "/css/core/colors/palette-noui.css": "/css/core/colors/palette-noui.css?id=370cd2e1a7ee51513467",
@@ -21,5 +21,5 @@
     "/js/core/menu/horizontal-menu.js": "/js/core/menu/horizontal-menu.js?id=fb6b73d4097a41066d20",
     "/js/core/menu/vertical-menu-dark.js": "/js/core/menu/vertical-menu-dark.js?id=e73a8775092b5241a730",
     "/js/core/menu/vertical-menu-light.js": "/js/core/menu/vertical-menu-light.js?id=fb6b73d4097a41066d20",
-    "/js/core/app.js": "/js/core/app.js?id=c26da4a59588475efef1"
+    "/js/core/app.js": "/js/core/app.js?id=40c86dfc4022daf37840"
 }
