@@ -10,7 +10,7 @@ use Yajra\DataTables\DataTables;
 
 class BrandController extends Controller
 {
-    private $photo_default = "default.png";
+    private $photo_default = "assets/media/photo_default.png";
 
     /**
      * Show view and send breadcrumb.
@@ -56,7 +56,7 @@ class BrandController extends Controller
                                 </i>
                             </a>
                         </div>')
-            ->addColumn('image', '<img class="img-round" src="{{ asset("storage/" . $logo) }}" style="max-height:50px; max-width:70px;"/>')
+            ->addColumn('image', '<img class="img-round" src="{{$logo}}" style="max-height:50px; max-width:70px;"/>')
             ->addColumn('available', function($brand){
                 if ($brand->is_available == 1) {
                     return '<i class="bx bx-check fa-2x text-success"></i>';
@@ -90,7 +90,7 @@ class BrandController extends Controller
 
             $new = new Brand;
             $new->name = $request->name;
-            $new->logo = $path;
+            $new->logo = 'storage/' . $path;
             $new->is_available = 1;
 
             if ($new->save()) {
@@ -138,7 +138,7 @@ class BrandController extends Controller
             if ($request->file('ulogo')) {
                 $file = $request->file('ulogo');
                 $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
-                $find->logo = $path;
+                $find->logo = 'storage/' . $path;
             }
 
             if ($find->save() && $request->file('ulogo')) {

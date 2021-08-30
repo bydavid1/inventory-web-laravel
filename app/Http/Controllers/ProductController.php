@@ -22,7 +22,7 @@ use Exception;
 class ProductController extends Controller
 {
 
-    private $photo_default = "photo_default.png";
+    private $photo_default = "assets/media/photo_default.png";
 
     /**
      * Display a listing of the resource.
@@ -76,7 +76,7 @@ class ProductController extends Controller
 
                 if ($request->file('image')) {
                     $file = $request->file('image');
-                    $path = substr(Storage::disk('public')->put('storage/uploads', $file), 8);
+                    $path = 'storage/' . substr(Storage::disk('public')->put('storage/uploads', $file), 8);
                 }else{
                     $path = $this->photo_default;
                 }
@@ -237,7 +237,7 @@ class ProductController extends Controller
                     ]);
                     //Delete old photo
                     if ($savedImage != $this->photo_default) {
-                        $imageFullPath = public_path() . "/storage/" . $savedImage;
+                        $imageFullPath = public_path() . $savedImage;
                         if (file_exists($imageFullPath)) {
                             unlink($imageFullPath);
                         }
@@ -249,7 +249,6 @@ class ProductController extends Controller
                     ]));
                 }
             }
-
 
             $product->save();
 
