@@ -168,15 +168,8 @@
     let previewImage = null;
 
     if (`{{ $product->photo != null }}`) {
-
-        if (`{{ $product->photo->source == "photo_default.png" }}`) {
-            previewImage = `{{ asset('assets/media/' . $product->photo->source)  }}`
-        } else {
-            previewImage = `{{ asset('storage/' . $product->photo->source) }}`
-        }
+        previewImage = `{{ asset($product->photo->source)  }}`
     }
-
-    console.log(previewImage)
 
     $("#image").fileinput({
         overwriteInitial: true,
