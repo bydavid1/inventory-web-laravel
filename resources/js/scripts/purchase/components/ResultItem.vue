@@ -1,6 +1,6 @@
 <template>
     <tr>
-        <td><img :src="'/storage/' + item.photo.source" width="50" height="50" class="object-fit: cover"/></td>
+        <td><img :src="'/' + item.photo.source" width="50" height="50" class="object-fit: cover"/></td>
         <td>{{ item.code }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.stock[0].pivot.stock }}</td>

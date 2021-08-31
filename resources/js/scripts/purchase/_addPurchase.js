@@ -110,7 +110,6 @@ var vm = new Vue({
             fields[1] = ['price:id,price_w_tax,product_id', 'stock', 'photo']
             axios.get(`/api/products/query/${this.searchControl}/${JSON.stringify(fields)}`)
             .then(response => {
-                console.log(response)
                 this.results = response.data
             })
             .catch(error => {
