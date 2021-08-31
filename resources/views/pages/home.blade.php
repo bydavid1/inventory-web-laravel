@@ -45,9 +45,9 @@
                                 </div>
                                 <div class="card-footer border-top pb-0">
                                     <h5>Total ventas hoy</h5>
-                                    <span class="text-primary text-bold-500">$82,950.96</span>
+                                    <span class="text-primary text-bold-500">$0</span>
                                     <div class="progress progress-bar-primary progress-sm my-50">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="78" style="width:78%">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="1" style="width:1%">
                                         </div>
                                     </div>
                                 </div>
