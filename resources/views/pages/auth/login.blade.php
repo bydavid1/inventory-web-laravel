@@ -31,8 +31,8 @@
                 <form method="POST" action="{{ route('login') }}">
                   @csrf
                   <div class="form-group mb-50">
-                    <label class="text-bold-600" for="email">Username</label>
-                    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  autocomplete="email" autofocus placeholder="Email">
+                    <label class="text-bold-600" for="email">Usuario</label>
+                    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  autocomplete="email" autofocus placeholder="Ingrese su usuario">
                     @error('email')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -40,15 +40,15 @@
                     @enderror
                   </div>
                   <div class="form-group">
-                    <label class="text-bold-600" for="password">Password</label>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password" placeholder="Password">
+                    <label class="text-bold-600" for="password">Contraseña</label>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password" placeholder="Ingrese su contraseña">
                     @error('password')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>
                      @enderror
                   </div>
-                  <button type="submit" class="btn btn-primary glow w-100 position-relative mt-2">Login
+                  <button type="submit" class="btn btn-primary glow w-100 position-relative mt-2">Entrar
                     <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
                   </button>
                 </form>
@@ -59,7 +59,7 @@
         <!-- right section image -->
         <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
           <div class="card-content">
-            <img class="img-fluid" src="{{asset('images/pages/login.png')}}" alt="branding logo">
+            <img class="img-fluid" src="{{asset('assets/media/e-box-primary.png')}}" alt="branding logo">
           </div>
         </div>
       </div>
