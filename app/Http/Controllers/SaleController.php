@@ -190,7 +190,7 @@ class SaleController extends Controller
                        "total" => $product['total'],
                    ]);
 
-                   Product::updateStock($product['id'], $product['quantity']);
+                   $stockUpdated = Product::updateStock($product['id'], $product['quantity']);
 
                     // //getting las kardex record
 
@@ -220,7 +220,7 @@ class SaleController extends Controller
                         $kardexItem->quantity = $product['quantity'];
                         $kardexItem->unit_value = $product['price'];
                         $kardexItem->value = $product['total'];
-                        $kardexItem->final_stock = $product['quantity']; //CAMBIARLO POR CURRENT STOCK
+                        $kardexItem->final_stock = $stockUpdated;
                         $kardexItem->final_unit_value = $report->lastItem->final_unit_value;
                         $kardexItem->final_value = $report->lastItem->final_unit_value * $product['quantity'];
                         $report->records()->save($kardexItem);

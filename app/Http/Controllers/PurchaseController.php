@@ -206,9 +206,10 @@ class PurchaseController extends Controller
                         } else {
                             //Update quantity
                             $existingProduct = Product::find($product['id']);
+                            $updatedStock = 0;
                             // Make sure we've got the Products model
                             if ($existingProduct) {
-                                Product::updateStock($existingProduct->id, $purchaseitem->quantity, true);
+                                $updatedStock = Product::updateStock($existingProduct->id, $purchaseitem->quantity, true);
                             }
 
                             //Check if it's a new supplier
@@ -233,7 +234,7 @@ class PurchaseController extends Controller
                                 $kardexItem->quantity = $product['quantity'];
                                 $kardexItem->unit_value = $product['purchase'];
                                 $kardexItem->value = $product['total'];
-                                $kardexItem->final_stock = $product['quantity']; //CAMBIARLO POR CURRENT STOCK
+                                $kardexItem->final_stock = $updatedStock;
                                 $kardexItem->final_unit_value = $final_unit_value;
                                 $kardexItem->final_value = $kardexItem->final_unit_value * $product['quantity'];
                                 $report->records()->save($kardexItem);

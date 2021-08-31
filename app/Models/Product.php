@@ -53,12 +53,26 @@ class Product extends Model
         return $this->hasMany(KardexReport::class);
     }
 
+    /**
+     * Update stock product
+     *
+     * @param  int $id
+     * @param  int $quantity
+     * @param  bool $sum
+     * @return int $updatedStock
+     */
     public static function updateStock($id, $quantity, $sum = false) {
         $product = self::find($id);
         foreach ($product->stock as $i) {
             $product->stock()->updateExistingPivot(1, [
                 'stock' => $sum ? $i->pivot->stock + $quantity : $i->pivot->stock - $quantity
             ]);
+        }
+
+        $product->refresh();
+
+        foreach ($product->stock as $i) {
+            return $i->pivot->stock;
         }
     }
 }
