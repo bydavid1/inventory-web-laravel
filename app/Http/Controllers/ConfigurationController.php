@@ -16,13 +16,7 @@ class ConfigurationController extends Controller
             ["name" => "Configuración"]
         ];
 
-        if ($siteInfo) {
-            return view('pages.configuration', ['breadcrumbs'=> $breadcrumbs, 'siteinfo' => $siteInfo]);
-        } else {
-
-        }
-
-
+        return view('pages.configuration', ['breadcrumbs'=> $breadcrumbs, 'siteinfo' => $siteInfo]);
     }
 
     public function store(Request $request) {
