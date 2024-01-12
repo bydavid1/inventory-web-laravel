@@ -105,7 +105,7 @@ _:-ms-lang(x),
   left: auto;
 }
 // toast position change from below specific screen
-@media screen and(max-width:430px){
+@media screen and (max-width: 430px) {
   .toast-bs-container .toast-position{
     right: 0;
   }

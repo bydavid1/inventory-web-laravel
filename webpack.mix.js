@@ -63,8 +63,8 @@ mix.sass('resources/sass/app.scss', 'public/css')
     'public/js/core/app.js')
 
 // Compiling vue files
-mix.vue('resources/js/scripts/sales/_addSale.js', 'public/js/scripts/sales/addSale.js');
-mix.vue('resources/js/scripts/purchase/_addPurchase.js', 'public/js/scripts/purchase/addPurchase.js');
+mix.js('resources/js/scripts/sales/_addSale.js', 'public/js/scripts/sales/addSale.js').vue();
+mix.js('resources/js/scripts/purchase/_addPurchase.js', 'public/js/scripts/purchase/addPurchase.js').vue();
 
 // if (mix.inProduction()) {
 //   mix.version();
