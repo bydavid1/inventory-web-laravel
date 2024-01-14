@@ -18,52 +18,13 @@ class ProductApiController extends Controller
             $query = Product::with(['price', 'photo', 'stock', 'brand', 'category']);
 
             return DataTables::of($query)
-            ->addColumn('actions', '
-                        <div class="btn-group dropdown">
-                            <a role="button" href="{{ route("editProduct", "$id") }}" class="btn btn-info btn-sm">Editar</a>
-                            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"
-                                id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                data-reference="parent">
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                                <button class="dropdown-item" onclick="getPrices({{"$id"}})">Editar precios</button>
-                                <button class="dropdown-item" onclick="remove({{"$id"}})">Eliminar</button>
-                                <a class="dropdown-item" href="{{ route("showProduct", "$id") }}">Ver producto</a>
-                            </div>
-                        </div>')
-            ->addColumn('prices', function($products){
-                //Make sure there is at least one price registered
-                if ($products->price != null) {
-                return "$". $products->price->price_w_tax;
-                }else {
-                    return "";
-                }
-            })
-            ->addColumn('photo', function($products){
-                if ($products->photo != null) {
-                    return '<img class="img-round" src="'.$products->photo->source.'" style="max-height:40px; max-width:50px;"/>';
-                } else {
-                    return '<img class="img-round" src="" style="max-height:50px; max-width:70px;"/>';
-                }
-            })
-            ->editColumn('stock', function($products) {
-                foreach ($products->stock as $i) {
-                    return $i->pivot->stock;
-                }
-            })
-            ->editColumn('brand', function($products){
-                return $products->brand->name;
-            })
-            ->editColumn('category', function($products){
-                return $products->category->name;
-            })
-            ->editColumn('is_available', function($products){
-                if ($products->is_available == 1) {
-                    return '<i class="bx bxs-check-circle text-success"></i>';
-                }else{
-                    return '<i class="bx bxs-x-circle text-danger"></i>';
-                }
-            })
+            ->addColumn('actions', 'components.products.actions')
+            ->addColumn('prices', fn (Product $product) => $product->price ? $product->price->price_w_tax : "") //Make sure there is at least one price registered
+            ->addColumn('photo', fn (Product $product) => '<img class="img-round" src="'.$product->photo?->source.'" style="max-height: 40px; max-width: 50px;"/>')
+            ->editColumn('stock', fn (Product $product) => $product->stock()->where('branch_id', 1)->first()->pivot->stock)
+            ->editColumn('brand', fn (Product $product) => $product->brand->name)
+            ->editColumn('category', fn (Product $product) => $product->category->name)
+            ->editColumn('is_available', 'components.products.available')
             ->rawColumns(['actions', 'photo', 'is_available'])
             ->make();
         }

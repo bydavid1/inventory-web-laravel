@@ -12,9 +12,7 @@ class Product extends Model
     use SoftDeletes;
 
     public function stock() {
-        return $this->belongsToMany(Branch::class, 'stock')
-            ->withPivot('stock')
-            ->wherePivot('branch_id', 1);
+        return $this->belongsToMany(Branch::class, 'stock')->withPivot('stock');
     }
 
     public function branches() {

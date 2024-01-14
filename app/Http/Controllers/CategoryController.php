@@ -37,7 +37,7 @@ class CategoryController extends Controller
 
             return DataTables::of($categories)
             ->addColumn('actions', 'components.categories.actions')
-            ->addColumn('is_available', 'components.categories.available')
+            ->editColumn('is_available', 'components.categories.available')
             ->rawColumns(['actions', 'is_available'])
             ->make();
         }

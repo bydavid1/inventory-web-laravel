@@ -37,7 +37,7 @@ class ProductController extends Controller
             ["name" => "Productos y servicios"]
         ];
 
-        return view('pages.products', ['breadcrumbs' => $breadcrumbs]);
+        return view('pages.products.index', ['breadcrumbs' => $breadcrumbs]);
     }
 
     /**
@@ -58,7 +58,7 @@ class ProductController extends Controller
         $suppliers = Supplier::select(['id','name'])->where('is_available', 1)->get();
         $brands = Brand::select(['id','name'])->where('is_available', 1)->get();
 
-        return view('pages.product.addProduct', compact(['categories','suppliers', 'brands', 'breadcrumbs']));
+        return view('pages.products.add', compact(['categories','suppliers', 'brands', 'breadcrumbs']));
     }
 
     /**
@@ -170,7 +170,7 @@ class ProductController extends Controller
         ];
         $product = Product::findOrFail($id);
 
-        return view('pages.product.showProduct', compact('product', 'breadcrumbs'));
+        return view('pages.products.show', compact('product', 'breadcrumbs'));
     }
 
     /**
@@ -195,7 +195,7 @@ class ProductController extends Controller
         ];
 
         //return response($product, 200);
-        return view('pages.product.editProduct', compact(['product', 'categories', 'brands', 'breadcrumbs']));
+        return view('pages.products.edit', compact(['product', 'categories', 'brands', 'breadcrumbs']));
     }
 
     /**

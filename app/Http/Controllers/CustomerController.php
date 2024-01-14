@@ -6,10 +6,26 @@ use App\Models\Customer;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $breadcrumbs = [
+            ["link" => "/home", "name" => "Home"],
+            ["name" => "Clientes"]
+        ];
+
+        return view('pages.customers.index', ['breadcrumbs'=>$breadcrumbs]);
+    }
+
 
     /**
      * Api routes
@@ -19,30 +35,11 @@ class CustomerController extends Controller
     public function getRecords(Request $request)
     {
         if ($request->ajax()) {
-            $query = Customer::latest()->get();
+            $customers = Customer::latest()->get();
 
-            return DataTables::of($query)
-                ->addColumn('actions', '
-                    <div class="float-right">
-                        <a href="#"
-                            data-toggle="modal"
-                            onclick="update({{"$id"}})"
-                            data-target="#editCostumer">
-                            <i class="badge-circle badge-circle-success
-                                bx bx-edit font-medium-1"
-                                style="color: white">
-                            </i>
-                        </a>
-                        <a href="#"
-                            onclick="remove({{"$id"}})">
-                            <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
-                                style="color: white">
-                            </i>
-                        </a>
-                    </div>')
-                ->editColumn('created_at', function($customer) {
-                    return Carbon::parse($customer->created_at)->format("d-m-Y");
-                })
+            return DataTables::of($customers)
+                ->addColumn('actions', 'components.customers.actions')
+                ->editColumn('created_at', fn (Customer $customer) => Carbon::parse($customer->created_at)->format("d-m-Y"))
                 ->rawColumns(['actions'])
                 ->make();
         }
@@ -57,21 +54,6 @@ class CustomerController extends Controller
         }else{
            return response()->json(['success' => false, 'data' => null], 200);
         }
-    }
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $breadcrumbs = [
-            ["link" => "/home", "name" => "Home"],
-            ["name" => "Clientes"]
-        ];
-        return view('pages.customers', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**

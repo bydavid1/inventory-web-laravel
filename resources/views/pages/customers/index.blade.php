@@ -161,7 +161,6 @@
 					<div class="alert alert-danger alert-icon-left d-none" role="alert" id="puterror">
 						Hay datos importantes que faltan
 					</div>
-					<hr>
 					<input type="hidden" id="put_id">
                     <div class="form-group">
                         <label for="name" class="control-label">Email: </label>
