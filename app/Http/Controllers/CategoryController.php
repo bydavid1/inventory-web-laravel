@@ -23,7 +23,7 @@ class CategoryController extends Controller
             ["name" => "Categorías"]
         ];
 
-        return view('pages.categories', ['breadcrumbs'=>$breadcrumbs]);
+        return view('pages.categories.index', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -33,34 +33,11 @@ class CategoryController extends Controller
     */
     public function getRecords(Request $request){
         if ($request->ajax()) {
-            $query = Category::latest()->get();
+            $categories = Category::latest()->get();
 
-            return DataTables::of($query)
-            ->addColumn('actions', '
-                        <div class="float-right">
-                            <a href="#"
-                                onclick="update({{"$id"}})"
-                                data-toggle="modal"
-                                data-target="#editCategoryModal">
-                                <i class="badge-circle badge-circle-success
-                                    bx bx-edit font-medium-1"
-                                    style="color: white">
-                                </i>
-                            </a>
-                            <a href="#"
-                                onclick="remove({{"$id"}})">
-                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
-                                    style="color: white">
-                                </i>
-                            </a>
-                        </div>')
-            ->editColumn('is_available', function($category){
-                if ($category->is_available == 1) {
-                    return '<i class="bx bxs-check-circle text-success"></i>';
-                }else{
-                    return '<i class="bx bxs-x-circle text-danger" ></i>';
-                }
-            })
+            return DataTables::of($categories)
+            ->addColumn('actions', 'components.categories.actions')
+            ->addColumn('is_available', 'components.categories.available')
             ->rawColumns(['actions', 'is_available'])
             ->make();
         }

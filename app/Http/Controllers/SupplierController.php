@@ -22,7 +22,7 @@ class SupplierController extends Controller
             ["name" => "Proveedores"]
         ];
 
-        return view('pages.suppliers', ['breadcrumbs'=>$breadcrumbs]);
+        return view('pages.suppliers.index', ['breadcrumbs'=>$breadcrumbs]);
     }
 
     /**
@@ -35,24 +35,7 @@ class SupplierController extends Controller
         if ($request->ajax()) {
             $query = Supplier::latest()->get();
             return DataTables::of($query)
-            ->addColumn('actions', '
-                        <div class="float-right">
-                            <a href="#"
-                                onclick="update({{"$id"}})"
-                                data-toggle="modal"
-                                data-target="#editSupplierModal">
-                                <i class="badge-circle badge-circle-success
-                                    bx bx-edit font-medium-1"
-                                    style="color: white">
-                                </i>
-                            </a>
-                            <a href="#"
-                                onclick="remove({{"$id"}})">
-                                <i class="badge-circle badge-circle-danger bx bx-trash font-medium-1"
-                                    style="color: white">
-                                </i>
-                            </a>
-                        </div>')
+            ->addColumn('actions', 'components.suppliers.actions')
             ->rawColumns(['actions'])
             ->make();
         }
